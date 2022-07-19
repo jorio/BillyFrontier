@@ -936,7 +936,7 @@ float	fps = gFramesPerSecondFrac;
 
 static void DrawRipples(ObjNode *theNode, const OGLSetupOutputType *setupInfo)
 {
-AGLContext agl_ctx = setupInfo->drawContext;
+SDL_GLContext agl_ctx = setupInfo->drawContext;
 int			i;
 float		s,x,y,z;
 

@@ -10,12 +10,12 @@
 /***************/
 
 #include "game.h"
-#include 	<DrawSprocket.h>
+//#include 	<DrawSprocket.h>
 #include	"windows.h"
-#include <FixMath.h>
-#include <ToolUtils.h>
-#include <appearance.h>
-
+//#include <FixMath.h>
+//#include <ToolUtils.h>
+//#include <appearance.h>
+#include "Pomme.h"
 
 extern	NewObjectDefinitionType	gNewObjectDefinition;
 extern	ObjNode	*gCurrentNode,*gFirstNodePtr;
@@ -26,7 +26,7 @@ extern	Boolean				gOSX,gMuteMusicFlag;
 extern	PrefsType			gGamePrefs;
 extern	Boolean			gSongPlayingFlag;
 extern	AGLDrawable		gAGLWin;
-extern	AGLContext		gAGLContext;
+extern	SDL_GLContext		gAGLContext;
 extern	Boolean			gISpActive;
 
 /****************************/

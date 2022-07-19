@@ -12,7 +12,7 @@
 #include "game.h"
 #include "3dmath.h"
 #include "bones.h"
-#include <aglmacro.h>
+//#include <aglmacro.h>
 
 extern	OGLBoundingBox	gObjectGroupBBoxList[MAX_BG3D_GROUPS][MAX_OBJECTS_IN_GROUP];
 extern	MetaObjectPtr			gBG3DGroupList[MAX_BG3D_GROUPS][MAX_OBJECTS_IN_GROUP];
@@ -589,7 +589,7 @@ update:
 static void DrawShadow(ObjNode *theNode, const OGLSetupOutputType *setupInfo)
 {
 int	shadowType = theNode->Kind;
-AGLContext agl_ctx = setupInfo->drawContext;
+SDL_GLContext agl_ctx = setupInfo->drawContext;
 
 
 	OGL_PushState();
@@ -911,7 +911,7 @@ float	x,z;
 
 void CalcDisplayGroupWorldPoints(ObjNode *theNode)
 {
-AGLContext agl_ctx = gGameViewInfoPtr->drawContext;
+SDL_GLContext agl_ctx = gGameViewInfoPtr->drawContext;
 
 	glMatrixMode(GL_MODELVIEW);
 	glPushMatrix();
@@ -965,7 +965,7 @@ MOVertexArrayObject	*vObj;
 static void MO_CalcWorldPoints_Group(ObjNode *theNode, const MOGroupObject *object)
 {
 int	numChildren,i;
-AGLContext agl_ctx = gGameViewInfoPtr->drawContext;
+SDL_GLContext agl_ctx = gGameViewInfoPtr->drawContext;
 
 
 		/* PUSH MATRIES WITH OPENGL */
@@ -998,7 +998,7 @@ AGLContext agl_ctx = gGameViewInfoPtr->drawContext;
 static void MO_CalcWorldPoints_Matrix(const MOMatrixObject *matObj)
 {
 const OGLMatrix4x4		*m;
-AGLContext agl_ctx = gGameViewInfoPtr->drawContext;
+SDL_GLContext agl_ctx = gGameViewInfoPtr->drawContext;
 
 	m = &matObj->matrix;							// point to matrix
 
@@ -1012,7 +1012,7 @@ AGLContext agl_ctx = gGameViewInfoPtr->drawContext;
 
 static void MO_CalcWorldPoints_VertexArray(ObjNode *theNode, MOVertexArrayData *data)
 {
-AGLContext agl_ctx = gGameViewInfoPtr->drawContext;
+SDL_GLContext agl_ctx = gGameViewInfoPtr->drawContext;
 int				numPoints,meshNum;
 OGLPoint3D		*worldBuffer;
 OGLMatrix4x4	localToWorld;

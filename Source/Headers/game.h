@@ -7,13 +7,12 @@
 #define	TARGET_API_MAC_CARBON				1
 #define	CALL_IN_SPOCKETS_BUT_NOT_IN_CARBON	1
 
-
-
 		/* HEADERS */
 		
 #include <stdlib.h>
 //#include <TextUtils.h>
 #include <math.h>
+#include <SDL.h>
 #include <sdl_opengl.h>
 //#include <textutils.h>
 //#include <Files.h>
@@ -64,4 +63,3 @@
 #include "miscscreens.h"
 #include "pick.h"
 #include "internet.h"
-

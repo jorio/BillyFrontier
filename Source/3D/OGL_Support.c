@@ -9,19 +9,22 @@
 /*    EXTERNALS             */
 /****************************/
 
-#include <glu.h>
-#include <glm.h>
-#include <agl.h>
-#include <aglRenderers.h>
-#include <aglmacro.h>
-#include <drawsprocket.h>
-#include <glext.h>
-#include 	<Folders.h>
+//#include <glu.h>
+//#include <glm.h>
+//#include <agl.h>
+//#include <aglRenderers.h>
+//#include <aglmacro.h>
+//#include <drawsprocket.h>
+//#include <glext.h>
+//#include 	<Folders.h>
+#include <SDL.h>
+#include <sdl_opengl.h>
+#include "Pomme.h"
 #include 	<string.h>
 
 #include "game.h"
 #include "3dmath.h"
-#include "atigl.h"
+//#include "atigl.h"
 
 extern int				gNumObjectNodes,gNumPointers;
 extern	MOMaterialObject	*gMostRecentMaterial;
@@ -34,7 +37,7 @@ extern	u_long			gGlobalMaterialFlags, gCurrentPickID;
 extern	PrefsType			gGamePrefs;
 extern	int				gGameWindowWidth,gGameWindowHeight,gScratch,gNumSparkles,gNumLoopingEffects;
 extern	CGrafPtr				gDisplayContextGrafPtr;
-extern	DSpContextReference 	gDisplayContext;
+//extern	DSpContextReference 	gDisplayContext;
 extern	long			gNumSuperTilesDeep, gNumSuperTilesWide;
 extern	SuperTileStatus	**gSuperTileStatusGrid;
 extern	Byte			gNumEnemiesThisStopPoint[];
@@ -92,8 +95,8 @@ static glPNTrianglesiATIXFUNC 	ptrTo_glPNTrianglesiATIX= nil;
 
 Boolean			gCanDo512 = true;
 
-AGLDrawable		gAGLWin;
-AGLContext		gAGLContext = nil;
+//AGLDrawable		gAGLWin;
+SDL_GLContext		gAGLContext = nil;
 
 static GLuint 			gFontList;
 
@@ -285,15 +288,18 @@ OGLSetupOutputType	*data;
 
 static void OGL_CreateDrawContext(OGLViewDefType *viewDefPtr)
 {
-AGLPixelFormat 	fmt;
+SDL_PixelFormat 	fmt;
 GLboolean      mkc,ok;
-GLint          attrib[] 		= {AGL_RGBA, AGL_DOUBLEBUFFER, AGL_DEPTH_SIZE, 16, AGL_ALL_RENDERERS, AGL_ACCELERATED, AGL_NO_RECOVERY, AGL_NONE};
+#if 0
+GLint          attrib[] 		= {AGL_RGBA, AGL_DOUBLEBUFFER, SDL_GL_DEPTH_SIZE, 16, AGL_ALL_RENDERERS, AGL_ACCELERATED, AGL_NO_RECOVERY, AGL_NONE};
 GLint          attribDeepZ[] 	= {AGL_RGBA, AGL_DOUBLEBUFFER, AGL_DEPTH_SIZE, 32, AGL_ALL_RENDERERS, AGL_ACCELERATED, AGL_NO_RECOVERY, AGL_NONE};
 GLint          attrib2[] 		= {AGL_RGBA, AGL_DOUBLEBUFFER, AGL_DEPTH_SIZE, 16, AGL_ALL_RENDERERS, AGL_NONE};
-AGLContext agl_ctx;
+#endif
+SDL_GLContext agl_ctx;
 GLint			maxTexSize;
 static char			*s;
 
+#if 0
 	gAGLWin = (AGLDrawable)gDisplayContextGrafPtr;
 
 
@@ -312,6 +318,7 @@ static char			*s;
 			DoFatalAlert("\paglChoosePixelFormat failed!  Check that your 3D accelerator is OpenGL compliant, installed properly, and that you have the latest drivers.");
 		}
 	}
+#endif
 
 
 			/* CREATE AGL CONTEXT & ATTACH TO WINDOW */
@@ -352,9 +359,9 @@ static char			*s;
 			
 	glClearColor(0,0,0,1);
 	glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);		// clear buffer
-	aglSwapBuffers(gAGLContext);
+	SDL_GL_SwapWindow(gAGLContext);
 	glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);		// clear buffer
-	aglSwapBuffers(gAGLContext);
+	SDL_GL_SwapWindow(gAGLContext);
 
 
 				/* SET VARIOUS STATE INFO */
@@ -430,7 +437,7 @@ static char			*s;
 static void OGL_SetStyles(OGLSetupInputType *setupDefPtr)
 {
 OGLStyleDefType *styleDefPtr = &setupDefPtr->styles;
-AGLContext agl_ctx = gAGLContext;
+SDL_GLContext agl_ctx = gAGLContext;
 
 
 	glEnable(GL_CULL_FACE);									// activate culling
@@ -494,7 +501,7 @@ static void OGL_CreateLights(OGLLightDefType *lightDefPtr)
 {
 int		i;
 GLfloat	ambient[4];
-AGLContext agl_ctx = gAGLContext;
+SDL_GLContext agl_ctx = gAGLContext;
 
 	OGL_EnableLighting();
 
@@ -554,7 +561,7 @@ AGLContext agl_ctx = gAGLContext;
 void OGL_PickScene(OGLSetupOutputType *setupInfo, void (*drawRoutine)(OGLSetupOutputType *),
 					float pickX, float pickY, float pickWidth, float pickHeight)
 {
-AGLContext agl_ctx = setupInfo->drawContext;
+	SDL_GLContext agl_ctx = setupInfo->drawContext;
 
 	if (setupInfo == nil)										// make sure it's legit
 		DoFatalAlert("\pOGL_PickScene setupInfo == nil");
@@ -606,7 +613,7 @@ AGLContext agl_ctx = setupInfo->drawContext;
 void OGL_DrawScene(OGLSetupOutputType *setupInfo, void (*drawRoutine)(OGLSetupOutputType *))
 {
 //int	x,y,w,h;
-AGLContext agl_ctx = setupInfo->drawContext;
+	SDL_GLContext agl_ctx = setupInfo->drawContext;
 
 	if (setupInfo == nil)										// make sure it's legit
 		DoFatalAlert("\pOGL_DrawScene setupInfo == nil");
@@ -917,7 +924,7 @@ GLuint OGL_TextureMap_Load(void *imageMemory, int width, int height,
 							GLint srcFormat,  GLint destFormat, GLint dataType)
 {	
 GLuint	textureName;
-AGLContext agl_ctx = gAGLContext;
+SDL_GLContext agl_ctx = gAGLContext;
 								
 	if (gGamePrefs.anaglyph)
 	{
@@ -1253,7 +1260,7 @@ u_long	a;
  
 void OGL_Texture_SetOpenGLTexture(GLuint textureName)
 {
-AGLContext agl_ctx = gAGLContext;
+	SDL_GLContext agl_ctx = gAGLContext;
 
 	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
 	if (OGL_CheckError())
@@ -1353,7 +1360,7 @@ void OGL_Camera_SetPlacementAndUpdateMatrices(OGLSetupOutputType *setupInfo)
 OGLCameraPlacement	*placement;
 int		w, h, i, x, y;
 OGLLightDefType	*lights;
-AGLContext agl_ctx = gAGLContext;
+SDL_GLContext agl_ctx = gAGLContext;
 
 				/* SET VIEWPORT */
 
@@ -1446,7 +1453,7 @@ AGLContext agl_ctx = gAGLContext;
 
 void OGL_Camera_SetPlacementAndUpdateMatricesForPicking(OGLSetupOutputType *setupInfo, float pickX, float pickY, float pickWidth, float pickHeight)
 {
-AGLContext agl_ctx = gAGLContext;
+SDL_GLContext agl_ctx = gAGLContext;
 OGLCameraPlacement	*placement;
 int					x,y, w, h;
 GLint				viewport[4];
@@ -1603,7 +1610,7 @@ long			pixelSize;
 GLenum OGL_CheckError(void)
 {
 GLenum	err;
-AGLContext agl_ctx = gAGLContext;
+SDL_GLContext agl_ctx = gAGLContext;
 
 
 	err = glGetError();
@@ -1654,7 +1661,7 @@ AGLContext agl_ctx = gAGLContext;
 void OGL_PushState(void)
 {
 int	i;
-AGLContext agl_ctx = gAGLContext;
+SDL_GLContext agl_ctx = gAGLContext;
 
 		/* PUSH MATRIES WITH OPENGL */
 
@@ -1694,7 +1701,7 @@ AGLContext agl_ctx = gAGLContext;
 void OGL_PopState(void)
 {
 int		i;
-AGLContext agl_ctx = gAGLContext;
+SDL_GLContext agl_ctx = gAGLContext;
 
 		/* RETREIVE OPENGL MATRICES */
 		
@@ -1759,7 +1766,7 @@ AGLContext agl_ctx = gAGLContext;
 
 void OGL_EnableLighting(void)
 {
-AGLContext agl_ctx = gAGLContext;
+	SDL_GLContext agl_ctx = gAGLContext;
 
 	gMyState_Lighting = true;
 	glEnable(GL_LIGHTING);	
@@ -1769,7 +1776,7 @@ AGLContext agl_ctx = gAGLContext;
 
 void OGL_DisableLighting(void)
 {
-AGLContext agl_ctx = gAGLContext;
+	SDL_GLContext agl_ctx = gAGLContext;
 
 	gMyState_Lighting = false;
 	glDisable(GL_LIGHTING);	
@@ -1782,7 +1789,7 @@ AGLContext agl_ctx = gAGLContext;
 
 static void OGL_InitFont(void)
 {
-AGLContext agl_ctx = gAGLContext;
+	SDL_GLContext agl_ctx = gAGLContext;
 	
 	gFontList = glGenLists(256);
  
@@ -1796,7 +1803,7 @@ AGLContext agl_ctx = gAGLContext;
 static void OGL_FreeFont(void)
 {
 
-AGLContext agl_ctx = gAGLContext;
+	SDL_GLContext agl_ctx = gAGLContext;
 	glDeleteLists(gFontList, 256);
 	
 }
@@ -1806,7 +1813,7 @@ AGLContext agl_ctx = gAGLContext;
 void OGL_DrawString(Str255 s, GLint x, GLint y)
 {
 
-AGLContext agl_ctx = gAGLContext;
+	SDL_GLContext agl_ctx = gAGLContext;
 
 	OGL_PushState();
 

@@ -9,13 +9,20 @@
 /* EXTERNALS   */
 /***************/
 
+#if 0
 #include 	<Folders.h>
 #include 	<script.h>
 #include 	<opentransportproviders.h>
+#endif
+
 #include 	<string.h>
+
+#if 0
 #include <Types.h>
 #include <InternetConfig.h>
 #include <URLAccess.h>
+#endif
+
 #	include <stdio.h>
 #	include <ctype.h>
 #include "game.h"
@@ -140,7 +147,7 @@ const char urlString[3][256] =
 		{
 			switch(err)									// check error to see if hackers have messed with our URLs
 			{
-				case	kURLInvalidURLError:
+				//case	kURLInvalidURLError:
 invalid_url:				
 						DoFatalAlert("\pThis application's checksum does not match.  Please reinstall the game.");
 						break;

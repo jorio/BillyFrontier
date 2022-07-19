@@ -11,7 +11,7 @@
 #include "game.h"
 #include "3dmath.h"
 #include	"infobar.h"
-#include <aglmacro.h>
+//#include <aglmacro.h>
 
 extern	OGLMatrix4x4			gViewToFrustumMatrix,gWorldToViewMatrix;
 extern	NewObjectDefinitionType	gNewObjectDefinition;
@@ -26,7 +26,7 @@ extern	int						gScratch;
 extern	PlayerInfoType			gPlayerInfo;
 extern	FenceDefType			*gFenceList;
 extern	u_long					gGameFrameNum;
-extern	AGLContext		gAGLContext;
+extern	SDL_GLContext		gAGLContext;
 extern	OGLBoundingBox			gObjectGroupBBoxList[MAX_BG3D_GROUPS][MAX_OBJECTS_IN_GROUP];
 extern	float					gFramesPerSecond, gFramesPerSecondFrac;
 extern	WaterDefType	**gWaterListHandle;
@@ -259,7 +259,7 @@ int		r,c,i;
 void DisposeTerrain(void)
 {
 int	i;
-AGLContext agl_ctx = gAGLContext;
+SDL_GLContext agl_ctx = gAGLContext;
 
 	DisposeSuperTileMemoryList();
 
@@ -944,7 +944,7 @@ void DrawTerrain(ObjNode *theNode, const OGLSetupOutputType *setupInfo)
 {
 int				r,c;
 int				i,unique;
-AGLContext agl_ctx = setupInfo->drawContext;
+SDL_GLContext agl_ctx = setupInfo->drawContext;
 Boolean			superTileVisible;				
 #if ALLOW_TERRAIN_TRUFORM
 Boolean				trueForm;

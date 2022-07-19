@@ -10,10 +10,11 @@
 /***************/
 
 #include "game.h"
-#include <Components.h>
+//#include <Components.h>
 #include "3dmath.h"
 #include "windows.h"
-#include <fp.h>
+//#include <fp.h>
+#include "Pomme.h"
 
 extern	short		gMainAppRezFile;
 extern	OGLSetupOutputType		*gGameViewInfoPtr;

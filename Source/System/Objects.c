@@ -13,7 +13,7 @@
 #include "3dmath.h"
 #include "bones.h"
 #include "infobar.h"
-#include <aglmacro.h>
+//#include <aglmacro.h>
 
 extern	Byte					gDebugMode;
 extern	MetaObjectPtr			gBG3DGroupList[MAX_BG3D_GROUPS][MAX_OBJECTS_IN_GROUP];
@@ -475,7 +475,7 @@ const Boolean 	isPicking = gIsPicking;
 float			cameraX, cameraZ;
 const static OGLColorRGBA	white = {1,1,1};	
 int				i;
-AGLContext agl_ctx = setupInfo->drawContext;
+SDL_GLContext agl_ctx = setupInfo->drawContext;
 
 
 	if (gFirstNodePtr == nil)									// see if there are any objects
@@ -906,7 +906,7 @@ static void DrawCollisionBoxes(ObjNode *theNode, Boolean old)
 int					n,i;
 CollisionBoxType	*c;
 float				left,right,top,bottom,front,back;
-AGLContext agl_ctx = gGameViewInfoPtr->drawContext;
+SDL_GLContext agl_ctx = gGameViewInfoPtr->drawContext;
 
 	
 			/* SET LINE MATERIAL */
@@ -1002,7 +1002,7 @@ static void DrawBoundingBoxes(ObjNode *theNode)
 {
 float	left,right,top,bottom,front,back;
 int		i;
-AGLContext agl_ctx = gGameViewInfoPtr->drawContext;
+SDL_GLContext agl_ctx = gGameViewInfoPtr->drawContext;
 					
 			/* SET LINE MATERIAL */
 			
@@ -1151,7 +1151,7 @@ AGLContext agl_ctx = gGameViewInfoPtr->drawContext;
 static void DrawBoundingSpheres(ObjNode *theNode)
 {
 float	x,y,z,r;
-AGLContext agl_ctx = gGameViewInfoPtr->drawContext;
+SDL_GLContext agl_ctx = gGameViewInfoPtr->drawContext;
 
 //	if (!(theNode->CType & CTYPE_PICKABLE))
 //		return;

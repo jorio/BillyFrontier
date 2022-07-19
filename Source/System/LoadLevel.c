@@ -9,7 +9,7 @@
 /* EXTERNALS   */
 /***************/
 
-#include 	<Aliases.h>
+//#include 	<Aliases.h>
 #include 	"windows.h"
 #include "game.h"
 
@@ -31,7 +31,7 @@ extern	long			gNumFences,gNumSplines,gNumWaterPatches;
 extern	SplineDefType	**gSplineList;
 extern	MOMaterialObject	*gSuperTileTextureObjects[MAX_SUPERTILE_TEXTURES];	
 extern	PrefsType			gGamePrefs;
-extern	AGLContext		gAGLContext;
+extern	SDL_GLContext		gAGLContext;
 extern	AGLDrawable		gAGLWin;
 extern	Boolean			gMuteMusicFlag,gMuteMusicFlag,gLoadedDrawSprocket;
 extern	WaterDefType	**gWaterListHandle, *gWaterList;

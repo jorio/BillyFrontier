@@ -10,12 +10,13 @@
 /***************/
 
 
-#include <DriverServices.h>
-#include <osutils.h>
-#include <timer.h>
-#include 	<DrawSprocket.h>
+//#include <DriverServices.h>
+//#include <osutils.h>
+//#include <timer.h>
+//#include 	<DrawSprocket.h>
 #include <string.h>
 #include "game.h"
+#include "Pomme.h"
 
 extern	short		gMainAppRezFile;
 extern	Boolean		gISPInitialized,gOSX,gG4;
@@ -23,7 +24,7 @@ extern	Boolean		gISpActive, gShareware;
 extern	DSpContextReference 	gDisplayContext;
 extern	OGLSetupOutputType		*gGameViewInfoPtr;
 extern	int			gPolysThisFrame;
-extern	AGLContext		gAGLContext;
+extern	SDL_GLContext		gAGLContext;
 extern	AGLDrawable		gAGLWin;
 extern	float			gDemoVersionTimer;
 extern	short	gPrefsFolderVRefNum;

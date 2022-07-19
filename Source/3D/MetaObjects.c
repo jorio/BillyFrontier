@@ -9,7 +9,7 @@
 /*    EXTERNALS             */
 /****************************/
 
-#include <aglmacro.h>
+//#include <aglmacro.h>
 
 #include "game.h"
 #include "3dmath.h"
@@ -21,7 +21,7 @@ extern	SpriteType		*gSpriteGroupList[];
 extern	long			gNumSpritesInGroupList[];
 extern	int				gPolysThisFrame,gVRAMUsedThisFrame;
 extern	Boolean			gMyState_Lighting, gIsPicking;
-extern	AGLContext		gAGLContext;
+extern	SDL_GLContext		gAGLContext;
 extern	Byte			gDebugMode;
 extern	PrefsType			gGamePrefs;
 extern	OGLMatrix4x4	gWorldToFrustumMatrix,gWorldToViewMatrix,gViewToFrustumMatrix;
@@ -824,7 +824,7 @@ MOVertexArrayObject	*vObj;
 		case	MO_TYPE_PICKID:
 				if (gIsPicking)
 				{
-					AGLContext agl_ctx = setupInfo->drawContext;
+					SDL_GLContext agl_ctx = setupInfo->drawContext;
 				
 					MOPickIDObject *pickObj = (MOPickIDObject *)object;
 					gCurrentPickID = pickObj->pickID;
@@ -883,7 +883,7 @@ int	numChildren,i;
 void MO_DrawGeometry_VertexArray(const MOVertexArrayData *data, const OGLSetupOutputType *setupInfo)
 {
 Boolean		useTexture = false, multiTexture = false, texGen = false;
-AGLContext 	agl_ctx = setupInfo->drawContext;
+SDL_GLContext 	agl_ctx = setupInfo->drawContext;
 u_long 		materialFlags;
 short		i;
 Boolean		needNormals;
@@ -1206,7 +1206,7 @@ MOMaterialData		*matData;
 OGLColorRGBA		*diffuseColor,diffColor2;
 Boolean				textureHasAlpha = false;
 Boolean				alreadySet;
-AGLContext agl_ctx = setupInfo->drawContext;
+SDL_GLContext agl_ctx = setupInfo->drawContext;
 u_long				matFlags;
 
 	if (gIsPicking)							// no materials during picking
@@ -1338,7 +1338,7 @@ bail:
 void MO_DrawMatrix(const MOMatrixObject *matObj, const OGLSetupOutputType *setupInfo)
 {
 const OGLMatrix4x4		*m;
-AGLContext agl_ctx = setupInfo->drawContext;
+SDL_GLContext agl_ctx = setupInfo->drawContext;
 
 	m = &matObj->matrix;							// point to matrix
 
@@ -1360,7 +1360,7 @@ float			x,y,z;
 const MOPictureData	*picData = &picObj->objectData;
 long			numCellsW, numCellsH;
 float			cellWidth, cellHeight, ratio, offset;
-AGLContext agl_ctx = setupInfo->drawContext;
+SDL_GLContext agl_ctx = setupInfo->drawContext;
 
 			
 	OGL_PushState();
@@ -1435,7 +1435,7 @@ void MO_DrawSprite(const MOSpriteObject *spriteObj, const OGLSetupOutputType *se
 {
 const MOSpriteData	*spriteData = &spriteObj->objectData;
 float			scaleX,scaleY,x,y;
-AGLContext agl_ctx = setupInfo->drawContext;
+SDL_GLContext agl_ctx = setupInfo->drawContext;
 MOMaterialObject	*mo;
 float				aspect, xoff, yoff;
 OGLMatrix3x3		m;
@@ -1740,7 +1740,7 @@ int					i,n;
 static void MO_DeleteObjectInfo_Material(MOMaterialObject *obj)
 {
 MOMaterialData		*data = &obj->objectData;
-AGLContext agl_ctx = gAGLContext;
+SDL_GLContext agl_ctx = gAGLContext;
 
 		/* DISPOSE OF TEXTURE NAMES */
 				
