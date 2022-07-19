@@ -1,6 +1,6 @@
 
 #pragma precompile_target "MyPCH_Normal.mch"
-
+#pragma once
 
 		/* MY BUILD OPTIONS */
 		
@@ -12,22 +12,22 @@
 		/* HEADERS */
 		
 #include <stdlib.h>
-#include <TextUtils.h>
+//#include <TextUtils.h>
 #include <math.h>
-#include <gl.h>
-#include <textutils.h>
-#include <Files.h>
-#include <Resources.h>
-#include <Sound.h>
+#include <sdl_opengl.h>
+//#include <textutils.h>
+//#include <Files.h>
+//#include <Resources.h>
+//#include <Sound.h>
 
-#include <Power.h>
-#include <Script.h>
-#include <Fonts.h>
-#include <TextUtils.h>
-#include <Gestalt.h>
-#include	<Movies.h>
-#include <Components.h>
-#include <QuicktimeComponents.h>
+//#include <Power.h>
+//#include <Script.h>
+//#include <Fonts.h>
+//#include <TextUtils.h>
+//#include <Gestalt.h>
+//#include	<Movies.h>
+//#include <Components.h>
+//#include <QuicktimeComponents.h>
 
 #include "globals.h"
 #include "structs.h"

@@ -2,6 +2,10 @@
 // main.h
 //
 
+
+// Externals
+#include "game.h"
+
 #ifndef __MAIN
 #define __MAIN
   

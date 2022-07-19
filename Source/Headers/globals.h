@@ -8,10 +8,11 @@
 #define MYGLOBALS_H
 
 #include <math.h>
-#include <gl.h>
-#include <textutils.h>
+#include <sdl_opengl.h>
+#include "Pomme.h"
+//#include <textutils.h>
 
-#include <qdoffscreen.h>
+//#include <qdoffscreen.h>
 
 
 			/* SOME FLOATING POINT HELPERS */

@@ -6,7 +6,7 @@
 #define __PLAYER_H__
 
 // Externals
-#include <NetSprocket.h>
+//#include <NetSprocket.h>
 #include "game.h"
 
 #define	MAX_BUDDY_BUGS			10

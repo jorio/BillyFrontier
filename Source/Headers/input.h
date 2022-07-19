@@ -3,7 +3,7 @@
 //
 
 // Externals
-#include <InputSprocket.h>
+//#include <InputSprocket.h>
 #include "game.h"
 
 #define	NUM_CONTROL_NEEDS		3

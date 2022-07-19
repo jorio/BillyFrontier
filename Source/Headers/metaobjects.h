@@ -7,7 +7,7 @@
 
 //Externals
 #include "ogl_support.h"
-#include <gl.h>
+#include <sdl_opengl.h>
 #include "game.h"
 
 #define	MO_COOKIE				0xfeedface		// set at head of every object for validation
