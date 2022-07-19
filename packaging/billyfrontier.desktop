@@ -1,0 +1,9 @@
+[Desktop Entry]
+Type=Application
+Version=1.0
+Name=Billy Frontier
+Comment=Billy Frontier
+Icon=billyfrontier-desktopicon
+Exec=BillyFrontier
+Terminal=false
+Categories=Game;
