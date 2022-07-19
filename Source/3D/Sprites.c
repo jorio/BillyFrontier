@@ -9,6 +9,7 @@
 /*    EXTERNALS             */
 /****************************/
 
+#include "game.h"
 #include "windows.h"
 #include "3dmath.h"
 #include <aglmacro.h>
@@ -685,120 +686,120 @@ int CharToSprite(char c)
 					s = FONT_SObjType_ExclamationMark;
 					break;
 					
-			case	'¡':
+			case	'ÔøΩ':
 					s = FONT_SObjType_ExclamationMark2;
 					break;
 
-			case	'Ü':
+			case	'ÔøΩ':
 					s = FONT_SObjType_UU;
 					break;
 
-			case	'ü':
+			case	'ÔøΩ':
 					s = FONT_SObjType_uu;
 					break;
 
-			case	'ú':
+			case	'ÔøΩ':
 					s = FONT_SObjType_ua;
 					break;
 
-			case	'Ö':
+			case	'ÔøΩ':
 					s = FONT_SObjType_OO;
 					break;
 
-			case	'ö':
+			case	'ÔøΩ':
 					s = FONT_SObjType_oo;
 					break;
 
-			case	'Ä':
+			case	'ÔøΩ':
 					s = FONT_SObjType_AA;
 					break;
 
-			case	'Å':
+			case	'ÔøΩ':
 					s = FONT_SObjType_AO;
 					break;
 					
-			case	'â':
+			case	'ÔøΩ':
 					s = FONT_SObjType_av;
 					break;
 
-			case	'ä':
+			case	'ÔøΩ':
 					s = FONT_SObjType_au;
 					break;
 
-			case	'á':
+			case	'ÔøΩ':
 					s = FONT_SObjType_aa;
 					break;
 				
-			case	'Ñ':
+			case	'ÔøΩ':
 					s = FONT_SObjType_NN;
 					break;
 
-			case	'ñ':
+			case	'ÔøΩ':
 					s = FONT_SObjType_nn;
 					break;
 
-			case	'É':
+			case	'ÔøΩ':
 					s = FONT_SObjType_EE;
 					break;
 
-			case	'é':
+			case	'ÔøΩ':
 					s = FONT_SObjType_ee;
 					break;
 					
-			case	'è':
+			case	'ÔøΩ':
 					s = FONT_SObjType_ee;
 					break;
 
-			case	'ê':
+			case	'ÔøΩ':
 					s = FONT_SObjType_ev;
 					break;
 
-			case	'È':
+			case	'ÔøΩ':
 					s = FONT_SObjType_EE;
 					break;
 
-			case	'Ê':
+			case	'ÔøΩ':
 					s = FONT_SObjType_E;
 					break;
 
-			case	'À':
+			case	'ÔøΩ':
 					s = FONT_SObjType_Ax;
 					break;
 
-			case	'à':
+			case	'ÔøΩ':
 					s = FONT_SObjType_ax;
 					break;
 					
-			case	'å':
+			case	'ÔøΩ':
 					s = FONT_SObjType_ao;
 					break;
 					
 
-			case	'Ô':
+			case	'ÔøΩ':
 					s = FONT_SObjType_Ox;
 					break;
 					
-			case	'Ó':
+			case	'ÔøΩ':
 					s = FONT_SObjType_Oa;
 					break;
 
-			case	'ó':
+			case	'ÔøΩ':
 					s = FONT_SObjType_oa;
 					break;
 					
-			case	'ß':
+			case	'ÔøΩ':
 					s = FONT_SObjType_beta;
 					break;
 			
-			case	'í':
+			case	'ÔøΩ':
 					s = FONT_SObjType_ia;
 					break;
 			
-			case	'Ç':
+			case	'ÔøΩ':
 					s = FONT_SObjType_C;
 					break;
 					
-			case	'ç':
+			case	'ÔøΩ':
 					s = FONT_SObjType_c;
 					break;
 
@@ -841,11 +842,11 @@ float	s;
 	switch(c)
 	{				
 		case	'i':
-		case	'í':
+		case	'ÔøΩ':
 		case	'.':
 		case	',':
 		case	'!':
-		case	'¡':
+		case	'ÔøΩ':
 				s = .25;
 				break;
 
@@ -854,10 +855,10 @@ float	s;
 		case	'p':
 		case	'l':				// L
 		case	'o':
-		case	'ö':
-		case	'ó':
+		case	'ÔøΩ':
+		case	'ÔøΩ':
 		case	'c':
-		case	'ç':
+		case	'ÔøΩ':
 				s = .3;
 				break;	
 
@@ -867,26 +868,26 @@ float	s;
 		case	'r':
 		case	'j':
 		case	'9':
-		case	'ä':
+		case	'ÔøΩ':
 		case	'a':
-		case	'á':
-		case	'à':
-		case	'â':
-		case	'å':
+		case	'ÔøΩ':
+		case	'ÔøΩ':
+		case	'ÔøΩ':
+		case	'ÔøΩ':
 		case	'b':
 		case	'd':
 		case	'e':
-		case	'é':
-		case	'ê':
+		case	'ÔøΩ':
+		case	'ÔøΩ':
 		case	'g':
 		case	'h':
 		case	'k':
 		case	'n':
-		case	'ñ':
+		case	'ÔøΩ':
 		case	'q':
 		case	'u':
-		case	'ü':
-		case	'ú':
+		case	'ÔøΩ':
+		case	'ÔøΩ':
 		case	'v':
 		case	'x':
 		case	'y':

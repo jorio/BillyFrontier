@@ -2,6 +2,9 @@
 // shards.h
 //
 
+// Externals
+#include "game.h"
+
 enum
 {
 	SHARD_MODE_UPTHRUST		=	1,

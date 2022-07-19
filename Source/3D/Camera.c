@@ -11,6 +11,7 @@
 
 #include <aglmacro.h>
 
+#include "game.h"
 #include "3DMath.h"
 
 extern	NewObjectDefinitionType	gNewObjectDefinition;

@@ -2,6 +2,8 @@
 // anim.h
 //
 
+// Externals
+#include "game.h"
 
 		/* ANIM EVENTS */
 		

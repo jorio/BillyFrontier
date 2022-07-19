@@ -5,6 +5,8 @@
 #define	USE_DSP			1
 #define	ALLOW_FADE		(1 && USE_DSP)
 
+// Externals
+#include "game.h"
 
 extern	OSStatus DSpSetWindowToFront(WindowRef pWindow);		// DSp hack not in headers
 

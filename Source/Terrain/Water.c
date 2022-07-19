@@ -2,7 +2,7 @@
 /*   	WATER.C      */
 /**********************/
 
-
+#include "game.h"
 #include "3dmath.h"
 #include "infobar.h"
 

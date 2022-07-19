@@ -5,9 +5,11 @@
 #ifndef OGL_SUP
 #define OGL_SUP
 
+// Externals
 #include <gl.h>
 #include <glu.h>
 #include <agl.h>
+#include "game.h"
 
 #define	MAX_FILL_LIGHTS		4
 #define	MAX_TEXTURES		300

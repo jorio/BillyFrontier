@@ -2,6 +2,9 @@
 // Object.h
 //
 
+// Externals
+#include "game.h"
+
 #define INVALID_NODE_FLAG	0xdeadbeef			// put into CType when node is deleted
 
 #define	TERRAIN_SLOT	1

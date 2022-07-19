@@ -18,6 +18,7 @@
 #include <URLAccess.h>
 #	include <stdio.h>
 #	include <ctype.h>
+#include "game.h"
 
 extern	PrefsType	gGamePrefs;
 extern	unsigned char	gRegInfo[64];

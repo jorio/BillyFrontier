@@ -11,6 +11,7 @@
 
 #include 	<Aliases.h>
 #include 	"windows.h"
+#include "game.h"
 
 extern	short			gMainAppRezFile,gCurrentSong;
 extern	short			gNumTerrainItems;

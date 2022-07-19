@@ -5,6 +5,9 @@
 #ifndef __SKELOBJ
 #define __SKELOBJ
 
+// Externals
+#include "game.h"
+
 enum
 {
 	SKELETON_TYPE_BILLY = 0,

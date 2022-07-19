@@ -2,6 +2,8 @@
 // Sound2.h
 //
 
+// Externals
+#include "game.h"
 
 typedef struct
 {

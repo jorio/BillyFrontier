@@ -9,6 +9,7 @@
 /* EXTERNALS   */
 /***************/
 
+#include "game.h"
 #include 	<DrawSprocket.h>
 #include	"windows.h"
 #include <FixMath.h>

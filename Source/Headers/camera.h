@@ -2,6 +2,8 @@
 // camera.h
 //
 
+// Externals
+#include "game.h"
 
 void InitCamera_Terrain(void);
 void InitCamera_Duel(void);

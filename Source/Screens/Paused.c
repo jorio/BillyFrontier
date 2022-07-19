@@ -9,6 +9,7 @@
 /*    EXTERNALS             */
 /****************************/
 
+#include "game.h"
 #include "3dmath.h"
 #include "infobar.h"
 
@@ -92,7 +93,7 @@ static const char *gPausedStrings[MAX_LANGUAGES][3] =
 
 		/* SWEDISH */
 	{	
-		"Återuppta Spelet",
+		"ÔøΩteruppta Spelet",
 		"Dra dig ur Spelet",
 		"Avsluta",
 	},

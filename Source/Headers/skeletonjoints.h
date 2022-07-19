@@ -2,6 +2,9 @@
 // skeletonJoints.h
 //
 
+// Externals
+#include "game.h"
+
 enum
 {
 	SKELETON_LIMBTYPE_PILLOW,

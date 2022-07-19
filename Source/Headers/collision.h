@@ -2,6 +2,9 @@
 // collision.h
 //
 
+// Externals
+#include "game.h"
+
 enum
 {
 	COLLISION_TYPE_OBJ,						// box

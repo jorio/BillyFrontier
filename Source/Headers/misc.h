@@ -2,6 +2,9 @@
 // misc.h
 //
 
+// Externals
+#include "game.h"
+
 #define SERIAL_LENGTH      12
 
 

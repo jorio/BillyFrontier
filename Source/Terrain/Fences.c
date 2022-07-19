@@ -2,7 +2,7 @@
 /*   	FENCES.C      */
 /**********************/
 
-
+#include "game.h"
 #include "3dmath.h"
 
 /***************/

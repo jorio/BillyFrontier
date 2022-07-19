@@ -2,6 +2,8 @@
 // effects.h
 //
 
+// Externals
+#include "game.h"
 
 #define	MAX_PARTICLE_GROUPS		70
 #define	MAX_PARTICLES			253		// (note change Byte below if > 255)

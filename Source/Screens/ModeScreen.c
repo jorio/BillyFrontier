@@ -9,6 +9,7 @@
 /*    EXTERNALS             */
 /****************************/
 
+#include "game.h"
 #include "globals.h"
 #include "misc.h"
 #include "miscscreens.h"

@@ -2,7 +2,8 @@
 // miscscreens.h
 //
 
-
+// Externals
+#include "game.h"
 
 
 

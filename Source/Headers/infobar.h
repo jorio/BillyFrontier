@@ -2,7 +2,8 @@
 // infobar.h
 //
 
-
+// Externals
+#include "game.h"
 
 void InitInfobar(void);
 void DrawInfobar(void);

@@ -10,6 +10,7 @@
 /****************************/
 
 
+#include "game.h"
 #include "bones.h"
 #include "3dmath.h"
 

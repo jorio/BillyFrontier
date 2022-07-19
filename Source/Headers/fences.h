@@ -2,6 +2,9 @@
 // fences.h
 //
 
+// Externals
+#include "game.h"
+
 #ifndef FENCE_H
 #define FENCE_H
 

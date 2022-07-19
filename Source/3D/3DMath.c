@@ -9,6 +9,7 @@
 /*    EXTERNALS             */
 /****************************/
 
+#include "game.h"
 #include "3dmath.h"
 
 extern	float				gFramesPerSecondFrac,gFramesPerSecond;
@@ -1361,7 +1362,7 @@ float	mag,oneOverM;
 /*********************** REFLECT VECTOR 3D *************************/
 //
 // compute reflection vector 
-// which is N(2(N¥V)) - V 
+// which is N(2(Nï¿½V)) - V 
 // N - Surface Normal 
 // vec = vector aiming at the normal.
 //

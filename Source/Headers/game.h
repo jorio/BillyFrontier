@@ -31,6 +31,7 @@
 
 #include "globals.h"
 #include "structs.h"
+#include "Pomme.h"
 
 #include "metaobjects.h"
 #include "ogl_support.h"

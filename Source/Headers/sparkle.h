@@ -2,6 +2,9 @@
 // sparkle.h
 //
 
+// Externals
+#include "game.h"
+
 #define	MAX_SPARKLES	600
 
 enum

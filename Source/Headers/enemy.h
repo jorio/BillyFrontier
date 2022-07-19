@@ -2,6 +2,9 @@
 // enemy.h
 //
 
+// Externals
+#include "game.h"
+
 #include "terrain.h"
 #include "splineitems.h"
 

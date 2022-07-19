@@ -9,6 +9,7 @@
 /* EXTERNALS   */
 /***************/
 
+#include "game.h"
 #include <Components.h>
 #include "3dmath.h"
 #include "windows.h"

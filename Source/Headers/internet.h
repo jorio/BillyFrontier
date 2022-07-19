@@ -2,6 +2,9 @@
 // internet.h
 // 
 
+// Externals
+#include "game.h"
+
 void ReadHTTPData_VersionInfo(void);
 OSStatus LaunchURL(ConstStr255Param urlStr);
 Boolean IsInternetAvailable(void);

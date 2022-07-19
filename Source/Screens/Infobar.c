@@ -9,6 +9,7 @@
 /*    EXTERNALS             */
 /****************************/
 
+#include "game.h"
 #include	"infobar.h"
 #include <aglmacro.h>
 #include	"3dmath.h"

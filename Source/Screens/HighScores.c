@@ -9,6 +9,7 @@
 /*    EXTERNALS             */
 /****************************/
 
+#include "game.h"
 #include "infobar.h"
 
 extern	NewObjectDefinitionType	gNewObjectDefinition;

@@ -13,6 +13,7 @@
 #include <CursorDevices.h>
 #include <Traps.h>
 #include <FixMath.h>
+#include "game.h"
 
 
 extern	short				gMainAppRezFile;

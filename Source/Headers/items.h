@@ -2,7 +2,8 @@
 // items.h
 //
 
-
+// Externals
+#include "game.h"
 
 extern	void InitItemsManager(void);
 void CreateCyclorama(void);

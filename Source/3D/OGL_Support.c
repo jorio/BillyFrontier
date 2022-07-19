@@ -19,6 +19,7 @@
 #include 	<Folders.h>
 #include 	<string.h>
 
+#include "game.h"
 #include "3dmath.h"
 #include "atigl.h"
 

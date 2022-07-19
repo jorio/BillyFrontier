@@ -2,6 +2,9 @@
 // pick.h
 //
 
+// Externals
+#include "game.h"
+
 #if 0
 ObjNode *OGL_DoRayCollision(OGLRay *ray, OGLPoint3D *worldHitCoord, u_long statusFilter, u_long cTypes);
 

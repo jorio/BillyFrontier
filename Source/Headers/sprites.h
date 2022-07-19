@@ -2,7 +2,8 @@
 // sprites.h
 //
 
-
+// Externals
+#include "game.h"
 
 enum
 {

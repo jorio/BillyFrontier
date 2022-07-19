@@ -7,6 +7,9 @@
 
 #define	MAX_WATER_POINTS	100			// note:  cannot change this without breaking data files!!
 
+// Externals
+#include "game.h"
+
 enum
 {
 	WATER_FLAG_FIXEDHEIGHT	= (1)

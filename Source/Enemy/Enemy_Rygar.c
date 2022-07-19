@@ -11,6 +11,7 @@
 
 
 
+#include "game.h"
 #include "3dmath.h"
 
 extern	NewObjectDefinitionType	gNewObjectDefinition;

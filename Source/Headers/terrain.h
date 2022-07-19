@@ -5,6 +5,8 @@
 #ifndef TERRAIN_H
 #define TERRAIN_H
 
+// Externals
+#include "game.h"
 #include "main.h"
 
 

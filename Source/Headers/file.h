@@ -2,6 +2,9 @@
 // file.h
 //
 
+// Externals
+#include "game.h"
+
 #define	kGameID 			'ALMO'
 #define	kSavedGameFileType	'ALsv'
 

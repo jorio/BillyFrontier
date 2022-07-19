@@ -15,6 +15,7 @@
 #include <timer.h>
 #include 	<DrawSprocket.h>
 #include <string.h>
+#include "game.h"
 
 extern	short		gMainAppRezFile;
 extern	Boolean		gISPInitialized,gOSX,gG4;

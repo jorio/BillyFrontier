@@ -2,6 +2,8 @@
 // bone.h
 //
 
+// Externals
+#include "game.h"
 
 void LoadBonesReferenceModel(FSSpec	*inSpec, SkeletonDefType *skeleton, int skeletonType, OGLSetupOutputType *setupInfo);
 extern	void UpdateSkinnedGeometry(ObjNode *theNode);

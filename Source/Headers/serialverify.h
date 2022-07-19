@@ -1,4 +1,5 @@
-
+// Externals
+#include "game.h"
 
 inline static Boolean ValidateSerialNumber(unsigned char *regInfo, Boolean eitherBoxedOrShareware);
 
@@ -61,7 +62,7 @@ int				rezID;
                     	switch(gGamePrefs.language)
                     	{
                     		case	LANGUAGE_SPANISH:
-			                        DoAlert("\pLo sentimos, el nœmero de serie no es v‡lido.  Por favor intŽntelo nuevamente.");
+			                        DoAlert("\pLo sentimos, el nï¿½mero de serie no es vï¿½lido.  Por favor intï¿½ntelo nuevamente.");
                     				break;
                     				
                     		default:

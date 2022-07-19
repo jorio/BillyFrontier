@@ -11,6 +11,7 @@
 
 #include <textutils.h>
 
+#include "game.h"
 #include "globals.h"
 #include "objects.h"
 #include "misc.h"

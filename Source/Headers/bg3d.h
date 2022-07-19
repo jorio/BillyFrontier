@@ -2,6 +2,9 @@
 // bg3d.h
 //
 
+// Externals
+#include "game.h"
+
 #ifndef __BG3D
 #define __BG3D
 
