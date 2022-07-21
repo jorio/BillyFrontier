@@ -605,6 +605,10 @@ void DrawCString(char *string)
 
 void VerifySystem(void)
 {
+	gOSX = true;
+	gSlowCPU = false;
+
+#if 0
 OSErr	iErr;
 long		 cpuFamily, cpuSpeed;
 NumVersion	vers;
@@ -691,7 +695,6 @@ carbonerr:
 	}
 	
 
-#if 0
 			/* CHECK TIME-BOMB */
 	{
 		unsigned long secs;
@@ -706,7 +709,7 @@ carbonerr:
 			DoFatalAlert("\pSorry, but this beta has expired");
 		}
 	}
-#endif
+
 
 
 			/* CHECK OPENGL */
@@ -762,7 +765,7 @@ carbonerr:
 			}
 		}
 	}
-	
+#endif
 }
 
 
