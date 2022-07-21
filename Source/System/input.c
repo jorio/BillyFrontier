@@ -9,19 +9,22 @@
 /* EXTERNALS   */
 /***************/
 
+#if 0
 #include <DrawSprocket.h>
 #include <CursorDevices.h>
 #include <Traps.h>
 #include <FixMath.h>
+#endif
+
 #include "game.h"
 
 
 extern	short				gMainAppRezFile;
-extern	DSpContextReference gDisplayContext;
+//extern	DSpContextReference gDisplayContext;
 extern	PlayerInfoType		gPlayerInfo;
 extern	Boolean				gOSX,gHIDInitialized;
-extern	AGLContext		gAGLContext;
-extern	AGLDrawable		gAGLWin;
+extern	SDL_GLContext		gAGLContext;
+//extern	AGLDrawable		gAGLWin;
 extern	float			gFramesPerSecondFrac,gFramesPerSecond,gScratchF;
 extern	PrefsType			gGamePrefs;
 extern	int					gGameWindowWidth, gGameWindowHeight;
@@ -32,7 +35,7 @@ extern	int					gGameWindowWidth, gGameWindowHeight;
 /**********************/
 
 static void ReadInputValues(KeyMap *keyMap);
-static pascal OSStatus MyMouseEventHandler(EventHandlerCallRef eventhandler, EventRef pEventRef, void *userdata);
+//static pascal OSStatus MyMouseEventHandler(EventHandlerCallRef eventhandler, EventRef pEventRef, void *userdata);
 static void Install_MouseEventHandler(void);
 static void Remove_MouseEventHandlers(void);
 
@@ -52,9 +55,10 @@ Boolean		gMouseRightButtonDown = false, gMouseMiddleButtonDown = false;
 SInt32		gScrollWheelDelta = 0;
 
 
-
+#if 0
 static	EventHandlerUPP			gMouseEventHandlerUPP = nil;
 static	EventHandlerRef			gMouseEventHandlerRef = 0;
+#endif
 
 long					gMouseDeltaX = 0;
 long					gMouseDeltaY = 0;
@@ -74,7 +78,7 @@ Boolean	gISPInitialized			= false;
 		
 #define	NEED_NUM_MOUSEMOTION	0
 
-
+#if 0
 ISpNeed	gControlNeeds[NUM_CONTROL_NEEDS] =
 {
 	{										// 0
@@ -120,7 +124,7 @@ ISpNeed	gControlNeeds[NUM_CONTROL_NEEDS] =
 
 
 static ISpElementReference	gVirtualElements[NUM_CONTROL_NEEDS];
-
+#endif
 
 
 
@@ -128,6 +132,7 @@ static ISpElementReference	gVirtualElements[NUM_CONTROL_NEEDS];
 
 void InitInput(void)
 {
+#if 0
 OSErr				iErr;
 ISpDeviceReference	dev[10];
 UInt32				count = 0;
@@ -185,8 +190,8 @@ UInt32				count = 0;
 			SavePrefs();
 		}
 	}
+#endif
 }
-
 
 /**************** READ KEYBOARD *************/
 //
@@ -239,15 +244,17 @@ u_short	pauseKey;
 				
 		do
 		{
+#if 0
 			EventRecord	e;
 			WaitNextEvent(everyEvent,&e, 0, 0);
+#endif
 			ReadKeyboard_Real();
 		}while(!GetNewKeyState_Real(pauseKey));
 		if (o)
 			TurnOnISp();
 			
 		if (gAGLContext)
-			aglSetDrawable(gAGLContext, gAGLWin);		// reenable gl	
+			//aglSetDrawable(gAGLContext, gAGLWin);		// reenable gl	
 			
 		CalcFramesPerSecond();
 		CalcFramesPerSecond();		
@@ -396,7 +403,7 @@ keyMap;
 	else
 	{
 		UInt32	state;
-		
+#if 0		
 		ISpElement_GetSimpleState(gVirtualElements[2], &state);
 		if (state)
 		{
@@ -410,7 +417,7 @@ keyMap;
 			gMouseButtonState = gMouseNewButtonState = false;	
 		}
 	
-	
+#endif	
 	}		
 }
 
@@ -423,6 +430,7 @@ keyMap;
 
 void TurnOnISp(void)
 {
+#if 0
 ISpDeviceReference	dev[10];
 UInt32		count = 0;
 OSErr		iErr;
@@ -445,12 +453,14 @@ OSErr		iErr;
 			DoFatalAlert("\pTurnOnISp: ISpDevices_Activate failed!");
 
 	}
+#endif
 }
 
 /******************** TURN OFF ISP *********************/
 
 void TurnOffISp(void)
 {
+#if 0
 ISpDeviceReference	dev[10];
 UInt32		count = 0;
 
@@ -467,6 +477,7 @@ UInt32		count = 0;
 	
 		gISpActive = false;
 	}
+#endif
 }
 
 
@@ -498,7 +509,7 @@ void DoKeyConfigDialog(void)
 			TurnOffISp();
 
 		if (gAGLContext)
-			aglSetDrawable(gAGLContext, gAGLWin);		// reenable gl
+			//aglSetDrawable(gAGLContext, gAGLWin);		// reenable gl
 			
 		HideCursor();
 	}
@@ -553,7 +564,7 @@ void GetMouseCoord(Point *point)
 
 void GetMouseDeltas(void)
 {
-
+#if 0
 			/******************************************/
 			/* USE CARBON EVENTS TO READ MOUSE DELTAS */
 			/******************************************/
@@ -609,6 +620,7 @@ void GetMouseDeltas(void)
 		gMouseDeltaX = deltaX * dFactor;		
 		gMouseDeltaY = -deltaY * dFactor; 
 	}
+#endif
 }
 
 
@@ -617,6 +629,7 @@ void GetMouseDeltas(void)
 // Every time WaitNextEvent() is called this callback will be invoked.
 //
 
+#if 0
 static pascal OSStatus MyMouseEventHandler(EventHandlerCallRef eventhandler, EventRef pEventRef, void *userdata)
 {
 OSStatus	result = eventNotHandledErr;
@@ -684,12 +697,13 @@ eventhandler; userdata;
 	}	 
      return(result);
 }
-
+#endif
 
 /******************* INSTALL MOUSE EVENT HANDLER ***********************/
 
 void Install_MouseEventHandler(void)
 {
+#if 0
 EventTypeSpec			mouseEvents[5] ={{kEventClassMouse, kEventMouseMoved},
 										{kEventClassMouse, kEventMouseDragged},
 										{kEventClassMouse, kEventMouseUp},
@@ -716,6 +730,7 @@ EventTypeSpec			mouseEvents[5] ={{kEventClassMouse, kEventMouseMoved},
 							mouseEvents, nil, &gMouseEventHandlerRef);
 			
 	}
+#endif
 }
 
 
@@ -723,7 +738,7 @@ EventTypeSpec			mouseEvents[5] ={{kEventClassMouse, kEventMouseMoved},
 
 void Remove_MouseEventHandlers(void)
 {
-
+#if 0
 	//	if the handler has been installed, remove it
 
 	if (gMouseEventHandlerRef != nil)
@@ -734,7 +749,7 @@ void Remove_MouseEventHandlers(void)
 		DisposeEventHandlerUPP(gMouseEventHandlerUPP);
 		gMouseEventHandlerUPP = nil;
 	}
-	
+#endif
 }
 
 

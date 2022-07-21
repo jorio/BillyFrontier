@@ -13,15 +13,13 @@
 #include 	<Folders.h>
 #include 	<script.h>
 #include 	<opentransportproviders.h>
-#endif
 
-#include 	<string.h>
-
-#if 0
 #include <Types.h>
 #include <InternetConfig.h>
 #include <URLAccess.h>
 #endif
+
+#include 	<string.h>
 
 #	include <stdio.h>
 #	include <ctype.h>
@@ -297,10 +295,10 @@ update:
 
 static void DoVersionDialog(Str255 s)
 {
-DialogPtr 		myDialog;
+//DialogPtr 		myDialog;
 Boolean			dialogDone = false;
 short			itemType,itemHit;
-ControlHandle	itemHandle;
+//ControlHandle	itemHandle;
 Rect			itemRect;
 Str255			v = "\pVersion               ";
 
@@ -308,14 +306,13 @@ Str255			v = "\pVersion               ";
 
 
 	Enter2D(false);
-	
+#if 0	
 	myDialog = GetNewDialog(130,nil,MOVE_TO_FRONT);
 			
 			/* SET VERSION STRING */
 			
 	GetDialogItem(myDialog,3,&itemType,(Handle *)&itemHandle,&itemRect);	
-	SetDialogItemText((Handle)itemHandle,v);
-			
+	SetDialogItemText((Handle)itemHandle,v);	
 			
 				/* DO IT */
 				
@@ -335,6 +332,7 @@ Str255			v = "\pVersion               ";
 		}
 	}
 	DisposeDialog(myDialog);
+#endif
 
 	Exit2D();
 }
@@ -601,6 +599,7 @@ OSStatus 	err;
 
 /************************ IS INTERNET AVAILABLE ****************************/
 
+#if 0
 Boolean IsInternetAvailable(void)
 {
 OSErr				iErr;
@@ -613,10 +612,11 @@ InetInterfaceInfo 	info;
 
 	return(true);
 }
-
+#endif
 
 /************************ LAUNCH URL *****************************/
 
+#if 0
 OSStatus LaunchURL(ConstStr255Param urlStr)
 {
 OSStatus err;
@@ -634,5 +634,4 @@ long endSel;
     }
     return (err);
 }
-
-
+#endif
