@@ -25,7 +25,7 @@ extern	long	gPrefsFolderDirID;
 extern	Boolean				gOSX,gMuteMusicFlag;
 extern	PrefsType			gGamePrefs;
 extern	Boolean			gSongPlayingFlag;
-extern	AGLDrawable		gAGLWin;
+//extern	AGLDrawable		gAGLWin;
 extern	SDL_GLContext		gAGLContext;
 extern	Boolean			gISpActive;
 
@@ -35,12 +35,12 @@ extern	Boolean			gISpActive;
 
 static void PrepDrawSprockets(void);
 static void MoveFadeEvent(ObjNode *theNode);
-static Boolean SetupEventProc(EventRecord *event);
+//static Boolean SetupEventProc(EventRecord *event);
 
 static void CreateDisplayModeList(void);
-pascal void ModeListCallback(void *userData, DMListIndexType a, DMDisplayModeListEntryPtr displaymodeInfo);
+//pascal void ModeListCallback(void *userData, DMListIndexType a, DMDisplayModeListEntryPtr displaymodeInfo);
 static void DoVideoModeSelectPopUpMenu(void);
-pascal void ShowVideoMenuSelection (DialogPtr dlogPtr, short item);
+//pascal void ShowVideoMenuSelection (DialogPtr dlogPtr, short item);
 
 /****************************/
 /*    CONSTANTS             */
@@ -69,14 +69,14 @@ typedef struct
 /**********************/
 
 GDHandle				gOurDevice = nil;
-static DisplayIDType		gOurDisplayID = nil;			
+//static DisplayIDType		gOurDisplayID = nil;			
 
 
 static short				gNumVideoModes = 0;
 static VideoModeType		gVideoModeList[MAX_VIDEO_MODES];
 
 long					gScreenXOffset,gScreenYOffset;
-DSpContextReference 	gDisplayContext = nil;
+//DSpContextReference 	gDisplayContext = nil;
 Boolean					gLoadedDrawSprocket = false;
 
 CGrafPtr				gDisplayContextGrafPtr = nil;
@@ -97,7 +97,7 @@ static	Boolean	gOldISpFlag;
 void InitWindowStuff(void)
 {
 GDHandle 		phGD;
-DisplayIDType displayID;
+//DisplayIDType displayID;
 //long		totalVRAM;
 OSErr		iErr;
 Rect			r;
@@ -145,7 +145,7 @@ float		w,h;
 		
 		SetRect(&r, 100,100,1024,768);
 		
-		window = NewCWindow(nil, &r, "\p", true, plainDBox, (void *)-1, false, nil);
+		//window = NewCWindow(nil, &r, "\p", true, plainDBox, (void *)-1, false, nil);
 		gDisplayContextGrafPtr = GetWindowPort(window);
 	}
 
@@ -166,6 +166,7 @@ float		w,h;
 * button (assumed to be item 1)
 *=============================================================================*/
 
+#if 0
 pascal void DoBold (DialogPtr dlogPtr, short item)
 {
 short		itype;
@@ -180,6 +181,7 @@ Rect		irect;
 	FrameRoundRect (&irect, 16, 16);						/* frame the button now */
 	PenNormal ();
 }
+#endif
 
 /*==============================================================================
 * DoOutline ()
@@ -1025,6 +1027,7 @@ int								i;
 
 /****************** MODE LIST CALLBACK ***********************/
 
+#if 0
 pascal void ModeListCallback(void *userData, DMListIndexType a, DMDisplayModeListEntryPtr displaymodeInfo)
 {
 double					refreshRate;	
@@ -1045,7 +1048,7 @@ u_long					timingFlags;
 		refreshRate = Fix2X(displaymodeInfo->displayModeResolutionInfo->csRefreshRate);
 
 
-#if 0
+
 				/* VALIDATE THIS MODE */
 
 		error = DMCheckDisplayMode(gOurDevice, displaymodeInfo->displayModeSwitchInfo->csData,
@@ -1057,8 +1060,7 @@ u_long					timingFlags;
 				return;				
 		}
 		else
-			return;
-#endif			
+			return;			
 
 				/****************************************/
 				/* GET RESOLUTIONS & DEPTHS FOR THIS Hz */
@@ -1104,7 +1106,7 @@ u_long					timingFlags;
 		}
 	}	
 }
-
+#endif
 
 
 

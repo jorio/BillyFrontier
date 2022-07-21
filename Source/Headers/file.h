@@ -80,7 +80,7 @@ typedef struct
 	double	videoHz;
 	Byte	language;
 	Boolean	deepZ;
-	DateTimeRec	lastVersCheckDate;
+	//DateTimeRec	lastVersCheckDate;
 	Byte	didThisNote[MAX_HTTP_NOTES];
 	Boolean	hasConfiguredISpControls;
 	Boolean	oldOSWarned;
