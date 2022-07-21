@@ -188,6 +188,7 @@ Rect		irect;
 * this is the user item procedure to make the thin outline around the given useritem
 *=============================================================================*/
 
+#if 0
 pascal void DoOutline (DialogPtr dlogPtr, short item)
 {
 short		itype;
@@ -198,7 +199,7 @@ Rect		irect;
 	FrameRect (&irect);						// frame the button now 
 	PenNormal();
 }
-
+#endif
 
 #pragma mark -
 
@@ -206,6 +207,7 @@ Rect		irect;
 
 static void PrepDrawSprockets(void)
 {
+#if 0
 DSpContextAttributes 	displayConfig;
 OSStatus 				theError;
 Boolean					confirmIt = false;
@@ -298,12 +300,12 @@ try_again:
 	if( theError )
 		DoFatalAlert("\pPrepDrawSprockets: DSpContext_GetFrontBuffer failed");
 	
-
+#endif
 	gGammaFadePercent = 100.0f;	
 #if ALLOW_FADE	
 	DSpContext_FadeGamma(MONITORS_TO_FADE,100,nil);
 #else
-	DSpContext_FadeGamma(gDisplayContext,100,nil);
+	//DSpContext_FadeGamma(gDisplayContext,100,nil);
 #endif
 }
 
@@ -313,6 +315,7 @@ try_again:
 
 void GammaFadeIn(void)
 {
+/*
 	if (gDisplayContext)
 	{
 		while(gGammaFadePercent < 100.0f)
@@ -329,12 +332,14 @@ void GammaFadeIn(void)
 
 		}
 	}
+*/
 }
 
 /**************** GAMMA FADE OUT *************************/
 
 void GammaFadeOut(void)
 {
+/*
 	if (gDisplayContext)
 	{
 		while(gGammaFadePercent > 0.0f)
@@ -351,14 +356,14 @@ void GammaFadeOut(void)
 
 		}
 	}
-
+*/
 }
 
 /********************** GAMMA ON *********************/
 
 void GammaOn(void)
 {
-
+/*
 	if (gDisplayContext)
 	{
 		if (gGammaFadePercent != 100.0f)
@@ -369,24 +374,26 @@ void GammaOn(void)
 			gGammaFadePercent = 100.0f;
 		}
 	}
+*/
 }
 
 
 /***************** SETUP EVENT PROC ******************/
 
+#if 0
 static Boolean SetupEventProc(EventRecord *event)
 {
 	event;
 	return(false);
 }
-
+#endif
 
 /****************** CLEANUP DISPLAY *************************/
 
 void CleanupDisplay(void)
 {
 OSStatus 		theError;
-	
+/*
 	if(gDisplayContext != nil)
 	{	
 #if ALLOW_FADE		
@@ -404,7 +411,7 @@ OSStatus 		theError;
 	
 		gDisplayContext = nil;
 	}
-	
+*/
 	
 	/* shutdown draw sprocket */
 	
@@ -530,8 +537,8 @@ void Enter2D(Boolean pauseDSp)
 
 	if (!gLoadedDrawSprocket)
 		return;		
-	if (!gDisplayContext)
-		return;
+	/*if (!gDisplayContext)
+		return;*/
 
 	if (gAGLContext)
 	{
@@ -546,7 +553,7 @@ void Enter2D(Boolean pauseDSp)
 
 	if (pauseDSp)
 	{
-		DSpContext_SetState(gDisplayContext, kDSpContextState_Paused);		
+		//DSpContext_SetState(gDisplayContext, kDSpContextState_Paused);		
 		gDisplayContextGrafPtr = nil;
 	}
 	
@@ -560,6 +567,7 @@ void Enter2D(Boolean pauseDSp)
 
 void Exit2D(void)
 {
+#if 0
 AGLContext agl_ctx = gAGLContext;
 
 	g2DStackDepth--;
@@ -597,7 +605,7 @@ AGLContext agl_ctx = gAGLContext;
 
 		}
 	}
-	
+#endif
 }
 
 
@@ -629,10 +637,10 @@ Rect			r;
 
 	GetPortBounds(thisWorld, &r);
 				
-	CopyBits((BitMap *)*pm, GetPortBitMapForCopyBits(GetWindowPort(thisWindow)),
+	/*CopyBits((BitMap*)*pm, GetPortBitMapForCopyBits(GetWindowPort(thisWindow)),
 			 &r,
 			 destRect,
-			 srcCopy, 0);
+			 srcCopy, 0);*/
 
 	SetGWorld(oldGW,oldGD);								// restore gworld
 }
@@ -670,6 +678,7 @@ long	start;
 
 void DoScreenModeDialog(void)
 {
+#if 0
 DialogPtr 		myDialog;
 short			itemType,itemHit,i;
 ControlHandle	itemHandle;
@@ -827,12 +836,14 @@ do_it:
 	DisposeDialog(myDialog);
 
 	TurnOnISp();
+#endif
 }
 
 Str255	themeS;
 
 /********************* MY THEME BUTTON DRAW PROC *********************/
 
+#if 0
 static pascal void MyThemeButtonDrawProc(const Rect *bounds, ThemeButtonKind kind, ThemeButtonDrawInfo *info,
 										UInt32 userData, SInt16 depth, Boolean isColorDev)
 {
@@ -896,12 +907,13 @@ ThemeButtonDrawUPP	drawUPP;
 	
 	DisposeThemeButtonDrawUPP(drawUPP);
 }
-
+#endif
 
 /****************** DO VIDEO MODE SELECT POPUP MENU *************************/
 
 static void DoVideoModeSelectPopUpMenu(void)
 {
+#if 0
 long	menuChoice;
 MenuHandle	aMenu;
 short	i,theItem;
@@ -952,7 +964,7 @@ Str255	s,t;
 
 	DeleteMenu(100);
 	DisposeMenu(aMenu);
-	
+#endif
 }
 
 
@@ -961,6 +973,7 @@ Str255	s,t;
 
 static void CreateDisplayModeList(void)
 {
+#if 0
 DMDisplayModeListIteratorUPP	myModeIteratorProc = nil;
 DMListIndexType					numModesInList;	
 DMListType						theDisplayModeList;	
@@ -1021,6 +1034,7 @@ int								i;
 		gVideoModeList[0].lowestHz = 0;
 		gNumVideoModes = 1;
 	}
+#endif
 }
 
 

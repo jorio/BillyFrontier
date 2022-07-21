@@ -32,7 +32,7 @@ static short FindSilentChannel(void);
 static short EmergencyFreeChannel(void);
 static void Calc3DEffectVolume(short effectNum, const OGLPoint3D *where, float volAdjust, u_long *leftVolOut, u_long *rightVolOut);
 static void UpdateGlobalVolume(void);
-static pascal void CallBackFn (SndChannelPtr chan, SndCommand *cmd);
+//static pascal void CallBackFn (SndChannelPtr chan, SndCommand *cmd);
 
 
 /****************************/
@@ -66,7 +66,7 @@ typedef struct
 			/* SONG RELATED */
 			
 static CGrafPtr		gQTDummyPort = nil;
-Movie				gSongMovie = nil;
+//Movie				gSongMovie = nil;
 float				gMoviesTaskTimer = 0;
 
 const float	gSongVolumeTweaks[]=
@@ -178,6 +178,7 @@ static EffectType	gEffectsTable[] =
 
 void InitSoundTools(void)
 {
+#if 0
 OSErr			iErr;
 short			i;
 ExtSoundHeader	sndHdr;
@@ -262,6 +263,7 @@ FSSpec			spec;
 	if (FSMakeFSSpec(gDataSpec.vRefNum, gDataSpec.parID, "\p:Audio:Main.sounds", &spec) != noErr)
 		DoFatalAlert("\pInitSoundTools: where is Main.sounds?");
 	LoadSoundBank(&spec, SOUND_BANK_MAIN);	
+#endif
 }
 
 
@@ -533,6 +535,7 @@ GrafPtr	oldPort;
 	iErr = OpenMovieFile(&spec, &myRefNum, fsRdPerm);
 	if (myRefNum && (iErr == noErr))
 	{
+#if 0
 		iErr = NewMovieFromFile(&gSongMovie, myRefNum, 0, nil, newMovieActive, nil);
 		CloseMovieFile(myRefNum);
 								
@@ -551,6 +554,7 @@ GrafPtr	oldPort;
 
 			gSongPlayingFlag = true;
 		}
+#endif
 	}
 
 	SetPort(oldPort);
@@ -561,9 +565,10 @@ GrafPtr	oldPort;
 			
 	if (gMuteMusicFlag)
 	{
+#if 0
 		if (gSongMovie)
 			StopMovie(gSongMovie);
-	
+#endif
 	}
 }
 
@@ -579,10 +584,12 @@ void KillSong(void)
 		
 	gSongPlayingFlag = false;											// tell callback to do nothing
 
+#if 0
 	StopMovie(gSongMovie);
 	DisposeMovie(gSongMovie);
 		
 	gSongMovie = nil;
+#endif
 	
 //	gMusicFileRefNum = 0x0ded;
 }
@@ -592,7 +599,8 @@ void KillSong(void)
 void ToggleMusic(void)
 {
 	gMuteMusicFlag = !gMuteMusicFlag;
-	
+
+#if 0
 	if (gSongMovie)
 	{
 		if (gMuteMusicFlag)
@@ -600,6 +608,7 @@ void ToggleMusic(void)
 		else
 			StartMovie(gSongMovie);
 	}
+#endif
 }
 
 
@@ -881,6 +890,7 @@ short PlayEffect(short effectNum)
 // the sound is done playing.
 //
 
+#if 0
 static pascal void CallBackFn (SndChannelPtr chan, SndCommand *cmd) 
 {
 SndCommand      theCmd;
@@ -895,6 +905,7 @@ SndCommand      theCmd;
     // Just reuse the callBackCmd that got us here in the first place
     SndDoCommand (chan, cmd, true);
 }
+#endif
 
 /***************************** PLAY EFFECT PARMS ***************************/
 //
@@ -912,7 +923,7 @@ Byte			bankNum,soundNum;
 OSErr			myErr;
 u_long			lv2,rv2;
 static UInt32          loopStart, loopEnd;
-SoundHeaderPtr   sndPtr;
+//SoundHeaderPtr   sndPtr;
 
 	leftVolume *= gEffectsTable[effectNum].refVol;				// adjust by ref volume
 	rightVolume *= gEffectsTable[effectNum].refVol;
@@ -980,7 +991,7 @@ SoundHeaderPtr   sndPtr;
     
     
     		/* SEE IF THIS IS A LOOPING EFFECT */    		
-    
+#if 0
     sndPtr = (SoundHeaderPtr)(((long)*gSndHandles[bankNum][soundNum])+gSndOffsets[bankNum][soundNum]);
     loopStart = sndPtr->loopStart;
     loopEnd = sndPtr->loopEnd;
@@ -996,7 +1007,7 @@ SoundHeaderPtr   sndPtr;
 	}
 	else
 		gChannelInfo[theChan].isLooping = false;
-		
+#endif
 
 			/* SET MY INFO */
 			
@@ -1029,8 +1040,8 @@ int		c;
 	
 			/* UPDATE SONG VOLUME */
 			
-	if (gSongPlayingFlag)
-		SetMovieVolume(gSongMovie, FloatToFixed16(gGlobalVolume) * gSongVolumeTweaks[gCurrentSong]);
+	/*if (gSongPlayingFlag)
+		SetMovieVolume(gSongMovie, FloatToFixed16(gGlobalVolume) * gSongVolumeTweaks[gCurrentSong]);*/
 	
 
 }
@@ -1133,6 +1144,7 @@ void DoSoundMaintenance(void)
 					
 		if (gSongPlayingFlag)
 		{
+#if 0
 			if (IsMovieDone(gSongMovie))				// see if the song has completed
 			{
 				if (gLoopSongFlag)						// see if repeat it
@@ -1152,6 +1164,7 @@ void DoSoundMaintenance(void)
 					gMoviesTaskTimer += .15f;
 				}
 			}
+#endif
 		}				
 
 
