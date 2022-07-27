@@ -398,12 +398,11 @@ keyMap;
 		}
 	}
 	
-	
+#if 0
 				/* OS 9 */
 	else
 	{
-		UInt32	state;
-#if 0		
+		UInt32	state;		
 		ISpElement_GetSimpleState(gVirtualElements[2], &state);
 		if (state)
 		{
@@ -417,8 +416,8 @@ keyMap;
 			gMouseButtonState = gMouseNewButtonState = false;	
 		}
 	
-#endif	
-	}		
+	}
+#endif
 }
 
 
@@ -494,6 +493,7 @@ void DoKeyConfigDialog(void)
 	if (gOSX)
 		return;
 
+#if 0
 				/* DO ISP CONFIG DIALOG */
 	else
 	{		
@@ -513,6 +513,7 @@ void DoKeyConfigDialog(void)
 			
 		HideCursor();
 	}
+#endif
 }
 
 
@@ -536,6 +537,7 @@ void GetMouseCoord(Point *point)
 
 	if (gOSX)
 		GetMouse(point);
+#if 0
 	else
 	{	
 		gMouseX += gMouseDeltaX * .13f;
@@ -556,7 +558,7 @@ void GetMouseCoord(Point *point)
 		point->h = gMouseX;
 		point->v = gMouseY;
 	}
-
+#endif
 }
 
 

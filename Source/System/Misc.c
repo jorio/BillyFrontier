@@ -21,11 +21,11 @@
 extern	short		gMainAppRezFile;
 extern	Boolean		gISPInitialized,gOSX,gG4;
 extern	Boolean		gISpActive, gShareware;
-extern	DSpContextReference 	gDisplayContext;
+//extern	DSpContextReference 	gDisplayContext;
 extern	OGLSetupOutputType		*gGameViewInfoPtr;
 extern	int			gPolysThisFrame;
 extern	SDL_GLContext		gAGLContext;
-extern	AGLDrawable		gAGLWin;
+//extern	AGLDrawable		gAGLWin;
 extern	float			gDemoVersionTimer;
 extern	short	gPrefsFolderVRefNum;
 extern	long		gPrefsFolderDirID;
@@ -87,8 +87,8 @@ Str255		numStr;
 	Enter2D(true);
 
 
-	if (gDisplayContext)
-		GammaOn();
+	/*if (gDisplayContext)
+		GammaOn();*/
 	MyFlushEvents();
 	TurnOffISp();										// MUST TURN OFF INPUT SPROK TO GET KEYBOARD EVENTS!!!
 	UseResFile(gMainAppRezFile);
@@ -114,8 +114,8 @@ Str255		numStr;
 	Enter2D(true);
 
 
-	if (gDisplayContext)
-		GammaOn();
+	/*if (gDisplayContext)
+		GammaOn();*/
 	MyFlushEvents();
 	NumToString(err, numStr);
 	DoAlert (numStr);
@@ -152,8 +152,8 @@ void DoAlert(Str255 s)
 
 void DoAlertNum(int n)
 {
-	if (gDisplayContext)
-		GammaOn();
+	/*if (gDisplayContext)
+		GammaOn();*/
 
 	Enter2D(true);
 
@@ -171,8 +171,8 @@ void DoFatalAlert(Str255 s)
 {
 OSErr	iErr;
 
-	if (gDisplayContext)
-		GammaOn();
+	/*if (gDisplayContext)
+		GammaOn();*/
 
 	Enter2D(true);
 	
@@ -807,6 +807,7 @@ short	dataLen = inSourceStr[0] + 1;
 
 void CalcFramesPerSecond(void)
 {
+#if 0
 static float		wakeTimer =0;
 AbsoluteTime currTime,deltaTime;
 static AbsoluteTime time = {0,0};
@@ -842,6 +843,7 @@ do_again:
 		wakeTimer += 25.0f;
 		UpdateSystemActivity(OverallAct);
 	}
+#endif
 }
 
 
