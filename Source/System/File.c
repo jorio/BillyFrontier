@@ -32,12 +32,9 @@ extern	SplineDefType	**gSplineList;
 extern	int				gNumLineMarkers;
 extern	MOMaterialObject	*gSuperTileTextureObjects[MAX_SUPERTILE_TEXTURES];	
 extern	PrefsType			gGamePrefs;
-extern	AGLContext		gAGLContext;
-extern	AGLDrawable		gAGLWin;
 extern	Boolean			gMuteMusicFlag,gMuteMusicFlag,gLoadedDrawSprocket;
 extern	WaterDefType	**gWaterListHandle, *gWaterList;
 extern	PlayerInfoType	gPlayerInfo;
-extern	DSpContextReference 	gDisplayContext;
 extern	Boolean			gPlayingFromSavedGame,gG4;
 extern	LineMarkerDefType		gLineMarkerList[];
 extern	Boolean					gDisableHiccupTimer, gGameIsRegistered;
@@ -53,14 +50,6 @@ static void	ConvertTexture16To24(u_short *textureBuffer2, u_char *textureBuffer3
 static void	ConvertTexture16To16(u_short *textureBuffer, int width, int height);
 static void	ConvertTexture16To32(u_short *srcBuff, u_char *destBuff, int width, int height);
 
-static OSErr GetFileWithNavServices(FSSpec *documentFSSpec);
-pascal void myEventProc(NavEventCallbackMessage callBackSelector, NavCBRecPtr callBackParms,
-						NavCallBackUserData callBackUD);
-pascal Boolean myFilterProc(AEDesc*theItem,void*info, NavCallBackUserData callBackUD, NavFilterModes filterMode);
-static OSErr PutFileWithNavServices(NavReplyRecord *reply, FSSpec *outSpec);
-
-static void GetChooserName(Str255 name);
-
 static void HalfTexture16(u_short *buff, int width, int height);
 
 
@@ -69,10 +58,6 @@ static void HalfTexture16(u_short *buff, int width, int height);
 /****************************/
 
 #define	TILE_DEPTH			16
-
-#define	BASE_PATH_TILE		900					// tile # of 1st path tile
-
-#define	PICT_HEADER_SIZE	512
 
 #define	SKELETON_FILE_VERS_NUM	0x0110			// v1.1
 
@@ -154,6 +139,8 @@ static 	FSSpec		gSavedGameSpec;
 
 void SetDefaultDirectory(void)
 {
+	IMPLEMENT_ME();
+#if 0
 ProcessSerialNumber serial;
 ProcessInfoRec info;
 FSSpec	app_spec;
@@ -182,8 +169,8 @@ OSErr	iErr;
 	iErr = FindFolder(kOnSystemDisk,kDesktopFolderType,kDontCreateFolder,			// locate the desktop folder
 					&gSavedGameSpec.vRefNum,&gSavedGameSpec.parID);
 	gSavedGameSpec.name[0] = 0;
-	
-}			
+#endif
+}
 
 
 
@@ -598,6 +585,10 @@ long				count;
 
 OSErr DrawPictureIntoGWorld(FSSpec *myFSSpec, GWorldPtr *theGWorld, short depth)
 {
+#if 1
+	IMPLEMENT_ME_SOFT();
+	return unimpErr;
+#else
 OSErr						iErr;
 GraphicsImportComponent		gi;
 Rect						r;
@@ -655,89 +646,7 @@ PixMapHandle 				hPixMap;
 		return(result);
 	}
 	return(noErr);
-}
-
-
-#pragma mark -
-
-
-
-/******************* GET DEMO TIMER *************************/
-
-void GetDemoTimer(void)
-{
-	OSErr				iErr;
-	short				refNum;
-	FSSpec				file;
-	long				count;
-	
-				/* READ TIMER FROM FILE */
-					
-	FSMakeFSSpec(gPrefsFolderVRefNum, gPrefsFolderDirID, "SysCheck241", &file);
-	iErr = FSpOpenDF(&file, fsRdPerm, &refNum);	
-	if (iErr)
-	{
-		gDemoVersionTimer = 0;
-	}
-	else
-	{
-		count = sizeof(float);
-		iErr = FSRead(refNum, &count,  &gDemoVersionTimer);			// read data from file
-		if (iErr)
-		{
-			FSClose(refNum);			
-			FSpDelete(&file);										// file is corrupt, so delete
-			gDemoVersionTimer = 0;
-			return;
-		}
-		FSClose(refNum);			
-	}	
-	
-//	{
-//		Str255	s;
-//		
-//		FloatToString(gDemoVersionTimer, s);
-//		DoAlert(s);
-//	}	
-	
-		/* SEE IF TIMER HAS EXPIRED */
-
-	if (gDemoVersionTimer > (60 * 240))								// let play for n minutes
-	{
-		DoDemoExpiredScreen();	
-	}
-}
-
-
-/************************ SAVE DEMO TIMER ******************************/
-
-void SaveDemoTimer(void)
-{
-FSSpec				file;
-OSErr				iErr;
-short				refNum;
-long				count;
-
-				/* CREATE BLANK FILE */
-				
-	if (FSMakeFSSpec(gPrefsFolderVRefNum, gPrefsFolderDirID, "SysCheck241", &file) == noErr)
-		FSpDelete(&file);														// delete any existing file
-	iErr = FSpCreate(&file, '????', 'xxxx', smSystemScript);					// create blank file
-	if (iErr)
-		return;
-
-
-				/* OPEN FILE */
-					
-	iErr = FSpOpenDF(&file, fsRdWrPerm, &refNum);
-	if (iErr)
-		return;
-
-				/* WRITE DATA */
-				
-	count = sizeof(float);
-	FSWrite(refNum, &count, &gDemoVersionTimer);	
-	FSClose(refNum);			
+#endif
 }
 
 
@@ -1374,160 +1283,6 @@ Boolean	blackOpaq;
 
 #pragma mark -
 
-
-/******************** NAV SERVICES: GET DOCUMENT ***********************/
-
-static OSErr GetFileWithNavServices(FSSpec *documentFSSpec)
-{
-NavDialogOptions 	dialogOptions;
-AEDesc 				defaultLocation;
-NavObjectFilterUPP filterProc 	= nil; //NewNavObjectFilterUPP(myFilterProc);
-OSErr 				anErr 		= noErr;
-
-			/* Specify default options for dialog box */
-	
-	anErr = NavGetDefaultDialogOptions(&dialogOptions);
-	if (anErr == noErr)
-	{
-			/* Adjust the options to fit our needs */
-						
-		dialogOptions.dialogOptionFlags |= kNavSelectDefaultLocation;	// Set default location option				
-		dialogOptions.dialogOptionFlags ^= kNavAllowPreviews;			// Clear preview option
-		dialogOptions.dialogOptionFlags ^= kNavAllowMultipleFiles;		// Clear multiple files option
-
-		dialogOptions.location.h = dialogOptions.location.v = -1;		// use default position
-		CopyPStr("Select A Saved Game File", dialogOptions.windowTitle);
-
-				/* make descriptor for default location */
-
-		anErr = AECreateDesc(typeFSS,&gSavedGameSpec, sizeof(FSSpec), &defaultLocation);
-//		if (anErr ==noErr)
-		{
-			/* Get 'open'resource.  A nil handle being returned is OK, this simply means no automatic file filtering. */
-				
-			static NavTypeList	typeList = {kGameID, 0, 1, kSavedGameFileType};		// set types to filter			
-			NavTypeListPtr 		typeListPtr = &typeList;
-			NavReplyRecord 		reply;
-
-
-			/* Call NavGetFile() with specified options and declare our app-defined functions and type list */
-
-			anErr = NavGetFile(&defaultLocation, &reply, &dialogOptions, nil, nil, filterProc, &typeListPtr,nil);
-			if ((anErr == noErr) && (reply.validRecord))
-			{
-					/* Deal with multiple file selection */
-					
-				long 	count;
-				
-				anErr = AECountItems(&(reply.selection),&count);
-				
-				
-					/* Set up index for file list */
-					
-				if (anErr == noErr)
-				{
-					long i;
-					
-					for (i = 1; i <= count; i++)
-					{
-						AEKeyword 	theKeyword;
-						DescType 	actualType;
-						Size 		actualSize;
-						
-						/* Get a pointer to selected file */
-					
-						anErr = AEGetNthPtr(&(reply.selection), i, typeFSS,&theKeyword, &actualType,
-											documentFSSpec, sizeof(FSSpec), &actualSize);
-					}
-				}
-				
-					
-				/* Dispose of NavReplyRecord,resources,descriptors */
-				
-				anErr = NavDisposeReply(&reply);
-			}
-					
-			(void)AEDisposeDesc(&defaultLocation);
-		}
-	}
-	
-	
-		/* CLEAN UP */
-		
-	if (filterProc)
-	{
-		DisposeNavObjectFilterUPP(filterProc);
-		filterProc = nil;
-	}
-	
-	return anErr;
-}
-
-
-/********************** PUT FILE WITH NAV SERVICES *************************/
-
-static OSErr PutFileWithNavServices(NavReplyRecord *reply, FSSpec *outSpec)
-{
-OSErr 				anErr 			= noErr;
-NavDialogOptions 	dialogOptions;
-OSType 				fileTypeToSave 	='PSav';
-OSType 				creatorType 	= kGameID;
-Str255				name = "Billy Frontier Saved Game";
-AEDesc 				defaultLocation;
-
-	anErr = NavGetDefaultDialogOptions(&dialogOptions);
-	if (anErr == noErr)
-	{
-		CopyPStr(name, dialogOptions.savedFileName);					// set default name
-		
-		dialogOptions.location.h = dialogOptions.location.v = -1;		// use default position
-
-		
-				/* TRY TO CREATE DEFAULT LOCATION */
-				
-		AECreateDesc(typeFSS,&gSavedGameSpec, sizeof(gSavedGameSpec), &defaultLocation);
-		
-					/* PUT FILE */
-					
-		anErr = NavPutFile(&defaultLocation, reply, &dialogOptions, nil, fileTypeToSave, creatorType, nil);
-		if ((anErr == noErr) && (reply->validRecord))
-		{
-			AEKeyword	theKeyword;
-			DescType 	actualType;
-			Size 		actualSize;
-			
-			anErr = AEGetNthPtr(&(reply->selection),1,typeFSS, &theKeyword,&actualType, outSpec, sizeof(FSSpec), &actualSize);
-		}
-	}
-
-	return anErr;
-}
-
-
-
-
-/****************** GET CHOOSER NAME *********************/
-
-static void GetChooserName(Str255 name)
-{
-StringHandle	userName;
-	
-	userName = GetString(-16096);
-	if (userName == nil)
-	{
-		name[0] = 0;
-	}
-	else
-	{	
-		CopyPString(*userName, name);
-		ReleaseResource ((Handle) userName);
-	}
-}
-
-
-#pragma mark -
-
-
 /***************************** SAVE GAME ********************************/
 //
 // Returns true if saving was successful
@@ -1538,7 +1293,6 @@ Boolean SaveGame(void)
 SaveGameType	saveData;
 short			fRefNum;
 FSSpec			*specPtr;
-NavReplyRecord	navReply;
 long			count, i;
 Boolean			success = false;
 
@@ -1571,11 +1325,15 @@ Boolean			success = false;
 		/* DO NAV SERVICES */
 		/*******************/
 
+#if 1
+	IMPLEMENT_ME();
+#else
 	if (PutFileWithNavServices(&navReply, &gSavedGameSpec))
 		goto bail;	
 	specPtr = &gSavedGameSpec;	
 	if (navReply.replacing)										// see if delete old
 		FSpDelete(specPtr);
+
 
 
 				/* CREATE & OPEN THE REZ-FORK */
@@ -1620,6 +1378,7 @@ bail:
 	HideCursor();
 	Exit2D();
 	TurnOnISp();
+#endif
 	return(success);
 }
 
@@ -1638,7 +1397,9 @@ Boolean			success = false;
 	
 
 				/* GET FILE WITH NAVIGATION SERVICES */
-			
+#if 1
+	IMPLEMENT_ME();
+#else
 	if (GetFileWithNavServices(&gSavedGameSpec) != noErr)
 		goto bail;
 	
@@ -1690,7 +1451,7 @@ bail:
 	HideCursor();
 	TurnOnISp();
 	
-		
+#endif
 	return(success);
 }
 

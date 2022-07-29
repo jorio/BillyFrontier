@@ -184,7 +184,6 @@ void ShowDemoQuitScreen(void)
 {
 FSSpec	spec;
 
-	SaveDemoTimer();						// make sure to save this before we bail
 
 	FSMakeFSSpec(gDataSpec.vRefNum, gDataSpec.parID, ":images:DemoQuit", &spec);
 	DisplayPicture(&spec);

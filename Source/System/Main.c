@@ -525,13 +525,6 @@ unsigned long	someLong;
 	HideCursor();
 
 
-
-		/* SEE IF DEMO MODE EXPIRED */
-			
-	if (!gGameIsRegistered)
-		GetDemoTimer();
-
-
 		/* SHOW TITLES */
 
 	PlaySong(SONG_THEME, true);
