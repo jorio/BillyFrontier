@@ -109,7 +109,10 @@ float		w,h;
 				/* INIT WITH DRAW SPROCKETS */
 				/****************************/
 
-#if USE_DSP
+
+#if 1
+	IMPLEMENT_ME_SOFT();
+#elif USE_DSP
 	PrepDrawSprockets();
 
 	w = gGamePrefs.screenWidth;
@@ -478,10 +481,14 @@ float	fps = gFramesPerSecondFrac;
 			gGammaFadePercent = 100.0f;
 			DeleteObject(theNode);
 		}
-#if ALLOW_FADE			
+#if ALLOW_FADE
+#if 1
+		IMPLEMENT_ME_SOFT();
+#else
 		if (gDisplayContext)
 			DSpContext_FadeGamma(gDisplayContext,gGammaFadePercent,nil);
-#endif		
+#endif
+#endif
 	}
 	
 			/* FADE OUT */
@@ -493,10 +500,14 @@ float	fps = gFramesPerSecondFrac;
 			gGammaFadePercent = 0;
 			DeleteObject(theNode);
 		}
-#if ALLOW_FADE		
+#if ALLOW_FADE
+#if 1
+		IMPLEMENT_ME_SOFT();
+#else
 		if (gDisplayContext)
-			DSpContext_FadeGamma(gDisplayContext,gGammaFadePercent,nil);	
-#endif		
+			DSpContext_FadeGamma(gDisplayContext,gGammaFadePercent,nil);
+#endif
+#endif
 	}
 }
 
