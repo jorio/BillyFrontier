@@ -20,7 +20,6 @@ extern	FSSpec	gDataSpec;
 extern	OGLSetupOutputType		*gGameViewInfoPtr;
 extern	u_long			gScore,gGlobalMaterialFlags,gLoadedScore;
 extern	Boolean			gPlayingFromSavedGame,gAllowAudioKeys, gWonGame, gLostGame;
-extern	AGLContext		gAGLContext;
 extern	OGLColorRGB			gGlobalColorFilter;
 extern	MOPictureObject 	*gBackgoundPicture;
 
@@ -151,6 +150,8 @@ void NewScore(Boolean justShowScores)
 		
 		else	
 		{
+			IMPLEMENT_ME();
+#if 0
 			EventRecord 	theEvent;
 			
 			GetNextEvent(keyDownMask|autoKeyMask, &theEvent);							// poll event queue
@@ -199,6 +200,7 @@ void NewScore(Boolean justShowScores)
 				}
 							
 			}
+#endif
 		}
 	}	
 
