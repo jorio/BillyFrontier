@@ -62,6 +62,7 @@
 #include "water.h"
 #include "miscscreens.h"
 #include "pick.h"
+#include "3dmath.h"
 
 #if _DEBUG
 #define IMPLEMENT_ME_SOFT() printf("IMPLEMENT ME: %s:%d\n", __func__, __LINE__)

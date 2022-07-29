@@ -111,14 +111,7 @@ void LoadShootoutArt(OGLSetupOutputType *setupInfo);
 void LoadStampedeArt(OGLSetupOutputType *setupInfo);
 
 
+Ptr LoadDataFile(const char* path, long* outLength);
+char* LoadTextFile(const char* path, long* outLength);
 
-
-
-
-
-
-
-
-
-
-
+char* CSVIterator(char** csvCursor, bool* eolOut);

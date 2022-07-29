@@ -1,7 +1,8 @@
 /****************************/
 /*   OPENGL SUPPORT.C	    */
-/* (c)2002 Pangea Software  */
 /*   By Brian Greenstone    */
+/* (c)2002 Pangea Software  */
+/* (c)2022 Iliyas Jorio     */
 /****************************/
 
 #define aglGetError() IMPLEMENT_ME_SOFT()
@@ -18,7 +19,7 @@
 #include 	<string.h>
 
 #include "game.h"
-#include "3dmath.h"
+#include "stb_image.h"
 
 
 extern SDL_Window*		gSDLWindow;
@@ -796,8 +797,8 @@ do_anaglyph:
            	           	
            	
            /* SWAP THE BUFFS */
-           		
-	aglSwapBuffers(setupInfo->drawContext);					// end render loop
+
+	SDL_GL_SwapWindow(gSDLWindow);					// end render loop
 
 
 	if (gGamePrefs.anaglyph)
@@ -861,29 +862,7 @@ SDL_GLContext agl_ctx = gAGLContext;
 			
 				/* LOAD TEXTURE AND/OR MIPMAPS */
 				
-	if (0)	//gOSX)
 	{
-		GLint	error; 
-		
-	    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-    	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-
-		error = gluBuild2DMipmaps(GL_TEXTURE_2D,
-							destFormat,								// format in OpenGL
-							width,									// width in pixels
-							height,									// height in pixels
-							srcFormat,								// what my format is
-							dataType,								// size of each r,g,b
-							imageMemory);							// pointer to the actual texture pixels
-							
-		if (error)
-		{
-			DoAlert("OGL_TextureMap_Load: gluBuild2DMipmaps failed!");
-			ShowSystemErr(error);
-		}
-	}
-	else
-	{				
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
  		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
@@ -897,19 +876,81 @@ SDL_GLContext agl_ctx = gAGLContext;
 					dataType,								// size of each r,g,b
 					imageMemory);							// pointer to the actual texture pixels
 	}
-		
+
 			/* SEE IF RAN OUT OF MEMORY WHILE COPYING TO OPENGL */
 
 	if (OGL_CheckError())
 		DoFatalAlert("OGL_TextureMap_Load: glTexImage2D failed!");
-	
-	
+
+
 				/* SET THIS TEXTURE AS CURRENTLY ACTIVE FOR DRAWING */
-	
+
 	OGL_Texture_SetOpenGLTexture(textureName);
-	
+
 	return(textureName);
 }
+
+
+/***************** OGL TEXTUREMAP LOAD FROM PNG/JPG **********************/
+
+GLuint OGL_TextureMap_LoadImageFile(const char* path, int* outWidth, int* outHeight)
+{
+uint8_t*				pixelData = nil;
+int						width;
+int						height;
+long					imageFileLength = 0;
+Ptr						imageFileData = nil;
+
+				/* LOAD PICTURE FILE */
+
+	imageFileData = LoadDataFile(path, &imageFileLength);
+	GAME_ASSERT(imageFileData);
+
+	pixelData = (uint8_t*) stbi_load_from_memory((const stbi_uc*) imageFileData, imageFileLength, &width, &height, NULL, 4);
+	GAME_ASSERT(pixelData);
+
+	SafeDisposePtr(imageFileData);
+	imageFileData = NULL;
+
+			/* PRE-PROCESS IMAGE */
+
+	int internalFormat = GL_RGBA;
+
+#if 0
+	if (flags & kLoadTextureFlags_KeepOriginalAlpha)
+	{
+		internalFormat = GL_RGBA;
+	}
+	else
+	{
+		internalFormat = GL_RGB;
+	}
+#endif
+
+			/* LOAD TEXTURE */
+
+	GLuint glTextureName = OGL_TextureMap_Load(
+			pixelData,
+			width,
+			height,
+			GL_RGBA,
+			internalFormat,
+			GL_UNSIGNED_BYTE);
+	GAME_ASSERT(!OGL_CheckError());
+
+			/* CLEAN UP */
+
+	//DisposePtr((Ptr) pixelData);
+	free(pixelData);  // TODO: define STBI_MALLOC/STBI_REALLOC/STBI_FREE in stb_image.c?
+
+	if (outWidth)
+		*outWidth = width;
+	if (outHeight)
+		*outHeight = height;
+
+	return glTextureName;
+}
+
 
 /******************** CONVERT TEXTURE TO GREY **********************/
 //
