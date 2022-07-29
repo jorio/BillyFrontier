@@ -13,7 +13,6 @@
 #include "3dmath.h"
 #include "bones.h"
 #include "infobar.h"
-//#include <aglmacro.h>
 
 extern	Byte					gDebugMode;
 extern	MetaObjectPtr			gBG3DGroupList[MAX_BG3D_GROUPS][MAX_OBJECTS_IN_GROUP];

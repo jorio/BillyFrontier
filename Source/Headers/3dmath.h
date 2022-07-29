@@ -2,7 +2,6 @@
 // 3DMath.h
 //
 
-#include <cfloat>
 #include "game.h"
 
 #define OGLMath_RadiansToDegrees(x)	((float)((x) * 180.0f / PI))

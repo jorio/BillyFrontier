@@ -2,6 +2,8 @@
 // Object.h
 //
 
+#pragma once
+
 // Externals
 #include "game.h"
 

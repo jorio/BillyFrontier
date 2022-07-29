@@ -11,7 +11,6 @@
 
 #include "game.h"
 #include "3dmath.h"
-#include <aglmacro.h>
 #include "bones.h"
 
 extern	float				gFramesPerSecondFrac,gFramesPerSecond,gGlobalTransparency;

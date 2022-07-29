@@ -10,7 +10,7 @@
 /****************************/
 
 #include "game.h"
-#include "windows.h"
+#include "window.h"
 #include "3dmath.h"
 #include "bones.h"
 

@@ -9,10 +9,8 @@
 /*    EXTERNALS             */
 /****************************/
 
-#include <aglmacro.h>
-
 #include "game.h"
-#include "3DMath.h"
+#include "3dmath.h"
 
 extern	NewObjectDefinitionType	gNewObjectDefinition;
 extern	OGLSetupOutputType		*gGameViewInfoPtr;

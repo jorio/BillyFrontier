@@ -2,6 +2,7 @@
 // sobjtypes.h
 //
 
+#pragma once
 
 enum
 {

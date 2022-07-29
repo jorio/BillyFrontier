@@ -9,16 +9,6 @@
 /* EXTERNALS   */
 /***************/
 
-#if 0
-#include 	<Folders.h>
-#include 	<script.h>
-#include 	<opentransportproviders.h>
-
-#include <Types.h>
-#include <InternetConfig.h>
-#include <URLAccess.h>
-#endif
-
 #include 	<string.h>
 
 #	include <stdio.h>

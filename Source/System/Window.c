@@ -11,7 +11,7 @@
 
 #include "game.h"
 //#include 	<DrawSprocket.h>
-#include	"windows.h"
+#include	"window.h"
 //#include <FixMath.h>
 //#include <ToolUtils.h>
 //#include <appearance.h>

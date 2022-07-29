@@ -10,7 +10,7 @@
 /***************/
 
 //#include 	<Aliases.h>
-#include 	"windows.h"
+#include 	"window.h"
 #include "game.h"
 
 extern	short			gMainAppRezFile,gCurrentSong;

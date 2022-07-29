@@ -11,7 +11,6 @@
 #include "game.h"
 #include "3dmath.h"
 #include	"infobar.h"
-//#include <aglmacro.h>
 
 extern	OGLMatrix4x4			gViewToFrustumMatrix,gWorldToViewMatrix;
 extern	NewObjectDefinitionType	gNewObjectDefinition;

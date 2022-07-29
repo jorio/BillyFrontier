@@ -13,7 +13,7 @@
 //#include <TextUtils.h>
 #include <math.h>
 #include <SDL.h>
-#include <sdl_opengl.h>
+#include <SDL_opengl.h>
 //#include <textutils.h>
 //#include <Files.h>
 //#include <Resources.h>
@@ -28,9 +28,9 @@
 //#include <Components.h>
 //#include <QuicktimeComponents.h>
 
+#include "Pomme.h"
 #include "globals.h"
 #include "structs.h"
-#include "Pomme.h"
 
 #include "metaobjects.h"
 #include "ogl_support.h"
@@ -57,7 +57,7 @@
 #include "fences.h"
 #include "splineitems.h"
 #include "items.h"
-#include "windows.h"
+#include "window.h"
 #include "enemy.h"
 #include "water.h"
 #include "miscscreens.h"

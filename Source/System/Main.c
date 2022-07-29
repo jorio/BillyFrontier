@@ -10,12 +10,10 @@
 /****************************/
 
 #include "game.h"
-#include "windows.h"
+#include "window.h"
 #include "3dmath.h"
-//#include "mainmenu.h"
 #include "infobar.h"
 #include "internet.h"
-//#include <folders.h>
 
 extern	Boolean			gDrawLensFlare,gDisableHiccupTimer, gPlayerIsDead;
 extern	NewObjectDefinitionType	gNewObjectDefinition;
@@ -99,9 +97,6 @@ u_long				gScore,gLoadedScore;
 
 Boolean				gDuelWon[NUM_LEVELS];
 Boolean				gLevelWon[NUM_LEVELS];
-
-
-#include "serialVerify.h"
 
 
 //======================================================================================

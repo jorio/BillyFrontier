@@ -2,6 +2,8 @@
 // Sound2.h
 //
 
+#pragma once
+
 // Externals
 #include "game.h"
 

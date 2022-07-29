@@ -6,7 +6,6 @@
 #define OGL_SUP
 
 // Externals
-#include <sdl_opengl.h>
 #include "game.h"
 
 #define	MAX_FILL_LIGHTS		4

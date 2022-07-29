@@ -9,13 +9,6 @@
 /* EXTERNALS   */
 /***************/
 
-#include 	<Movies.h>
-#include 	<Folders.h>
-#include 	<DrawSprocket.h>
-#include 	<Navigation.h>
-#include 	<TextUtils.h>
-#include 	<Aliases.h>
-#include 	<script.h>
 #include "game.h"
 #include 	"bones.h"
 #include 	"lzss.h"

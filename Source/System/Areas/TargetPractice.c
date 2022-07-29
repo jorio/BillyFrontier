@@ -10,12 +10,10 @@
 /****************************/
 
 #include "game.h"
-#include "windows.h"
+#include "window.h"
 #include "3dmath.h"
-//#include "mainmenu.h"
 #include "infobar.h"
 #include "internet.h"
-//#include <folders.h>
 
 extern	int				gGameWindowWidth, gGameWindowHeight;
 extern	Boolean			gDrawLensFlare,gDisableHiccupTimer, gPlayerIsDead;

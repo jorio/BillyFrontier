@@ -9,22 +9,12 @@
 /*    EXTERNALS             */
 /****************************/
 
-//#include <glu.h>
-//#include <glm.h>
-//#include <agl.h>
-//#include <aglRenderers.h>
-//#include <aglmacro.h>
-//#include <drawsprocket.h>
-//#include <glext.h>
-//#include 	<Folders.h>
 #include <SDL.h>
-#include <sdl_opengl.h>
 #include "Pomme.h"
 #include 	<string.h>
 
 #include "game.h"
 #include "3dmath.h"
-//#include "atigl.h"
 
 extern int				gNumObjectNodes,gNumPointers;
 extern	MOMaterialObject	*gMostRecentMaterial;

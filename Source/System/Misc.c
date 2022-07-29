@@ -77,8 +77,6 @@ Str255  gSerialFileName = ":Billy:Info";
 static void DoSerialDialog(unsigned char *out);
 
 
-#include "serialVerify.h"
-
 
 /****************** DO SYSTEM ERROR ***************/
 

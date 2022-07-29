@@ -8,13 +8,17 @@
 // Externals
 #include "game.h"
 
+#if 0
 extern	OSStatus DSpSetWindowToFront(WindowRef pWindow);		// DSp hack not in headers
+#endif
 
 extern void	InitWindowStuff(void);
 extern void	DumpGWorld2(GWorldPtr, WindowPtr, Rect *);
 extern void	DoLockPixels(GWorldPtr);
+#if 0
 pascal void DoBold (DialogPtr dlogPtr, short item);
 pascal void DoOutline (DialogPtr dlogPtr, short item);
+#endif
 extern	void MakeFadeEvent(Boolean	fadeIn);
 void DumpGWorld2(GWorldPtr thisWorld, WindowPtr thisWindow,Rect *destRect);
 
