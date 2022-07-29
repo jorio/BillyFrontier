@@ -9,8 +9,6 @@
 /* EXTERNALS   */
 /***************/
 
-//#include 	<Aliases.h>
-#include 	"window.h"
 #include "game.h"
 
 extern	short			gMainAppRezFile,gCurrentSong;
@@ -32,7 +30,6 @@ extern	SplineDefType	**gSplineList;
 extern	MOMaterialObject	*gSuperTileTextureObjects[MAX_SUPERTILE_TEXTURES];	
 extern	PrefsType			gGamePrefs;
 extern	SDL_GLContext		gAGLContext;
-extern	AGLDrawable		gAGLWin;
 extern	Boolean			gMuteMusicFlag,gMuteMusicFlag,gLoadedDrawSprocket;
 extern	WaterDefType	**gWaterListHandle, *gWaterList;
 extern	PlayerInfoType	gPlayerInfo;
