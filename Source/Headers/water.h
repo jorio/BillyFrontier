@@ -2,8 +2,9 @@
 // water.h
 //
 
-#ifndef WATER_H
-#define WATER_H
+#pragma once
+
+// TODO: Is this actually used in Billy Frontier?
 
 #define	MAX_WATER_POINTS	100			// note:  cannot change this without breaking data files!!
 
@@ -48,20 +49,4 @@ void DisposeWater(void);
 Boolean DoWaterCollisionDetect(ObjNode *theNode, float x, float y, float z, int *patchNum);
 Boolean IsXZOverWater(float x, float z);
 Boolean GetWaterY(float x, float z, float *y);
-void RaiseWater(void);
-void ResetRisingWater(void);
-
-
-	/* RAIN */
-	
-void InitRainEffect(void);
-void StartRainEffect(void);
-void StopRainEffect(void);
-
-	/* RIPPLE */
-	
-void CreateNewRipple(float x, float z, float baseScale, float scaleSpeed, float fadeRate);
-
-#endif
-
 

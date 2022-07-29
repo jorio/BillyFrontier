@@ -81,7 +81,6 @@ void InitEffects(OGLSetupOutputType *setupInfo)
 	InitParticleSystem(setupInfo);
 	InitConfettiManager();
 	InitShardSystem();
-	InitRainEffect();
 
 			/* SET SPRITE BLENDING FLAGS */
 			
