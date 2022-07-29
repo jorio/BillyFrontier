@@ -360,12 +360,14 @@ SDL_GLContext agl_ctx = gAGLContext;
 	glEnable(GL_CULL_FACE);									// activate culling
 	glCullFace(GL_BACK);
 	glFrontFace(GL_CCW);									// CCW is front face
-	glEnable(GL_DITHER);
-	
+//	glEnable(GL_DITHER);
+
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);		// set default blend func
 	glDisable(GL_BLEND);									// but turn it off by default
 
+#if 0
 	glHint(GL_TRANSFORM_HINT_APPLE, GL_FASTEST);
+#endif
 	glDisable(GL_RESCALE_NORMAL);
 
     glHint(GL_FOG_HINT, GL_NICEST);		// pixel accurate fog?
@@ -396,14 +398,18 @@ SDL_GLContext agl_ctx = gAGLContext;
 		glDisable(GL_FOG);
 
 		/* ANISOTRIPIC FILTERING */
-		
+
 	if (gDoAnisotropy)
 	{
+#if 1
+		IMPLEMENT_ME_SOFT();
+#else
 		glGetFloatv(GL_MAX_TEXTURE_MAX_ANISOTROPY_EXT, &gMaxAnisotropy);
 		aglGetError();
+#endif
 	}
-	
-	
+
+	OGL_CheckError();
 }
 
 
