@@ -34,6 +34,63 @@ extern	u_long			gGlobalMaterialFlags;
 #define	FONT_WIDTH	.51f
 
 
+
+enum
+{
+	kMacRoman_Auml		= 0x80,
+	kMacRoman_Aring,
+	kMacRoman_Ccedil,
+	kMacRoman_Eacute,
+	kMacRoman_Ntilde,
+	kMacRoman_Ouml,
+	kMacRoman_Uuml,
+	kMacRoman_aacute,
+	kMacRoman_agrave,
+	kMacRoman_acirc,
+	kMacRoman_auml,
+	kMacRoman_atilde,
+	kMacRoman_aring,
+	kMacRoman_ccedil,
+	kMacRoman_eacute,
+	kMacRoman_egrave,
+	kMacRoman_ecirc,
+	kMacRoman_euml,
+	kMacRoman_iacute,
+	kMacRoman_igrave,
+	kMacRoman_icirc,
+	kMacRoman_iuml,
+	kMacRoman_ntilde,
+	kMacRoman_oacute,
+	kMacRoman_ograve,
+	kMacRoman_ocirc,
+	kMacRoman_ouml,
+	kMacRoman_otilde,
+	kMacRoman_uacute,
+	kMacRoman_ugrave,
+	kMacRoman_ucirc,
+	kMacRoman_uuml,
+	kMacRoman_szlig		= 0xA7,
+	kMacRoman_iquest	= 0xC0,
+	kMacRoman_iexcl		= 0xC1,
+	kMacRoman_Agrave	= 0xCB,
+	kMacRoman_Acirc		= 0xE5,
+	kMacRoman_Ecirc,
+	kMacRoman_Aacute,
+	kMacRoman_Euml,
+	kMacRoman_Egrave,
+	kMacRoman_Iacute,
+	kMacRoman_Icirc,
+	kMacRoman_Iuml,
+	kMacRoman_Igrave,
+	kMacRoman_Oacute,
+	kMacRoman_Ocirc,
+	kMacRoman_VendorLogo,
+	kMacRoman_Ograve,
+	kMacRoman_Uacute,
+	kMacRoman_Ucirc,
+	kMacRoman_Ugrave,
+};
+
 /*********************/
 /*    VARIABLES      */
 /*********************/
@@ -642,6 +699,7 @@ next:
 
 
 
+
 /***************** CHAR TO SPRITE **********************/
 
 int CharToSprite(char c)
@@ -664,7 +722,7 @@ int CharToSprite(char c)
 	else
 	{
 		short	s;
-		switch(c)
+		switch((uint8_t)c)
 		{
 			case	'.':
 					s = FONT_SObjType_Period;
@@ -686,124 +744,123 @@ int CharToSprite(char c)
 					s = FONT_SObjType_ExclamationMark;
 					break;
 					
-			case	'�':
+			case	kMacRoman_iexcl:
 					s = FONT_SObjType_ExclamationMark2;
 					break;
 
-			case	'�':
+			case	kMacRoman_Uuml:
 					s = FONT_SObjType_UU;
 					break;
 
-			case	'�':
+			case	kMacRoman_uuml:
 					s = FONT_SObjType_uu;
 					break;
 
-			case	'�':
+			case	kMacRoman_uacute:
 					s = FONT_SObjType_ua;
 					break;
 
-			case	'�':
+			case	kMacRoman_Ouml:
 					s = FONT_SObjType_OO;
 					break;
 
-			case	'�':
+			case	kMacRoman_ouml:
 					s = FONT_SObjType_oo;
 					break;
 
-			case	'�':
+			case	kMacRoman_Auml:
 					s = FONT_SObjType_AA;
 					break;
 
-			case	'�':
+			case	kMacRoman_Aring:
 					s = FONT_SObjType_AO;
 					break;
-					
-			case	'�':
+
+			case	kMacRoman_acirc:
 					s = FONT_SObjType_av;
 					break;
 
-			case	'�':
+			case	kMacRoman_auml:
 					s = FONT_SObjType_au;
 					break;
 
-			case	'�':
+			case	kMacRoman_aacute:
 					s = FONT_SObjType_aa;
 					break;
-				
-			case	'�':
+
+			case	kMacRoman_Ntilde:
 					s = FONT_SObjType_NN;
 					break;
 
-			case	'�':
+			case	kMacRoman_ntilde:
 					s = FONT_SObjType_nn;
 					break;
 
-			case	'�':
+			case	kMacRoman_Eacute:
 					s = FONT_SObjType_EE;
 					break;
 
-			case	'�':
-					s = FONT_SObjType_ee;
-					break;
-					
-			case	'�':
+			case	kMacRoman_eacute:
 					s = FONT_SObjType_ee;
 					break;
 
-			case	'�':
+			case	kMacRoman_egrave:
+					s = FONT_SObjType_ee;
+					break;
+
+			case	kMacRoman_ecirc:
 					s = FONT_SObjType_ev;
 					break;
 
-			case	'�':
+			case	kMacRoman_Egrave:
 					s = FONT_SObjType_EE;
 					break;
 
-			case	'�':
+			case	kMacRoman_Ecirc:
 					s = FONT_SObjType_E;
 					break;
 
-			case	'�':
+			case	kMacRoman_Agrave:
 					s = FONT_SObjType_Ax;
 					break;
 
-			case	'�':
+			case	kMacRoman_agrave:
 					s = FONT_SObjType_ax;
 					break;
-					
-			case	'�':
+
+			case	kMacRoman_aring:
 					s = FONT_SObjType_ao;
 					break;
-					
 
-			case	'�':
+			case	kMacRoman_Ocirc:
 					s = FONT_SObjType_Ox;
 					break;
-					
-			case	'�':
+
+			case	kMacRoman_Oacute:
 					s = FONT_SObjType_Oa;
 					break;
 
-			case	'�':
+			case	kMacRoman_oacute:
 					s = FONT_SObjType_oa;
 					break;
-					
-			case	'�':
+
+			case	kMacRoman_szlig:
 					s = FONT_SObjType_beta;
 					break;
-			
-			case	'�':
+
+			case	kMacRoman_iacute:
 					s = FONT_SObjType_ia;
 					break;
-			
-			case	'�':
+
+			case	kMacRoman_Ccedil:
 					s = FONT_SObjType_C;
 					break;
-					
-			case	'�':
+
+			case	kMacRoman_ccedil:
 					s = FONT_SObjType_c;
 					break;
 
-			case	CHAR_APOSTROPHE:
+			case	'\'':
 					s = FONT_SObjType_Apostrophe;
 					break;
 		
@@ -839,14 +896,14 @@ float GetCharSpacing(char c, float spacingScale)
 {
 float	s;
 
-	switch(c)
+	switch((uint8_t)c)
 	{				
 		case	'i':
-		case	'�':
+		case	kMacRoman_iacute:
 		case	'.':
 		case	',':
 		case	'!':
-		case	'�':
+		case	kMacRoman_iexcl:
 				s = .25;
 				break;
 
@@ -855,12 +912,12 @@ float	s;
 		case	'p':
 		case	'l':				// L
 		case	'o':
-		case	'�':
-		case	'�':
+		case	kMacRoman_ouml:
+		case	kMacRoman_oacute:
 		case	'c':
-		case	'�':
+		case	kMacRoman_ccedil:
 				s = .3;
-				break;	
+				break;
 
 		case	'I':
 		case	'f':
@@ -868,33 +925,33 @@ float	s;
 		case	'r':
 		case	'j':
 		case	'9':
-		case	'�':
+		case	kMacRoman_auml:
 		case	'a':
-		case	'�':
-		case	'�':
-		case	'�':
-		case	'�':
+		case	kMacRoman_aacute:
+		case	kMacRoman_agrave:
+		case	kMacRoman_acirc:
+		case	kMacRoman_aring:
 		case	'b':
 		case	'd':
 		case	'e':
-		case	'�':
-		case	'�':
+		case	kMacRoman_eacute:
+		case	kMacRoman_ecirc:
 		case	'g':
 		case	'h':
 		case	'k':
 		case	'n':
-		case	'�':
+		case	kMacRoman_ntilde:
 		case	'q':
 		case	'u':
-		case	'�':
-		case	'�':
+		case	kMacRoman_uuml:
+		case	kMacRoman_uacute:
 		case	'v':
 		case	'x':
 		case	'y':
 		case	'z':
 				s = .35;
 				break;
-				
+
 		case	' ':
 		case	'm':
 		case	'J':
@@ -910,19 +967,19 @@ float	s;
 		case	'S':
 				s = .4f;
 				break;
-				
+
 		case	'Y':
 		case	'O':
 				s = .45;
 				break;
-				
+
 		case	'A':
 		case	'R':
 		case	'V':
 		case	'U':
 				s = .55;
 				break;
-				
+
 		case	'N':
 		case	'H':
 				s = .6f;
@@ -932,7 +989,7 @@ float	s;
 		case	'M':
 				s = .65;
 				break;
-													
+
 		default:
 				s = .5f;
 	}
