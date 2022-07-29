@@ -26,7 +26,7 @@ static void InterpolateKeyFrames(const JointKeyframeType *kf1, const JointKeyfra
 static void GetModelMorphPosition(const SkeletonObjDataType *skeleton,long jointNum, JointKeyframeType *interpKf);
 static short GetNextAnimEventAtTime(const SkeletonObjDataType *skeleton, float time);
 static float CalcMaxKeyFrameTime(const SkeletonObjDataType *skeleton);
-inline float	AccelerationPercent(float percent);
+static inline float AccelerationPercent(float percent);
 static void SetSkeletonAnimGuts(SkeletonObjDataType *skeleton, long animNum);
 
 
@@ -661,7 +661,7 @@ float	x,n;
 
 /******************** ACCELERATION PERCENT ***************************/
 
-inline float	AccelerationPercent(float percent)
+static inline float	AccelerationPercent(float percent)
 {
 long	i;
 

@@ -2,6 +2,8 @@
 // 3DMath.h
 //
 
+#pragma once
+
 #include "game.h"
 
 #define OGLMath_RadiansToDegrees(x)	((float)((x) * 180.0f / PI))
@@ -164,7 +166,7 @@ static inline void AngleToVector(float angle, OGLVector2D *theVector)
 // It does Newton-Raphson refinement to get a good result.
 //
 
-inline void FastNormalizeVector(float vx, float vy, float vz, OGLVector3D *outV)
+static inline void FastNormalizeVector(float vx, float vy, float vz, OGLVector3D *outV)
 {
 float	temp;
 float	isqrt, temp1, temp2;		
@@ -197,7 +199,7 @@ float	isqrt, temp1, temp2;
 // It does Newton-Raphson refinement to get a good result.
 //
 
-inline void FastNormalizeVector2D(float vx, float vy, OGLVector2D *outV, Boolean errCheck)
+static inline void FastNormalizeVector2D(float vx, float vy, OGLVector2D *outV, Boolean errCheck)
 {
 float	temp;
 float	isqrt, temp1, temp2;		
@@ -232,7 +234,7 @@ float	isqrt, temp1, temp2;
 // Returns the normal vector off the face defined by 3 points.
 //
 
-inline void CalcFaceNormal(const OGLPoint3D *p1, const OGLPoint3D *p2, const OGLPoint3D *p3, OGLVector3D *normal)
+static inline void CalcFaceNormal(const OGLPoint3D *p1, const OGLPoint3D *p2, const OGLPoint3D *p3, OGLVector3D *normal)
 {
 float		dx1,dx2,dy1,dy2,dz1,dz2;
 float		x,y,z;
@@ -261,7 +263,7 @@ float		x,y,z;
 // Returns the normal vector off the face defined by 3 points.
 //
 
-inline void CalcFaceNormal_NotNormalized(const OGLPoint3D *p1, const OGLPoint3D *p2, const OGLPoint3D *p3, OGLVector3D *normal)
+static inline void CalcFaceNormal_NotNormalized(const OGLPoint3D *p1, const OGLPoint3D *p2, const OGLPoint3D *p3, OGLVector3D *normal)
 {
 float		dx1,dx2,dy1,dy2,dz1,dz2;
 
@@ -286,7 +288,7 @@ float		dx1,dx2,dy1,dy2,dz1,dz2;
 // input points should be clockwise!
 //
 
-inline void CalcPlaneEquationOfTriangle(OGLPlaneEquation *plane, const OGLPoint3D *p3, const OGLPoint3D *p2, const OGLPoint3D *p1)
+static inline void CalcPlaneEquationOfTriangle(OGLPlaneEquation *plane, const OGLPoint3D *p3, const OGLPoint3D *p2, const OGLPoint3D *p1)
 {
 float	pq_x,pq_y,pq_z;
 float	pr_x,pr_y,pr_z;
@@ -326,7 +328,7 @@ float	p1x,p1y,p1z;
 // Does cheezeball quick distance calculation on 2 2D points.
 //
 
-inline float CalcQuickDistance(float x1, float y1, float x2, float y2)
+static inline float CalcQuickDistance(float x1, float y1, float x2, float y2)
 {
 float	diffX,diffY;
 
@@ -346,7 +348,7 @@ float	diffX,diffY;
 
 /************* CALC DISTANCE ****************/
 
-inline float CalcDistance(float x1, float y1, float x2, float y2)
+static inline float CalcDistance(float x1, float y1, float x2, float y2)
 {
 float	diffX,diffY;
 
@@ -358,7 +360,7 @@ float	diffX,diffY;
 
 /************* CALC DISTANCE 3D ****************/
 
-inline float CalcDistance3D(float x1, float y1, float z1, float x2, float y2, float z2)
+static inline float CalcDistance3D(float x1, float y1, float z1, float x2, float y2, float z2)
 {
 float	diffX,diffY,diffZ;
 
@@ -375,7 +377,7 @@ float	diffX,diffY,diffZ;
 // Given an arbitrary angle, it limits it to between 0 and 2*PI
 //
 
-inline float MaskAngle(float angle)
+static inline float MaskAngle(float angle)
 {
 int		n;
 Boolean	neg;
@@ -392,7 +394,7 @@ Boolean	neg;
 
 /********************* VECTOR 3D SUBTRACT **********************/
 
-inline void OGLVector3D_Subtract(OGLVector3D *v1, OGLVector3D *v2, OGLVector3D *newV)
+static inline void OGLVector3D_Subtract(OGLVector3D *v1, OGLVector3D *v2, OGLVector3D *newV)
 {
 	newV->x = v1->x - v2->x;
 	newV->y = v1->y - v2->y;
@@ -401,7 +403,7 @@ inline void OGLVector3D_Subtract(OGLVector3D *v1, OGLVector3D *v2, OGLVector3D *
 
 /********************* POINT 3D SUBTRACT **********************/
 
-inline void OGLPoint3D_Subtract(const OGLPoint3D *v1, const OGLPoint3D *v2, OGLVector3D *newV)
+static inline void OGLPoint3D_Subtract(const OGLPoint3D *v1, const OGLPoint3D *v2, OGLVector3D *newV)
 {
 	newV->x = v1->x - v2->x;
 	newV->y = v1->y - v2->y;
@@ -411,7 +413,7 @@ inline void OGLPoint3D_Subtract(const OGLPoint3D *v1, const OGLPoint3D *v2, OGLV
 
 /****************** OGLVECTOR3D DOT ******************/
 
-inline float OGLVector3D_Dot(const OGLVector3D	*v1, const OGLVector3D	*v2)
+static inline float OGLVector3D_Dot(const OGLVector3D	*v1, const OGLVector3D	*v2)
 {
 float	dot;
 
@@ -439,7 +441,7 @@ float	dot;
 
 /****************** OGLVECTOR3D DOT NO PIN ******************/
 
-inline float OGLVector3D_Dot_NoPin(const OGLVector3D	*v1, const OGLVector3D	*v2)
+static inline float OGLVector3D_Dot_NoPin(const OGLVector3D	*v1, const OGLVector3D	*v2)
 {
 float	dot;
 
