@@ -703,20 +703,15 @@ carbonerr:
 
 void CalcFramesPerSecond(void)
 {
-	IMPLEMENT_ME();
-#if 0
-static float		wakeTimer =0;
-AbsoluteTime currTime,deltaTime;
-static AbsoluteTime time = {0,0};
-Nanoseconds	nano;
+static UnsignedWide time;
+UnsignedWide currTime;
+unsigned long deltaTime;
 
 do_again:
-	currTime = UpTime();
+	Microseconds(&currTime);
+	deltaTime = currTime.lo - time.lo;
 
-	deltaTime = SubAbsoluteFromAbsolute(currTime, time);
-	nano = AbsoluteToNanoseconds(deltaTime);
-
-	gFramesPerSecond = 1000000.0f / (float)nano.lo;
+	gFramesPerSecond = 1000000.0f / (float)deltaTime;
 	gFramesPerSecond *= 1000.0f;
 
 	if (gFramesPerSecond < MIN_FPS)					// keep at a minimum
@@ -729,18 +724,6 @@ do_again:
 
 
 	time = currTime;	// reset for next time interval
-	
-	
-	
-			/* PREVENT SYSTEM SLEEP ON OS X */
-			
-	wakeTimer -= gFramesPerSecondFrac;
-	if (wakeTimer <= 0.0f)
-	{
-		wakeTimer += 25.0f;
-		UpdateSystemActivity(OverallAct);
-	}
-#endif
 }
 
 

@@ -372,7 +372,7 @@ static void SetMetaObjectToMatrix(MOMatrixObject *matObj, OGLMatrix4x4 *inData)
 
 static void SetMetaObjectToPicture(MOPictureObject *pictObj, OGLSetupOutputType *setupInfo, FSSpec *inData, int destPixelFormat)
 {
-	IMPLEMENT_ME();
+	IMPLEMENT_ME_SOFT();
 #if 0
 GWorldPtr	gworld;
 int			width,height,depth,cellNum,numCells;
