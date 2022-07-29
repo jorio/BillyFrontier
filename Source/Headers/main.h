@@ -70,7 +70,7 @@ enum
 
 		/* MAIN */
 		
-extern	void main(void);
+void GameMain(void);
 extern	void ToolBoxInit(void);
 void InitDefaultPrefs(void);
 void StartLevelCompletion(float coolDownTimer);

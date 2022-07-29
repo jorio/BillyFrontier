@@ -139,7 +139,7 @@ static 	FSSpec		gSavedGameSpec;
 
 void SetDefaultDirectory(void)
 {
-	IMPLEMENT_ME();
+	IMPLEMENT_ME_SOFT();
 #if 0
 ProcessSerialNumber serial;
 ProcessInfoRec info;

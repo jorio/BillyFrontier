@@ -74,7 +74,7 @@ OGLSetupOutputType		*gGameViewInfoPtr = nil;
 
 PrefsType			gGamePrefs;
 
-FSSpec				gDataSpec;
+extern FSSpec				gDataSpec;
 
 
 
@@ -428,7 +428,7 @@ void StartLevelCompletion(float coolDownTimer)
 /************************************************************/
 
 
-void main(void)
+void GameMain(void)
 {
 unsigned long	someLong;
 
