@@ -34,7 +34,7 @@ extern	SplineDefType	**gSplineList;
 /*    PROTOTYPES            */
 /****************************/
 
-static void ResetCameraSettings(void);
+void ResetCameraSettings(void);
 static void UpdateCamera_TopView(void);
 
 static void MoveStampedeCameraOnSpline(ObjNode *camera);
@@ -472,7 +472,7 @@ ObjNode	*playerObj = gPlayerInfo.objNode;
 
 /******************** RESET CAMERA SETTINGS **************************/
 
-static void ResetCameraSettings(void)
+void ResetCameraSettings(void)
 {	
 	gCameraMode = CAMERA_MODE_NORMAL;
 

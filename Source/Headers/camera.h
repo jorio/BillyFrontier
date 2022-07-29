@@ -10,7 +10,7 @@ void InitCamera_Duel(void);
 void UpdateCamera_Duel(void);
 
 void UpdateCamera_Terrain(void);
-extern	void ResetCameraSettings(void);
+void ResetCameraSettings(void);
 void DrawLensFlare(OGLSetupOutputType *setupInfo);
 
 void UpdateCamera_Shootout(void);
