@@ -1,6 +1,7 @@
 /**********************/
 /*   	WATER.C      */
 /**********************/
+//TODO: IS THIS ACTUALLY REQUIRED IN BILLY FRONTIER?
 
 #include "game.h"
 #include "3dmath.h"
@@ -22,7 +23,6 @@ extern	Boolean		gG4;
 extern	float		gMapToUnitValue;
 extern	OGLSetupOutputType		*gGameViewInfoPtr;
 extern	MetaObjectPtr			gBG3DGroupList[MAX_BG3D_GROUPS][MAX_OBJECTS_IN_GROUP];
-extern	int			gLevelNum;
 
 
 /****************************/
@@ -172,12 +172,8 @@ float					y,centerX,centerZ;
 			gWaterList[f].hotSpotZ *= gMapToUnitValue;
 		
 			y =  GetTerrainY(gWaterList[f].hotSpotX, gWaterList[f].hotSpotZ);
-			
-			switch(gLevelNum)
-			{
-				default:
-						y += 40.0f;				
-			}
+
+			y += 40.0f;
 		}
 
 		gWaterInitY[f] = y;									// save water's y coord
