@@ -162,41 +162,6 @@ FSSpec	spec;
 #pragma mark -
 
 
-/****************** DO DEMO EXPIRED SCREEN **************************/
-
-void DoDemoExpiredScreen(void)
-{
-FSSpec	spec;
-
-	FSMakeFSSpec(gDataSpec.vRefNum, gDataSpec.parID, ":images:DemoExpired", &spec);
-	DisplayPicture(&spec);
-
-	LaunchURL("http://www.pangeasoft.net/billy/buy.html");
-
-	CleanQuit();
-}
-
-
-/*************** SHOW DEMO QUIT SCREEN **********************/
-
-void ShowDemoQuitScreen(void)
-{
-FSSpec	spec;
-
-
-	FSMakeFSSpec(gDataSpec.vRefNum, gDataSpec.parID, ":images:DemoQuit", &spec);
-	DisplayPicture(&spec);
-
-	if (IsInternetAvailable())				// if we've got TCP connection then launch URL
-	{
-		CleanupDisplay();								// unloads Draw Sprocket
-		LaunchURL("http://www.pangeasoft.net/billy/buy.html");
-	}
-}
-
-
-
-
 /********************* DO GAME SETTINGS DIALOG *********************/
 
 void DoGameOptionsDialog(void)

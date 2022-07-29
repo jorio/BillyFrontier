@@ -20,9 +20,6 @@ void DoLegalScreen(void);
 void DoGameOptionsDialog(void);
 ObjNode *MakeDarkenPane(void);
 
-void DoDemoExpiredScreen(void);
-void ShowDemoQuitScreen(void);
-
 void DoMainMenuScreen(void);
 void MoveBulletHole(ObjNode *theNode);
 
