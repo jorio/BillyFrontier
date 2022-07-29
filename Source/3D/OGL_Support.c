@@ -5,7 +5,7 @@
 /****************************/
 
 #define aglGetError() IMPLEMENT_ME_SOFT()
-#define aglSetCurrentContext(junk) IMPLEMENT_ME()
+#define aglSetCurrentContext(junk) IMPLEMENT_ME_SOFT()
 #define aglSwapBuffers(junk) IMPLEMENT_ME()
 
 /****************************/
@@ -19,6 +19,9 @@
 
 #include "game.h"
 #include "3dmath.h"
+
+
+extern SDL_Window*		gSDLWindow;
 
 extern int				gNumObjectNodes,gNumPointers;
 extern	MOMaterialObject	*gMostRecentMaterial;
@@ -219,8 +222,8 @@ OGLSetupOutputType	*outputPtr;
 
 
 				/* PASS BACK INFO */
-				
-	outputPtr->drawContext 		= gAGLContext;
+
+//	outputPtr->drawContext 		= gAGLContext;
 	outputPtr->clip 			= setupDefPtr->view.clip;
 	outputPtr->hither 			= setupDefPtr->camera.hither;			// remember hither/yon
 	outputPtr->yon 				= setupDefPtr->camera.yon;
@@ -252,24 +255,23 @@ OGLSetupOutputType	*data;
 		DoFatalAlert("OGL_DisposeWindowSetup: data == nil");
 	
 			/* KILL DEBUG FONT */
-			
+
 	OGL_FreeFont();
 
-#if 1
-	IMPLEMENT_ME();
-#else
-  	aglSetCurrentContext(nil);								// make context not current
-   	aglSetDrawable(data->drawContext, nil);
-	aglDestroyContext(data->drawContext);					// nuke the AGL context
-#endif
-	
+			/* NUKE GL CONTEXT */
+
+	if (gAGLContext)
+	{
+		SDL_GL_MakeCurrent(gSDLWindow, NULL);		// make context not current
+		SDL_GL_DeleteContext(gAGLContext);			// nuke context
+		gAGLContext = nil;
+	}
+
 		/* FREE MEMORY & NIL POINTER */
-		
+
 	data->isActive = false;									// now inactive
 	SafeDisposePtr((Ptr)data);
 	*dataHandle = nil;
-	
-	gAGLContext = nil;
 }
 
 
@@ -279,71 +281,26 @@ OGLSetupOutputType	*data;
 
 static void OGL_CreateDrawContext(OGLViewDefType *viewDefPtr)
 {
-SDL_PixelFormat 	fmt;
-GLboolean      mkc,ok;
-#if 0
-GLint          attrib[] 		= {AGL_RGBA, AGL_DOUBLEBUFFER, SDL_GL_DEPTH_SIZE, 16, AGL_ALL_RENDERERS, AGL_ACCELERATED, AGL_NO_RECOVERY, AGL_NONE};
-GLint          attribDeepZ[] 	= {AGL_RGBA, AGL_DOUBLEBUFFER, AGL_DEPTH_SIZE, 32, AGL_ALL_RENDERERS, AGL_ACCELERATED, AGL_NO_RECOVERY, AGL_NONE};
-GLint          attrib2[] 		= {AGL_RGBA, AGL_DOUBLEBUFFER, AGL_DEPTH_SIZE, 16, AGL_ALL_RENDERERS, AGL_NONE};
-#endif
-GLint			maxTexSize;
-static char			*s;
-
-#if 1
-	IMPLEMENT_ME();
-#else
-	gAGLWin = (AGLDrawable)gDisplayContextGrafPtr;
+	GLint			maxTexSize;
 
 
-			/* CHOOSE PIXEL FORMAT */
-			
-	if (gGamePrefs.deepZ)
-		fmt = aglChoosePixelFormat(nil, 0, attribDeepZ);
-	else
-		fmt = aglChoosePixelFormat(nil, 0, attrib);
-	
-	if ((fmt == NULL) || (aglGetError() != AGL_NO_ERROR))
-	{
-		fmt = aglChoosePixelFormat(nil, 0, attrib2);							// try being less stringent
-		if ((fmt == NULL) || (aglGetError() != AGL_NO_ERROR))
-		{
-			DoFatalAlert("aglChoosePixelFormat failed!  Check that your 3D accelerator is OpenGL compliant, installed properly, and that you have the latest drivers.");
-		}
-	}
-
+	GAME_ASSERT_MESSAGE(gSDLWindow, "Window must be created before the DC!");
 
 			/* CREATE AGL CONTEXT & ATTACH TO WINDOW */
 
-	gAGLContext = aglCreateContext(fmt, nil);
-	if ((gAGLContext == nil) || (aglGetError() != AGL_NO_ERROR))
-		DoFatalAlert("OGL_CreateDrawContext: aglCreateContext failed!");
+	gAGLContext = SDL_GL_CreateContext(gSDLWindow);
 
-	ok = aglSetDrawable(gAGLContext, gAGLWin);
-	if ((!ok) || (aglGetError() != AGL_NO_ERROR))
-	{
-		if (aglGetError() == AGL_BAD_ALLOC)
-		{
-			gGamePrefs.showScreenModeDialog	= true;
-			SavePrefs();		
-			DoFatalAlert("Not enough VRAM for the selected video mode.  Please try again and select a different mode.");
-		}
-		else
-			DoFatalAlert("OGL_CreateDrawContext: aglSetDrawable failed!");
-	}
+	if (!gAGLContext)
+		DoFatalAlert(SDL_GetError());
+
+	GAME_ASSERT(glGetError() == GL_NO_ERROR);
 
 
 			/* ACTIVATE CONTEXT */
 
-	mkc = aglSetCurrentContext(gAGLContext);
-	if ((mkc == NULL) || (aglGetError() != AGL_NO_ERROR))
-		return;
+	int mkc = SDL_GL_MakeCurrent(gSDLWindow, gAGLContext);
+	GAME_ASSERT_MESSAGE(mkc == 0, SDL_GetError());
 
-
-			/* NO LONGER NEED PIXEL FORMAT */
-			
-	aglDestroyPixelFormat(fmt);
-
-#endif
 
 			/* CLEAR ALL BUFFERS TO BLACK */
 			
@@ -371,48 +328,15 @@ static char			*s;
 	else
 		glDisable(GL_COLOR_MATERIAL);
   	glEnable(GL_NORMALIZE);
-  	
-  	
-  	 	
-  	 	
- 		/***************************/
-		/* GET OPENGL CAPABILITIES */
- 		/***************************/
 
-		/* SEE IF RUNNING ON ATI */
-				  			
-	s = (char *)glGetString(GL_VENDOR);	
-	if (strstr(s, "ATI Technologies Inc."))
-		gATIDriver = true;
-	else
-		gATIDriver = false;
 
-	s = (char *)glGetString(GL_EXTENSIONS);					// get extensions list
-	
-	
-		/* SEE IF HAVE ATI N-PATCH (TRUEFORM) ON OS X */
-	
-	if (gATIDriver)
-	{
-//		if (gOSX)
-//		{
-//			if (strstr(s, "GL_ATIX_pn_triangles"))
-//				gATITrueFormAvailable = true;
-//			else
-//				gATITrueFormAvailable = false;
-//		}
-//		else
-//			gATITrueFormAvailable = true;					// on OS 9 assume Trueform since there's no way to know
-	}
-	
-  	 	
 			/* INIT DEBUG FONT */
-			
+
 	OGL_InitFont();
 
 
 			/* SEE IF SUPPORT 512X512 */
-			
+
 	glGetIntegerv(GL_MAX_TEXTURE_SIZE, &maxTexSize);
 	if (maxTexSize < 512)
 		gCanDo512 = false;
@@ -551,8 +475,6 @@ SDL_GLContext agl_ctx = gAGLContext;
 void OGL_PickScene(OGLSetupOutputType *setupInfo, void (*drawRoutine)(OGLSetupOutputType *),
 					float pickX, float pickY, float pickWidth, float pickHeight)
 {
-	SDL_GLContext agl_ctx = setupInfo->drawContext;
-
 	if (setupInfo == nil)										// make sure it's legit
 		DoFatalAlert("OGL_PickScene setupInfo == nil");
 	if (!setupInfo->isActive)									
@@ -603,7 +525,6 @@ void OGL_PickScene(OGLSetupOutputType *setupInfo, void (*drawRoutine)(OGLSetupOu
 void OGL_DrawScene(OGLSetupOutputType *setupInfo, void (*drawRoutine)(OGLSetupOutputType *))
 {
 //int	x,y,w,h;
-	SDL_GLContext agl_ctx = setupInfo->drawContext;
 
 	if (setupInfo == nil)										// make sure it's legit
 		DoFatalAlert("OGL_DrawScene setupInfo == nil");

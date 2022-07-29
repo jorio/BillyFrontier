@@ -828,8 +828,6 @@ MOVertexArrayObject	*vObj;
 		case	MO_TYPE_PICKID:
 				if (gIsPicking)
 				{
-					SDL_GLContext agl_ctx = setupInfo->drawContext;
-				
 					MOPickIDObject *pickObj = (MOPickIDObject *)object;
 					gCurrentPickID = pickObj->pickID;
 					glLoadName(gCurrentPickID);
@@ -887,7 +885,6 @@ int	numChildren,i;
 void MO_DrawGeometry_VertexArray(const MOVertexArrayData *data, const OGLSetupOutputType *setupInfo)
 {
 Boolean		useTexture = false, multiTexture = false, texGen = false;
-SDL_GLContext 	agl_ctx = setupInfo->drawContext;
 u_long 		materialFlags;
 short		i;
 Boolean		needNormals;
@@ -1210,7 +1207,6 @@ MOMaterialData		*matData;
 OGLColorRGBA		*diffuseColor,diffColor2;
 Boolean				textureHasAlpha = false;
 Boolean				alreadySet;
-SDL_GLContext agl_ctx = setupInfo->drawContext;
 u_long				matFlags;
 
 	if (gIsPicking)							// no materials during picking
@@ -1342,7 +1338,6 @@ bail:
 void MO_DrawMatrix(const MOMatrixObject *matObj, const OGLSetupOutputType *setupInfo)
 {
 const OGLMatrix4x4		*m;
-SDL_GLContext agl_ctx = setupInfo->drawContext;
 
 	m = &matObj->matrix;							// point to matrix
 
@@ -1364,7 +1359,6 @@ float			x,y,z;
 const MOPictureData	*picData = &picObj->objectData;
 long			numCellsW, numCellsH;
 float			cellWidth, cellHeight, ratio, offset;
-SDL_GLContext agl_ctx = setupInfo->drawContext;
 
 			
 	OGL_PushState();
@@ -1439,7 +1433,6 @@ void MO_DrawSprite(const MOSpriteObject *spriteObj, const OGLSetupOutputType *se
 {
 const MOSpriteData	*spriteData = &spriteObj->objectData;
 float			scaleX,scaleY,x,y;
-SDL_GLContext agl_ctx = setupInfo->drawContext;
 MOMaterialObject	*mo;
 float				aspect, xoff, yoff;
 OGLMatrix3x3		m;

@@ -474,7 +474,6 @@ const Boolean 	isPicking = gIsPicking;
 float			cameraX, cameraZ;
 const static OGLColorRGBA	white = {1,1,1};	
 int				i;
-SDL_GLContext agl_ctx = setupInfo->drawContext;
 
 
 	if (gFirstNodePtr == nil)									// see if there are any objects
@@ -905,7 +904,6 @@ static void DrawCollisionBoxes(ObjNode *theNode, Boolean old)
 int					n,i;
 CollisionBoxType	*c;
 float				left,right,top,bottom,front,back;
-SDL_GLContext agl_ctx = gGameViewInfoPtr->drawContext;
 
 	
 			/* SET LINE MATERIAL */
@@ -1001,8 +999,7 @@ static void DrawBoundingBoxes(ObjNode *theNode)
 {
 float	left,right,top,bottom,front,back;
 int		i;
-SDL_GLContext agl_ctx = gGameViewInfoPtr->drawContext;
-					
+
 			/* SET LINE MATERIAL */
 			
 	glDisable(GL_TEXTURE_2D);
@@ -1150,7 +1147,6 @@ SDL_GLContext agl_ctx = gGameViewInfoPtr->drawContext;
 static void DrawBoundingSpheres(ObjNode *theNode)
 {
 float	x,y,z,r;
-SDL_GLContext agl_ctx = gGameViewInfoPtr->drawContext;
 
 //	if (!(theNode->CType & CTYPE_PICKABLE))
 //		return;

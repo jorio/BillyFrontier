@@ -588,7 +588,6 @@ update:
 static void DrawShadow(ObjNode *theNode, const OGLSetupOutputType *setupInfo)
 {
 int	shadowType = theNode->Kind;
-SDL_GLContext agl_ctx = setupInfo->drawContext;
 
 
 	OGL_PushState();
@@ -910,8 +909,6 @@ float	x,z;
 
 void CalcDisplayGroupWorldPoints(ObjNode *theNode)
 {
-SDL_GLContext agl_ctx = gGameViewInfoPtr->drawContext;
-
 	glMatrixMode(GL_MODELVIEW);
 	glPushMatrix();
 	glLoadIdentity();
@@ -964,7 +961,6 @@ MOVertexArrayObject	*vObj;
 static void MO_CalcWorldPoints_Group(ObjNode *theNode, const MOGroupObject *object)
 {
 int	numChildren,i;
-SDL_GLContext agl_ctx = gGameViewInfoPtr->drawContext;
 
 
 		/* PUSH MATRIES WITH OPENGL */
@@ -997,7 +993,6 @@ SDL_GLContext agl_ctx = gGameViewInfoPtr->drawContext;
 static void MO_CalcWorldPoints_Matrix(const MOMatrixObject *matObj)
 {
 const OGLMatrix4x4		*m;
-SDL_GLContext agl_ctx = gGameViewInfoPtr->drawContext;
 
 	m = &matObj->matrix;							// point to matrix
 
@@ -1011,7 +1006,6 @@ SDL_GLContext agl_ctx = gGameViewInfoPtr->drawContext;
 
 static void MO_CalcWorldPoints_VertexArray(ObjNode *theNode, MOVertexArrayData *data)
 {
-SDL_GLContext agl_ctx = gGameViewInfoPtr->drawContext;
 int				numPoints,meshNum;
 OGLPoint3D		*worldBuffer;
 OGLMatrix4x4	localToWorld;

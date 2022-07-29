@@ -941,8 +941,7 @@ void DrawTerrain(ObjNode *theNode, const OGLSetupOutputType *setupInfo)
 {
 int				r,c;
 int				i,unique;
-SDL_GLContext agl_ctx = setupInfo->drawContext;
-Boolean			superTileVisible;				
+Boolean			superTileVisible;
 #if ALLOW_TERRAIN_TRUFORM
 Boolean				trueForm;
 OGLColorRGBA_Byte	*temp;
