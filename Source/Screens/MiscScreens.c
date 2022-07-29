@@ -58,7 +58,7 @@ OGLSetupOutputType	*gScreenViewInfoPtr = nil;
 // If showAndBail == true, then show it and bail out
 //
 
-void DisplayPicture(FSSpec *spec)
+void DisplayPicture(const char* path)
 {
 OGLSetupInputType	viewDef;
 float	timeout = 40.0f;
@@ -82,7 +82,7 @@ float	timeout = 40.0f;
 
 			/* CREATE BACKGROUND OBJECT */
 
-	gBackgoundPicture = MO_CreateNewObjectOfType(MO_TYPE_PICTURE, (u_long)gGameViewInfoPtr, spec);
+	gBackgoundPicture = MO_CreateNewObjectOfType(MO_TYPE_PICTURE, (u_long)gGameViewInfoPtr, path);
 	if (!gBackgoundPicture)
 		DoFatalAlert("DisplayPicture: MO_CreateNewObjectOfType failed");
 
@@ -148,13 +148,9 @@ static void DisplayPicture_Draw(OGLSetupOutputType *info)
 
 void DoLegalScreen(void)
 {
-FSSpec	spec;
-
 	GammaFadeOut();
 
-	FSMakeFSSpec(gDataSpec.vRefNum, gDataSpec.parID, ":images:Logo", &spec);
-	DisplayPicture(&spec);
-
+	DisplayPicture(":images:Logo.png");
 }
 
 

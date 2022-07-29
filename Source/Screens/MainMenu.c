@@ -110,15 +110,13 @@ do_again:
 
 
 			/* SEE IF JUST SHOW CREDITS */
-		
+
 	if (gShowCredits)
 	{
-		FSSpec	spec;
-		FSMakeFSSpec(gDataSpec.vRefNum, gDataSpec.parID, ":images:Credits", &spec);
-		DisplayPicture(&spec);							
+		DisplayPicture(":images:Credits.jpg");
 		goto do_again;
-	}		
-	
+	}
+
 			/* SEE IF JUST SHOW HIGH SCORES */
 			
 	else

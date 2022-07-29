@@ -5,7 +5,7 @@
 /* (c)2022 Iliyas Jorio     */
 /****************************/
 
-#define aglGetError() IMPLEMENT_ME_SOFT()
+#define aglGetError() GAME_ASSERT(!OGL_CheckError())
 #define aglSetCurrentContext(junk) IMPLEMENT_ME_SOFT()
 #define aglSwapBuffers(junk) IMPLEMENT_ME()
 
@@ -343,6 +343,8 @@ static void OGL_CreateDrawContext(OGLViewDefType *viewDefPtr)
 		gCanDo512 = false;
 	else
 		gCanDo512 = true;
+
+	GAME_ASSERT(!OGL_CheckError());
 }
 
 
@@ -929,6 +931,7 @@ Ptr						imageFileData = nil;
 
 			/* LOAD TEXTURE */
 
+	GAME_ASSERT(!OGL_CheckError());
 	GLuint glTextureName = OGL_TextureMap_Load(
 			pixelData,
 			width,
@@ -1479,49 +1482,26 @@ GLint				viewport[4];
 
 /******************** OGL: CHECK ERROR ********************/
 
-GLenum OGL_CheckError(void)
+GLenum _OGL_CheckError(const char* file, const int line)
 {
-GLenum	err;
-SDL_GLContext agl_ctx = gAGLContext;
-
-
-	err = glGetError();
-	if (err != GL_NO_ERROR)
+	GLenum error = glGetError();
+	if (error != 0)
 	{
-		switch(err)
+		const char* text;
+		switch (error)
 		{
-			case	GL_INVALID_ENUM:
-					DoAlert("OGL_CheckError: GL_INVALID_ENUM");
-					DoFatalAlert("This might mean you have incompatible video hardware or an outdated version of OpenGL installed.  Install the free OS 9.2.2 update from Apple's web site.");
-					break;
-
-			case	GL_INVALID_VALUE:
-					DoAlert("OGL_CheckError: GL_INVALID_VALUE");
-					break;
-
-			case	GL_INVALID_OPERATION:
-					DoAlert("OGL_CheckError: GL_INVALID_OPERATION");
-					break;
-
-			case	GL_STACK_OVERFLOW:
-					DoAlert("OGL_CheckError: GL_STACK_OVERFLOW");
-					break;
-
-			case	GL_STACK_UNDERFLOW:
-					DoAlert("OGL_CheckError: GL_STACK_UNDERFLOW");
-					break;
-
-			case	GL_OUT_OF_MEMORY:
-					DoAlert("OGL_CheckError: GL_OUT_OF_MEMORY  (increase your Virtual Memory setting!)");
-					break;	
-					
+			case	GL_INVALID_ENUM:		text = "invalid enum"; break;
+			case	GL_INVALID_VALUE:		text = "invalid value"; break;
+			case	GL_INVALID_OPERATION:	text = "invalid operation"; break;
+			case	GL_STACK_OVERFLOW:		text = "stack overflow"; break;
+			case	GL_STACK_UNDERFLOW:		text = "stack underflow"; break;
 			default:
-					DoAlert("OGL_CheckError: some other error");
-					ShowSystemErr_NonFatal(err);							
-		}		
+				text = "";
+		}
+
+		DoFatalAlert("OpenGL error 0x%x (%s)\nin %s:%d", error, text, file, line);
 	}
-	
-	return(err);
+	return error;
 }
 
 

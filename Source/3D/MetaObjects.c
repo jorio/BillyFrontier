@@ -45,7 +45,7 @@ static void MO_DetachFromLinkedList(MetaObjectPtr obj);
 static void MO_DisposeObject_Group(MOGroupObject *group);
 static void MO_DeleteObjectInfo_Material(MOMaterialObject *obj);
 static void MO_CalcBoundingBox_Recurse(MetaObjectPtr object, OGLBoundingBox *bBox, const OGLMatrix4x4 *m);
-static void SetMetaObjectToPicture(MOPictureObject *pictObj, OGLSetupOutputType *setupInfo, FSSpec *inData, int destPixelFormat);
+static void SetMetaObjectToPicture(MOPictureObject *pictObj, const char* path, int destPixelFormat);
 static void MO_DeleteObjectInfo_Picture(MOPictureObject *obj);
 
 static void SetMetaObjectToSprite(MOSpriteObject *spriteObj, OGLSetupOutputType *setupInfo, MOSpriteSetupData *inData);
@@ -131,10 +131,7 @@ MetaObjectPtr	mo;
 				break;
 
 		case	MO_TYPE_PICTURE:
-				if (gGamePrefs.depth == 16)		// picture depth depends on display depth (no point in doing 32 bit if display is 16)
-					SetMetaObjectToPicture(mo, (OGLSetupOutputType *)subType, data, GL_RGB5_A1);				
-				else
-					SetMetaObjectToPicture(mo, (OGLSetupOutputType *)subType, data, GL_RGB);
+				SetMetaObjectToPicture(mo, data, GL_RGB);
 				break;
 				
 		case	MO_TYPE_SPRITE:
@@ -370,11 +367,35 @@ static void SetMetaObjectToMatrix(MOMatrixObject *matObj, OGLMatrix4x4 *inData)
 // This takes the given input data and copies it. 
 //
 
-static void SetMetaObjectToPicture(MOPictureObject *pictObj, OGLSetupOutputType *setupInfo, FSSpec *inData, int destPixelFormat)
+static void SetMetaObjectToPicture(MOPictureObject *pictObj, const char* path, int destPixelFormat)
 {
-	puts(inData->cName);
-	IMPLEMENT_ME_SOFT();
-#if 0
+	puts(path);
+#if 1
+int			width,height;
+MOPictureData	*picData = &pictObj->objectData;
+MOMaterialData	matData;
+
+			/* LOAD PICTURE FILE */
+
+	GLuint textureName = OGL_TextureMap_LoadImageFile(path, &width, &height);
+
+			/***************************/
+			/* CREATE A TEXTURE OBJECT */
+			/***************************/
+
+//	matData.setupInfo		= setupInfo;
+	matData.flags			= BG3D_MATERIALFLAG_TEXTURED|BG3D_MATERIALFLAG_CLAMP_U|BG3D_MATERIALFLAG_CLAMP_V;
+	matData.diffuseColor	= (OGLColorRGBA) {1,1,1,1};
+	matData.numMipmaps		= 1;
+	matData.width			= width;
+	matData.height			= height;
+	matData.pixelSrcFormat	= GL_RGBA;
+	matData.pixelDstFormat 	= destPixelFormat;
+	matData.texturePixels[0]= nil;						// we're going to preload
+	matData.textureName[0]	= textureName;
+
+	picData->material		= MO_CreateNewObjectOfType(MO_TYPE_MATERIAL, 0, &matData);
+#else
 GWorldPtr	gworld;
 int			width,height,depth,cellNum,numCells;
 int			horizCellSize, vertCellSize,segRow,segCol;
@@ -1375,8 +1396,8 @@ float			cellWidth, cellHeight, ratio, offset;
 
 			/* GET DIMENSIONAL DATA */
 
-	numCellsW = picData->numCellsWide;
-	numCellsH = picData->numCellsHigh;
+	numCellsW = 1;//picData->numCellsWide;
+	numCellsH = 1;//picData->numCellsHigh;
 	
 	cellWidth = 640.0f / (float)numCellsW;
 	cellHeight = 480.0f / (float)numCellsH;
@@ -1398,7 +1419,8 @@ float			cellWidth, cellHeight, ratio, offset;
 		{
 					/* ACTIVATE THE MATERIAL */
 					
-			MO_DrawMaterial(picData->materials[i++], setupInfo);		// submit material #0
+			//MO_DrawMaterial(picData->materials[i++], setupInfo);		// submit material #0
+			MO_DrawMaterial(picData->material, setupInfo);		// submit material #0
 
 			glBegin(GL_QUADS);				
 			glTexCoord2f(0,0);	glVertex3f(x, y + cellHeight,z);
@@ -1751,19 +1773,12 @@ MOMaterialData		*data = &obj->objectData;
 static void MO_DeleteObjectInfo_Picture(MOPictureObject *obj)
 {
 MOPictureData		*data = &obj->objectData;
-int		numCells,i;
 
 
 				/* DEREFERENCE THE MATERIALS */
-				
-	numCells = data->numCellsWide * data->numCellsHigh;
-	for (i = 0; i < numCells; i++)
-		MO_DisposeObjectReference(data->materials[i]);		// dispose of this object's ref
 
-		/* DISPOSE OF TEXTURE NAMES ARRAY */
-
-	SafeDisposePtr((Ptr)data->materials);	
-	data->materials = nil;		
+	MO_DisposeObjectReference(data->material);		// dispose of this object's ref
+	data->material = nil;
 }
 
 

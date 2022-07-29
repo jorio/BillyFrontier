@@ -13,7 +13,7 @@
 #define	DARKEN_PANE_Z	450.0f
 
 
-void DisplayPicture(FSSpec *spec);
+void DisplayPicture(const char* path);
 void DoPaused(void);
 
 void DoLegalScreen(void);

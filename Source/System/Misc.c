@@ -14,6 +14,7 @@
 #include <stdarg.h>
 #include "game.h"
 
+extern	SDL_Window*	gSDLWindow;
 extern	short		gMainAppRezFile;
 extern	Boolean		gISPInitialized,gOSX,gG4;
 extern	Boolean		gISpActive, gShareware;
@@ -126,7 +127,7 @@ void DoAlert(const char* format, ...)
 	va_end(args);
 
 	printf("CMR Alert: %s\n", message);
-	SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "Billy Frontier", message, /*gSDLWindow*/NULL);
+	SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "Billy Frontier", message, gSDLWindow);
 
 	Exit2D();
 }
@@ -145,7 +146,7 @@ void DoFatalAlert(const char* format, ...)
 	va_end(args);
 
 	printf("CMR Fatal Alert: %s\n", message);
-	SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "Billy Frontier", message, /*gSDLWindow*/NULL);
+	SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "Billy Frontier", message, gSDLWindow);
 
 	Exit2D();
 	CleanQuit();
