@@ -201,7 +201,7 @@ const static OGLVector3D	fillDirection2 = { .3, .8, 1.0 };
 
 	if (FSMakeFSSpec(gDataSpec.vRefNum, gDataSpec.parID, ":images:BigBoard", &spec))
 		DoFatalAlert("SetupBigBoardScreen: background pict not found.");
-	gBackgoundPicture = MO_CreateNewObjectOfType(MO_TYPE_PICTURE, (u_long)gGameViewInfoPtr, &spec);
+	gBackgoundPicture = MO_CreateNewObjectOfType(MO_TYPE_PICTURE, (uintptr_t)gGameViewInfoPtr, &spec);
 
 
 			/*****************/

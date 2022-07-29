@@ -305,6 +305,7 @@ struct ObjNode
 	long			Special[6];
 	float			SpecialF[6];
 	OGLPoint3D		SpecialPt[3];
+	struct ObjNode*	SpecialObjPtr[3];
 	float			Timer;				// misc use timer
 	
 	float			Health;				// health 0..1

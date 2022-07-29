@@ -405,7 +405,7 @@ MOSpriteSetupData	spriteData;
 	spriteData.type 	= newObjDef->type;								// set group subtype
 
 
-	spriteMO = MO_CreateNewObjectOfType(MO_TYPE_SPRITE, (u_long)setupInfo, &spriteData);
+	spriteMO = MO_CreateNewObjectOfType(MO_TYPE_SPRITE, (uintptr_t)setupInfo, &spriteData);
 	if (!spriteMO)
 		DoFatalAlert("MakeSpriteObject: MO_CreateNewObjectOfType failed!");
 
@@ -447,7 +447,7 @@ MOSpriteObject		*spriteMO;
 	spriteData.group	= theNode->Group;							// set group
 	spriteData.type 	= type;										// set group subtype
 
-	spriteMO = MO_CreateNewObjectOfType(MO_TYPE_SPRITE, (u_long)setupInfo, &spriteData);
+	spriteMO = MO_CreateNewObjectOfType(MO_TYPE_SPRITE, (uintptr_t)setupInfo, &spriteData);
 	if (!spriteMO)
 		DoFatalAlert("ModifySpriteObjectFrame: MO_CreateNewObjectOfType failed!");
 
@@ -663,7 +663,7 @@ float				scale,x;
 		spriteData.loadFile = false;										// these sprites are already loaded into gSpriteList
 		spriteData.group	= newObjDef->group;								// set group
 
-		spriteMO = MO_CreateNewObjectOfType(MO_TYPE_SPRITE, (u_long)setupInfo, &spriteData);
+		spriteMO = MO_CreateNewObjectOfType(MO_TYPE_SPRITE, (uintptr_t)setupInfo, &spriteData);
 		if (!spriteMO)
 			DoFatalAlert("MakeFontStringObject: MO_CreateNewObjectOfType failed!");
 

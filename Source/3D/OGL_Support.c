@@ -31,7 +31,8 @@ extern	PlayerInfoType	gPlayerInfo;
 extern	float			gFramesPerSecond,gCameraStartupTimer,gScratchF,gGlobalTransparency;
 extern	Byte			gDebugMode;
 extern	Boolean			gOSX;
-extern	u_long			gGlobalMaterialFlags, gCurrentPickID;
+extern	u_long			gGlobalMaterialFlags;
+extern	uintptr_t		gCurrentPickID;
 extern	PrefsType			gGamePrefs;
 extern	int				gGameWindowWidth,gGameWindowHeight,gScratch,gNumSparkles,gNumLoopingEffects;
 extern	CGrafPtr				gDisplayContextGrafPtr;
@@ -505,6 +506,7 @@ void OGL_PickScene(OGLSetupOutputType *setupInfo, void (*drawRoutine)(OGLSetupOu
 	glRenderMode(GL_SELECT);
 	glInitNames();
 	gCurrentPickID 	= 0;
+	puts("TODO: This glPushName is probably not going to work! We may be forcing a 64-bit pointer into a 32-bit int");
 	glPushName(gCurrentPickID);
 
 

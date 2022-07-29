@@ -238,7 +238,7 @@ typedef struct
 //-----------------------------
 
 void MO_InitHandler(void);
-MetaObjectPtr MO_CreateNewObjectOfType(u_long type, u_long subType, void *data);
+MetaObjectPtr MO_CreateNewObjectOfType(uint32_t type, uintptr_t subType, void *data);
 MetaObjectPtr MO_GetNewReference(MetaObjectPtr mo);
 void MO_AppendToGroup(MOGroupObject *group, MetaObjectPtr newObject);
 void MO_AttachToGroupStart(MOGroupObject *group, MetaObjectPtr newObject);

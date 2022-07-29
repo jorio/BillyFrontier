@@ -76,7 +76,7 @@ u_long				gGlobalMaterialFlags = 0;
 
 MOMaterialObject	*gMostRecentMaterial;
 
-u_long				gCurrentPickID = 0;
+uintptr_t			gCurrentPickID = 0;
 
 
 /***************** INIT META OBJECT HANDLER ******************/
@@ -99,7 +99,7 @@ void MO_InitHandler(void)
 //
 
 
-MetaObjectPtr	MO_CreateNewObjectOfType(u_long type, u_long subType, void *data)
+MetaObjectPtr	MO_CreateNewObjectOfType(uint32_t type, uintptr_t subType, void *data)
 {
 MetaObjectPtr	mo;
 

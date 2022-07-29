@@ -104,7 +104,7 @@ Boolean	gDoneFaceOff;
 #define	ShootGunToRight	Flag[3]
 
 #define	TargetCoord	SpecialPt[0]
-#define TargetObj	Special[0]
+#define TargetObj	SpecialObjPtr[0]
 
 int		gDuelKeySequenceLength, gDuelKeyBufferIndex;
 Byte	gDuelKeySequence[MAX_DUEL_KEY_SEQUENCE_LENGTH];
@@ -879,7 +879,7 @@ float	speed;
 	newObj->Delta.z = aim->z * speed;
 
 	newObj->TargetCoord = *bulletTargetCoord;					// remember where it impacts (if applicable)
-	newObj->TargetObj = (u_long)bulletTargetObj;				// remember who we're shooting
+	newObj->TargetObj = bulletTargetObj;				// remember who we're shooting
 
 			/* GIVE IT A SHADOW */
 			

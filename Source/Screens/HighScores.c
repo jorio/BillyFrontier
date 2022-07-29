@@ -297,7 +297,7 @@ OGLSetupInputType	viewDef;
 	}
 	
 	
-	gBackgoundPicture = MO_CreateNewObjectOfType(MO_TYPE_PICTURE, (u_long)gGameViewInfoPtr, &spec);
+	gBackgoundPicture = MO_CreateNewObjectOfType(MO_TYPE_PICTURE, (uintptr_t)gGameViewInfoPtr, &spec);
 				
 				
 

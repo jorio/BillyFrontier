@@ -21,7 +21,8 @@ extern	float					gFramesPerSecondFrac,gGlobalTransparency;
 extern	OGLSetupOutputType		*gGameViewInfoPtr;
 extern	MOVertexArrayData		**gLocalTriMeshesOfSkelType;
 extern	OGLColorRGB				gGlobalColorFilter;
-extern	u_long					gGlobalMaterialFlags, gCurrentPickID;
+extern	u_long					gGlobalMaterialFlags;
+extern	uintptr_t				gCurrentPickID;
 extern	PlayerInfoType			gPlayerInfo;
 extern	OGLBoundingBox			gObjectGroupBBoxList[MAX_BG3D_GROUPS][MAX_OBJECTS_IN_GROUP];
 extern	float					gObjectGroupBSphereList[MAX_BG3D_GROUPS][MAX_OBJECTS_IN_GROUP];
@@ -512,7 +513,7 @@ int				i;
 			if (!(statusBits & STATUS_BIT_SCREENPICKABLE))			// skip stuff we don't want picked
 				goto next;		
 
-			gCurrentPickID = (u_long)theNode;					// pass the pick ID which for this is going to be the objNode ptr.
+			gCurrentPickID = (uintptr_t)theNode;					// pass the pick ID which for this is going to be the objNode ptr.
 			glLoadName(gCurrentPickID);
 		}
 
