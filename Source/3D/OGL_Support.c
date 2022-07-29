@@ -85,7 +85,6 @@ static glPNTrianglesiATIXFUNC 	ptrTo_glPNTrianglesiATIX= nil;
 
 Boolean			gCanDo512 = true;
 
-//AGLDrawable		gAGLWin;
 SDL_GLContext		gAGLContext = nil;
 
 static GLuint 			gFontList;

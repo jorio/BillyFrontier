@@ -25,7 +25,6 @@ extern	int						gScratch;
 extern	PlayerInfoType			gPlayerInfo;
 extern	FenceDefType			*gFenceList;
 extern	u_long					gGameFrameNum;
-extern	SDL_GLContext		gAGLContext;
 extern	OGLBoundingBox			gObjectGroupBBoxList[MAX_BG3D_GROUPS][MAX_OBJECTS_IN_GROUP];
 extern	float					gFramesPerSecond, gFramesPerSecondFrac;
 extern	WaterDefType	**gWaterListHandle;
@@ -258,7 +257,6 @@ int		r,c,i;
 void DisposeTerrain(void)
 {
 int	i;
-SDL_GLContext agl_ctx = gAGLContext;
 
 	DisposeSuperTileMemoryList();
 

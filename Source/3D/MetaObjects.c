@@ -19,7 +19,6 @@ extern	SpriteType		*gSpriteGroupList[];
 extern	long			gNumSpritesInGroupList[];
 extern	int				gPolysThisFrame,gVRAMUsedThisFrame;
 extern	Boolean			gMyState_Lighting, gIsPicking;
-extern	SDL_GLContext		gAGLContext;
 extern	Byte			gDebugMode;
 extern	PrefsType			gGamePrefs;
 extern	OGLMatrix4x4	gWorldToFrustumMatrix,gWorldToViewMatrix,gViewToFrustumMatrix;
@@ -1738,7 +1737,6 @@ int					i,n;
 static void MO_DeleteObjectInfo_Material(MOMaterialObject *obj)
 {
 MOMaterialData		*data = &obj->objectData;
-SDL_GLContext agl_ctx = gAGLContext;
 
 		/* DISPOSE OF TEXTURE NAMES */
 				

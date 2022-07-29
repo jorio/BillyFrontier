@@ -433,7 +433,6 @@ float	x;
 
 static void DrawHighScoresAndCursor(void)
 {
-AGLContext agl_ctx = gAGLContext;
 float	y,cursorY,cursorX;
 int		i,j,n;
 Str32	s;

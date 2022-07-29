@@ -126,7 +126,6 @@ void InitInfobar(void)
 
 void SetInfobarSpriteState(float anaglyphZ)
 {
-AGLContext agl_ctx = gAGLContext;
 
 	OGL_DisableLighting();
 	glDisable(GL_CULL_FACE);							
@@ -159,7 +158,6 @@ AGLContext agl_ctx = gAGLContext;
 
 void DrawInfobar(void)
 {
-AGLContext agl_ctx = gAGLContext;
 
 	if (gIsPicking)
 		return;
@@ -231,7 +229,6 @@ AGLContext agl_ctx = gAGLContext;
 
 void DrawInfobarSprite(float x, float y, float size, short texNum)
 {
-AGLContext agl_ctx = gAGLContext;
 MOMaterialObject	*mo;
 float				aspect;
 
@@ -260,7 +257,6 @@ float				aspect;
 
 void DrawInfobarSprite3(float x, float y, float size, short texNum)
 {
-AGLContext agl_ctx = gAGLContext;
 MOMaterialObject	*mo;
 float				aspect;
 
@@ -289,7 +285,6 @@ float				aspect;
 
 static void DrawInfobarSprite_Centered(float x, float y, float size, short texNum)
 {
-AGLContext agl_ctx = gAGLContext;
 MOMaterialObject	*mo;
 float				aspect;
 
@@ -321,7 +316,6 @@ float				aspect;
 
 void DrawInfobarSprite2(float x, float y, float size, short group, short texNum)
 {
-AGLContext agl_ctx = gAGLContext;
 MOMaterialObject	*mo;
 float				aspect;
 
@@ -349,7 +343,6 @@ float				aspect;
 
 void DrawInfobarSprite2_Centered(float x, float y, float size, short group, short texNum)
 {
-AGLContext agl_ctx = gAGLContext;
 MOMaterialObject	*mo;
 float				aspect;
 
@@ -386,7 +379,6 @@ float				aspect;
 
 static void DrawInfobarSprite_Rotated(float x, float y, float size, short texNum, float rot)
 {
-AGLContext agl_ctx = gAGLContext;
 MOMaterialObject	*mo;
 float				aspect, xoff, yoff;
 OGLPoint2D			p[4];
@@ -428,7 +420,6 @@ OGLMatrix3x3		m;
 
 static void DrawInfobarSprite_Scaled(float x, float y, float scaleX, float scaleY, short texNum)
 {
-AGLContext agl_ctx = gAGLContext;
 MOMaterialObject	*mo;
 float				aspect;
 
@@ -722,7 +713,6 @@ static void Infobar_DrawCrosshairs(void)
 
 static void Infobar_DrawShield(void)
 {
-AGLContext agl_ctx = gAGLContext;
 float	y = 33.5;
 const	x = 203.0f;
 

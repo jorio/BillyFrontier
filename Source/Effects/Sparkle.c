@@ -119,7 +119,6 @@ u_long	flags;
 int		i;
 float	dot,separation;
 OGLMatrix4x4	m;
-AGLContext agl_ctx = setupInfo->drawContext;
 OGLVector3D	v;
 OGLPoint3D	where;
 OGLVector3D	aim;

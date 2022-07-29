@@ -436,7 +436,6 @@ del:
 void DrawShards(ObjNode *theNode, const OGLSetupOutputType *setupInfo)
 {
 long	i;
-AGLContext agl_ctx = setupInfo->drawContext;
 
 	theNode;
 	

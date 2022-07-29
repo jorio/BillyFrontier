@@ -426,7 +426,6 @@ OGLColorRGBA_Byte	*vertexColors;
 MOVertexArrayData	*geoData;
 OGLPoint3D		v[4];
 OGLBoundingBox	bbox;
-AGLContext agl_ctx = setupInfo->drawContext;
 
 #pragma unused(theNode)
 

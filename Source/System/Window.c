@@ -568,7 +568,6 @@ void Enter2D(Boolean pauseDSp)
 void Exit2D(void)
 {
 #if 0
-AGLContext agl_ctx = gAGLContext;
 
 	g2DStackDepth--;
 	if (g2DStackDepth > 0)			// don't exit unless on final exit

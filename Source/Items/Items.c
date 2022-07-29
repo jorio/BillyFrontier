@@ -25,7 +25,6 @@ extern	SplineDefType	**gSplineList;
 extern	SparkleType	gSparkles[MAX_SPARKLES];
 extern	short				gNumEnemies;
 extern	SpriteType	*gSpriteGroupList[];
-extern	AGLContext		gAGLContext;
 extern	int					gCurrentArea;
 extern	u_long				gScore;
 

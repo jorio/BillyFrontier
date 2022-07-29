@@ -271,7 +271,6 @@ float			dx,dy,length;
 OGLVector3D		axis,lookAtVector,sunVector;
 static OGLColorRGBA	transColor = {1,1,1,1};
 int				px,py,pw,ph;
-AGLContext 		agl_ctx = gGameViewInfoPtr->drawContext;
 
 	if (!gDrawLensFlare)
 		return;

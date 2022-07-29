@@ -584,7 +584,6 @@ MOVertexArrayData	*geoData;
 OGLPoint3D		v[4],*camCoords,*coord;
 static const OGLVector3D up = {0,1,0};
 OGLBoundingBox	bbox;
-AGLContext agl_ctx = setupInfo->drawContext;
 
 #pragma unused(theNode)
 
@@ -1858,7 +1857,6 @@ const OGLPoint3D	frame[4] =
 	-100,0,0	
 };
 OGLPoint3D	verts[4];
-AGLContext agl_ctx = setupInfo->drawContext;
 
 
 			/* CALC VERTEX COORDS */
