@@ -71,14 +71,14 @@ FSSpec	spec;
 #if 0
 				/* LOAD AUDIO */
 						
-	FSMakeFSSpec(gDataSpec.vRefNum, gDataSpec.parID, "\p:Audio:Garden.sounds", &spec);
+	FSMakeFSSpec(gDataSpec.vRefNum, gDataSpec.parID, ":Audio:Garden.sounds", &spec);
 	LoadSoundBank(&spec, SOUND_BANK_LEVELSPECIFIC);
 #endif
 				
 
 			/* LOAD GLOBAL BG3D GEOMETRY */
 			
-	FSMakeFSSpec(gDataSpec.vRefNum, gDataSpec.parID, "\p:models:global.bg3d", &spec);
+	FSMakeFSSpec(gDataSpec.vRefNum, gDataSpec.parID, ":models:global.bg3d", &spec);
 	ImportBG3D(&spec, MODEL_GROUP_GLOBAL, setupInfo);
 
 
@@ -89,17 +89,17 @@ FSSpec	spec;
 		case	AREA_TOWN_DUEL1:
 		case	AREA_TOWN_DUEL2:
 		case	AREA_TOWN_DUEL3:
-				FSMakeFSSpec(gDataSpec.vRefNum, gDataSpec.parID, "\p:models:town.bg3d", &spec);
+				FSMakeFSSpec(gDataSpec.vRefNum, gDataSpec.parID, ":models:town.bg3d", &spec);
 				ImportBG3D(&spec, MODEL_GROUP_LEVELSPECIFIC, setupInfo);
 
-				FSMakeFSSpec(gDataSpec.vRefNum, gDataSpec.parID, "\p:models:buildings.bg3d", &spec);
+				FSMakeFSSpec(gDataSpec.vRefNum, gDataSpec.parID, ":models:buildings.bg3d", &spec);
 				ImportBG3D(&spec, MODEL_GROUP_BUILDINGS, setupInfo);
 				break;
 				
 		case	AREA_SWAMP_DUEL1:
 		case	AREA_SWAMP_DUEL2:
 		case	AREA_SWAMP_DUEL3:
-				FSMakeFSSpec(gDataSpec.vRefNum, gDataSpec.parID, "\p:models:swamp.bg3d", &spec);
+				FSMakeFSSpec(gDataSpec.vRefNum, gDataSpec.parID, ":models:swamp.bg3d", &spec);
 				ImportBG3D(&spec, MODEL_GROUP_LEVELSPECIFIC, setupInfo);
 				
 	}
@@ -107,19 +107,19 @@ FSSpec	spec;
 
 			/* LOAD SPRITES */
 			
-	FSMakeFSSpec(gDataSpec.vRefNum, gDataSpec.parID, "\p:sprites:infobar.sprites", &spec);
+	FSMakeFSSpec(gDataSpec.vRefNum, gDataSpec.parID, ":sprites:infobar.sprites", &spec);
 	LoadSpriteFile(&spec, SPRITE_GROUP_INFOBAR, setupInfo);
 
-	FSMakeFSSpec(gDataSpec.vRefNum, gDataSpec.parID, "\p:sprites:global.sprites", &spec);
+	FSMakeFSSpec(gDataSpec.vRefNum, gDataSpec.parID, ":sprites:global.sprites", &spec);
 	LoadSpriteFile(&spec, SPRITE_GROUP_GLOBAL, setupInfo);
 
-	FSMakeFSSpec(gDataSpec.vRefNum, gDataSpec.parID, "\p:sprites:spheremap.sprites", &spec);
+	FSMakeFSSpec(gDataSpec.vRefNum, gDataSpec.parID, ":sprites:spheremap.sprites", &spec);
 	LoadSpriteFile(&spec, SPRITE_GROUP_SPHEREMAPS, setupInfo);
 
-	FSMakeFSSpec(gDataSpec.vRefNum, gDataSpec.parID, "\p:sprites:duel.sprites", &spec);
+	FSMakeFSSpec(gDataSpec.vRefNum, gDataSpec.parID, ":sprites:duel.sprites", &spec);
 	LoadSpriteFile(&spec, SPRITE_GROUP_LEVELSPECIFIC, setupInfo);
 
-	FSMakeFSSpec(gDataSpec.vRefNum, gDataSpec.parID, "\p:sprites:font.sprites", &spec);
+	FSMakeFSSpec(gDataSpec.vRefNum, gDataSpec.parID, ":sprites:font.sprites", &spec);
 	LoadSpriteFile(&spec, SPRITE_GROUP_FONT, setupInfo);
 
 
@@ -144,13 +144,13 @@ FSSpec	spec;
 		case	AREA_TOWN_DUEL1:
 		case	AREA_TOWN_DUEL2:
 		case	AREA_TOWN_DUEL3:
-				FSMakeFSSpec(gDataSpec.vRefNum, gDataSpec.parID, "\p:terrain:town_duel.ter", &spec);
+				FSMakeFSSpec(gDataSpec.vRefNum, gDataSpec.parID, ":terrain:town_duel.ter", &spec);
 				break;
 				
 		case	AREA_SWAMP_DUEL1:
 		case	AREA_SWAMP_DUEL2:
 		case	AREA_SWAMP_DUEL3:
-				FSMakeFSSpec(gDataSpec.vRefNum, gDataSpec.parID, "\p:terrain:swamp_duel.ter", &spec);
+				FSMakeFSSpec(gDataSpec.vRefNum, gDataSpec.parID, ":terrain:swamp_duel.ter", &spec);
 				break;
 	}
 	
@@ -174,29 +174,29 @@ FSSpec	spec;
 #if 0
 				/* LOAD AUDIO */
 						
-	FSMakeFSSpec(gDataSpec.vRefNum, gDataSpec.parID, "\p:Audio:Garden.sounds", &spec);
+	FSMakeFSSpec(gDataSpec.vRefNum, gDataSpec.parID, ":Audio:Garden.sounds", &spec);
 	LoadSoundBank(&spec, SOUND_BANK_LEVELSPECIFIC);
 #endif
 				
 
 			/* LOAD GLOBAL BG3D GEOMETRY */
 			
-	FSMakeFSSpec(gDataSpec.vRefNum, gDataSpec.parID, "\p:models:global.bg3d", &spec);
+	FSMakeFSSpec(gDataSpec.vRefNum, gDataSpec.parID, ":models:global.bg3d", &spec);
 	ImportBG3D(&spec, MODEL_GROUP_GLOBAL, setupInfo);
 
 
 	switch(gCurrentArea)
 	{
 		case	AREA_TOWN_SHOOTOUT:
-				FSMakeFSSpec(gDataSpec.vRefNum, gDataSpec.parID, "\p:models:town.bg3d", &spec);
+				FSMakeFSSpec(gDataSpec.vRefNum, gDataSpec.parID, ":models:town.bg3d", &spec);
 				ImportBG3D(&spec, MODEL_GROUP_LEVELSPECIFIC, setupInfo);
 
-				FSMakeFSSpec(gDataSpec.vRefNum, gDataSpec.parID, "\p:models:buildings.bg3d", &spec);
+				FSMakeFSSpec(gDataSpec.vRefNum, gDataSpec.parID, ":models:buildings.bg3d", &spec);
 				ImportBG3D(&spec, MODEL_GROUP_BUILDINGS, setupInfo);
 				break;
 				
 		case	AREA_SWAMP_SHOOTOUT:
-				FSMakeFSSpec(gDataSpec.vRefNum, gDataSpec.parID, "\p:models:swamp.bg3d", &spec);
+				FSMakeFSSpec(gDataSpec.vRefNum, gDataSpec.parID, ":models:swamp.bg3d", &spec);
 				ImportBG3D(&spec, MODEL_GROUP_LEVELSPECIFIC, setupInfo);
 				break;
 	}
@@ -204,19 +204,19 @@ FSSpec	spec;
 
 			/* LOAD SPRITES */
 			
-	FSMakeFSSpec(gDataSpec.vRefNum, gDataSpec.parID, "\p:sprites:infobar.sprites", &spec);
+	FSMakeFSSpec(gDataSpec.vRefNum, gDataSpec.parID, ":sprites:infobar.sprites", &spec);
 	LoadSpriteFile(&spec, SPRITE_GROUP_INFOBAR, setupInfo);
 
-	FSMakeFSSpec(gDataSpec.vRefNum, gDataSpec.parID, "\p:sprites:global.sprites", &spec);
+	FSMakeFSSpec(gDataSpec.vRefNum, gDataSpec.parID, ":sprites:global.sprites", &spec);
 	LoadSpriteFile(&spec, SPRITE_GROUP_GLOBAL, setupInfo);
 
-	FSMakeFSSpec(gDataSpec.vRefNum, gDataSpec.parID, "\p:sprites:spheremap.sprites", &spec);
+	FSMakeFSSpec(gDataSpec.vRefNum, gDataSpec.parID, ":sprites:spheremap.sprites", &spec);
 	LoadSpriteFile(&spec, SPRITE_GROUP_SPHEREMAPS, setupInfo);
 
-	FSMakeFSSpec(gDataSpec.vRefNum, gDataSpec.parID, "\p:sprites:shootout.sprites", &spec);
+	FSMakeFSSpec(gDataSpec.vRefNum, gDataSpec.parID, ":sprites:shootout.sprites", &spec);
 	LoadSpriteFile(&spec, SPRITE_GROUP_LEVELSPECIFIC, setupInfo);
 
-	FSMakeFSSpec(gDataSpec.vRefNum, gDataSpec.parID, "\p:sprites:font.sprites", &spec);
+	FSMakeFSSpec(gDataSpec.vRefNum, gDataSpec.parID, ":sprites:font.sprites", &spec);
 	LoadSpriteFile(&spec, SPRITE_GROUP_FONT, setupInfo);
 
 
@@ -254,11 +254,11 @@ FSSpec	spec;
 	switch(gCurrentArea)
 	{
 		case	AREA_TOWN_SHOOTOUT:
-				FSMakeFSSpec(gDataSpec.vRefNum, gDataSpec.parID, "\p:terrain:town_shootout.ter", &spec);
+				FSMakeFSSpec(gDataSpec.vRefNum, gDataSpec.parID, ":terrain:town_shootout.ter", &spec);
 				break;
 
 		case	AREA_SWAMP_SHOOTOUT:
-				FSMakeFSSpec(gDataSpec.vRefNum, gDataSpec.parID, "\p:terrain:swamp_shootout.ter", &spec);
+				FSMakeFSSpec(gDataSpec.vRefNum, gDataSpec.parID, ":terrain:swamp_shootout.ter", &spec);
 				break;
 	}
 
@@ -287,7 +287,7 @@ FSSpec	spec;
 #if 0
 				/* LOAD AUDIO */
 						
-	FSMakeFSSpec(gDataSpec.vRefNum, gDataSpec.parID, "\p:Audio:Garden.sounds", &spec);
+	FSMakeFSSpec(gDataSpec.vRefNum, gDataSpec.parID, ":Audio:Garden.sounds", &spec);
 	LoadSoundBank(&spec, SOUND_BANK_LEVELSPECIFIC);
 #endif
 				
@@ -297,11 +297,11 @@ FSSpec	spec;
 	switch(gCurrentArea)
 	{
 		case	AREA_TOWN_STAMPEDE:
-				FSMakeFSSpec(gDataSpec.vRefNum, gDataSpec.parID, "\p:models:town.bg3d", &spec);
+				FSMakeFSSpec(gDataSpec.vRefNum, gDataSpec.parID, ":models:town.bg3d", &spec);
 				break;			
 
 		case	AREA_SWAMP_STAMPEDE:
-				FSMakeFSSpec(gDataSpec.vRefNum, gDataSpec.parID, "\p:models:swamp.bg3d", &spec);
+				FSMakeFSSpec(gDataSpec.vRefNum, gDataSpec.parID, ":models:swamp.bg3d", &spec);
 				break;			
 	}
 	ImportBG3D(&spec, MODEL_GROUP_LEVELSPECIFIC, setupInfo);
@@ -309,7 +309,7 @@ FSSpec	spec;
 
 			/* LOAD GLOBAL BG3D GEOMETRY */
 			
-	FSMakeFSSpec(gDataSpec.vRefNum, gDataSpec.parID, "\p:models:global.bg3d", &spec);
+	FSMakeFSSpec(gDataSpec.vRefNum, gDataSpec.parID, ":models:global.bg3d", &spec);
 	ImportBG3D(&spec, MODEL_GROUP_GLOBAL, setupInfo);
 
 	BG3D_SphereMapGeomteryMaterial(MODEL_GROUP_GLOBAL, GLOBAL_ObjType_Boost,
@@ -318,19 +318,19 @@ FSSpec	spec;
 
 			/* LOAD SPRITES */
 			
-	FSMakeFSSpec(gDataSpec.vRefNum, gDataSpec.parID, "\p:sprites:infobar.sprites", &spec);
+	FSMakeFSSpec(gDataSpec.vRefNum, gDataSpec.parID, ":sprites:infobar.sprites", &spec);
 	LoadSpriteFile(&spec, SPRITE_GROUP_INFOBAR, setupInfo);
 
-	FSMakeFSSpec(gDataSpec.vRefNum, gDataSpec.parID, "\p:sprites:global.sprites", &spec);
+	FSMakeFSSpec(gDataSpec.vRefNum, gDataSpec.parID, ":sprites:global.sprites", &spec);
 	LoadSpriteFile(&spec, SPRITE_GROUP_GLOBAL, setupInfo);
 
-	FSMakeFSSpec(gDataSpec.vRefNum, gDataSpec.parID, "\p:sprites:spheremap.sprites", &spec);
+	FSMakeFSSpec(gDataSpec.vRefNum, gDataSpec.parID, ":sprites:spheremap.sprites", &spec);
 	LoadSpriteFile(&spec, SPRITE_GROUP_SPHEREMAPS, setupInfo);
 
-	FSMakeFSSpec(gDataSpec.vRefNum, gDataSpec.parID, "\p:sprites:stampede.sprites", &spec);
+	FSMakeFSSpec(gDataSpec.vRefNum, gDataSpec.parID, ":sprites:stampede.sprites", &spec);
 	LoadSpriteFile(&spec, SPRITE_GROUP_LEVELSPECIFIC, setupInfo);
 
-	FSMakeFSSpec(gDataSpec.vRefNum, gDataSpec.parID, "\p:sprites:font.sprites", &spec);
+	FSMakeFSSpec(gDataSpec.vRefNum, gDataSpec.parID, ":sprites:font.sprites", &spec);
 	LoadSpriteFile(&spec, SPRITE_GROUP_FONT, setupInfo);
 
 
@@ -361,11 +361,11 @@ FSSpec	spec;
 	switch(gCurrentArea)
 	{
 		case	AREA_TOWN_STAMPEDE:
-				FSMakeFSSpec(gDataSpec.vRefNum, gDataSpec.parID, "\p:terrain:town_stampede.ter", &spec);
+				FSMakeFSSpec(gDataSpec.vRefNum, gDataSpec.parID, ":terrain:town_stampede.ter", &spec);
 				break;
 				
 		case	AREA_SWAMP_STAMPEDE:
-				FSMakeFSSpec(gDataSpec.vRefNum, gDataSpec.parID, "\p:terrain:swamp_stampede.ter", &spec);
+				FSMakeFSSpec(gDataSpec.vRefNum, gDataSpec.parID, ":terrain:swamp_stampede.ter", &spec);
 				break;
 	}
 
@@ -398,29 +398,29 @@ FSSpec	spec;
 
 			/* LOAD GLOBAL BG3D GEOMETRY */
 			
-	FSMakeFSSpec(gDataSpec.vRefNum, gDataSpec.parID, "\p:models:global.bg3d", &spec);
+	FSMakeFSSpec(gDataSpec.vRefNum, gDataSpec.parID, ":models:global.bg3d", &spec);
 	ImportBG3D(&spec, MODEL_GROUP_GLOBAL, setupInfo);
 
-	FSMakeFSSpec(gDataSpec.vRefNum, gDataSpec.parID, "\p:models:targetpractice.bg3d", &spec);
+	FSMakeFSSpec(gDataSpec.vRefNum, gDataSpec.parID, ":models:targetpractice.bg3d", &spec);
 	ImportBG3D(&spec, MODEL_GROUP_LEVELSPECIFIC, setupInfo);
 
 
 
 			/* LOAD SPRITES */
 			
-	FSMakeFSSpec(gDataSpec.vRefNum, gDataSpec.parID, "\p:sprites:infobar.sprites", &spec);
+	FSMakeFSSpec(gDataSpec.vRefNum, gDataSpec.parID, ":sprites:infobar.sprites", &spec);
 	LoadSpriteFile(&spec, SPRITE_GROUP_INFOBAR, setupInfo);
 
-	FSMakeFSSpec(gDataSpec.vRefNum, gDataSpec.parID, "\p:sprites:global.sprites", &spec);
+	FSMakeFSSpec(gDataSpec.vRefNum, gDataSpec.parID, ":sprites:global.sprites", &spec);
 	LoadSpriteFile(&spec, SPRITE_GROUP_GLOBAL, setupInfo);
 
-	FSMakeFSSpec(gDataSpec.vRefNum, gDataSpec.parID, "\p:sprites:spheremap.sprites", &spec);
+	FSMakeFSSpec(gDataSpec.vRefNum, gDataSpec.parID, ":sprites:spheremap.sprites", &spec);
 	LoadSpriteFile(&spec, SPRITE_GROUP_SPHEREMAPS, setupInfo);
 
-	FSMakeFSSpec(gDataSpec.vRefNum, gDataSpec.parID, "\p:sprites:targetpractice.sprites", &spec);
+	FSMakeFSSpec(gDataSpec.vRefNum, gDataSpec.parID, ":sprites:targetpractice.sprites", &spec);
 	LoadSpriteFile(&spec, SPRITE_GROUP_LEVELSPECIFIC, setupInfo);
 
-	FSMakeFSSpec(gDataSpec.vRefNum, gDataSpec.parID, "\p:sprites:font.sprites", &spec);
+	FSMakeFSSpec(gDataSpec.vRefNum, gDataSpec.parID, ":sprites:font.sprites", &spec);
 	LoadSpriteFile(&spec, SPRITE_GROUP_FONT, setupInfo);
 
 

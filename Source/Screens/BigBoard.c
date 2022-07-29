@@ -188,20 +188,20 @@ const static OGLVector3D	fillDirection2 = { .3, .8, 1.0 };
 
 			/* LOAD SPRITES */
 			
-	FSMakeFSSpec(gDataSpec.vRefNum, gDataSpec.parID, "\p:sprites:font.sprites", &spec);
+	FSMakeFSSpec(gDataSpec.vRefNum, gDataSpec.parID, ":sprites:font.sprites", &spec);
 	LoadSpriteFile(&spec, SPRITE_GROUP_FONT, gGameViewInfoPtr);
 
-	FSMakeFSSpec(gDataSpec.vRefNum, gDataSpec.parID, "\p:sprites:bigboard.sprites", &spec);
+	FSMakeFSSpec(gDataSpec.vRefNum, gDataSpec.parID, ":sprites:bigboard.sprites", &spec);
 	LoadSpriteFile(&spec, SPRITE_GROUP_BIGBOARD, gGameViewInfoPtr);
 
-	FSMakeFSSpec(gDataSpec.vRefNum, gDataSpec.parID, "\p:sprites:infobar.sprites", &spec);
+	FSMakeFSSpec(gDataSpec.vRefNum, gDataSpec.parID, ":sprites:infobar.sprites", &spec);
 	LoadSpriteFile(&spec, SPRITE_GROUP_INFOBAR, gGameViewInfoPtr);
 
 
 			/* MAKE BACKGROUND PICTURE OBJECT */
 
-	if (FSMakeFSSpec(gDataSpec.vRefNum, gDataSpec.parID, "\p:images:BigBoard", &spec))
-		DoFatalAlert("\pSetupBigBoardScreen: background pict not found.");
+	if (FSMakeFSSpec(gDataSpec.vRefNum, gDataSpec.parID, ":images:BigBoard", &spec))
+		DoFatalAlert("SetupBigBoardScreen: background pict not found.");
 	gBackgoundPicture = MO_CreateNewObjectOfType(MO_TYPE_PICTURE, (u_long)gGameViewInfoPtr, &spec);
 
 
@@ -374,7 +374,7 @@ ObjNode	*newObj;
 						if (gGameIsRegistered)
 							SaveGame();
 						else
-							DoAlert("\pYou cannot save games in Demo mode.");
+							DoAlert("You cannot save games in Demo mode.");
 						break;
 						
 				case	7:							// END GAME

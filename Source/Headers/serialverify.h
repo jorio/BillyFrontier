@@ -33,7 +33,7 @@ int				rezID;
 	myDialog = GetNewDialog(rezID,nil,MOVE_TO_FRONT);
 	if (myDialog == nil)
 	{
-		DoAlert("\pDoSerialDialog: rez not found");
+		DoAlert("DoSerialDialog: rez not found");
 		ShowSystemErr(rezID);
 	}
 			
@@ -62,11 +62,11 @@ int				rezID;
                     	switch(gGamePrefs.language)
                     	{
                     		case	LANGUAGE_SPANISH:
-			                        DoAlert("\pLo sentimos, el n�mero de serie no es v�lido.  Por favor int�ntelo nuevamente.");
+			                        DoAlert("Lo sentimos, el n�mero de serie no es v�lido.  Por favor int�ntelo nuevamente.");
                     				break;
                     				
                     		default:
-			                        DoAlert("\pSorry, that serial number is not valid.  Please try again.");
+			                        DoAlert("Sorry, that serial number is not valid.  Please try again.");
 			            }
 						InitCursor();
                     }
@@ -88,7 +88,7 @@ int				rezID;
             case    5:                                  // URL
             		if (gShareware)
 					{
-						if (LaunchURL("\phttp://www.pangeasoft.net/billy/buy.html") == noErr)
+						if (LaunchURL("http://www.pangeasoft.net/billy/buy.html") == noErr)
 		                    ExitToShell();
 					}
                     break;
@@ -247,7 +247,7 @@ try_shareware_code:
 			(pirateNumbers[0][4] != 'O') ||
 			(pirateNumbers[0][6] != 'P'))
 		{
-			DoFatalAlert("\pThis application is corrupt.  You should reinstall a fresh copy of the game.");		
+			DoFatalAlert("This application is corrupt.  You should reinstall a fresh copy of the game.");
 		}
 				
 				/* THEN SEE IF THIS CODE IS IN THE TABLE */
@@ -275,7 +275,7 @@ try_shareware_code:
 				// The serials are stored in the Level 1 terrain file
 				//
 
-		if (FSMakeFSSpec(gDataSpec.vRefNum, gDataSpec.parID, "\p:Audio:Main.sounds", &spec) == noErr)		// open rez fork
+		if (FSMakeFSSpec(gDataSpec.vRefNum, gDataSpec.parID, ":Audio:Main.sounds", &spec) == noErr)		// open rez fork
 		{
 			short fRefNum = FSpOpenResFile(&spec,fsRdPerm);
 			

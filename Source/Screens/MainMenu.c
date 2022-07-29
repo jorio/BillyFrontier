@@ -115,7 +115,7 @@ do_again:
 	if (gShowCredits)
 	{
 		FSSpec	spec;
-		FSMakeFSSpec(gDataSpec.vRefNum, gDataSpec.parID, "\p:images:Credits", &spec);
+		FSMakeFSSpec(gDataSpec.vRefNum, gDataSpec.parID, ":images:Credits", &spec);
 		DisplayPicture(&spec);							
 		goto do_again;
 	}		
@@ -212,10 +212,10 @@ int					i;
 
 			/* LOAD SPRITES */
 			
-	FSMakeFSSpec(gDataSpec.vRefNum, gDataSpec.parID, "\p:sprites:font.sprites", &spec);
+	FSMakeFSSpec(gDataSpec.vRefNum, gDataSpec.parID, ":sprites:font.sprites", &spec);
 	LoadSpriteFile(&spec, SPRITE_GROUP_FONT, gGameViewInfoPtr);
 
-	FSMakeFSSpec(gDataSpec.vRefNum, gDataSpec.parID, "\p:sprites:mainmenu.sprites", &spec);
+	FSMakeFSSpec(gDataSpec.vRefNum, gDataSpec.parID, ":sprites:mainmenu.sprites", &spec);
 	LoadSpriteFile(&spec, SPRITE_GROUP_MAINMENU, gGameViewInfoPtr);
 
 
@@ -285,8 +285,8 @@ FSSpec				spec;
 
 						/* MAKE BACKGROUND PICTURE OBJECT */
 
-				if (FSMakeFSSpec(gDataSpec.vRefNum, gDataSpec.parID, "\p:images:MainMenu", &spec))
-					DoFatalAlert("\pSetupMainMenuScreen: background pict not found.");
+				if (FSMakeFSSpec(gDataSpec.vRefNum, gDataSpec.parID, ":images:MainMenu", &spec))
+					DoFatalAlert("SetupMainMenuScreen: background pict not found.");
 				gBackgoundPicture = MO_CreateNewObjectOfType(MO_TYPE_PICTURE, (u_long)gGameViewInfoPtr, &spec);
 
 
@@ -297,12 +297,12 @@ FSSpec				spec;
 				{	
 					static const Str31 names[] =
 					{
-						"\pPLAY NEW GAME",
-						"\pPLAY SAVED GAME",
-						"\pSETTINGS",
-						"\pHIGH SCORES",
-						"\pCREDITS",
-						"\pEXIT",
+						"PLAY NEW GAME",
+						"PLAY SAVED GAME",
+						"SETTINGS",
+						"HIGH SCORES",
+						"CREDITS",
+						"EXIT",
 					};
 				
 					gNewObjectDefinition.coord.x 	= 130;
@@ -446,7 +446,7 @@ ObjNode	*newObj;
 										}
 									}
 									else
-										DoAlert("\pYou cannot play saved games in Demo mode.");
+										DoAlert("You cannot play saved games in Demo mode.");
 									break;
 
 							case	2:							// SETTINGS

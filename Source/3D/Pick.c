@@ -154,7 +154,7 @@ OGLPoint3D	hitPt;
 							break;
 							
 					default:
-							DoFatalAlert("\pOGL_DoRayCollision: unsupported genre");
+							DoFatalAlert("OGL_DoRayCollision: unsupported genre");
 				}
 			}		
 		}
@@ -423,7 +423,7 @@ OGLRay	ray;
 				break;
 				
 		default:
-				DoFatalAlert("\pOGL_PickAndGetHitInfo: unsupported genre");
+				DoFatalAlert("OGL_PickAndGetHitInfo: unsupported genre");
 	}
 
 	return(pickedObj);
@@ -1010,7 +1010,7 @@ MOVertexArrayObject	*vObj;
 			/* VERIFY COOKIE */
 
 	if (objHead->cookie != MO_COOKIE)
-		DoFatalAlert("\pMO_RayTestObject: cookie is invalid!");
+		DoFatalAlert("MO_RayTestObject: cookie is invalid!");
 
 
 			/* HANDLE TYPE */
@@ -1098,7 +1098,7 @@ OGLPoint3D		hitPt;
 			
 	numPoints = data->numPoints;
 	if (numPoints > 3000)
-		DoFatalAlert("\pMO_RayTestGeometry_VertexArray: numPoints > buffer size");
+		DoFatalAlert("MO_RayTestGeometry_VertexArray: numPoints > buffer size");
 
 
 			/************************************************/	
@@ -1216,7 +1216,7 @@ OGLPoint3D	hitPt;
 							break;
 							
 					default:
-							DoFatalAlert("\pOGL_DoLineSegmentCollision: unsupported genre");
+							DoFatalAlert("OGL_DoLineSegmentCollision: unsupported genre");
 				}
 			}		
 		}
@@ -1321,7 +1321,7 @@ MOVertexArrayObject	*vObj;
 			/* VERIFY COOKIE */
 
 	if (objHead->cookie != MO_COOKIE)
-		DoFatalAlert("\pMO_LineSegTestObject: cookie is invalid!");
+		DoFatalAlert("MO_LineSegTestObject: cookie is invalid!");
 
 
 			/* HANDLE TYPE */
@@ -1409,7 +1409,7 @@ OGLPoint3D		hitPt;
 			
 	numPoints = data->numPoints;
 	if (numPoints > 3000)
-		DoFatalAlert("\pMO_LineSegTestGeometry_VertexArray: numPoints > buffer size");
+		DoFatalAlert("MO_LineSegTestGeometry_VertexArray: numPoints > buffer size");
 
 
 			/************************************************/	

@@ -122,14 +122,14 @@ int						total;
 	Alloc_2d_array(SuperTileItemIndexType, gSuperTileItemIndexGrid, gNumSuperTilesDeep, gNumSuperTilesWide);
 
 	if (gNumTerrainItems == 0)
-		DoFatalAlert("\pBuildTerrainItemList: there must be at least 1 terrain item!");
+		DoFatalAlert("BuildTerrainItemList: there must be at least 1 terrain item!");
 
 
 			/* ALLOC MEMORY FOR NEW LIST */
 
 	tempItemList = (TerrainItemEntryType **)AllocHandle(sizeof(TerrainItemEntryType) * gNumTerrainItems);
 	if (tempItemList == nil)
-		DoFatalAlert("\pBuildTerrainItemList: AllocPtr failed!");
+		DoFatalAlert("BuildTerrainItemList: AllocPtr failed!");
 
 	HLock((Handle)gMasterItemList);
 	HLock((Handle)tempItemList);
@@ -263,7 +263,7 @@ float					x,z;
 		}
 	}
 
-	DoAlert("\pFindPlayerStartCoordItems: no player found");
+	DoAlert("FindPlayerStartCoordItems: no player found");
 }
 
 
@@ -308,7 +308,7 @@ Boolean			flag;
 		type = itemPtr[i].type;									// get item #
 		if (type > MAX_ITEM_NUM)								// error check!
 		{
-			DoAlert("\pIllegal Map Item Type!");
+			DoAlert("Illegal Map Item Type!");
 			ShowSystemErr(type);
 		}
 

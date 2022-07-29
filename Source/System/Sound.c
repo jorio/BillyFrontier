@@ -81,11 +81,11 @@ const float	gSongVolumeTweaks[]=
 
 const Str32	gSongNames[] =
 {
-	"\p:audio:Theme.mp3",
-	"\p:audio:Duel.mp3",
-	"\p:audio:Stampede.mp3",
-	"\p:audio:Shootout.mp3",
-	"\p:audio:Lose.mp3",
+	":audio:Theme.mp3",
+	":audio:Duel.mp3",
+	":audio:Stampede.mp3",
+	":audio:Shootout.mp3",
+	":audio:Lose.mp3",
 };
 
 
@@ -240,7 +240,7 @@ FSSpec			spec;
 		mySndCmd.param2 = (long)&sndHdr;
 		if ((iErr = SndDoImmediate(gSndChannel[gMaxChannels], &mySndCmd)) != noErr)
 		{
-			DoAlert("\pInitSoundTools: SndDoImmediate failed!");
+			DoAlert("InitSoundTools: SndDoImmediate failed!");
 			ShowSystemErr_NonFatal(iErr);
 		}
 		
@@ -250,7 +250,7 @@ FSSpec			spec;
 		mySndCmd.param2 = initNoInterp|initStereo;
 		if ((iErr = SndDoImmediate(gSndChannel[gMaxChannels], &mySndCmd)) != noErr)
 		{
-			DoAlert("\pInitSoundTools: SndDoImmediate failed 2!");
+			DoAlert("InitSoundTools: SndDoImmediate failed 2!");
 			ShowSystemErr_NonFatal(iErr);
 		}
 	}
@@ -260,8 +260,8 @@ FSSpec			spec;
 		/* LOAD DEFAULT SOUNDS */
 		/***********************/
 		
-	if (FSMakeFSSpec(gDataSpec.vRefNum, gDataSpec.parID, "\p:Audio:Main.sounds", &spec) != noErr)
-		DoFatalAlert("\pInitSoundTools: where is Main.sounds?");
+	if (FSMakeFSSpec(gDataSpec.vRefNum, gDataSpec.parID, ":Audio:Main.sounds", &spec) != noErr)
+		DoFatalAlert("InitSoundTools: where is Main.sounds?");
 	LoadSoundBank(&spec, SOUND_BANK_MAIN);	
 #endif
 }
@@ -298,13 +298,13 @@ int	i;
 void LoadSoundBank(FSSpec *spec, long bankNum)
 {
 short			srcFile1,numSoundsInBank,i;
-Str255			error = "\pCouldnt Open Sound Resource File.";
+Str255			error = "Couldnt Open Sound Resource File.";
 OSErr			iErr;
 
 	StopAllEffectChannels();
 
 	if (bankNum >= MAX_SOUND_BANKS)
-		DoFatalAlert("\pLoadSoundBank: bankNum >= MAX_SOUND_BANKS");
+		DoFatalAlert("LoadSoundBank: bankNum >= MAX_SOUND_BANKS");
 
 			/* DISPOSE OF EXISTING BANK */
 			
@@ -316,7 +316,7 @@ OSErr			iErr;
 	srcFile1 = FSpOpenResFile(spec, fsCurPerm);
 	if (srcFile1 == -1)
 	{
-		DoAlert("\pLoadSoundBank: OpenResFile failed!");
+		DoAlert("LoadSoundBank: OpenResFile failed!");
 		ShowSystemErr(ResError());		
 	}
 
@@ -327,7 +327,7 @@ OSErr			iErr;
 	UseResFile( srcFile1 );												// open sound resource fork
 	numSoundsInBank = Count1Resources('snd ');							// count # snd's in this bank
 	if (numSoundsInBank > MAX_EFFECTS)
-		DoFatalAlert("\pLoadSoundBank: numSoundsInBank > MAX_EFFECTS");
+		DoFatalAlert("LoadSoundBank: numSoundsInBank > MAX_EFFECTS");
 
 	for (i=0; i < numSoundsInBank; i++)
 	{
@@ -337,9 +337,9 @@ OSErr			iErr;
 		if (gSndHandles[bankNum][i] == nil) 
 		{
 			iErr = ResError();
-			DoAlert("\pLoadSoundBank: GetResource failed!");
+			DoAlert("LoadSoundBank: GetResource failed!");
 			if (iErr == memFullErr)
-				DoFatalAlert("\pLoadSoundBank: Out of Memory");		
+				DoFatalAlert("LoadSoundBank: Out of Memory");
 			else
 				ShowSystemErr(iErr);
 		}
@@ -514,7 +514,7 @@ GrafPtr	oldPort;
 			
 	iErr = FSMakeFSSpec(gDataSpec.vRefNum, gDataSpec.parID, gSongNames[songNum], &spec);
 	if (iErr)
-		DoFatalAlert("\pPlaySong: song file not found");
+		DoFatalAlert("PlaySong: song file not found");
 
 	gCurrentSong = songNum;
 	
@@ -638,7 +638,7 @@ u_long					leftVol, rightVol;
 
 	if (soundNum >= gNumSndsInBank[bankNum])					// see if illegal sound #
 	{
-		DoAlert("\pIllegal sound number!");
+		DoAlert("Illegal sound number!");
 		ShowSystemErr(effectNum);	
 	}
 
@@ -679,7 +679,7 @@ u_long			leftVol, rightVol;
 
 	if (soundNum >= gNumSndsInBank[bankNum])					// see if illegal sound #
 	{
-		DoAlert("\pIllegal sound number!");
+		DoAlert("Illegal sound number!");
 		ShowSystemErr(effectNum);	
 	}
 
@@ -936,7 +936,7 @@ static UInt32          loopStart, loopEnd;
 
 	if (soundNum >= gNumSndsInBank[bankNum])					// see if illegal sound #
 	{
-		DoAlert("\pIllegal sound number!");
+		DoAlert("Illegal sound number!");
 		ShowSystemErr(effectNum);	
 	}
 

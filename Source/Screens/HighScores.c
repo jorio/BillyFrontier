@@ -72,7 +72,7 @@ typedef struct
 /*    VARIABLES            */
 /***************************/
 
-static Str32	gHighScoresFileName = "\p:Billy:HighScores";
+static Str32	gHighScoresFileName = ":Billy:HighScores";
 
 HighScoreType	gHighScores[NUM_SCORES];	
 
@@ -272,14 +272,14 @@ OGLSetupInputType	viewDef;
 
 			/* LOAD SPRITES */
 			
-	FSMakeFSSpec(gDataSpec.vRefNum, gDataSpec.parID, "\p:sprites:font.sprites", &spec);
+	FSMakeFSSpec(gDataSpec.vRefNum, gDataSpec.parID, ":sprites:font.sprites", &spec);
 	LoadSpriteFile(&spec, SPRITE_GROUP_FONT, gGameViewInfoPtr);
 		
 			/* CREATE BACKGROUND OBJECT */
 
 	if (gJustShowScores)
 	{
-		FSMakeFSSpec(gDataSpec.vRefNum, gDataSpec.parID, "\p:images:highscores", &spec);
+		FSMakeFSSpec(gDataSpec.vRefNum, gDataSpec.parID, ":images:highscores", &spec);
 		gShowScoreDelay = 0;
 		gFinalScoreAlpha = 1.0f;
 	}
@@ -289,9 +289,9 @@ OGLSetupInputType	viewDef;
 		gFinalScoreAlpha = 0.0f;
 		
 		if (gWonGame)
-			FSMakeFSSpec(gDataSpec.vRefNum, gDataSpec.parID, "\p:images:WinScreen", &spec);
+			FSMakeFSSpec(gDataSpec.vRefNum, gDataSpec.parID, ":images:WinScreen", &spec);
 		else
-			FSMakeFSSpec(gDataSpec.vRefNum, gDataSpec.parID, "\p:images:LoseScreen", &spec);
+			FSMakeFSSpec(gDataSpec.vRefNum, gDataSpec.parID, ":images:LoseScreen", &spec);
 	}
 	
 	
@@ -597,7 +597,7 @@ long				count;
 		ClearHighScores();
 	else
 	if (iErr)
-		DoFatalAlert("\pLoadHighScores: Error opening High Scores file!");
+		DoFatalAlert("LoadHighScores: Error opening High Scores file!");
 	else
 	{
 		count = sizeof(HighScoreType) * NUM_SCORES;
@@ -638,7 +638,7 @@ long				count;
 	if (iErr)
 	{
 err:	
-		DoAlert("\pUnable to Save High Scores file!");
+		DoAlert("Unable to Save High Scores file!");
 		return;
 	}
 

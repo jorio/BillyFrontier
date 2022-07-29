@@ -1252,7 +1252,7 @@ Boolean	conform;
 		case	AREA_TOWN_DUEL3:
 		case	AREA_TOWN_STAMPEDE:
 				if (type > 3)
-					DoAlert("\pAddRock: illegal rock type");
+					DoAlert("AddRock: illegal rock type");
 				gNewObjectDefinition.type  = TOWN_ObjType_TallRock1 + type;
 				conform = (type >= 2);					// short rocks conform to terrain
 				break;

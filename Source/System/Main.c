@@ -126,9 +126,9 @@ long		createdDirID;
 	iErr = FindFolder(kOnSystemDisk,kPreferencesFolderType,kDontCreateFolder,			// locate the folder
 					&gPrefsFolderVRefNum,&gPrefsFolderDirID);
 	if (iErr != noErr)
-		DoAlert("\pWarning: Cannot locate the Preferences folder.");
+		DoAlert("Warning: Cannot locate the Preferences folder.");
 
-	iErr = DirCreate(gPrefsFolderVRefNum,gPrefsFolderDirID,"\pBilly",&createdDirID);		// make folder in there
+	iErr = DirCreate(gPrefsFolderVRefNum,gPrefsFolderDirID,"Billy",&createdDirID);		// make folder in there
 
 
 
@@ -136,7 +136,7 @@ long		createdDirID;
 	
 	SetDefaultDirectory();							// be sure to get the default directory
 
-	iErr = FSMakeFSSpec(0, 0, "\p:Data:Images", &gDataSpec);
+	iErr = FSMakeFSSpec(0, 0, ":Data:Images", &gDataSpec);
 	if (iErr)
 	{
 		DoAlertNum(133);
@@ -153,7 +153,7 @@ long		createdDirID;
 	{
 		FSSpec	spc;
 		
-		if (FSMakeFSSpec(0, 0, "\p:Data:Images:DemoQuit", &spc) == noErr)
+		if (FSMakeFSSpec(0, 0, ":Data:Images:DemoQuit", &spc) == noErr)
 			gShareware = true;	
 		else
 			gShareware = false;

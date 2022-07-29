@@ -108,7 +108,7 @@ void DeleteSparkle(short i)
 		gNumSparkles--;
 	}
 	else
-		DoAlert("\pDeleteSparkle: double delete sparkle");
+		DoAlert("DeleteSparkle: double delete sparkle");
 }
 
 

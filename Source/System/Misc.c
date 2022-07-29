@@ -65,7 +65,7 @@ Boolean	gSerialWasVerified = false;
 
 Boolean	gLittleSnitch = false;
 
-Str255  gSerialFileName = "\p:Billy:Info";
+Str255  gSerialFileName = ":Billy:Info";
 
 
 /**********************/
@@ -96,7 +96,7 @@ Str255		numStr;
 	DoAlert (numStr);
 	
 //	if (gOSX)
-//		DebugStr("\pShowSystemErr has been called");
+//		DebugStr("ShowSystemErr has been called");
 	
 	Exit2D();
 	
@@ -140,7 +140,7 @@ void DoAlert(Str255 s)
 	NoteAlert(ERROR_ALERT_ID,nil);
 
 //	if (gOSX)
-//		DebugStr("\pDoAlert has been called");
+//		DebugStr("DoAlert has been called");
 	
 	Exit2D();
 	
@@ -182,7 +182,7 @@ OSErr	iErr;
 	iErr = NoteAlert(ERROR_ALERT_ID,nil);
 
 //	if (gOSX)
-//		DebugStr("\pDoFatalAlert has been called");
+//		DebugStr("DoFatalAlert has been called");
 
 	Exit2D();
 	CleanQuit();
@@ -453,11 +453,11 @@ OSErr	err;
 	hand = NewHandle(size);							// alloc in APPL
 	if (hand == nil)
 	{
-		DoAlert("\pAllocHandle: using temp mem");
+		DoAlert("AllocHandle: using temp mem");
 		hand = TempNewHandle(size,&err);			// try TEMP mem
 		if (hand == nil)
 		{
-			DoAlert("\pAllocHandle: failed!");
+			DoAlert("AllocHandle: failed!");
 			return(nil);
 		}
 		else
@@ -484,7 +484,7 @@ u_long	*cookiePtr;
 	pr = NewPtr(size);
 #endif	
 	if (pr == nil)
-		DoFatalAlert("\pAllocPtr: NewPtr failed");
+		DoFatalAlert("AllocPtr: NewPtr failed");
 
 	cookiePtr = (u_long *)pr;
 
@@ -517,7 +517,7 @@ u_long	*cookiePtr;
 #endif	
 
 	if (pr == nil)
-		DoFatalAlert("\pAllocPtr: NewPtr failed");
+		DoFatalAlert("AllocPtr: NewPtr failed");
 
 	cookiePtr = (u_long *)pr;
 
@@ -546,7 +546,7 @@ Ptr		p = ptr;
 	cookiePtr = (u_long *)p;
 	
 	if (*cookiePtr != 'FACE')
-		DoFatalAlert("\pSafeSafeDisposePtr: invalid cookie!");
+		DoFatalAlert("SafeSafeDisposePtr: invalid cookie!");
 		
 	*cookiePtr = 0;
 	
@@ -629,7 +629,7 @@ short		i;
 		if (vers.nonRelRev < 0x40)
 		{
 carbonerr:		
-			DoFatalAlert("\pThis application requires CarbonLib 1.4 or newer.  Run Software Update to get the latest version");
+			DoFatalAlert("This application requires CarbonLib 1.4 or newer.  Run Software Update to get the latest version");
 		}
 	}
 
@@ -641,7 +641,7 @@ carbonerr:
 				
 	iErr = Gestalt(gestaltNativeCPUfamily,&cpuFamily);
 	if (iErr != noErr)
-		DoFatalAlert("\pVerifySystem: gestaltNativeCPUfamily failed!");
+		DoFatalAlert("VerifySystem: gestaltNativeCPUfamily failed!");
 	
 	if (cpuFamily >= gestaltCPUG4)
 		gG4 = true;
@@ -666,7 +666,7 @@ carbonerr:
 
 	iErr = Gestalt(gestaltSystemVersion,(long *)&vers);
 	if (iErr != noErr)
-		DoFatalAlert("\pVerifySystem: gestaltSystemVersion failed!");
+		DoFatalAlert("VerifySystem: gestaltSystemVersion failed!");
 				
 	if (vers.stage >= 0x10)													// see if at least OS 10
 	{
@@ -676,7 +676,7 @@ carbonerr:
 		{
 			if (!gGamePrefs.oldOSWarned)
 			{
-				DoAlert("\pThis game requires MacOS 10.2 or later.  It might run for you on 10.1, but it will probably freeze up your computer at some point.");
+				DoAlert("This game requires MacOS 10.2 or later.  It might run for you on 10.1, but it will probably freeze up your computer at some point.");
 				gGamePrefs.oldOSWarned = true;
 			}
 		}
@@ -685,11 +685,11 @@ carbonerr:
 	{
 		gOSX = false;
 		if (vers.stage < 9)						// check for OS 9
-			DoFatalAlert("\pThis game will not run on MacOS 8.");
+			DoFatalAlert("This game will not run on MacOS 8.");
 		else
 		if (!gGamePrefs.oldOSWarned)
 		{
-			DoAlert("\pThis game requires MacOS 10.2 or later.  It might run for you on MacOS 9.2.2, however, we only support it on 10.2 or later.");
+			DoAlert("This game requires MacOS 10.2 or later.  It might run for you on MacOS 9.2.2, however, we only support it on 10.2 or later.");
 			gGamePrefs.oldOSWarned = true;
 		}
 	}
@@ -706,7 +706,7 @@ carbonerr:
 		if ((d.year > 2003) ||
 			((d.year == 2003) && (d.month > 7)))
 		{
-			DoFatalAlert("\pSorry, but this beta has expired");
+			DoFatalAlert("Sorry, but this beta has expired");
 		}
 	}
 
@@ -715,7 +715,7 @@ carbonerr:
 			/* CHECK OPENGL */
 			
 	if ((Ptr) kUnresolvedCFragSymbolAddress == (Ptr) aglChoosePixelFormat) 				// check for existance of OpenGL
-		DoFatalAlert("\pThis application needs OpenGL to function.  Please install OpenGL and try again.");
+		DoFatalAlert("This application needs OpenGL to function.  Please install OpenGL and try again.");
 			
 
 		/* CHECK SPROCKETS */
@@ -723,10 +723,10 @@ carbonerr:
 	if (!gOSX)
 	{
 		if ((Ptr) kUnresolvedCFragSymbolAddress == (Ptr) ISpStartup) 							// check for existance of Input Sprocket
-			DoFatalAlert("\pThis application needs Input Sprocket to function.  Please install Game Sprockets and try again.");
+			DoFatalAlert("This application needs Input Sprocket to function.  Please install Game Sprockets and try again.");
 	
 		if ((Ptr) kUnresolvedCFragSymbolAddress == (Ptr) DSpStartup) 							// check for existance of Draw Sprocket
-			DoFatalAlert("\pThis application needs Draw Sprocket to function.  Please install Game Sprockets and try again.");
+			DoFatalAlert("This application needs Draw Sprocket to function.  Please install Game Sprockets and try again.");
 
 	}
 	
@@ -740,7 +740,7 @@ carbonerr:
 		ProcessInfoRec	info;
 		
 		Str255		s;
-		const char snitch[] = "\pLittleSnitchDaemon";
+		const char snitch[] = "LittleSnitchDaemon";
 		
 		info.processName = s;
 		info.processInfoLength = sizeof(ProcessInfoRec);

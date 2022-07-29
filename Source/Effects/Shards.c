@@ -172,7 +172,7 @@ MOVertexArrayData	*vaData;
 			/* VERIFY COOKIE */
 
 	if (objHead->cookie != MO_COOKIE)
-		DoFatalAlert("\pExplodeGeometry_Recurse: cookie is invalid!");
+		DoFatalAlert("ExplodeGeometry_Recurse: cookie is invalid!");
 
 
 			/* HANDLE TYPE */
@@ -188,7 +188,7 @@ MOVertexArrayData	*vaData;
 							break;
 							
 					default:	
-							DoFatalAlert("\pExplodeGeometry_Recurse: unknown sub-type!");
+							DoFatalAlert("ExplodeGeometry_Recurse: unknown sub-type!");
 				}
 				break;
 	

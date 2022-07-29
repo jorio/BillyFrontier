@@ -82,7 +82,7 @@ Boolean	gISPInitialized			= false;
 ISpNeed	gControlNeeds[NUM_CONTROL_NEEDS] =
 {
 	{										// 0
-		"\pMouse Movement Left & Right",
+		"Mouse Movement Left & Right",
 		132,
 		0,
 		0,
@@ -95,7 +95,7 @@ ISpNeed	gControlNeeds[NUM_CONTROL_NEEDS] =
 	},
 	
 	{										// 1
-		"\pMouse Movement Up & Down",
+		"Mouse Movement Up & Down",
 		133,
 		0,
 		0,
@@ -108,7 +108,7 @@ ISpNeed	gControlNeeds[NUM_CONTROL_NEEDS] =
 	},
 
 	{										// 2
-		"\pMouse Button",
+		"Mouse Button",
 		133,
 		0,
 		0,
@@ -159,20 +159,20 @@ UInt32				count = 0;
 		
 		iErr = ISpElement_NewVirtualFromNeeds(NUM_CONTROL_NEEDS, gControlNeeds, gVirtualElements, 0);
 		if (iErr)
-			DoFatalAlert("\pInitInput: ISpElement_NewVirtualFromNeeds failed!");
+			DoFatalAlert("InitInput: ISpElement_NewVirtualFromNeeds failed!");
 			
 		iErr = ISpInit(NUM_CONTROL_NEEDS, gControlNeeds, gVirtualElements, kGameID,'Inp1', 0, 1000, 0);
 		if (iErr)
-			DoFatalAlert("\pInitInput: ISpInit failed!");
+			DoFatalAlert("InitInput: ISpInit failed!");
 		
 			
 				/* ACTIVATE ALL DEVICES */
 
 		if (ISpDevices_Extract(10,&count,dev) != noErr)
-			DoFatalAlert("\pInitInput: ISpDevices_Extract failed!");
+			DoFatalAlert("InitInput: ISpDevices_Extract failed!");
 			
 		if (ISpDevices_Activate(count, dev) != noErr)
-			DoFatalAlert("\pInitInput: ISpDevices_Activate failed!");
+			DoFatalAlert("InitInput: ISpDevices_Activate failed!");
 			
 		gISpActive = true;
 			
@@ -446,10 +446,10 @@ OSErr		iErr;
 
 		iErr = ISpDevices_Extract(10,&count,dev);
 		if (iErr)
-			DoFatalAlert("\pTurnOnISp: ISpDevices_Extract failed!");
+			DoFatalAlert("TurnOnISp: ISpDevices_Extract failed!");
 		iErr = ISpDevices_Activate(count, dev);
 		if (iErr)
-			DoFatalAlert("\pTurnOnISp: ISpDevices_Activate failed!");
+			DoFatalAlert("TurnOnISp: ISpDevices_Activate failed!");
 
 	}
 #endif
@@ -608,14 +608,14 @@ void GetMouseDeltas(void)
 						
 		err = ISpElement_GetComplexState(gVirtualElements[NEED_NUM_MOUSEMOTION], sizeof(ISpDeltaData), &deltaX);																	
 		if (err)
-			DoFatalAlert("\pGetMouseDelta: ISpElement_GetComplexState failed!");
+			DoFatalAlert("GetMouseDelta: ISpElement_GetComplexState failed!");
 
 
 						/* DY */
 						
 		err = ISpElement_GetComplexState(gVirtualElements[NEED_NUM_MOUSEMOTION+1], sizeof(ISpDeltaData), &deltaY);																	
 		if (err)
-			DoFatalAlert("\pGetMouseDelta: ISpElement_GetComplexState failed!");
+			DoFatalAlert("GetMouseDelta: ISpElement_GetComplexState failed!");
 
 		dFactor = gGameWindowWidth * ((1.0/1600.0) * .06);
 

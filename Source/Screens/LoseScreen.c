@@ -152,7 +152,7 @@ int			i;
 
 			/* LOAD MODELS */
 
-	FSMakeFSSpec(gDataSpec.vRefNum, gDataSpec.parID, "\p:models:losescreen.bg3d", &spec);
+	FSMakeFSSpec(gDataSpec.vRefNum, gDataSpec.parID, ":models:losescreen.bg3d", &spec);
 	ImportBG3D(&spec, MODEL_GROUP_LOSESCREEN, gGameViewInfoPtr);
 
 	LoadFoliage(gGameViewInfoPtr);
@@ -160,13 +160,13 @@ int			i;
 
 			/* LOAD SPRITES */
 
-	FSMakeFSSpec(gDataSpec.vRefNum, gDataSpec.parID, "\p:sprites:LoseScreen.sprites", &spec);
+	FSMakeFSSpec(gDataSpec.vRefNum, gDataSpec.parID, ":sprites:LoseScreen.sprites", &spec);
 	LoadSpriteFile(&spec, SPRITE_GROUP_LOSE, gGameViewInfoPtr);
 			
-	FSMakeFSSpec(gDataSpec.vRefNum, gDataSpec.parID, "\p:sprites:spheremap.sprites", &spec);
+	FSMakeFSSpec(gDataSpec.vRefNum, gDataSpec.parID, ":sprites:spheremap.sprites", &spec);
 	LoadSpriteFile(&spec, SPRITE_GROUP_SPHEREMAPS, gGameViewInfoPtr);
 
-	FSMakeFSSpec(gDataSpec.vRefNum, gDataSpec.parID, "\p:sprites:global.sprites", &spec);
+	FSMakeFSSpec(gDataSpec.vRefNum, gDataSpec.parID, ":sprites:global.sprites", &spec);
 	LoadSpriteFile(&spec, SPRITE_GROUP_GLOBAL, gGameViewInfoPtr);
 
 
@@ -178,7 +178,7 @@ int			i;
 
 				/* LOAD AUDIO */
 
-//	FSMakeFSSpec(gDataSpec.vRefNum, gDataSpec.parID, "\p:audio:bonus.sounds", &spec);
+//	FSMakeFSSpec(gDataSpec.vRefNum, gDataSpec.parID, ":audio:bonus.sounds", &spec);
 //	LoadSoundBank(&spec, SOUND_BANK_LOSE);
 
 

@@ -356,7 +356,7 @@ float				aspect;
 
 	if (texNum >= gNumSpritesInGroupList[group])
 	{
-		DoAlert("\pDrawInfobarSprite2_Centered: sprite # > max in group");
+		DoAlert("DrawInfobarSprite2_Centered: sprite # > max in group");
 		ShowSystemErr_NonFatal(texNum);
 		ShowSystemErr(gNumSpritesInGroupList[group]);
 	}
@@ -676,7 +676,7 @@ OGLPoint2D	bulletCoords[6] =
 			PlayEffect(EFFECT_RELOAD);
 		}
 		else
-			DrawFontString("\pRELOAD", 640/2, 480/2, 30.0);
+			DrawFontString("RELOAD", 640/2, 480/2, 30.0);
 		
 	
 	}

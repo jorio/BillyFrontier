@@ -85,7 +85,7 @@ float	timeout = 40.0f;
 
 	gBackgoundPicture = MO_CreateNewObjectOfType(MO_TYPE_PICTURE, (u_long)gGameViewInfoPtr, spec);
 	if (!gBackgoundPicture)
-		DoFatalAlert("\pDisplayPicture: MO_CreateNewObjectOfType failed");
+		DoFatalAlert("DisplayPicture: MO_CreateNewObjectOfType failed");
 
 
 
@@ -153,7 +153,7 @@ FSSpec	spec;
 
 	GammaFadeOut();
 
-	FSMakeFSSpec(gDataSpec.vRefNum, gDataSpec.parID, "\p:images:Logo", &spec);
+	FSMakeFSSpec(gDataSpec.vRefNum, gDataSpec.parID, ":images:Logo", &spec);
 	DisplayPicture(&spec);
 
 }
@@ -169,10 +169,10 @@ void DoDemoExpiredScreen(void)
 {
 FSSpec	spec;
 
-	FSMakeFSSpec(gDataSpec.vRefNum, gDataSpec.parID, "\p:images:DemoExpired", &spec);
+	FSMakeFSSpec(gDataSpec.vRefNum, gDataSpec.parID, ":images:DemoExpired", &spec);
 	DisplayPicture(&spec);
 
-	LaunchURL("\phttp://www.pangeasoft.net/billy/buy.html");
+	LaunchURL("http://www.pangeasoft.net/billy/buy.html");
 
 	CleanQuit();
 }
@@ -186,13 +186,13 @@ FSSpec	spec;
 
 	SaveDemoTimer();						// make sure to save this before we bail
 
-	FSMakeFSSpec(gDataSpec.vRefNum, gDataSpec.parID, "\p:images:DemoQuit", &spec);
+	FSMakeFSSpec(gDataSpec.vRefNum, gDataSpec.parID, ":images:DemoQuit", &spec);
 	DisplayPicture(&spec);
 
 	if (IsInternetAvailable())				// if we've got TCP connection then launch URL
 	{
 		CleanupDisplay();								// unloads Draw Sprocket
-		LaunchURL("\phttp://www.pangeasoft.net/billy/buy.html");
+		LaunchURL("http://www.pangeasoft.net/billy/buy.html");
 	}
 }
 
@@ -227,7 +227,7 @@ do_again:
 	myDialog = GetNewDialog(1000 + gGamePrefs.language,nil,MOVE_TO_FRONT);
 	if (myDialog == nil)
 	{
-		DoAlert("\pDoGameOptionsDialog: GetNewDialog failed!");
+		DoAlert("DoGameOptionsDialog: GetNewDialog failed!");
 		ShowSystemErr(gGamePrefs.language);
 	}
 	

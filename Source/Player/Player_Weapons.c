@@ -285,7 +285,7 @@ static const short weaponToModel[] =
 
 	i = FindinventoryIndex(weaponType);					// get index into inventory list
 	if (i == NO_INVENTORY_HERE)
-		DoFatalAlert("\pDecWeaponQuantity: weapon not in inventory");
+		DoFatalAlert("DecWeaponQuantity: weapon not in inventory");
 
 	type = gPlayerInfo.currentWeaponType;						// get current weapon type
 
