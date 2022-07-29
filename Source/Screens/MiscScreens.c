@@ -203,6 +203,9 @@ FSSpec	spec;
 
 void DoGameOptionsDialog(void)
 {
+#if 1
+	IMPLEMENT_ME();
+#else
 DialogRef 		myDialog;
 DialogItemType	itemHit; 
 ControlRef		ctrlHandle;
@@ -328,6 +331,7 @@ do_again:
 		
 	CalcFramesPerSecond();				// reset this so things dont go crazy when we return
 	CalcFramesPerSecond();
+#endif
 }
 
 
@@ -387,9 +391,6 @@ static void MoveDarkenPane(ObjNode *theNode)
 
 static void DrawDarkenPane(ObjNode *theNode, const OGLSetupOutputType *setupInfo)
 {
-AGLContext agl_ctx = setupInfo->drawContext;
-
-	
 	glDisable(GL_TEXTURE_2D);
 	SetColor4fv((GLfloat *)&theNode->ColorFilter);
 	glEnable(GL_BLEND);
