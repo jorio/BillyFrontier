@@ -523,6 +523,9 @@ GrafPtr	oldPort;
 				/* START PLAYING */
 				/*****************/
 
+#if 1
+	IMPLEMENT_ME_SOFT();
+#else
 			/* GOT TO SET A DUMMY PORT OR QT MAY FREAK */
 			
 	if (gQTDummyPort == nil)						// create a blank graf port
@@ -558,13 +561,14 @@ GrafPtr	oldPort;
 	}
 
 	SetPort(oldPort);
-		
+#endif
 
 	
 			/* SEE IF WANT TO MUTE THE MUSIC */
 			
 	if (gMuteMusicFlag)
 	{
+		IMPLEMENT_ME_SOFT();
 #if 0
 		if (gSongMovie)
 			StopMovie(gSongMovie);
