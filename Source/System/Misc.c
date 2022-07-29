@@ -63,12 +63,6 @@ unsigned char	gRegInfo[64];
 
 Boolean	gSlowCPU = false;
 
-Boolean	gSerialWasVerified = false;
-
-Boolean	gLittleSnitch = false;
-
-Str255  gSerialFileName = ":Billy:Info";
-
 
 /**********************/
 /*     PROTOTYPES     */

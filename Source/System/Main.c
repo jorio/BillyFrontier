@@ -29,7 +29,7 @@ extern	short	gNumTerrainDeformations;
 extern	DeformationType	gDeformationList[];
 extern	long			gTerrainUnitWidth,gTerrainUnitDepth;
 extern	MetaObjectPtr			gBG3DGroupList[MAX_BG3D_GROUPS][MAX_OBJECTS_IN_GROUP];
-extern	Boolean		gGameIsRegistered,gSlowCPU, gPlayerToWinDuel, gSerialWasVerified;
+extern	Boolean		gGameIsRegistered,gSlowCPU, gPlayerToWinDuel;
 
 
 /****************************/
@@ -133,8 +133,7 @@ long		createdDirID;
 	iErr = FSMakeFSSpec(0, 0, ":Data:Images", &gDataSpec);
 	if (iErr)
 	{
-		DoAlertNum(133);
-		CleanQuit();
+		DoFatalAlert("Can't find Data folder.");
 	}
 
 
@@ -161,8 +160,6 @@ long		createdDirID;
 	InitDefaultPrefs();
 	LoadPrefs(&gGamePrefs);	
 
-	AutoSleepControl(false);							// don't let system sleep (mainly for OS X)
-
 
 		/* FIRST VERIFY SYSTEM BEFORE GOING TOO FAR */
 				
@@ -179,43 +176,6 @@ long		createdDirID;
 	OGL_Boot();
 
 
-			/* START QUICKTIME */
-			
-	EnterMovies();
-	
-
-
-			/************************************/
-            /* SEE IF GAME IS REGISTERED OR NOT */
-			/************************************/
-
-    CheckGameSerialNumber(false);
-
-
-		/**********************************/
-		/* SEE IF SHOULD DO VERSION CHECK */
-		/**********************************/
-
-	if (gGameIsRegistered)								// only do HTTP if running full version in registered mode
-	{
-		DateTimeRec	dateTime;
-		u_long		seconds, seconds2;
-	
-		GetTime(&dateTime);								// get date time
-		DateToSeconds(&dateTime, &seconds);			
-				
-		DateToSeconds(&gGamePrefs.lastVersCheckDate, &seconds2);			
-		
-		if ((seconds - seconds2) > 259000)				// see if 3 days have passed since last check
-		{
-			MyFlushEvents();
-			gGamePrefs.lastVersCheckDate = dateTime;	// update time
-			SavePrefs();
-			
-			ReadHTTPData_VersionInfo();					// do version check (also checks serial #'s)
-		}	
-	}
-	
 			/*********************************/
 			/* DO BOOT CHECK FOR SCREEN MODE */
 			/*********************************/
@@ -235,10 +195,10 @@ int			i;
 long 		keyboardScript, languageCode;
 
 		/* DETERMINE WHAT LANGUAGE IS ON THIS MACHINE */
-					
-	keyboardScript = GetScriptManagerVariable(smKeyScript);
-	languageCode = GetScriptVariable(keyboardScript, smScriptLang);			
-		
+
+	IMPLEMENT_ME_SOFT();
+	languageCode = langEnglish;		// TODO: get actual language
+
 	switch(languageCode)
 	{
 		case	langFrench:
@@ -274,22 +234,10 @@ long 		keyboardScript, languageCode;
 	gGamePrefs.screenHeight			= 480;
 	gGamePrefs.videoHz				= 0;
 	gGamePrefs.deepZ				= true;
-	gGamePrefs.lastVersCheckDate.year = 0;
 	gGamePrefs.hasConfiguredISpControls = false;
 	gGamePrefs.oldOSWarned 			= false;
 	gGamePrefs.anaglyph				=  false;
 	gGamePrefs.anaglyphColor		= true;
-	gGamePrefs.reserved[0] 			= 0;
-	gGamePrefs.reserved[1] 			= 0;				
-	gGamePrefs.reserved[2] 			= 0;
-	gGamePrefs.reserved[3] 			= 0;				
-	gGamePrefs.reserved[4] 			= 0;
-	gGamePrefs.reserved[5] 			= 0;				
-	gGamePrefs.reserved[6] 			= 0;				
-	gGamePrefs.reserved[7] 			= 0;	
-	
-	for (i = 0; i < MAX_HTTP_NOTES; i++)
-		gGamePrefs.didThisNote[i] = false;				
 }
 
 
@@ -305,17 +253,6 @@ int		i;
 u_long	oldScore;
 
 	gGameOver = gWonGame = gLostGame = false;
-
-	if (!gSerialWasVerified)							// check if hackers bypassed the reg verify - if so, de-register us
-	{
-		FSSpec	spec;
-		
-		gGameIsRegistered = false;
-
-		if (FSMakeFSSpec(gPrefsFolderVRefNum, gPrefsFolderDirID, gSerialFileName, &spec) == noErr)	// delete the serial # file
-			FSpDelete(&spec);
-		ExitToShell();
-	}
 
 
 			/***********************/

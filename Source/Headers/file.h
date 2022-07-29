@@ -80,15 +80,11 @@ typedef struct
 	double	videoHz;
 	Byte	language;
 	Boolean	deepZ;
-	//DateTimeRec	lastVersCheckDate;
-	Byte	didThisNote[MAX_HTTP_NOTES];
 	Boolean	hasConfiguredISpControls;
 	Boolean	oldOSWarned;
 	Boolean	anaglyph;
 	Boolean	anaglyphColor;
 	u_long	version;
-	
-	int		reserved[8];
 }PrefsType;
 
 
