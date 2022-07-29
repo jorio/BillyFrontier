@@ -4,11 +4,15 @@
 /*   By Brian Greenstone    */
 /****************************/
 
+#define aglGetError() IMPLEMENT_ME_SOFT()
+#define aglSetCurrentContext(junk) IMPLEMENT_ME()
+#define aglSwapBuffers(junk) IMPLEMENT_ME()
 
 /****************************/
 /*    EXTERNALS             */
 /****************************/
 
+#include <GL/glu.h>
 #include <SDL.h>
 #include "Pomme.h"
 #include 	<string.h>
@@ -37,8 +41,6 @@ extern	int				gStopPointNum;
 /****************************/
 /*    PROTOTYPES            */
 /****************************/
-
-static void TrueformSetupForOSX(void);
 
 static void OGL_CreateDrawContext(OGLViewDefType *viewDefPtr);
 static void OGL_SetStyles(OGLSetupInputType *setupDefPtr);
@@ -141,9 +143,6 @@ float	f;
 		gAnaglyphGreyTable[i] = sin(f) * 255.0f;
 		f += (PI/2.0) / 255.0f;
 	}
-
-	if (gOSX)
-		TrueformSetupForOSX();
 }
 
 
@@ -256,10 +255,13 @@ OGLSetupOutputType	*data;
 			
 	OGL_FreeFont();
 
+#if 1
+	IMPLEMENT_ME();
+#else
   	aglSetCurrentContext(nil);								// make context not current
    	aglSetDrawable(data->drawContext, nil);
 	aglDestroyContext(data->drawContext);					// nuke the AGL context
-
+#endif
 	
 		/* FREE MEMORY & NIL POINTER */
 		
@@ -284,11 +286,12 @@ GLint          attrib[] 		= {AGL_RGBA, AGL_DOUBLEBUFFER, SDL_GL_DEPTH_SIZE, 16, 
 GLint          attribDeepZ[] 	= {AGL_RGBA, AGL_DOUBLEBUFFER, AGL_DEPTH_SIZE, 32, AGL_ALL_RENDERERS, AGL_ACCELERATED, AGL_NO_RECOVERY, AGL_NONE};
 GLint          attrib2[] 		= {AGL_RGBA, AGL_DOUBLEBUFFER, AGL_DEPTH_SIZE, 16, AGL_ALL_RENDERERS, AGL_NONE};
 #endif
-SDL_GLContext agl_ctx;
 GLint			maxTexSize;
 static char			*s;
 
-#if 0
+#if 1
+	IMPLEMENT_ME();
+#else
 	gAGLWin = (AGLDrawable)gDisplayContextGrafPtr;
 
 
@@ -307,17 +310,14 @@ static char			*s;
 			DoFatalAlert("aglChoosePixelFormat failed!  Check that your 3D accelerator is OpenGL compliant, installed properly, and that you have the latest drivers.");
 		}
 	}
-#endif
 
 
 			/* CREATE AGL CONTEXT & ATTACH TO WINDOW */
-			
+
 	gAGLContext = aglCreateContext(fmt, nil);
 	if ((gAGLContext == nil) || (aglGetError() != AGL_NO_ERROR))
 		DoFatalAlert("OGL_CreateDrawContext: aglCreateContext failed!");
-		
-	agl_ctx = gAGLContext;
-		
+
 	ok = aglSetDrawable(gAGLContext, gAGLWin);
 	if ((!ok) || (aglGetError() != AGL_NO_ERROR))
 	{
@@ -343,6 +343,7 @@ static char			*s;
 			
 	aglDestroyPixelFormat(fmt);
 
+#endif
 
 			/* CLEAR ALL BUFFERS TO BLACK */
 			
@@ -748,9 +749,12 @@ do_anaglyph:
 	}
 					
 				/* SHOW BASIC DEBUG INFO */
-				
+
 	if (gDebugMode > 0)
 	{
+#if 1
+		IMPLEMENT_ME_SOFT();
+#else
 		int		y = 100;
 		int		mem = FreeMem();
 		
@@ -765,7 +769,7 @@ do_anaglyph:
 		OGL_DrawString("#tri:", 20,y);
 		OGL_DrawInt(gPolysThisFrame, 100,y);
 		y += 15;
-		
+#endif
 
 
 #if 0							// show supertile status grid
@@ -1778,12 +1782,14 @@ void OGL_DisableLighting(void)
 
 static void OGL_InitFont(void)
 {
-	SDL_GLContext agl_ctx = gAGLContext;
-	
+#if 1
+	IMPLEMENT_ME_SOFT();
+#else
 	gFontList = glGenLists(256);
  
     if (!aglUseFont(gAGLContext, kFontIDMonaco, bold, 9, 0, 256, gFontList))
 		DoFatalAlert("OGL_InitFont: aglUseFont failed");
+#endif
 }
 
 
@@ -1850,139 +1856,3 @@ Str255	s;
 	OGL_DrawString(s,x,y);
 
 }
-
-#pragma mark -
-
-
-/********************* OGL:  CHECK RENDERER **********************/
-//
-// Returns: true if renderer for the requested device complies, false otherwise
-//
-
-Boolean OGL_CheckRenderer (GDHandle hGD, long* vram)
-{
-AGLRendererInfo info, head_info;
-GLint 			dAccel = 0;
-Boolean			gotit = false;
-
-			/**********************/
-			/* GET FIRST RENDERER */
-			/**********************/
-			
-	head_info = aglQueryRendererInfo(&hGD, 1);
-	if(!head_info)
-	{
-		DoAlert("CheckRenderer: aglQueryRendererInfo failed");
-		DoFatalAlert("This problem occurs if you have run the faulty MacOS 9.2.1 updater.  To fix, simply delete all Nvidia extensions and reboot.");
-	}
-
-		/*******************************************/
-		/* SEE IF THERE IS AN ACCELERATED RENDERER */
-		/*******************************************/
-
-	info = head_info;
-			
-	while (info)
-	{
-		aglDescribeRenderer(info, AGL_ACCELERATED, &dAccel);
-		
-				/* GOT THE ACCELERATED RENDERER */
-				
-		if (dAccel)
-		{
-			gotit = true;
-			
-					/* GET VRAM */
-					
-			aglDescribeRenderer (info, AGL_TEXTURE_MEMORY, vram);						
-					
-			break;
-		}
-		
-		
-				/* TRY NEXT ONE */
-				
-		info = aglNextRendererInfo(info);
-	}
-
-
-
-			/***********/
-			/* CLEANUP */
-			/***********/
-			
-	aglDestroyRendererInfo(head_info);
-
-	return(gotit);
-}
-
-#pragma mark -
-
-
-/********************* TRUEFORM SETUP ************************/
-
-static void TrueformSetupForOSX(void)
-{
-CFBundleRef		openglBundle = NULL;
-OSStatus 		error = noErr;
-const Boolean 	kDoNotMakeANewOne = false;
-const Str255 	frameworkName = "OpenGL.framework";
-FSRefParam  	fileRefParam;
-FSRef			fileRef;
-CFURLRef 		url;
-
-	memset(&fileRefParam, 0, sizeof(fileRefParam));
-	memset(&fileRef, 0, sizeof(fileRef));
-
-	fileRefParam.ioNamePtr 	= frameworkName;
-	fileRefParam.newRef 	= &fileRef;
-
-		// Locate the OS's Frameworks folder
-		
-	error = FindFolder( kSystemDomain, kFrameworksFolderType, kDoNotMakeANewOne, &fileRefParam.ioVRefNum, &fileRefParam.ioDirID  );
-	if (error)
-		DoFatalAlert("TrueformSetupForOSX: Could not find the OS Frameworks folder");
-			
-		// Make an FSRef for the OpenGL framework within
-		
-	error = PBMakeFSRefSync(&fileRefParam); 
-	if (error)
-		DoFatalAlert("TrueformSetupForOSX: Could not find the OpenGL framework in the OS Frameworks folder.");
-
-	
-		// Create a url for the OpenGL Framework from the FSRef
-		
-	url = CFURLCreateFromFSRef(kCFAllocatorDefault, &fileRef);
-	if (url == nil)
-		DoFatalAlert("TrueformSetupForOSX: Could not create a URL for the OpenGL framework.");
-
-
-		// Load the OpenGL framework bundle 
-		
-    openglBundle = CFBundleCreate(kCFAllocatorDefault, url);
-	CFRelease(url);
-	
-	if (openglBundle == nil)
-		DoFatalAlert("TrueformSetupForOSX: Unable to load the OpenGL framework bundle.");
-
-	
-		// Get function pointers to the particular functions that we need:
-		
-    ptrTo_glPNTrianglesiATIX = (glPNTrianglesiATIXFUNC)CFBundleGetFunctionPointerForName(openglBundle, CFSTR("glPNTrianglesiATIX"));
-    if (ptrTo_glPNTrianglesiATIX == nil)
-    	DoFatalAlert("TrueformSetupForOSX: Unable to get the glPNTrianglesiATIX ptr");
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
