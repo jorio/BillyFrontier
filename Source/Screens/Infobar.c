@@ -24,7 +24,6 @@ extern	OGLSetupOutputType		*gGameViewInfoPtr;
 extern	PrefsType				gGamePrefs;
 extern	u_long					gGlobalMaterialFlags;
 extern	SpriteType				*gSpriteGroupList[];
-extern	AGLContext				gAGLContext;
 extern	int						gDuelKeySequenceLength, gDuelKeyBufferIndex,gCurrentArea,gDuelReflex;
 extern	Byte					gDuelKeySequence[], gDuelKeySequenceMode, gShootoutMode;
 extern	long					gNumSpritesInGroupList[];
@@ -582,8 +581,6 @@ static float	blinkTimer = 0;
 
 	if (n == MAX_REFLEX_DOTS)						// are we full?
 	{
-		AGLContext agl_ctx = gGameViewInfoPtr->drawContext;
-
 		blinkTimer -= gFramesPerSecondFrac;
 		if (blinkTimer <= 0.0f)
 			blinkTimer += .5f;
