@@ -10,13 +10,10 @@
 /***************/
 
 #include "game.h"
-//#include 	<DrawSprocket.h>
 #include	"window.h"
-//#include <FixMath.h>
-//#include <ToolUtils.h>
-//#include <appearance.h>
 #include "Pomme.h"
 
+extern	SDL_Window*			gSDLWindow;
 extern	NewObjectDefinitionType	gNewObjectDefinition;
 extern	ObjNode	*gCurrentNode,*gFirstNodePtr;
 extern	float	gFramesPerSecondFrac;
@@ -112,6 +109,7 @@ float		w,h;
 
 #if 1
 	IMPLEMENT_ME_SOFT();
+	SDL_GetWindowSize(gSDLWindow, &gGameWindowWidth, &gGameWindowHeight);
 #elif USE_DSP
 	PrepDrawSprockets();
 
@@ -152,11 +150,11 @@ float		w,h;
 		gDisplayContextGrafPtr = GetWindowPort(window);
 	}
 
-#endif		
-	
-	
 	gGameWindowWidth = r.right - r.left;
 	gGameWindowHeight = r.bottom - r.top;
+#endif		
+	
+
 	
 }
 
