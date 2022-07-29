@@ -9,8 +9,8 @@
 
 
 extern	void ShowSystemErr(long err);
-extern void	DoAlert(Str255);
-extern void	DoFatalAlert(Str255);
+void	DoAlert(const char* format, ...);
+POMME_NORETURN void DoFatalAlert(const char* format, ...);
 extern void	Wait(long);
 extern unsigned char	*NumToHex(unsigned short);
 extern unsigned char	*NumToHex2(unsigned long, short);
@@ -32,7 +32,6 @@ u_short	RandomRange(unsigned short min, unsigned short max);
 extern	void RegulateSpeed(short fps);
 extern	void CopyPStr(ConstStr255Param	inSourceStr, StringPtr	outDestStr);
 extern	void ShowSystemErr_NonFatal(long err);
-void DoAlertNum(int n);
 void CalcFramesPerSecond(void);
 Boolean IsPowerOf2(int num);
 float RandomFloat2(void);

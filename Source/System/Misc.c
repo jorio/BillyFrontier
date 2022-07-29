@@ -15,6 +15,8 @@
 //#include <timer.h>
 //#include 	<DrawSprocket.h>
 #include <string.h>
+#include <stdio.h>
+#include <stdarg.h>
 #include "game.h"
 #include "Pomme.h"
 
@@ -127,62 +129,37 @@ Str255		numStr;
 
 /*********************** DO ALERT *******************/
 
-void DoAlert(Str255 s)
+void DoAlert(const char* format, ...)
 {
-	GammaOn();
-
 	Enter2D(true);
 
-	MyFlushEvents();
-	UseResFile(gMainAppRezFile);
-	MyFlushEvents();
-	ParamText(s,NIL_STRING,NIL_STRING,NIL_STRING);
-	NoteAlert(ERROR_ALERT_ID,nil);
+	char message[1024];
+	va_list args;
+	va_start(args, format);
+	vsnprintf(message, sizeof(message), format, args);
+	va_end(args);
 
-//	if (gOSX)
-//		DebugStr("DoAlert has been called");
-	
+	printf("CMR Alert: %s\n", message);
+	SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "Billy Frontier", message, /*gSDLWindow*/NULL);
+
 	Exit2D();
-	
-	HideCursor();
 }
 
 
-/*********************** DO ALERT NUM *******************/
-
-void DoAlertNum(int n)
-{
-	/*if (gDisplayContext)
-		GammaOn();*/
-
-	Enter2D(true);
-
-	NoteAlert(n,nil);
-	
-	Exit2D();
-	
-}
-
-
-		
 /*********************** DO FATAL ALERT *******************/
 
-void DoFatalAlert(Str255 s)
+void DoFatalAlert(const char* format, ...)
 {
-OSErr	iErr;
-
-	/*if (gDisplayContext)
-		GammaOn();*/
-
 	Enter2D(true);
-	
-	UseResFile(gMainAppRezFile);
 
-	ParamText(s,NIL_STRING,NIL_STRING,NIL_STRING);
-	iErr = NoteAlert(ERROR_ALERT_ID,nil);
+	char message[1024];
+	va_list args;
+	va_start(args, format);
+	vsnprintf(message, sizeof(message), format, args);
+	va_end(args);
 
-//	if (gOSX)
-//		DebugStr("DoFatalAlert has been called");
+	printf("CMR Fatal Alert: %s\n", message);
+	SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "Billy Frontier", message, /*gSDLWindow*/NULL);
 
 	Exit2D();
 	CleanQuit();
