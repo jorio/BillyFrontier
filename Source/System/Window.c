@@ -305,8 +305,12 @@ try_again:
 	
 #endif
 	gGammaFadePercent = 100.0f;	
-#if ALLOW_FADE	
+#if ALLOW_FADE
+#if 1
+	IMPLEMENT_ME_SOFT();
+#else
 	DSpContext_FadeGamma(MONITORS_TO_FADE,100,nil);
+#endif
 #else
 	//DSpContext_FadeGamma(gDisplayContext,100,nil);
 #endif
@@ -420,7 +424,9 @@ OSStatus 		theError;
 	
 	if (gLoadedDrawSprocket)
 	{
+#if 0
 		theError = DSpShutdown();
+#endif
 		gLoadedDrawSprocket = false;
 	}
 	
@@ -517,6 +523,10 @@ float	fps = gFramesPerSecondFrac;
 void GameScreenToBlack(void)
 {
 Rect	r;
+
+#if 1
+	IMPLEMENT_ME_SOFT();
+#else
 	
 	if (!gDisplayContextGrafPtr)
 		return;	
@@ -526,6 +536,7 @@ Rect	r;
 	
 	GetPortBounds(gDisplayContextGrafPtr, &r);
 	EraseRect(&r);
+#endif
 }
 
 
@@ -537,7 +548,11 @@ Rect	r;
 void Enter2D(Boolean pauseDSp)
 {
 	InitCursor();
-	MyFlushEvents();	
+	MyFlushEvents();
+
+#if 1
+	IMPLEMENT_ME_SOFT();
+#else
 
 	g2DStackDepth++;
 	if (g2DStackDepth > 1)						// see if already in 2D
@@ -567,7 +582,7 @@ void Enter2D(Boolean pauseDSp)
 		//DSpContext_SetState(gDisplayContext, kDSpContextState_Paused);		
 		gDisplayContextGrafPtr = nil;
 	}
-	
+#endif
 }
 
 
@@ -620,52 +635,6 @@ void Exit2D(void)
 
 
 #pragma mark -
-
-/*********************** DUMP GWORLD 2 **********************/
-//
-//    copies to a destination RECT
-//
-
-void DumpGWorld2(GWorldPtr thisWorld, WindowPtr thisWindow,Rect *destRect)
-{
-PixMapHandle pm;
-GDHandle		oldGD;
-GWorldPtr		oldGW;
-Rect			r;
-
-	DoLockPixels(thisWorld);
-
-	GetGWorld (&oldGW,&oldGD);
-	pm = GetGWorldPixMap(thisWorld);	
-	if ((pm == nil) | (*pm == nil) )
-		DoAlert("PixMap Handle or Ptr = Null?!");
-
-	SetPort(GetWindowPort(thisWindow));
-
-	ForeColor(blackColor);
-	BackColor(whiteColor);
-
-	GetPortBounds(thisWorld, &r);
-				
-	/*CopyBits((BitMap*)*pm, GetPortBitMapForCopyBits(GetWindowPort(thisWindow)),
-			 &r,
-			 destRect,
-			 srcCopy, 0);*/
-
-	SetGWorld(oldGW,oldGD);								// restore gworld
-}
-
-
-/******************* DO LOCK PIXELS **************/
-
-void DoLockPixels(GWorldPtr world)
-{
-PixMapHandle pm;
-	
-	pm = GetGWorldPixMap(world);
-	if (LockPixels(pm) == false)
-		DoFatalAlert("PixMap Went Bye,Bye?!");
-}
 
 
 /********************** WAIT **********************/

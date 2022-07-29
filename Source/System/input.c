@@ -238,9 +238,13 @@ u_short	pauseKey;
 	{
 		Boolean o = gISpActive;
 		TurnOffISp();
-		
+
+#if 1
+		IMPLEMENT_ME_SOFT();
+#else
 		if (gAGLContext)
 			aglSetDrawable(gAGLContext, nil);			// diable gl
+#endif
 				
 		do
 		{

@@ -13,14 +13,7 @@ extern	OSStatus DSpSetWindowToFront(WindowRef pWindow);		// DSp hack not in head
 #endif
 
 extern void	InitWindowStuff(void);
-extern void	DumpGWorld2(GWorldPtr, WindowPtr, Rect *);
-extern void	DoLockPixels(GWorldPtr);
-#if 0
-pascal void DoBold (DialogPtr dlogPtr, short item);
-pascal void DoOutline (DialogPtr dlogPtr, short item);
-#endif
 extern	void MakeFadeEvent(Boolean	fadeIn);
-void DumpGWorld2(GWorldPtr thisWorld, WindowPtr thisWindow,Rect *destRect);
 
 extern	void CleanupDisplay(void);
 extern	void GammaFadeOut(void);
@@ -29,7 +22,6 @@ extern	void GammaOn(void);
 
 extern	void GameScreenToBlack(void);
 
-void DoLockPixels(GWorldPtr world);
 void DoScreenModeDialog(void);
 
 void Wait(long ticks);
