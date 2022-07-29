@@ -11,7 +11,6 @@
 
 #include "game.h"
 #include "3dmath.h"
-#include "internet.h"
 
 extern	float				gFramesPerSecondFrac,gFramesPerSecond;
 extern	FSSpec		gDataSpec;

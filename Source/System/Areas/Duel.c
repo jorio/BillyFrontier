@@ -13,7 +13,6 @@
 #include "window.h"
 #include "3dmath.h"
 #include "infobar.h"
-#include "internet.h"
 
 extern	Boolean			gDrawLensFlare,gDisableHiccupTimer, gPlayerIsDead;
 extern	NewObjectDefinitionType	gNewObjectDefinition;

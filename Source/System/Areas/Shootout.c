@@ -13,7 +13,6 @@
 #include "window.h"
 #include "3dmath.h"
 #include "infobar.h"
-#include "internet.h"
 
 extern	int				gGameWindowWidth, gGameWindowHeight;
 extern	Boolean			gDrawLensFlare,gDisableHiccupTimer, gPlayerIsDead;
