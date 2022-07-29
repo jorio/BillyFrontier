@@ -16,6 +16,7 @@
 #include "3dmath.h"
 #include "infobar.h"
 
+extern	SDL_GLContext	gAGLContext;
 extern	Boolean			gMuteMusicFlag;
 extern	float			gCurrentAspectRatio;
 extern	SpriteType		*gSpriteGroupList[];
@@ -383,7 +384,7 @@ MOMaterialData	matData;
 			/* CREATE A TEXTURE OBJECT */
 			/***************************/
 
-//	matData.setupInfo		= setupInfo;
+	matData.drawContext		= gAGLContext;
 	matData.flags			= BG3D_MATERIALFLAG_TEXTURED|BG3D_MATERIALFLAG_CLAMP_U|BG3D_MATERIALFLAG_CLAMP_V;
 	matData.diffuseColor	= (OGLColorRGBA) {1,1,1,1};
 	matData.numMipmaps		= 1;
@@ -395,6 +396,7 @@ MOMaterialData	matData;
 	matData.textureName[0]	= textureName;
 
 	picData->material		= MO_CreateNewObjectOfType(MO_TYPE_MATERIAL, 0, &matData);
+	OGL_CheckError();
 #else
 GWorldPtr	gworld;
 int			width,height,depth,cellNum,numCells;
@@ -1250,7 +1252,7 @@ u_long				matFlags;
 				
 	if (matFlags & BG3D_MATERIALFLAG_TEXTURED)
 	{
-		if (matData->setupInfo != setupInfo)						// make sure texture is loaded for this draw context
+		if (matData->drawContext != gAGLContext)						// make sure texture is loaded for this draw context
 			DoFatalAlert("MO_DrawMaterial: texture is not assigned to this draw context");
 	
 		
@@ -2526,7 +2528,7 @@ MOMaterialObject	*obj;
 
 		/* INIT NEW MATERIAL DATA */
 
-	data.setupInfo				= setupInfo;							// remember which draw context this material is assigned to
+	data.drawContext			= gAGLContext;							// remember which draw context this material is assigned to
 	data.flags 					= BG3D_MATERIALFLAG_TEXTURED;
 	data.width					= width;
 	data.height					= height;

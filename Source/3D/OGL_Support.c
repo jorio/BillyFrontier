@@ -542,7 +542,7 @@ void OGL_DrawScene(OGLSetupOutputType *setupInfo, void (*drawRoutine)(OGLSetupOu
 	if (!setupInfo->isActive)									
 		DoFatalAlert("OGL_DrawScene isActive == false");
 
-  	aglSetCurrentContext(setupInfo->drawContext);			// make context active
+	SDL_GL_MakeCurrent(gSDLWindow, gAGLContext);			// make context active
 
 
 			/* INIT SOME STUFF */
@@ -592,7 +592,7 @@ void OGL_DrawScene(OGLSetupOutputType *setupInfo, void (*drawRoutine)(OGLSetupOu
 	}
 	else
 		glClear(GL_DEPTH_BUFFER_BIT);
-
+	OGL_CheckError();
 
 			/*************************/
 			/* SEE IF DOING ANAGLYPH */
@@ -626,7 +626,7 @@ do_anaglyph:
 			/* GET UPDATED GLOBAL COPIES OF THE VARIOUS MATRICES */
 
 	OGL_Camera_SetPlacementAndUpdateMatrices(setupInfo);
-
+	OGL_CheckError();
 
 
 			/* CALL INPUT DRAW FUNCTION */
@@ -939,7 +939,6 @@ Ptr						imageFileData = nil;
 
 			/* LOAD TEXTURE */
 
-	GAME_ASSERT(!OGL_CheckError());
 	GLuint glTextureName = OGL_TextureMap_Load(
 			pixelData,
 			width,
@@ -947,7 +946,7 @@ Ptr						imageFileData = nil;
 			GL_RGBA,
 			internalFormat,
 			GL_UNSIGNED_BYTE);
-	GAME_ASSERT(!OGL_CheckError());
+	OGL_CheckError();
 
 			/* CLEAN UP */
 
@@ -1226,8 +1225,6 @@ u_long	a;
  
 void OGL_Texture_SetOpenGLTexture(GLuint textureName)
 {
-	SDL_GLContext agl_ctx = gAGLContext;
-
 	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
 	if (OGL_CheckError())
 		DoFatalAlert("OGL_Texture_SetOpenGLTexture: glPixelStorei failed!");
@@ -1326,7 +1323,6 @@ void OGL_Camera_SetPlacementAndUpdateMatrices(OGLSetupOutputType *setupInfo)
 OGLCameraPlacement	*placement;
 int		w, h, i, x, y;
 OGLLightDefType	*lights;
-SDL_GLContext agl_ctx = gAGLContext;
 
 				/* SET VIEWPORT */
 
@@ -1409,6 +1405,7 @@ SDL_GLContext agl_ctx = gAGLContext;
 	OGLMatrix4x4_Multiply(&gWorldToFrustumMatrix, &gFrustumToWindowMatrix, &gWorldToWindowMatrix);
 
 	UpdateListenerLocation(setupInfo);
+	OGL_CheckError();
 }
 
 /************** OGL: CAMERA SET PLACEMENT & UPDATE MATRICES FOR PICKING **********************/

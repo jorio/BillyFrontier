@@ -719,7 +719,7 @@ do_again:
 		gFramesPerSecond = MIN_FPS;
 	else
 	if (gFramesPerSecond > MAX_FPS)					// if over maximum then wait
-		goto do_again;
+		gFramesPerSecond = MAX_FPS;//goto do_again;
 		
 	gFramesPerSecondFrac = 1.0f/gFramesPerSecond;		// calc fractional for multiplication
 

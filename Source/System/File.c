@@ -14,6 +14,7 @@
 #include 	"bones.h"
 #include 	"lzss.h"
 
+extern	SDL_GLContext	gAGLContext;
 extern	short			gMainAppRezFile,gCurrentSong;
 extern	short			gNumTerrainItems;
 extern	short			gPrefsFolderVRefNum;
@@ -1076,7 +1077,7 @@ Ptr						tempBuffer24 = nil;
 
 			/* INIT NEW MATERIAL DATA */
 
-		matData.setupInfo				= setupInfo;								// remember which draw context this material is assigned to
+		matData.drawContext				= gAGLContext;								// remember which draw context this material is assigned to
 		matData.flags 					= 	BG3D_MATERIALFLAG_CLAMP_U|
 											BG3D_MATERIALFLAG_CLAMP_V|
 											BG3D_MATERIALFLAG_TEXTURED;

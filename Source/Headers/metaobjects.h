@@ -82,7 +82,7 @@ typedef struct
 
 typedef struct
 {
-	OGLSetupOutputType *setupInfo;					// materials are draw context relative, so remember which context we're using now
+	SDL_GLContext	drawContext;					// materials are draw context relative, so remember which context we're using now
 	
 	u_long			flags;	
 	OGLColorRGBA	diffuseColor;					// rgba diffuse color

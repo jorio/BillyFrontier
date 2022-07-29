@@ -14,7 +14,7 @@
 #include "3dmath.h"
 #include "infobar.h"
 
-
+extern	SDL_GLContext	gAGLContext;
 extern	float	gCurrentAspectRatio,gGlobalTransparency;
 extern	int		gPolysThisFrame;
 extern	Boolean			gSongPlayingFlag,gCanDo512,gLowMemMode,gMuteMusicFlag;
@@ -237,7 +237,7 @@ MOMaterialData	matData;
 				/* CREATE NEW TEXTURE OBJECT */
 				/*****************************/
 
-		matData.setupInfo		= setupInfo;
+		matData.drawContext		= gAGLContext;
 		matData.flags			= BG3D_MATERIALFLAG_TEXTURED;
 		matData.diffuseColor.r	= 1;
 		matData.diffuseColor.g	= 1;
