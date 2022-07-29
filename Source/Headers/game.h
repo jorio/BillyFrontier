@@ -63,3 +63,10 @@
 #include "miscscreens.h"
 #include "pick.h"
 #include "internet.h"
+
+#if _DEBUG
+#define IMPLEMENT_ME_SOFT() printf("IMPLEMENT ME: %s:%d\n", __func__, __LINE__)
+#else
+#define IMPLEMENT_ME_SOFT()
+#endif
+#define IMPLEMENT_ME() DoFatalAlert("IMPLEMENT ME: %s:%d", __func__, __LINE__)
