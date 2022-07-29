@@ -90,8 +90,6 @@ typedef void(*glPNTrianglesiATIXFUNC)(GLenum pname, GLint param);
 static glPNTrianglesiATIXFUNC 	ptrTo_glPNTrianglesiATIX= nil;
 
 
-Boolean			gCanDo512 = true;
-
 SDL_GLContext		gAGLContext = nil;
 
 static GLuint 			gFontList;
@@ -340,10 +338,7 @@ static void OGL_CreateDrawContext(OGLViewDefType *viewDefPtr)
 			/* SEE IF SUPPORT 512X512 */
 
 	glGetIntegerv(GL_MAX_TEXTURE_SIZE, &maxTexSize);
-	if (maxTexSize < 512)
-		gCanDo512 = false;
-	else
-		gCanDo512 = true;
+	GAME_ASSERT_MESSAGE(maxTexSize >= 512, "Your graphics card doesn't support 512x512 textures.");
 
 	GAME_ASSERT(!OGL_CheckError());
 }
