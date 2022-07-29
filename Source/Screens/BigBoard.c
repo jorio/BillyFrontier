@@ -48,7 +48,7 @@ static void DrawDarkenPane(ObjNode *theNode, const OGLSetupOutputType *setupInfo
 static void MoveDarkenPane(ObjNode *theNode);
 static void MoveCursor(ObjNode *theNode);
 static void MoveBigBoardtem(ObjNode *theNode);
-static void MoveBulletHole(ObjNode *theNode);
+void MoveBulletHole(ObjNode *theNode);
 
 
 /****************************/
