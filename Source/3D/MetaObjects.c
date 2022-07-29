@@ -5,6 +5,9 @@
 /****************************/
 
 
+#define glClientActiveTextureARB(x) IMPLEMENT_ME_SOFT()
+#define glActiveTextureARB(x) IMPLEMENT_ME_SOFT()
+
 /****************************/
 /*    EXTERNALS             */
 /****************************/
@@ -369,6 +372,8 @@ static void SetMetaObjectToMatrix(MOMatrixObject *matObj, OGLMatrix4x4 *inData)
 
 static void SetMetaObjectToPicture(MOPictureObject *pictObj, OGLSetupOutputType *setupInfo, FSSpec *inData, int destPixelFormat)
 {
+	IMPLEMENT_ME();
+#if 0
 GWorldPtr	gworld;
 int			width,height,depth,cellNum,numCells;
 int			horizCellSize, vertCellSize,segRow,segCol;
@@ -599,7 +604,7 @@ Rect		r;
 			
 	DisposeGWorld (gworld);	
 	SafeDisposePtr(buffer);	
-	
+#endif
 }
 
 
@@ -687,6 +692,8 @@ static void SetMetaObjectToPickID(MOPickIDObject *pickObj, u_long pickID)
 
 void MO_SetPictureObjectCoordsToMouse(OGLSetupOutputType *info, MOPictureObject *obj)
 {
+#if 1
+	IMPLEMENT_ME();
 MOPictureData	*picData = &obj->objectData;				//  point to pic obj's data
 Point			pt;
 int				x,y,w,h;
@@ -701,7 +708,7 @@ int				x,y,w,h;
 	
 	picData->drawCoord.x = -1.0f + (float)pt.h / (float)w * 2.0f;
 	picData->drawCoord.y = 1.0f - (float)pt.v / (float)h * 2.0f;
-
+#endif
 }
 
 
@@ -2108,6 +2115,9 @@ float				d;
 
 MOMaterialObject *MO_GetTextureFromFile(FSSpec *spec, OGLSetupOutputType *setupInfo, int destPixelFormat)
 {
+	IMPLEMENT_ME_SOFT();
+	return NULL;
+#if 0
 MetaObjectPtr	obj;
 MOMaterialData	matData;
 int				width,height,depth,destDepth;
@@ -2255,6 +2265,7 @@ Rect			r;
 	SafeDisposePtr(buffer);									// dispose of our copy of the buffer
 	
 	return(obj);
+#endif
 }
 
 /*************** MO: GEOMETRY OFFSET UVS *********************/
@@ -2404,6 +2415,9 @@ MOVertexArrayObject	*vObj;
 
 MOMaterialObject *MO_LoadTextureObjectFromFile(OGLSetupOutputType *setupInfo, FSSpec *spec, Boolean useAlpha)
 {
+	IMPLEMENT_ME_SOFT();
+	return NULL;
+#if 0
 GWorldPtr		gworld = nil;
 OSErr			iErr;
 Rect			r;
@@ -2484,6 +2498,7 @@ MOMaterialObject	*obj;
 	DisposeGWorld(gworld);
 	
 	return(obj);
+#endif
 }
 
 
