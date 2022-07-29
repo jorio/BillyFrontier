@@ -9,16 +9,10 @@
 /* EXTERNALS   */
 /***************/
 
-
-//#include <DriverServices.h>
-//#include <osutils.h>
-//#include <timer.h>
-//#include 	<DrawSprocket.h>
 #include <string.h>
 #include <stdio.h>
 #include <stdarg.h>
 #include "game.h"
-#include "Pomme.h"
 
 extern	short		gMainAppRezFile;
 extern	Boolean		gISPInitialized,gOSX,gG4;
@@ -187,9 +181,11 @@ static Boolean	beenHere = false;
 
 	GameScreenToBlack();
 	CleanupDisplay();								// unloads Draw Sprocket
-    
+
+#if 0
 	if (gISPInitialized)							// unload ISp
 		ISpShutdown();
+#endif
 
 	UseResFile(gMainAppRezFile);
 	
@@ -532,43 +528,6 @@ Ptr		p = ptr;
 
 #pragma mark -
 
-/******************* COPY P STRING ********************/
-
-void CopyPString(Str255 from, Str255 to)
-{
-short	i,n;
-
-	n = from[0];			// get length
-	
-	for (i = 0; i <= n; i++)
-		to[i] = from[i];
-
-}
-
-
-/***************** P STRING TO C ************************/
-
-void PStringToC(char *pString, char *cString)
-{
-Byte	pLength,i;
-
-	pLength = pString[0];
-	
-	for (i=0; i < pLength; i++)					// copy string
-		cString[i] = pString[i+1];
-		
-	cString[pLength] = 0x00;					// add null character to end of c string
-}
-
-
-/***************** DRAW C STRING ********************/
-
-void DrawCString(char *string)
-{
-	while(*string != 0x00)
-		DrawChar(*string++);
-}
-
 
 /******************* VERIFY SYSTEM ******************/
 
@@ -738,31 +697,6 @@ carbonerr:
 }
 
 
-/******************** REGULATE SPEED ***************/
-
-void RegulateSpeed(short fps)
-{
-short	n;
-static oldTick = 0;
-	
-	n = 60 / fps;
-	while ((TickCount() - oldTick) < n) {}			// wait for n ticks
-	oldTick = TickCount();							// remember current time
-}
-
-
-/************* COPY PSTR **********************/
-
-void CopyPStr(ConstStr255Param	inSourceStr, StringPtr	outDestStr)
-{
-short	dataLen = inSourceStr[0] + 1;
-	
-	BlockMoveData(inSourceStr, outDestStr, dataLen);
-	outDestStr[0] = dataLen - 1;
-}
-
-
-
 
 
 #pragma mark -
@@ -776,6 +710,7 @@ short	dataLen = inSourceStr[0] + 1;
 
 void CalcFramesPerSecond(void)
 {
+	IMPLEMENT_ME();
 #if 0
 static float		wakeTimer =0;
 AbsoluteTime currTime,deltaTime;
@@ -842,12 +777,13 @@ int		i;
 
 void MyFlushEvents(void)
 {
+	IMPLEMENT_ME_SOFT();
+#if 0
 //EventRecord 	theEvent;
 
 	FlushEvents (everyEvent, REMOVE_ALL_EVENTS);	
 	FlushEventQueue(GetMainEventQueue());
 
-#if 0
 			/* POLL EVENT QUEUE TO BE SURE THINGS ARE FLUSHED OUT */
 			
 	while (GetNextEvent(mDownMask|mUpMask|keyDownMask|keyUpMask|autoKeyMask, &theEvent));
@@ -857,33 +793,3 @@ void MyFlushEvents(void)
 	FlushEventQueue(GetMainEventQueue());
 #endif	
 }
-
-
-#pragma mark -
-
-
-
-/******************** PSTR CAT / COPY *************************/
-
-StringPtr PStrCat(StringPtr dst, ConstStr255Param   src)
-{
-SInt16 size = src[0];
-	
-	if (0xff - dst[0] < size)
-		size = 0xff - dst[0];
-	
-	BlockMoveData(&src[1], &dst[dst[0]], size);
-	dst[0] = dst[0] + size;
-	
-	return dst;
-}
-
-StringPtr PStrCopy(StringPtr dst, ConstStr255Param   src)
-{
-	dst[0] = src[0]; BlockMoveData(&src[1], &dst[1], src[0]); return dst;
-}
-
-
-
-
-
