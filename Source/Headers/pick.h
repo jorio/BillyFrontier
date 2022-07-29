@@ -31,6 +31,5 @@ void OGL_GetWorldRayAtScreenPoint(OGLPoint2D *screenCoord, OGLRay *ray, const OG
 Boolean	OGL_RayIntersectsTriangle(OGLPoint3D *trianglePoints, OGLRay *ray, OGLPoint3D *intersectPt);
 
 ObjNode *OGL_DoLineSegmentCollision(OGLPoint3D *p1, OGLPoint3D *p2, OGLPoint3D *worldHitCoord, OGLVector3D *worldHitFaceNormal, u_long cTypes);
-void MO_LineSegTestGeometry_VertexArray(MOVertexArrayData *data);
 
 Boolean OGL_DoesRayIntersectTrianglePlane(const OGLPoint3D	triWorldPoints[], OGLRay *ray, OGLPlaneEquation	*planeEquation);
