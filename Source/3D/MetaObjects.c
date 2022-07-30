@@ -1408,10 +1408,10 @@ float			cellWidth, cellHeight, ratio, offset;
 			MO_DrawMaterial(picData->material, setupInfo);		// submit material #0
 
 			glBegin(GL_QUADS);				
-			glTexCoord2f(0,0);	glVertex3f(x, y + cellHeight,z);
-			glTexCoord2f(1,0);	glVertex3f(x + cellWidth, y + cellHeight,z);
-			glTexCoord2f(1,1);	glVertex3f(x + cellWidth, y,z);
-			glTexCoord2f(0,1);	glVertex3f(x, y, z);
+			glTexCoord2f(0,1);	glVertex3f(x, y + cellHeight,z);
+			glTexCoord2f(1,1);	glVertex3f(x + cellWidth, y + cellHeight,z);
+			glTexCoord2f(1,0);	glVertex3f(x + cellWidth, y,z);
+			glTexCoord2f(0,0);	glVertex3f(x, y, z);
 			glEnd();	
 						
 			x += cellWidth;			

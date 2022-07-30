@@ -456,7 +456,6 @@ Boolean			noFog = false;
 Boolean			clipAlpha= false;
 const Boolean 	isPicking = gIsPicking;
 float			cameraX, cameraZ;
-const static OGLColorRGBA	white = {1,1,1};	
 int				i;
 
 
