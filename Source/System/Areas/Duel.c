@@ -183,7 +183,6 @@ void PlayDuel(Byte difficulty)
 					
 	MyFlushEvents();
 	CleanupDuel();
-	GameScreenToBlack();	
 }
 
 

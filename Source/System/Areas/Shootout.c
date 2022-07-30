@@ -148,8 +148,6 @@ void PlayShootout(void)
 	OGL_FadeOutScene(DefaultDrawCallback, KeepTerrainAlive);
 	MyFlushEvents();
 	CleanupShootout();
-	GameScreenToBlack();	
-
 }
 
 

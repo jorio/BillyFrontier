@@ -126,7 +126,6 @@ void PlayStampede(void)
 	OGL_FadeOutScene(DefaultDrawCallback, KeepTerrainAlive);
 	MyFlushEvents();
 	CleanupStampede();
-	GameScreenToBlack();
 }
 
 

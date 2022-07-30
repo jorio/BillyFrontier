@@ -231,12 +231,6 @@ static void DrawFadePane(ObjNode* theNode, const OGLSetupOutputType* setupInfo)
 	OGL_PopState();
 }
 
-/************************ GAME SCREEN TO BLACK ************************/
-
-void GameScreenToBlack(void)
-{
-}
-
 
 /************************** ENTER 2D *************************/
 

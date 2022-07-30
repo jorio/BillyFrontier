@@ -136,7 +136,6 @@ static Boolean	beenHere = false;
 		ShutdownSound();								// cleanup sound stuff
 	}
 
-	GameScreenToBlack();
 	CleanupDisplay();								// unloads Draw Sprocket
 
 #if 0

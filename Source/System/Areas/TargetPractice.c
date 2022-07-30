@@ -125,7 +125,6 @@ void PlayTargetPractice(void)
 	OGL_FadeOutScene(DefaultDrawCallback, NULL);
 	MyFlushEvents();
 	CleanupTargetPractice();
-	GameScreenToBlack();	
 	
 	
 			/* DID WE WIN? */
