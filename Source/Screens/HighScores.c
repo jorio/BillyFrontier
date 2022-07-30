@@ -267,9 +267,11 @@ OGLSetupInputType	viewDef;
 		
 			/* CREATE BACKGROUND OBJECT */
 
+	const char* backgroundImagePath = NULL;
+
 	if (gJustShowScores)
 	{
-		FSMakeFSSpec(gDataSpec.vRefNum, gDataSpec.parID, ":images:highscores", &spec);
+		backgroundImagePath = ":images:HighScores.jpg";
 		gShowScoreDelay = 0;
 		gFinalScoreAlpha = 1.0f;
 	}
@@ -279,16 +281,12 @@ OGLSetupInputType	viewDef;
 		gFinalScoreAlpha = 0.0f;
 		
 		if (gWonGame)
-			FSMakeFSSpec(gDataSpec.vRefNum, gDataSpec.parID, ":images:WinScreen", &spec);
+			backgroundImagePath = ":images:WinScreen.jpg";
 		else
-			FSMakeFSSpec(gDataSpec.vRefNum, gDataSpec.parID, ":images:LoseScreen", &spec);
+			backgroundImagePath = ":images:LoseScreen.jpg";
 	}
-	
-	
-	gBackgoundPicture = MO_CreateNewObjectOfType(MO_TYPE_PICTURE, (uintptr_t)gGameViewInfoPtr, &spec);
-				
-				
 
+	gBackgoundPicture = MO_CreateNewObjectOfType(MO_TYPE_PICTURE, (uintptr_t)gGameViewInfoPtr, backgroundImagePath);
 }
 
 

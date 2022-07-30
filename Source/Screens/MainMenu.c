@@ -262,9 +262,7 @@ FSSpec				spec;
 
 						/* MAKE BACKGROUND PICTURE OBJECT */
 
-				if (FSMakeFSSpec(gDataSpec.vRefNum, gDataSpec.parID, ":images:MainMenu", &spec))
-					DoFatalAlert("SetupMainMenuScreen: background pict not found.");
-				gBackgoundPicture = MO_CreateNewObjectOfType(MO_TYPE_PICTURE, (uintptr_t)gGameViewInfoPtr, &spec);
+				gBackgoundPicture = MO_CreateNewObjectOfType(MO_TYPE_PICTURE, (uintptr_t)gGameViewInfoPtr, ":images:MainMenu.png");
 
 
 						/* MAKE MENU ITEMS */
