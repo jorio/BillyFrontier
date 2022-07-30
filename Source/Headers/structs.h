@@ -272,7 +272,7 @@ struct ObjNode
 			
 	void			(*MoveCall)(struct ObjNode *);			// pointer to object's move routine
 	void			(*SplineMoveCall)(struct ObjNode *);	// pointer to object's spline move routine
-	void			(*CustomDrawFunction)(struct ObjNode *, const OGLSetupOutputType *setupInfo);// pointer to object's custom draw function
+	void			(*CustomDrawFunction)(struct ObjNode *);// pointer to object's custom draw function
 	void			(*HitByBulletCallback)(struct ObjNode *, struct ObjNode *, const OGLPoint3D *);	// pointer to object's pick/hit callback
 	
 			/* PHYSICS */

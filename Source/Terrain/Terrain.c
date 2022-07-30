@@ -914,7 +914,7 @@ long	i;
 // This is the main call to update the screen.  It draws all ObjNode's and the terrain itself
 //
 
-void DrawTerrain(ObjNode *theNode, const OGLSetupOutputType *setupInfo)
+void DrawTerrain(ObjNode *theNode)
 {
 int				r,c;
 int				i,unique;
@@ -992,7 +992,7 @@ OGLColorRGBA_Byte	*temp;
 
 					/* SUBMIT THE TEXTURE */
 													
-				MO_DrawMaterial(gSuperTileTextureObjects[unique], setupInfo);
+				MO_DrawMaterial(gSuperTileTextureObjects[unique]);
 					
 
 					/* SUBMIT THE GEOMETRY */
@@ -1005,7 +1005,7 @@ OGLColorRGBA_Byte	*temp;
 				}
 #endif				
 								
-				MO_DrawGeometry_VertexArray(gSuperTileMemoryList[i].meshData, setupInfo);
+				MO_DrawGeometry_VertexArray(gSuperTileMemoryList[i].meshData);
 				gNumSuperTilesDrawn++;
 				
 #if ALLOW_TERRAIN_TRUFORM		

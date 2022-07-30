@@ -242,25 +242,25 @@ MetaObjectPtr MO_CreateNewObjectOfType(uint32_t type, uintptr_t subType, void *d
 MetaObjectPtr MO_GetNewReference(MetaObjectPtr mo);
 void MO_AppendToGroup(MOGroupObject *group, MetaObjectPtr newObject);
 void MO_AttachToGroupStart(MOGroupObject *group, MetaObjectPtr newObject);
-void MO_DrawGeometry_VertexArray(const MOVertexArrayData *data, const OGLSetupOutputType *setupInfo);
-void MO_DrawGroup(const MOGroupObject *object, const OGLSetupOutputType *setupInfo);
-void MO_DrawObject(const MetaObjectPtr object, const OGLSetupOutputType *setupInfo);
-void MO_DrawMaterial(MOMaterialObject *matObj, const OGLSetupOutputType *setupInfo);
-void MO_DrawMatrix(const MOMatrixObject *matObj, const OGLSetupOutputType *setupInfo);
-void MO_DrawPicture(const MOPictureObject *picObj, const OGLSetupOutputType *setupInfo);
+void MO_DrawGeometry_VertexArray(const MOVertexArrayData *data);
+void MO_DrawGroup(const MOGroupObject *object);
+void MO_DrawObject(const MetaObjectPtr object);
+void MO_DrawMaterial(MOMaterialObject *matObj);
+void MO_DrawMatrix(const MOMatrixObject *matObj);
+void MO_DrawPicture(const MOPictureObject *picObj);
 void MO_DisposeObjectReference(MetaObjectPtr obj);
 void MO_DuplicateVertexArrayData(MOVertexArrayData *inData, MOVertexArrayData *outData);
 void MO_DeleteObjectInfo_Geometry_VertexArray(MOVertexArrayData *data);
 void MO_CalcBoundingBox(MetaObjectPtr object, OGLBoundingBox *bBox, OGLMatrix4x4 *m);
-MOMaterialObject *MO_GetTextureFromFile(FSSpec *spec, OGLSetupOutputType *setupInfo, int destPixelFormat);
-void MO_SetPictureObjectCoordsToMouse(OGLSetupOutputType *info, MOPictureObject *obj);
+MOMaterialObject *MO_GetTextureFromFile(FSSpec *spec, int destPixelFormat);
+void MO_SetPictureObjectCoordsToMouse(MOPictureObject *obj);
 
-void MO_DrawSprite(const MOSpriteObject *spriteObj, const OGLSetupOutputType *setupInfo);
+void MO_DrawSprite(const MOSpriteObject *spriteObj);
 void MO_VertexArray_OffsetUVs(MetaObjectPtr object, float du, float dv);
 void MO_Object_OffsetUVs(MetaObjectPtr object, float du, float dv);
 void MO_Geometry_OffserUVs(short group, short type, short geometryNum, float du, float dv);
-MOMaterialObject *MO_LoadTextureObjectFromFile(OGLSetupOutputType *setupInfo, FSSpec *spec, Boolean useAlpha);
-MOMaterialObject *MO_CreateTextureObjectFromBuffer(OGLSetupOutputType *setupInfo, int width, int height, Ptr buffer);
+MOMaterialObject *MO_LoadTextureObjectFromFile(FSSpec *spec, Boolean useAlpha);
+MOMaterialObject *MO_CreateTextureObjectFromBuffer(int width, int height, Ptr buffer);
 void MO_CalcBoundingSphere(MetaObjectPtr object, float *bSphere);
 
 

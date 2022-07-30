@@ -19,13 +19,13 @@
 static void DeleteParticleGroup(long groupNum);
 static void MoveParticleGroups(ObjNode *theNode);
 
-static void DrawParticleGroup(ObjNode *theNode, const OGLSetupOutputType *setupInfo);
+static void DrawParticleGroup(ObjNode *theNode);
 static void MoveBlobDroplet(ObjNode *theNode);
 
 static void MoveSmoker(ObjNode *theNode);
 
 static void MoveFlame(ObjNode *theNode);
-static void DrawFlame(ObjNode *theNode, const OGLSetupOutputType *setupInfo);
+static void DrawFlame(ObjNode *theNode);
 
 
 /****************************/
@@ -60,19 +60,16 @@ short			gNumActiveParticleGroups = 0;
 
 /************************* INIT EFFECTS ***************************/
 
-void InitEffects(OGLSetupOutputType *setupInfo)
+void InitEffects(void)
 {
 
-	InitParticleSystem(setupInfo);
+	InitParticleSystem();
 	InitConfettiManager();
 	InitShardSystem();
 
 			/* SET SPRITE BLENDING FLAGS */
 			
 	BlendASprite(SPRITE_GROUP_PARTICLES, PARTICLE_SObjType_Splash);
-		
-		
-		
 }
 
 
@@ -80,7 +77,7 @@ void InitEffects(OGLSetupOutputType *setupInfo)
 
 /************************ INIT PARTICLE SYSTEM **************************/
 
-void InitParticleSystem(OGLSetupOutputType *setupInfo)
+void InitParticleSystem(void)
 {
 short	i;
 FSSpec	spec;
@@ -99,7 +96,7 @@ ObjNode	*obj;
 			/* LOAD SPRITES */
 			
 	FSMakeFSSpec(gDataSpec.vRefNum, gDataSpec.parID, ":sprites:particle.sprites", &spec);
-	LoadSpriteFile(&spec, SPRITE_GROUP_PARTICLES, setupInfo);
+	LoadSpriteFile(&spec, SPRITE_GROUP_PARTICLES);
 	
 	BlendAllSpritesInGroup(SPRITE_GROUP_PARTICLES);
 
@@ -559,7 +556,7 @@ OGLVector3D	*delta;
 
 /**************** DRAW PARTICLE GROUPS *********************/
 
-static void DrawParticleGroup(ObjNode *theNode, const OGLSetupOutputType *setupInfo)
+static void DrawParticleGroup(ObjNode *theNode)
 {
 float				scale,baseScale;
 long				g,p,n,i;
@@ -716,7 +713,7 @@ OGLBoundingBox	bbox;
 					/* DRAW IT */
 		
 				glBlendFunc(src, dst);											// set blending mode						
-				MO_DrawObject(gParticleGroups[g]->geometryObj, setupInfo);		// draw geometry
+				MO_DrawObject(gParticleGroups[g]->geometryObj);						// draw geometry
 			}
 		}
 	}
@@ -1828,7 +1825,7 @@ static void MoveFlame(ObjNode *theNode)
 
 /****************** DRAW FLAME ***********************/
 
-static void DrawFlame(ObjNode *theNode, const OGLSetupOutputType *setupInfo)
+static void DrawFlame(ObjNode *theNode)
 {
 OGLMatrix4x4	m;
 const OGLVector3D	up = {0,1,0};
@@ -1844,7 +1841,7 @@ OGLPoint3D	verts[4];
 
 			/* CALC VERTEX COORDS */
 			
-	SetLookAtMatrixAndTranslate(&m, &up, &theNode->Coord, &setupInfo->cameraPlacement.cameraLocation);	// aim at camera & translate
+	SetLookAtMatrixAndTranslate(&m, &up, &theNode->Coord, &gGameViewInfoPtr->cameraPlacement.cameraLocation);	// aim at camera & translate
 	OGLPoint3D_TransformArray(&frame[0], &m, verts, 4);
 
 			/* SUBMIT TEXTURE */
@@ -1856,7 +1853,7 @@ OGLPoint3D	verts[4];
 	gGlobalColorFilter.g = 0.7;
 	gGlobalColorFilter.b = .6;
 			
-	MO_DrawMaterial(gSpriteGroupList[SPRITE_GROUP_PARTICLES][PARTICLE_SObjType_Flame0 + theNode->FlameFrame].materialObject, setupInfo);
+	MO_DrawMaterial(gSpriteGroupList[SPRITE_GROUP_PARTICLES][PARTICLE_SObjType_Flame0 + theNode->FlameFrame].materialObject);
 
 
 			/* DRAW QUAD */

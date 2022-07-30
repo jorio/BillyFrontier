@@ -15,9 +15,9 @@
 /*    PROTOTYPES            */
 /****************************/
 
-static void DisplayPicture_Draw(OGLSetupOutputType *info);
+static void DisplayPicture_Draw(void);
 static void MoveDarkenPane(ObjNode *theNode);
-static void DrawDarkenPane(ObjNode *theNode, const OGLSetupOutputType *setupInfo);
+static void DrawDarkenPane(ObjNode *theNode);
 
 
 /****************************/
@@ -61,13 +61,13 @@ float	timeout = 40.0f;
 	viewDef.view.clearColor.b		= 0;
 	viewDef.styles.useFog			= false;
 
-	OGL_SetupWindow(&viewDef, &gGameViewInfoPtr);
+	OGL_SetupWindow(&viewDef);
 
 
 
 			/* CREATE BACKGROUND OBJECT */
 
-	gBackgoundPicture = MO_CreateNewObjectOfType(MO_TYPE_PICTURE, (uintptr_t)gGameViewInfoPtr, path);
+	gBackgoundPicture = MO_CreateNewObjectOfType(MO_TYPE_PICTURE, 0, path);
 	if (!gBackgoundPicture)
 		DoFatalAlert("DisplayPicture: MO_CreateNewObjectOfType failed");
 
@@ -88,7 +88,7 @@ float	timeout = 40.0f;
 		{
 			CalcFramesPerSecond();
 			MoveObjects();
-			OGL_DrawScene(gGameViewInfoPtr, DisplayPicture_Draw);
+			OGL_DrawScene(DisplayPicture_Draw);
 			
 			ReadKeyboard();
 			if (AreAnyNewKeysPressed())
@@ -110,16 +110,16 @@ float	timeout = 40.0f;
 	MO_DisposeObjectReference(gBackgoundPicture);
 	DisposeAllSpriteGroups();	
 
-	OGL_DisposeWindowSetup(&gGameViewInfoPtr);	
+	OGL_DisposeWindowSetup();	
 }
 
 
 /***************** DISPLAY PICTURE: DRAW *******************/
 
-static void DisplayPicture_Draw(OGLSetupOutputType *info)
+static void DisplayPicture_Draw(void)
 {
-	MO_DrawObject(gBackgoundPicture, info);
-	DrawObjects(info);
+	MO_DrawObject(gBackgoundPicture);
+	DrawObjects();
 }
 
 
@@ -327,7 +327,7 @@ static void MoveDarkenPane(ObjNode *theNode)
 
 /********************** DRAW DARKEN PANE *****************************/
 
-static void DrawDarkenPane(ObjNode *theNode, const OGLSetupOutputType *setupInfo)
+static void DrawDarkenPane(ObjNode *theNode)
 {
 	glDisable(GL_TEXTURE_2D);
 	SetColor4fv((GLfloat *)&theNode->ColorFilter);

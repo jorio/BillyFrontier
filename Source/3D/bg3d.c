@@ -87,7 +87,7 @@ int	i;
 //			because all imported textures are named with OpenGL and loaded into OpenGL!
 //
 
-void ImportBG3D(FSSpec *spec, int groupNum, OGLSetupOutputType *setupInfo)
+void ImportBG3D(FSSpec *spec, int groupNum)
 {
 short				refNum;
 int					i;

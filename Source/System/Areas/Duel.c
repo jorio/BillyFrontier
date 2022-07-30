@@ -141,7 +141,7 @@ void PlayDuel(Byte difficulty)
 		ReadKeyboard();								
 		MoveEverything_Duel();
 		KeepTerrainAlive();
-		OGL_DrawScene(gGameViewInfoPtr,DefaultDrawCallback);
+		OGL_DrawScene(DefaultDrawCallback);
 
 								
 				/* MISC STUFF */
@@ -271,7 +271,7 @@ int					i;
 
 			/* MAKE OGL DRAW CONTEXT */
 			
-	OGL_SetupWindow(&viewDef, &gGameViewInfoPtr);
+	OGL_SetupWindow(&viewDef);
 
 
 			/**********************/
@@ -298,13 +298,13 @@ int					i;
 	
 	
 	PlayEffect_Parms(EFFECT_WIND,FULL_CHANNEL_VOLUME/2,FULL_CHANNEL_VOLUME,NORMAL_CHANNEL_RATE);
-	LoadDuelArt(gGameViewInfoPtr);			
+	LoadDuelArt();
 	InitInfobar();
 
 			/* INIT OTHER MANAGERS */
 
 	InitEnemyManager();
-	InitEffects(gGameViewInfoPtr);
+	InitEffects();
 	InitSparkles();
 	InitItemsManager();
 
@@ -360,7 +360,7 @@ static void CleanupDuel(void)
 		
 	DisposeSoundBank(SOUND_BANK_LEVELSPECIFIC);
 	
-	OGL_DisposeWindowSetup(&gGameViewInfoPtr);	// do this last!			
+	OGL_DisposeWindowSetup();	// do this last!			
 }
 
 /******************** MOVE EVERYTHING ************************/

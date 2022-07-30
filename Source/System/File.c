@@ -18,8 +18,8 @@
 /*    PROTOTYPES            */
 /****************************/
 
-static void ReadDataFromSkeletonFile(SkeletonDefType *skeleton, FSSpec *fsSpec, int skeletonType, OGLSetupOutputType *setupInfo);
-static void ReadDataFromPlayfieldFile(FSSpec *specPtr, OGLSetupOutputType *setupInfo);
+static void ReadDataFromSkeletonFile(SkeletonDefType *skeleton, FSSpec *fsSpec, int skeletonType);
+static void ReadDataFromPlayfieldFile(FSSpec *specPtr);
 static void	ConvertTexture16To24(u_short *textureBuffer2, u_char *textureBuffer3, int width, int height);
 static void	ConvertTexture16To16(u_short *textureBuffer, int width, int height);
 static void	ConvertTexture16To32(u_short *srcBuff, u_char *destBuff, int width, int height);
@@ -165,7 +165,7 @@ OSErr	iErr;
 // OUTPUT:	Ptr to skeleton data
 //
 
-SkeletonDefType *LoadSkeletonFile(short skeletonType, OGLSetupOutputType *setupInfo)
+SkeletonDefType *LoadSkeletonFile(short skeletonType)
 {
 QDErr		iErr;
 short		fRefNum;
@@ -216,7 +216,7 @@ const char*	fileNames[MAX_SKELETON_TYPES] =
 
 			/* READ SKELETON RESOURCES */
 			
-	ReadDataFromSkeletonFile(skeleton,&fsSpec,skeletonType,setupInfo);
+	ReadDataFromSkeletonFile(skeleton, &fsSpec, skeletonType);
 	PrimeBoneData(skeleton);
 	
 			/* CLOSE REZ FILE */
@@ -233,7 +233,7 @@ const char*	fileNames[MAX_SKELETON_TYPES] =
 // Current rez file is set to the file. 
 //
 
-static void ReadDataFromSkeletonFile(SkeletonDefType *skeleton, FSSpec *fsSpec, int skeletonType, OGLSetupOutputType *setupInfo)
+static void ReadDataFromSkeletonFile(SkeletonDefType *skeleton, FSSpec *fsSpec, int skeletonType)
 {
 Handle				hand;
 int					i,k,j;
@@ -287,7 +287,7 @@ SkeletonFile_AnimHeader_Type	*animHeaderPtr;
 	{
 		iErr = ResolveAlias(fsSpec, alias, &target, &wasChanged);	// try to resolve alias
 		if (!iErr)
-			LoadBonesReferenceModel(&target,skeleton, skeletonType, setupInfo);
+			LoadBonesReferenceModel(&target, skeleton, skeletonType);
 		else
 			DoFatalAlert("ReadDataFromSkeletonFile: Cannot find Skeleton's BG3D file!");
 		ReleaseResource((Handle)alias);
@@ -640,14 +640,14 @@ PixMapHandle 				hPixMap;
 
 /******************* LOAD PLAYFIELD *******************/
 
-void LoadPlayfield(FSSpec *specPtr, OGLSetupOutputType *setupInfo)
+void LoadPlayfield(FSSpec *specPtr)
 {
 	
 	gDisableHiccupTimer = true;
 	
 			/* READ PLAYFIELD RESOURCES */
 						
-	ReadDataFromPlayfieldFile(specPtr, setupInfo);
+	ReadDataFromPlayfieldFile(specPtr);
 		
 		
 				/* DO ADDITIONAL SETUP */
@@ -661,13 +661,13 @@ void LoadPlayfield(FSSpec *specPtr, OGLSetupOutputType *setupInfo)
 
 			/* CAST ITEM SHADOWS */
 			
-	DoItemShadowCasting(setupInfo);
+	DoItemShadowCasting();
 }
 
 
 /********************** READ DATA FROM PLAYFIELD FILE ************************/
 
-static void ReadDataFromPlayfieldFile(FSSpec *specPtr, OGLSetupOutputType *setupInfo)
+static void ReadDataFromPlayfieldFile(FSSpec *specPtr)
 {
 Handle					hand;
 PlayfieldHeaderType		**header;
@@ -1114,7 +1114,7 @@ Ptr						tempBuffer16 = nil;
 
 			/* PRE-LOAD */
 			
-		MO_DrawMaterial(gSuperTileTextureObjects[i], setupInfo);			//--------------
+		MO_DrawMaterial(gSuperTileTextureObjects[i]);			//--------------
 		glBegin(GL_TRIANGLES);
 		glVertex3f(0,0,0);
 		glVertex3f(1,0,0);

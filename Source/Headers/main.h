@@ -73,7 +73,7 @@ void GameMain(void);
 extern	void ToolBoxInit(void);
 void InitDefaultPrefs(void);
 void StartLevelCompletion(float coolDownTimer);
-void DefaultDrawCallback(OGLSetupOutputType *setupInfo);
+void DefaultDrawCallback(void);
 
 
 		

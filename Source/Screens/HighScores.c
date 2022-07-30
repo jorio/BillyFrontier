@@ -17,7 +17,7 @@
 
 static void SetupScoreScreen(void);
 static void FreeScoreScreen(void);
-static void DrawHighScoresCallback(OGLSetupOutputType *info);
+static void DrawHighScoresCallback(void);
 static void DrawScoreVerbage(void);
 static void DrawHighScoresAndCursor(void);
 static void SetHighScoresSpriteState(void);
@@ -111,7 +111,7 @@ void NewScore(Boolean justShowScores)
 	{
 		CalcFramesPerSecond();
 		MoveObjects();				
-		OGL_DrawScene(gGameViewInfoPtr, DrawHighScoresCallback);	
+		OGL_DrawScene(DrawHighScoresCallback);	
 		
 		
 				/***********************/
@@ -252,7 +252,7 @@ OGLSetupInputType	viewDef;
 	viewDef.camera.from.z		= 800;
 	viewDef.camera.from.y		= -350;
 	
-	OGL_SetupWindow(&viewDef, &gGameViewInfoPtr);
+	OGL_SetupWindow(&viewDef);
 
 
 				/************/
@@ -262,7 +262,7 @@ OGLSetupInputType	viewDef;
 			/* LOAD SPRITES */
 			
 	FSMakeFSSpec(gDataSpec.vRefNum, gDataSpec.parID, ":sprites:font.sprites", &spec);
-	LoadSpriteFile(&spec, SPRITE_GROUP_FONT, gGameViewInfoPtr);
+	LoadSpriteFile(&spec, SPRITE_GROUP_FONT);
 		
 			/* CREATE BACKGROUND OBJECT */
 
@@ -285,7 +285,7 @@ OGLSetupInputType	viewDef;
 			backgroundImagePath = ":images:LoseScreen.jpg";
 	}
 
-	gBackgoundPicture = MO_CreateNewObjectOfType(MO_TYPE_PICTURE, (uintptr_t)gGameViewInfoPtr, backgroundImagePath);
+	gBackgoundPicture = MO_CreateNewObjectOfType(MO_TYPE_PICTURE, 0, backgroundImagePath);
 }
 
 
@@ -304,19 +304,19 @@ static void FreeScoreScreen(void)
 	}
 	DisposeAllSpriteGroups();	
 	DisposeAllBG3DContainers();
-	OGL_DisposeWindowSetup(&gGameViewInfoPtr);
+	OGL_DisposeWindowSetup();
 }
 
 
 
 /***************** DRAW HIGHSCORES CALLBACK *******************/
 
-static void DrawHighScoresCallback(OGLSetupOutputType *info)
+static void DrawHighScoresCallback(void)
 {
 	if (gBackgoundPicture)
-		MO_DrawObject(gBackgoundPicture, info);
+		MO_DrawObject(gBackgoundPicture);
 
-	DrawObjects(info);
+	DrawObjects();
 
 
 			/* DRAW SPRITES */

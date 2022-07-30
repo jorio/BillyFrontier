@@ -9,7 +9,7 @@ extern	void InitItemsManager(void);
 void CreateCyclorama(void);
 
 Boolean AddBuilding(TerrainItemEntryType *itemPtr, float  x, float z);
-void DrawCyclorama(ObjNode *theNode, const OGLSetupOutputType *setupInfo);
+void DrawCyclorama(ObjNode *theNode);
 Boolean AddHeadStone(TerrainItemEntryType *itemPtr, float  x, float z);
 Boolean AddPlant(TerrainItemEntryType *itemPtr, float  x, float z);
 Boolean AddDuelRockWall(TerrainItemEntryType *itemPtr, float  x, float z);

@@ -175,17 +175,18 @@ static OGLVector3D			fillDirection2 = { -1, -.3, -.3 };
 
 /************** SETUP OGL WINDOW *******************/
 
-void OGL_SetupWindow(OGLSetupInputType *setupDefPtr, OGLSetupOutputType **outputHandle)
+void OGL_SetupWindow(OGLSetupInputType *setupDefPtr)
 {
 static OGLVector3D	v = {0,0,0};
-OGLSetupOutputType	*outputPtr;
 
 	HideCursor();		// do this just as a safety precaution to make sure no cursor lingering around
 
+	GAME_ASSERT_MESSAGE(gGameViewInfoPtr == NULL, "gGameViewInfoPtr is already active");
+
 			/* ALLOC MEMORY FOR OUTPUT DATA */
 
-	outputPtr = (OGLSetupOutputType *)AllocPtr(sizeof(OGLSetupOutputType));
-	if (outputPtr == nil)
+	gGameViewInfoPtr = (OGLSetupOutputType *) AllocPtr(sizeof(OGLSetupOutputType));
+	if (gGameViewInfoPtr == nil)
 		DoFatalAlert("OGL_SetupWindow: AllocPtr failed");
 
 
@@ -198,21 +199,19 @@ OGLSetupOutputType	*outputPtr;
 
 				/* PASS BACK INFO */
 
-//	outputPtr->drawContext 		= gAGLContext;
-	outputPtr->clip 			= setupDefPtr->view.clip;
-	outputPtr->hither 			= setupDefPtr->camera.hither;			// remember hither/yon
-	outputPtr->yon 				= setupDefPtr->camera.yon;
-	outputPtr->useFog 			= setupDefPtr->styles.useFog;
-	outputPtr->clearBackBuffer 	= setupDefPtr->view.clearBackBuffer;
+//	gGameViewInfoPtr->drawContext 		= gAGLContext;
+	gGameViewInfoPtr->clip 				= setupDefPtr->view.clip;
+	gGameViewInfoPtr->hither 			= setupDefPtr->camera.hither;			// remember hither/yon
+	gGameViewInfoPtr->yon 				= setupDefPtr->camera.yon;
+	gGameViewInfoPtr->useFog 			= setupDefPtr->styles.useFog;
+	gGameViewInfoPtr->clearBackBuffer 	= setupDefPtr->view.clearBackBuffer;
 	
-	outputPtr->isActive = true;											// it's now an active structure
+	gGameViewInfoPtr->isActive = true;											// it's now an active structure
 	
-	outputPtr->lightList = setupDefPtr->lights;							// copy lights
+	gGameViewInfoPtr->lightList = setupDefPtr->lights;							// copy lights
 
-	outputPtr->fov = setupDefPtr->camera.fov;					// each camera will have its own fov so we can change it for special effects
-	OGL_UpdateCameraFromTo(outputPtr, &setupDefPtr->camera.from, &setupDefPtr->camera.to);		
-		
-	*outputHandle = outputPtr;											// return value to caller
+	gGameViewInfoPtr->fov = setupDefPtr->camera.fov;					// each camera will have its own fov so we can change it for special effects
+	OGL_UpdateCameraFromTo(&setupDefPtr->camera.from, &setupDefPtr->camera.to);		
 }
 
 
@@ -221,14 +220,10 @@ OGLSetupOutputType	*outputPtr;
 // Disposes of all data created by OGL_SetupWindow
 //
 
-void OGL_DisposeWindowSetup(OGLSetupOutputType **dataHandle)
+void OGL_DisposeWindowSetup(void)
 {
-OGLSetupOutputType	*data;
+	GAME_ASSERT(gGameViewInfoPtr);						// see if this setup exists
 
-	data = *dataHandle;
-	if (data == nil)												// see if this setup exists
-		DoFatalAlert("OGL_DisposeWindowSetup: data == nil");
-	
 			/* KILL DEBUG FONT */
 
 	OGL_FreeFont();
@@ -244,9 +239,9 @@ OGLSetupOutputType	*data;
 
 		/* FREE MEMORY & NIL POINTER */
 
-	data->isActive = false;									// now inactive
-	SafeDisposePtr((Ptr)data);
-	*dataHandle = nil;
+	gGameViewInfoPtr->isActive = false;									// now inactive
+	SafeDisposePtr((Ptr) gGameViewInfoPtr);
+	gGameViewInfoPtr = nil;
 }
 
 
@@ -464,20 +459,18 @@ GLfloat	ambient[4];
 
 /******************* OGL PICK SCENE *************************/
 
-void OGL_PickScene(OGLSetupOutputType *setupInfo, void (*drawRoutine)(OGLSetupOutputType *),
+void OGL_PickScene(void (*drawRoutine)(void),
 					float pickX, float pickY, float pickWidth, float pickHeight)
 {
-	if (setupInfo == nil)										// make sure it's legit
-		DoFatalAlert("OGL_PickScene setupInfo == nil");
-	if (!setupInfo->isActive)									
-		DoFatalAlert("OGL_PickScene isActive == false");
+	GAME_ASSERT(gGameViewInfoPtr);										// make sure it's legit
+	GAME_ASSERT(gGameViewInfoPtr->isActive);
 
 	if (pickWidth < 1)
 		pickWidth = 1;
 	if (pickHeight < 1)
 		pickHeight = 1;
 
-  	aglSetCurrentContext(setupInfo->drawContext);				// make context current
+  	aglSetCurrentContext(gAGLContext);									// make context current
 
 
 			/* LET'S GET INTO PICKING MODE */
@@ -495,13 +488,13 @@ void OGL_PickScene(OGLSetupOutputType *setupInfo, void (*drawRoutine)(OGLSetupOu
 
 			/* GET UPDATED GLOBAL COPIES OF THE VARIOUS MATRICES */
 
-	OGL_Camera_SetPlacementAndUpdateMatricesForPicking(setupInfo, pickX, pickY, pickWidth, pickHeight);
+	OGL_Camera_SetPlacementAndUpdateMatricesForPicking(pickX, pickY, pickWidth, pickHeight);
 
 
 			/* CALL INPUT DRAW FUNCTION */
 
 	if (drawRoutine != nil)
-		drawRoutine(setupInfo);
+		drawRoutine();
 
 
 		/* CLEANUP & GET OUT OF PICKING MODE */
@@ -515,14 +508,10 @@ void OGL_PickScene(OGLSetupOutputType *setupInfo, void (*drawRoutine)(OGLSetupOu
 
 /******************* OGL DRAW SCENE *********************/
 
-void OGL_DrawScene(OGLSetupOutputType *setupInfo, void (*drawRoutine)(OGLSetupOutputType *))
+void OGL_DrawScene(void (*drawRoutine)(void))
 {
-//int	x,y,w,h;
-
-	if (setupInfo == nil)										// make sure it's legit
-		DoFatalAlert("OGL_DrawScene setupInfo == nil");
-	if (!setupInfo->isActive)									
-		DoFatalAlert("OGL_DrawScene isActive == false");
+	GAME_ASSERT(gGameViewInfoPtr);							// make sure it's legit
+	GAME_ASSERT(gGameViewInfoPtr->isActive);
 
 	SDL_GL_MakeCurrent(gSDLWindow, gAGLContext);			// make context active
 
@@ -561,7 +550,7 @@ void OGL_DrawScene(OGLSetupOutputType *setupInfo, void (*drawRoutine)(OGLSetupOu
 				//
 				
 
-	if (setupInfo->clearBackBuffer || (gDebugMode == 3))
+	if (gGameViewInfoPtr->clearBackBuffer || (gDebugMode == 3))
 	{
 		if (gGamePrefs.anaglyph)
 		{
@@ -607,14 +596,14 @@ do_anaglyph:
 
 			/* GET UPDATED GLOBAL COPIES OF THE VARIOUS MATRICES */
 
-	OGL_Camera_SetPlacementAndUpdateMatrices(setupInfo);
+	OGL_Camera_SetPlacementAndUpdateMatrices();
 	OGL_CheckError();
 
 
 			/* CALL INPUT DRAW FUNCTION */
 
 	if (drawRoutine != nil)
-		drawRoutine(setupInfo);
+		drawRoutine();
 
 			/***********************************/	
 			/* SEE IF DO ANOTHER ANAGLYPH PASS */
@@ -808,14 +797,14 @@ do_anaglyph:
 // may look upside down.
 //
 
-void OGL_GetCurrentViewport(const OGLSetupOutputType *setupInfo, int *x, int *y, int *w, int *h)
+void OGL_GetCurrentViewport(int *x, int *y, int *w, int *h)
 {
 int	t,b,l,r;
 		
-	t = setupInfo->clip.top;
-	b = setupInfo->clip.bottom;
-	l = setupInfo->clip.left;
-	r = setupInfo->clip.right;
+	t = gGameViewInfoPtr->clip.top;
+	b = gGameViewInfoPtr->clip.bottom;
+	l = gGameViewInfoPtr->clip.left;
+	r = gGameViewInfoPtr->clip.right;
 				
 	*x = l;
 	*y = t;
@@ -1231,66 +1220,65 @@ void OGL_Texture_SetOpenGLTexture(GLuint textureName)
 
 /*************** OGL_MoveCameraFromTo ***************/
 
-void OGL_MoveCameraFromTo(OGLSetupOutputType *setupInfo, float fromDX, float fromDY, float fromDZ, float toDX, float toDY, float toDZ)
+void OGL_MoveCameraFromTo(float fromDX, float fromDY, float fromDZ, float toDX, float toDY, float toDZ)
 {
 
 			/* SET CAMERA COORDS */
 			
-	setupInfo->cameraPlacement.cameraLocation.x += fromDX;
-	setupInfo->cameraPlacement.cameraLocation.y += fromDY;
-	setupInfo->cameraPlacement.cameraLocation.z += fromDZ;
+	gGameViewInfoPtr->cameraPlacement.cameraLocation.x += fromDX;
+	gGameViewInfoPtr->cameraPlacement.cameraLocation.y += fromDY;
+	gGameViewInfoPtr->cameraPlacement.cameraLocation.z += fromDZ;
 
-	setupInfo->cameraPlacement.pointOfInterest.x += toDX;
-	setupInfo->cameraPlacement.pointOfInterest.y += toDY;
-	setupInfo->cameraPlacement.pointOfInterest.z += toDZ;
+	gGameViewInfoPtr->cameraPlacement.pointOfInterest.x += toDX;
+	gGameViewInfoPtr->cameraPlacement.pointOfInterest.y += toDY;
+	gGameViewInfoPtr->cameraPlacement.pointOfInterest.z += toDZ;
 
-	UpdateListenerLocation(setupInfo);
+	UpdateListenerLocation();
 }
 
 
 /*************** OGL_MoveCameraFrom ***************/
 
-void OGL_MoveCameraFrom(OGLSetupOutputType *setupInfo, float fromDX, float fromDY, float fromDZ)
+void OGL_MoveCameraFrom(float fromDX, float fromDY, float fromDZ)
 {
 
 			/* SET CAMERA COORDS */
 			
-	setupInfo->cameraPlacement.cameraLocation.x += fromDX;
-	setupInfo->cameraPlacement.cameraLocation.y += fromDY;
-	setupInfo->cameraPlacement.cameraLocation.z += fromDZ;
+	gGameViewInfoPtr->cameraPlacement.cameraLocation.x += fromDX;
+	gGameViewInfoPtr->cameraPlacement.cameraLocation.y += fromDY;
+	gGameViewInfoPtr->cameraPlacement.cameraLocation.z += fromDZ;
 
-	UpdateListenerLocation(setupInfo);
+	UpdateListenerLocation();
 }
 
 
 
 /*************** OGL_UpdateCameraFromTo ***************/
 
-void OGL_UpdateCameraFromTo(OGLSetupOutputType *setupInfo, const OGLPoint3D *from, const OGLPoint3D *to)
+void OGL_UpdateCameraFromTo(const OGLPoint3D *from, const OGLPoint3D *to)
 {
 static const OGLVector3D up = {0,1,0};
 	
-	setupInfo->cameraPlacement.upVector 			= up;
+	gGameViewInfoPtr->cameraPlacement.upVector 				= up;
 		
 	if (from)
-		setupInfo->cameraPlacement.cameraLocation 	= *from;
+		gGameViewInfoPtr->cameraPlacement.cameraLocation 	= *from;
 		
 	if (to)
-		setupInfo->cameraPlacement.pointOfInterest 	= *to;
+		gGameViewInfoPtr->cameraPlacement.pointOfInterest 	= *to;
 	
-	UpdateListenerLocation(setupInfo);
+	UpdateListenerLocation();
 }
 
 /*************** OGL_UpdateCameraFromToUp ***************/
 
-void OGL_UpdateCameraFromToUp(OGLSetupOutputType *setupInfo, const OGLPoint3D *from, const OGLPoint3D *to, const OGLVector3D *up)
-{			
-			
-	setupInfo->cameraPlacement.upVector 		= *up;
-	setupInfo->cameraPlacement.cameraLocation 	= *from;
-	setupInfo->cameraPlacement.pointOfInterest 	= *to;
+void OGL_UpdateCameraFromToUp(const OGLPoint3D *from, const OGLPoint3D *to, const OGLVector3D *up)
+{
+	gGameViewInfoPtr->cameraPlacement.upVector 		= *up;
+	gGameViewInfoPtr->cameraPlacement.cameraLocation 	= *from;
+	gGameViewInfoPtr->cameraPlacement.pointOfInterest 	= *to;
 
-	UpdateListenerLocation(setupInfo);
+	UpdateListenerLocation();
 }
 
 
@@ -1301,7 +1289,7 @@ void OGL_UpdateCameraFromToUp(OGLSetupOutputType *setupInfo, const OGLPoint3D *f
 // and to extract the current view matrices used for culling et.al.
 //
 
-void OGL_Camera_SetPlacementAndUpdateMatrices(OGLSetupOutputType *setupInfo)
+void OGL_Camera_SetPlacementAndUpdateMatrices(void)
 {
 OGLCameraPlacement	*placement;
 int		w, h, i, x, y;
@@ -1309,7 +1297,7 @@ OGLLightDefType	*lights;
 
 				/* SET VIEWPORT */
 
-	OGL_GetCurrentViewport(setupInfo, &x, &y, &w, &h);
+	OGL_GetCurrentViewport(&x, &y, &w, &h);
 	glViewport(x,y, w, h);
 	gCurrentAspectRatio = (float)w/(float)h;
 	
@@ -1324,8 +1312,8 @@ OGLLightDefType	*lights;
 	if (gGamePrefs.anaglyph)
 	{
 		float	left, right;
-		float	halfFOV = setupInfo->fov * .5f;
-		float	hither 	= setupInfo->hither;
+		float	halfFOV = gGameViewInfoPtr->fov * .5f;
+		float	hither 	= gGameViewInfoPtr->hither;
 	   	float	wd2     = hither * tan(halfFOV);
 		float	ndfl    = hither / gAnaglyphFocallength;
 	
@@ -1340,16 +1328,16 @@ OGLLightDefType	*lights;
 			right =   gCurrentAspectRatio * wd2 - 0.5 * gAnaglyphEyeSeparation * ndfl;
 		}
 		
-		glFrustum(left, right, -wd2, wd2, setupInfo->hither, setupInfo->yon);
+		glFrustum(left, right, -wd2, wd2, gGameViewInfoPtr->hither, gGameViewInfoPtr->yon);
 	}
 	
 			/* SETUP STANDARD PERSPECTIVE CAMERA */
 	else
 	{	
-		gluPerspective (OGLMath_RadiansToDegrees(setupInfo->fov),	// fov
+		gluPerspective (OGLMath_RadiansToDegrees(gGameViewInfoPtr->fov),	// fov
 						gCurrentAspectRatio,					// aspect
-						setupInfo->hither,		// hither
-						setupInfo->yon);		// yon
+						gGameViewInfoPtr->hither,		// hither
+						gGameViewInfoPtr->yon);		// yon
 	}	
 	
 	
@@ -1357,7 +1345,7 @@ OGLLightDefType	*lights;
 			
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
-	placement = &setupInfo->cameraPlacement;
+	placement = &gGameViewInfoPtr->cameraPlacement;
 	gluLookAt(placement->cameraLocation.x, placement->cameraLocation.y, placement->cameraLocation.z,	
 			placement->pointOfInterest.x, placement->pointOfInterest.y, placement->pointOfInterest.z,	
 			placement->upVector.x, placement->upVector.y, placement->upVector.z);
@@ -1365,7 +1353,7 @@ OGLLightDefType	*lights;
 
 		/* UPDATE LIGHT POSITIONS */
 		
-	lights =  &setupInfo->lightList;						// point to light list
+	lights =  &gGameViewInfoPtr->lightList;					// point to light list
 	for (i=0; i < lights->numFillLights; i++)
 	{
 		GLfloat lightVec[4];
@@ -1384,10 +1372,10 @@ OGLLightDefType	*lights;
 	glGetFloatv(GL_PROJECTION_MATRIX, (GLfloat *)&gViewToFrustumMatrix);
 	OGLMatrix4x4_Multiply(&gWorldToViewMatrix, &gViewToFrustumMatrix, &gWorldToFrustumMatrix);
 
-	OGLMatrix4x4_GetFrustumToWindow(setupInfo, &gFrustumToWindowMatrix);
+	OGLMatrix4x4_GetFrustumToWindow(&gFrustumToWindowMatrix);
 	OGLMatrix4x4_Multiply(&gWorldToFrustumMatrix, &gFrustumToWindowMatrix, &gWorldToWindowMatrix);
 
-	UpdateListenerLocation(setupInfo);
+	UpdateListenerLocation();
 	OGL_CheckError();
 }
 
@@ -1397,18 +1385,18 @@ OGLLightDefType	*lights;
 // and to extract the current view matrices used for culling et.al.
 //
 
-void OGL_Camera_SetPlacementAndUpdateMatricesForPicking(OGLSetupOutputType *setupInfo, float pickX, float pickY, float pickWidth, float pickHeight)
+void OGL_Camera_SetPlacementAndUpdateMatricesForPicking(float pickX, float pickY, float pickWidth, float pickHeight)
 {
 OGLCameraPlacement	*placement;
 int					x,y, w, h;
 GLint				viewport[4];
 
-	OGL_GetCurrentViewport(setupInfo, &x, &y, &w, &h);
+	OGL_GetCurrentViewport(&x, &y, &w, &h);
 	gCurrentAspectRatio = (float)w/(float)h;
 
 			/* ADJUST PICK COORDS */
 			
-	pickY -= setupInfo->clip.bottom;				// adjust this for reasons I dont know, but it works
+	pickY -= gGameViewInfoPtr->clip.bottom;			// adjust this for reasons I dont know, but it works
 	
 	pickX += pickWidth * .5f;						// make pick coords the center of the pick
 	pickY += pickHeight * .5f;
@@ -1428,10 +1416,10 @@ GLint				viewport[4];
 
 	OGL_CheckError();
 	
-	gluPerspective (OGLMath_RadiansToDegrees(setupInfo->fov),	// fov
+	gluPerspective (OGLMath_RadiansToDegrees(gGameViewInfoPtr->fov),	// fov
 					gCurrentAspectRatio,	// aspect
-					setupInfo->hither,		// hither
-					setupInfo->yon);		// yon
+					gGameViewInfoPtr->hither,		// hither
+					gGameViewInfoPtr->yon);		// yon
 
 	OGL_CheckError();
 	
@@ -1440,7 +1428,7 @@ GLint				viewport[4];
 			
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
-	placement = &setupInfo->cameraPlacement;
+	placement = &gGameViewInfoPtr->cameraPlacement;
 	gluLookAt(placement->cameraLocation.x, placement->cameraLocation.y, placement->cameraLocation.z,	
 			placement->pointOfInterest.x, placement->pointOfInterest.y, placement->pointOfInterest.z,	
 			placement->upVector.x, placement->upVector.y, placement->upVector.z);
@@ -1457,7 +1445,7 @@ GLint				viewport[4];
 	glGetFloatv(GL_PROJECTION_MATRIX, (GLfloat *)&gViewToFrustumMatrix);
 	OGLMatrix4x4_Multiply(&gWorldToViewMatrix, &gViewToFrustumMatrix, &gWorldToFrustumMatrix);
 
-	OGLMatrix4x4_GetFrustumToWindow(setupInfo, &gFrustumToWindowMatrix);
+	OGLMatrix4x4_GetFrustumToWindow(&gFrustumToWindowMatrix);
 	OGLMatrix4x4_Multiply(&gWorldToFrustumMatrix, &gFrustumToWindowMatrix, &gWorldToWindowMatrix);
 
 

@@ -106,7 +106,7 @@ void PlayShootout(void)
 		ReadKeyboard();								
 		MoveEverything_Shootout();
 		KeepTerrainAlive();
-		OGL_DrawScene(gGameViewInfoPtr,DefaultDrawCallback);
+		OGL_DrawScene(DefaultDrawCallback);
 
 		gTimeSinceLastEnemyShot += gFramesPerSecondFrac;
 		
@@ -248,7 +248,7 @@ float		x,z;
 
 			/* MAKE OGL DRAW CONTEXT */
 			
-	OGL_SetupWindow(&viewDef, &gGameViewInfoPtr);
+	OGL_SetupWindow(&viewDef);
 
 
 			/**********************/
@@ -273,13 +273,13 @@ float		x,z;
 			// NOTE: only call this *after* draw context is created!
 			//
 	
-	LoadShootoutArt(gGameViewInfoPtr);			
+	LoadShootoutArt();
 	InitInfobar();
 
 			/* INIT OTHER MANAGERS */
 
 	InitEnemyManager();
-	InitEffects(gGameViewInfoPtr);
+	InitEffects();
 	InitSparkles();
 	InitItemsManager();
 
@@ -353,7 +353,7 @@ static void CleanupShootout(void)
 		
 	DisposeSoundBank(SOUND_BANK_LEVELSPECIFIC);
 	
-	OGL_DisposeWindowSetup(&gGameViewInfoPtr);	// do this last!			
+	OGL_DisposeWindowSetup();	// do this last!			
 }
 
 /******************** MOVE EVERYTHING ************************/
@@ -633,7 +633,7 @@ int		i, numBulletsInClip;
 	screenPt.x = (gCrosshairsCoord.x / 639.0f) * gGameWindowWidth;				// calc screen coords of crosshairs
 	screenPt.y = (gCrosshairsCoord.y / 479.0f) * gGameWindowHeight;
 					
-	OGL_GetWorldRayAtScreenPoint(&screenPt, &ray, gGameViewInfoPtr);					// get bullet direction vector
+	OGL_GetWorldRayAtScreenPoint(&screenPt, &ray);								// get bullet direction vector
 	bulletStart.x = gPlayerInfo.camera.cameraLocation.x + (ray.direction.x * 40.0f);	// get bullet start coord
 	bulletStart.y = gPlayerInfo.camera.cameraLocation.y + (ray.direction.y * 40.0f);
 	bulletStart.z = gPlayerInfo.camera.cameraLocation.z + (ray.direction.z * 40.0f);

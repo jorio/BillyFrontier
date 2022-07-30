@@ -91,7 +91,7 @@ void PlayStampede(void)
 		ReadKeyboard();								
 		MoveEverything_Stampede();
 		KeepTerrainAlive();
-		OGL_DrawScene(gGameViewInfoPtr,DefaultDrawCallback);
+		OGL_DrawScene(DefaultDrawCallback);
 
 								
 				/* MISC STUFF */
@@ -212,7 +212,7 @@ OGLSetupInputType	viewDef;
 
 			/* MAKE OGL DRAW CONTEXT */
 			
-	OGL_SetupWindow(&viewDef, &gGameViewInfoPtr);
+	OGL_SetupWindow(&viewDef);
 
 
 			/**********************/
@@ -237,13 +237,13 @@ OGLSetupInputType	viewDef;
 			// NOTE: only call this *after* draw context is created!
 			//
 	
-	LoadStampedeArt(gGameViewInfoPtr);			
+	LoadStampedeArt();
 	InitInfobar();
 
 			/* INIT OTHER MANAGERS */
 
 	InitEnemyManager();
-	InitEffects(gGameViewInfoPtr);
+	InitEffects();
 	InitSparkles();
 	InitItemsManager();
 
@@ -301,7 +301,7 @@ static void CleanupStampede(void)
 		
 	DisposeSoundBank(SOUND_BANK_LEVELSPECIFIC);
 	
-	OGL_DisposeWindowSetup(&gGameViewInfoPtr);	// do this last!			
+	OGL_DisposeWindowSetup();	// do this last!			
 }
 
 

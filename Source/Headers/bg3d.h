@@ -2,11 +2,10 @@
 // bg3d.h
 //
 
+#pragma once
+
 // Externals
 #include "game.h"
-
-#ifndef __BG3D
-#define __BG3D
 
 #define	MAX_MULTITEXTURE_LAYERS		4			// max # of multi texture layers supported
 												// WARNING: changing this may alter file format!!
@@ -109,7 +108,7 @@ typedef struct
 
 
 void InitBG3DManager(void);
-void ImportBG3D(FSSpec *spec, int groupNum, OGLSetupOutputType *setupInfo);
+void ImportBG3D(FSSpec *spec, int groupNum);
 void DisposeBG3DContainer(int groupNum);
 void DisposeAllBG3DContainers(void);
 void BG3D_SetContainerMaterialFlags(short group, short type, short geometryNum, u_long flags);
@@ -118,7 +117,3 @@ void BG3D_SphereMapGeomteryMaterial(short group, short type, short geometryNum, 
 void SetSphereMapInfoOnVertexArrayData(MOVertexArrayData *va, u_short combineMode, u_short envMapNum);
 void SetSphereMapInfoOnVertexArrayObject(MOVertexArrayObject *mo, u_short combineMode, u_short envMapNum);
 void SetSphereMapInfoOnMaterialObject(MOMaterialObject *mat, u_short combineMode, u_short envMapNum);
-
-
-#endif
-

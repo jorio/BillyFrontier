@@ -25,14 +25,14 @@ typedef struct
 void InitSpriteManager(void);
 void DisposeAllSpriteGroups(void);
 void DisposeSpriteGroup(int groupNum);
-void LoadSpriteFile(FSSpec *spec, int groupNum, OGLSetupOutputType *setupInfo);
-ObjNode *MakeSpriteObject(NewObjectDefinitionType *newObjDef, OGLSetupOutputType *setupInfo);
+void LoadSpriteFile(FSSpec *spec, int groupNum);
+ObjNode *MakeSpriteObject(NewObjectDefinitionType *newObjDef);
 void BlendAllSpritesInGroup(short group);
-void ModifySpriteObjectFrame(ObjNode *theNode, short type, OGLSetupOutputType *setupInfo);
-void DrawSprite(int	group, int type, float x, float y, float scale, float rot, u_long flags, const OGLSetupOutputType *setupInfo);
+void ModifySpriteObjectFrame(ObjNode *theNode, short type);
+void DrawSprite(int	group, int type, float x, float y, float scale, float rot, u_long flags);
 void BlendASprite(int group, int type);
 
-ObjNode *MakeFontStringObject(const char* cstr, NewObjectDefinitionType *newObjDef, OGLSetupOutputType *setupInfo, Boolean center);
+ObjNode *MakeFontStringObject(const char* cstr, NewObjectDefinitionType *newObjDef, Boolean center);
 int CharToSprite(char c);
 float GetCharSpacing(char c, float spacingScale);
 float GetStringWidth(const char* cstr, float scale);

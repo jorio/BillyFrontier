@@ -8,10 +8,10 @@
 #if 0
 ObjNode *OGL_DoRayCollision(OGLRay *ray, OGLPoint3D *worldHitCoord, u_long statusFilter, u_long cTypes);
 
-u_long OGL_PickAndGetPickID(OGLSetupOutputType *setupInfo, OGLPoint2D *point, void *drawFunc);
-ObjNode *OGL_PickAndGetHitInfo(OGLSetupOutputType *setupInfo, OGLPoint2D *point, void *drawFunc, OGLPoint3D *worldHitCoord);
+u_long OGL_PickAndGetPickID(OGLPoint2D *point, void *drawFunc);
+ObjNode *OGL_PickAndGetHitInfo(OGLPoint2D *point, void *drawFunc, OGLPoint3D *worldHitCoord);
 
-void OGL_GetWorldRayAtScreenPoint(OGLPoint2D *screenCoord, OGLRay *ray, const OGLSetupOutputType *setupInfo);
+void OGL_GetWorldRayAtScreenPoint(OGLPoint2D *screenCoord, OGLRay *ray);
 Boolean	OGL_RayIntersectsTriangle(OGLPoint3D *trianglePoints, OGLRay *ray, OGLPoint3D *intersectPt);
 
 Boolean OGL_DoesLineSegmentIntersectSphere(OGLPoint3D *p1, OGLPoint3D *p2, OGLVector3D *segVector, OGLPoint3D *sphereCenter, float sphereRadius, OGLPoint3D *intersectPt);
@@ -24,10 +24,10 @@ Boolean OGL_DoesLineSegmentIntersectSphere(OGLPoint3D *p1, OGLPoint3D *p2, OGLVe
 
 ObjNode *OGL_DoRayCollision(OGLRay *ray, OGLPoint3D *worldHitCoord, u_long statusFilter, u_long cTypes);
 
-u_long OGL_PickAndGetPickID(OGLSetupOutputType *setupInfo, OGLPoint2D *point, void *drawFunc);
-ObjNode *OGL_PickAndGetHitInfo(OGLSetupOutputType *setupInfo, OGLPoint2D *point, void *drawFunc, OGLPoint3D *worldHitCoord);
+u_long OGL_PickAndGetPickID(OGLPoint2D *point, void (*drawRoutine)(void));
+ObjNode *OGL_PickAndGetHitInfo(OGLPoint2D *point, void (*drawRoutine)(void), OGLPoint3D *worldHitCoord);
 
-void OGL_GetWorldRayAtScreenPoint(OGLPoint2D *screenCoord, OGLRay *ray, const OGLSetupOutputType *setupInfo);
+void OGL_GetWorldRayAtScreenPoint(OGLPoint2D *screenCoord, OGLRay *ray);
 Boolean	OGL_RayIntersectsTriangle(OGLPoint3D *trianglePoints, OGLRay *ray, OGLPoint3D *intersectPt);
 
 ObjNode *OGL_DoLineSegmentCollision(OGLPoint3D *p1, OGLPoint3D *p2, OGLPoint3D *worldHitCoord, OGLVector3D *worldHitFaceNormal, u_long cTypes);

@@ -11,7 +11,7 @@ void UpdateCamera_Duel(void);
 
 void UpdateCamera_Terrain(void);
 void ResetCameraSettings(void);
-void DrawLensFlare(OGLSetupOutputType *setupInfo);
+void DrawLensFlare(void);
 
 void UpdateCamera_Shootout(void);
 

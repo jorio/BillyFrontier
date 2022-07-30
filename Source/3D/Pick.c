@@ -50,7 +50,7 @@ static Boolean OGL_DoesLineSegIntersectTrianglePlane(OGLPoint3D	triWorldPoints[]
 static Boolean OGL_DoesLineSegIntersectTrianglePlane2(OGLPlaneEquation *planeEQ, float *distFromP1ToPlane);
 
 static Boolean OGL_PickAndGetHitInfo_Skeleton(OGLRay *ray, ObjNode *theNode, OGLPoint3D *worldHitCoord);
-static Boolean OGL_PickAndGetInfo_Terrain(OGLSetupOutputType *setupInfo, OGLPoint2D *point, OGLPoint3D *worldHitCoord);
+static Boolean OGL_PickAndGetInfo_Terrain(OGLPoint2D *point, OGLPoint3D *worldHitCoord);
 
 
 /****************************/
@@ -371,21 +371,21 @@ float				d, l2, r2, m2;
 //			worldHitCoord = world-space coords of the pick intersection
 //
 
-ObjNode *OGL_PickAndGetHitInfo(OGLSetupOutputType *setupInfo, OGLPoint2D *point, void *drawFunc, OGLPoint3D *worldHitCoord)
+ObjNode *OGL_PickAndGetHitInfo(OGLPoint2D *point, void (*drawRoutine)(void), OGLPoint3D *worldHitCoord)
 {
 u_long	pickID;
 ObjNode	*pickedObj;
 OGLRay	ray;
 				/* USE OPENGL TO DETERMINE WHAT WE HIT */
 				
-	pickID = OGL_PickAndGetPickID(setupInfo, point, drawFunc);
+	pickID = OGL_PickAndGetPickID(point, drawRoutine);
 	if (pickID == 0)
 		return(nil);
 
 
 			/* GET THE PICKING RAY IN WORLD-SPACE */
 			
-	OGL_GetWorldRayAtScreenPoint(point, &ray, setupInfo);
+	OGL_GetWorldRayAtScreenPoint(point, &ray);
 
 	
 			/* NOW PARSE THE OBJNODE AND DO RAY-TRIANGLE TESTS TO SEE WHERE WE HIT */
@@ -408,7 +408,7 @@ OGLRay	ray;
 		case	CUSTOM_GENRE:
 				if (pickedObj->CustomDrawFunction == DrawTerrain)		// is this the terrain?
 				{				
-					OGL_PickAndGetInfo_Terrain(setupInfo, point, worldHitCoord);
+					OGL_PickAndGetInfo_Terrain(point, worldHitCoord);
 				}
 				break;
 				
@@ -533,7 +533,7 @@ Boolean		gotHit = false;
 
 /**************** OGL: PICK AND GET INFO : TERRAIN **************************/
 
-static Boolean OGL_PickAndGetInfo_Terrain(OGLSetupOutputType *setupInfo, OGLPoint2D *point, OGLPoint3D *worldHitCoord)
+static Boolean OGL_PickAndGetInfo_Terrain(OGLPoint2D *point, OGLPoint3D *worldHitCoord)
 {
 int				r,c;
 int				i;
@@ -544,7 +544,7 @@ OGLPoint3D		thisPt;
 
 			/* GET THE PICKING RAY IN WORLD-SPACE */
 			
-	OGL_GetWorldRayAtScreenPoint(point, &ray, setupInfo);
+	OGL_GetWorldRayAtScreenPoint(point, &ray);
 
 			
 	/******************************************************************/
@@ -644,13 +644,13 @@ float		bestDist = 10000000;
 //			drawFun = callback to object drawing function
 //
 
-u_long OGL_PickAndGetPickID(OGLSetupOutputType *setupInfo, OGLPoint2D *point, void *drawFunc)
+u_long OGL_PickAndGetPickID(OGLPoint2D *point, void (*drawRoutine)(void))
 {
 int		i,j;
 
 				/* DO THE PICKING */
-							
-	OGL_PickScene(setupInfo, drawFunc, point->x, point->y, 4, 4);
+
+	OGL_PickScene(drawRoutine, point->x, point->y, 4, 4);
 	
 			
 			/* SEE WHETHER ANY HITS OCCURRED */	
@@ -702,7 +702,7 @@ int		i,j;
 // screenCoord is in grafPort coordinates.
 //
 
-void OGL_GetWorldRayAtScreenPoint(OGLPoint2D *screenCoord, OGLRay *ray, const OGLSetupOutputType *setupInfo)
+void OGL_GetWorldRayAtScreenPoint(OGLPoint2D *screenCoord, OGLRay *ray)
 {
 GLdouble	model_view[16];
 GLdouble	projection[16];
@@ -730,7 +730,7 @@ double		dx,dy,dz;
 
 			/* CONVERT TO RAY */
 	
-	ray->origin = setupInfo->cameraPlacement.cameraLocation;		// ray origin @ camera location
+	ray->origin = gGameViewInfoPtr->cameraPlacement.cameraLocation;		// ray origin @ camera location
 	ray->direction.x = dx - ray->origin.x;							// calc vector of ray
 	ray->direction.y = dy - ray->origin.y;							
 	ray->direction.z = dz - ray->origin.z;							

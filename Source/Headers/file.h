@@ -80,11 +80,11 @@ typedef struct
 
 //=================================================
 
-SkeletonDefType *LoadSkeletonFile(short skeletonType, OGLSetupOutputType *setupInfo);
+SkeletonDefType *LoadSkeletonFile(short skeletonType);
 extern	OSErr LoadPrefs(PrefsType *prefBlock);
 void SavePrefs(void);
 
-void LoadPlayfield(FSSpec *specPtr, OGLSetupOutputType *setupInfo);
+void LoadPlayfield(FSSpec *specPtr);
 OSErr DrawPictureIntoGWorld(FSSpec *myFSSpec, GWorldPtr *theGWorld, short depth);
 void SetDefaultDirectory(void);
 
@@ -92,10 +92,10 @@ Boolean SaveGame(void);
 Boolean LoadSavedGame(void);
 
 
-void LoadTargetPracticeArt(OGLSetupOutputType *setupInfo);
-void LoadDuelArt(OGLSetupOutputType *setupInfo);
-void LoadShootoutArt(OGLSetupOutputType *setupInfo);
-void LoadStampedeArt(OGLSetupOutputType *setupInfo);
+void LoadTargetPracticeArt(void);
+void LoadDuelArt(void);
+void LoadShootoutArt(void);
+void LoadStampedeArt(void);
 
 
 Ptr LoadDataFile(const char* path, long* outLength);

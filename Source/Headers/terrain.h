@@ -2,8 +2,7 @@
 // Terrain.h
 //
 
-#ifndef TERRAIN_H
-#define TERRAIN_H
+#pragma once
 
 // Externals
 #include "game.h"
@@ -167,7 +166,7 @@ typedef struct
 
 
 void SetTerrainScale(float polygonSize);
-void DrawTerrain(ObjNode *theNode, const OGLSetupOutputType *setupInfo);
+void DrawTerrain(ObjNode *theNode);
 void CreateSuperTileMemoryList(void);
 void DisposeSuperTileMemoryList(void);
 extern 	void DisposeTerrain(void);
@@ -197,14 +196,5 @@ short NewSuperTileDeformation(DeformationType *data);
 void DeleteTerrainDeformation(short	i);
 void UpdateDeformationCoords(short defNum, float x, float z);
 
-void DoItemShadowCasting(OGLSetupOutputType *setupInfo);
+void DoItemShadowCasting(void);
 Boolean SeeIfCrossedLineMarker(OGLPoint3D *from, OGLPoint3D *to, int *whichLine);
-
-
-#endif
-
-
-
-
-
-

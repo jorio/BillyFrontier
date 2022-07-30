@@ -30,7 +30,7 @@
 
 /************************** LOAD DUEL ART ***************************/
 
-void LoadDuelArt(OGLSetupOutputType *setupInfo)
+void LoadDuelArt(void)
 {
 FSSpec	spec;
 
@@ -44,7 +44,7 @@ FSSpec	spec;
 			/* LOAD GLOBAL BG3D GEOMETRY */
 			
 	FSMakeFSSpec(gDataSpec.vRefNum, gDataSpec.parID, ":models:global.bg3d", &spec);
-	ImportBG3D(&spec, MODEL_GROUP_GLOBAL, setupInfo);
+	ImportBG3D(&spec, MODEL_GROUP_GLOBAL);
 
 
 			/* LOAD LEVEL BG3D */
@@ -55,17 +55,17 @@ FSSpec	spec;
 		case	AREA_TOWN_DUEL2:
 		case	AREA_TOWN_DUEL3:
 				FSMakeFSSpec(gDataSpec.vRefNum, gDataSpec.parID, ":models:town.bg3d", &spec);
-				ImportBG3D(&spec, MODEL_GROUP_LEVELSPECIFIC, setupInfo);
+				ImportBG3D(&spec, MODEL_GROUP_LEVELSPECIFIC);
 
 				FSMakeFSSpec(gDataSpec.vRefNum, gDataSpec.parID, ":models:buildings.bg3d", &spec);
-				ImportBG3D(&spec, MODEL_GROUP_BUILDINGS, setupInfo);
+				ImportBG3D(&spec, MODEL_GROUP_BUILDINGS);
 				break;
 				
 		case	AREA_SWAMP_DUEL1:
 		case	AREA_SWAMP_DUEL2:
 		case	AREA_SWAMP_DUEL3:
 				FSMakeFSSpec(gDataSpec.vRefNum, gDataSpec.parID, ":models:swamp.bg3d", &spec);
-				ImportBG3D(&spec, MODEL_GROUP_LEVELSPECIFIC, setupInfo);
+				ImportBG3D(&spec, MODEL_GROUP_LEVELSPECIFIC);
 				
 	}
 
@@ -73,28 +73,27 @@ FSSpec	spec;
 			/* LOAD SPRITES */
 			
 	FSMakeFSSpec(gDataSpec.vRefNum, gDataSpec.parID, ":sprites:infobar.sprites", &spec);
-	LoadSpriteFile(&spec, SPRITE_GROUP_INFOBAR, setupInfo);
+	LoadSpriteFile(&spec, SPRITE_GROUP_INFOBAR);
 
 	FSMakeFSSpec(gDataSpec.vRefNum, gDataSpec.parID, ":sprites:global.sprites", &spec);
-	LoadSpriteFile(&spec, SPRITE_GROUP_GLOBAL, setupInfo);
+	LoadSpriteFile(&spec, SPRITE_GROUP_GLOBAL);
 
 	FSMakeFSSpec(gDataSpec.vRefNum, gDataSpec.parID, ":sprites:spheremap.sprites", &spec);
-	LoadSpriteFile(&spec, SPRITE_GROUP_SPHEREMAPS, setupInfo);
+	LoadSpriteFile(&spec, SPRITE_GROUP_SPHEREMAPS);
 
 	FSMakeFSSpec(gDataSpec.vRefNum, gDataSpec.parID, ":sprites:duel.sprites", &spec);
-	LoadSpriteFile(&spec, SPRITE_GROUP_LEVELSPECIFIC, setupInfo);
+	LoadSpriteFile(&spec, SPRITE_GROUP_LEVELSPECIFIC);
 
 	FSMakeFSSpec(gDataSpec.vRefNum, gDataSpec.parID, ":sprites:font.sprites", &spec);
-	LoadSpriteFile(&spec, SPRITE_GROUP_FONT, setupInfo);
+	LoadSpriteFile(&spec, SPRITE_GROUP_FONT);
 
 
 			/* LOAD PLAYER SKELETON */
 			
-	LoadASkeleton(SKELETON_TYPE_BILLY, setupInfo);
-
-	LoadASkeleton(SKELETON_TYPE_BANDITO, setupInfo);
-	LoadASkeleton(SKELETON_TYPE_RYGAR, setupInfo);
-	LoadASkeleton(SKELETON_TYPE_SHORTY, setupInfo);
+	LoadASkeleton(SKELETON_TYPE_BILLY);
+	LoadASkeleton(SKELETON_TYPE_BANDITO);
+	LoadASkeleton(SKELETON_TYPE_RYGAR);
+	LoadASkeleton(SKELETON_TYPE_SHORTY);
 
 
 
@@ -119,14 +118,14 @@ FSSpec	spec;
 				break;
 	}
 	
-	LoadPlayfield(&spec, setupInfo);
+	LoadPlayfield(&spec);
 
 }
 
 
 /************************** LOAD SHOOTOUT ART ***************************/
 
-void LoadShootoutArt(OGLSetupOutputType *setupInfo)
+void LoadShootoutArt(void)
 {
 FSSpec	spec;
 
@@ -135,34 +134,27 @@ FSSpec	spec;
 			/*********************/
 			/* LOAD COMMNON DATA */
 			/*********************/
-
-#if 0
-				/* LOAD AUDIO */
-						
-	FSMakeFSSpec(gDataSpec.vRefNum, gDataSpec.parID, ":Audio:Garden.sounds", &spec);
-	LoadSoundBank(&spec, SOUND_BANK_LEVELSPECIFIC);
-#endif
 				
 
 			/* LOAD GLOBAL BG3D GEOMETRY */
 			
 	FSMakeFSSpec(gDataSpec.vRefNum, gDataSpec.parID, ":models:global.bg3d", &spec);
-	ImportBG3D(&spec, MODEL_GROUP_GLOBAL, setupInfo);
+	ImportBG3D(&spec, MODEL_GROUP_GLOBAL);
 
 
 	switch(gCurrentArea)
 	{
 		case	AREA_TOWN_SHOOTOUT:
 				FSMakeFSSpec(gDataSpec.vRefNum, gDataSpec.parID, ":models:town.bg3d", &spec);
-				ImportBG3D(&spec, MODEL_GROUP_LEVELSPECIFIC, setupInfo);
+				ImportBG3D(&spec, MODEL_GROUP_LEVELSPECIFIC);
 
 				FSMakeFSSpec(gDataSpec.vRefNum, gDataSpec.parID, ":models:buildings.bg3d", &spec);
-				ImportBG3D(&spec, MODEL_GROUP_BUILDINGS, setupInfo);
+				ImportBG3D(&spec, MODEL_GROUP_BUILDINGS);
 				break;
 				
 		case	AREA_SWAMP_SHOOTOUT:
 				FSMakeFSSpec(gDataSpec.vRefNum, gDataSpec.parID, ":models:swamp.bg3d", &spec);
-				ImportBG3D(&spec, MODEL_GROUP_LEVELSPECIFIC, setupInfo);
+				ImportBG3D(&spec, MODEL_GROUP_LEVELSPECIFIC);
 				break;
 	}
 
@@ -170,41 +162,41 @@ FSSpec	spec;
 			/* LOAD SPRITES */
 			
 	FSMakeFSSpec(gDataSpec.vRefNum, gDataSpec.parID, ":sprites:infobar.sprites", &spec);
-	LoadSpriteFile(&spec, SPRITE_GROUP_INFOBAR, setupInfo);
+	LoadSpriteFile(&spec, SPRITE_GROUP_INFOBAR);
 
 	FSMakeFSSpec(gDataSpec.vRefNum, gDataSpec.parID, ":sprites:global.sprites", &spec);
-	LoadSpriteFile(&spec, SPRITE_GROUP_GLOBAL, setupInfo);
+	LoadSpriteFile(&spec, SPRITE_GROUP_GLOBAL);
 
 	FSMakeFSSpec(gDataSpec.vRefNum, gDataSpec.parID, ":sprites:spheremap.sprites", &spec);
-	LoadSpriteFile(&spec, SPRITE_GROUP_SPHEREMAPS, setupInfo);
+	LoadSpriteFile(&spec, SPRITE_GROUP_SPHEREMAPS);
 
 	FSMakeFSSpec(gDataSpec.vRefNum, gDataSpec.parID, ":sprites:shootout.sprites", &spec);
-	LoadSpriteFile(&spec, SPRITE_GROUP_LEVELSPECIFIC, setupInfo);
+	LoadSpriteFile(&spec, SPRITE_GROUP_LEVELSPECIFIC);
 
 	FSMakeFSSpec(gDataSpec.vRefNum, gDataSpec.parID, ":sprites:font.sprites", &spec);
-	LoadSpriteFile(&spec, SPRITE_GROUP_FONT, setupInfo);
+	LoadSpriteFile(&spec, SPRITE_GROUP_FONT);
 
 
 			/* LOAD PLAYER SKELETON */
 			
-	LoadASkeleton(SKELETON_TYPE_BILLY, setupInfo);
+	LoadASkeleton(SKELETON_TYPE_BILLY);
 
 	switch(gCurrentArea)
 	{
 		case	AREA_TOWN_SHOOTOUT:
-				LoadASkeleton(SKELETON_TYPE_BANDITO, setupInfo);
-				LoadASkeleton(SKELETON_TYPE_SHORTY, setupInfo);
-				LoadASkeleton(SKELETON_TYPE_WALKER, setupInfo);
-				LoadASkeleton(SKELETON_TYPE_KANGACOW, setupInfo);
+				LoadASkeleton(SKELETON_TYPE_BANDITO);
+				LoadASkeleton(SKELETON_TYPE_SHORTY);
+				LoadASkeleton(SKELETON_TYPE_WALKER);
+				LoadASkeleton(SKELETON_TYPE_KANGACOW);
 				break;
 			
 		case	AREA_SWAMP_SHOOTOUT:
-				LoadASkeleton(SKELETON_TYPE_KANGAREX, setupInfo);
-				LoadASkeleton(SKELETON_TYPE_TREMORALIEN, setupInfo);
-				LoadASkeleton(SKELETON_TYPE_TREMORGHOST, setupInfo);
-				LoadASkeleton(SKELETON_TYPE_FROGMAN, setupInfo);
-				LoadASkeleton(SKELETON_TYPE_BANDITO, setupInfo);
-				LoadASkeleton(SKELETON_TYPE_SHORTY, setupInfo);
+				LoadASkeleton(SKELETON_TYPE_KANGAREX);
+				LoadASkeleton(SKELETON_TYPE_TREMORALIEN);
+				LoadASkeleton(SKELETON_TYPE_TREMORGHOST);
+				LoadASkeleton(SKELETON_TYPE_FROGMAN);
+				LoadASkeleton(SKELETON_TYPE_BANDITO);
+				LoadASkeleton(SKELETON_TYPE_SHORTY);
 				break;
 				
 	}
@@ -227,19 +219,17 @@ FSSpec	spec;
 				break;
 	}
 
-	LoadPlayfield(&spec, setupInfo);
+	LoadPlayfield(&spec);
 	
 	
 	BG3D_SphereMapGeomteryMaterial(MODEL_GROUP_GLOBAL, GLOBAL_ObjType_PesoPOW,
 								0, MULTI_TEXTURE_COMBINE_ADD, SPHEREMAP_SObjType_Sheen);			
-	
-
 }
 
 
 /************************** LOAD STAMPEDE ART ***************************/
 
-void LoadStampedeArt(OGLSetupOutputType *setupInfo)
+void LoadStampedeArt(void)
 {
 FSSpec	spec;
 
@@ -248,13 +238,6 @@ FSSpec	spec;
 			/*********************/
 			/* LOAD COMMNON DATA */
 			/*********************/
-
-#if 0
-				/* LOAD AUDIO */
-						
-	FSMakeFSSpec(gDataSpec.vRefNum, gDataSpec.parID, ":Audio:Garden.sounds", &spec);
-	LoadSoundBank(&spec, SOUND_BANK_LEVELSPECIFIC);
-#endif
 				
 
 			/* LOAD LEVEL BG3D */
@@ -269,13 +252,13 @@ FSSpec	spec;
 				FSMakeFSSpec(gDataSpec.vRefNum, gDataSpec.parID, ":models:swamp.bg3d", &spec);
 				break;			
 	}
-	ImportBG3D(&spec, MODEL_GROUP_LEVELSPECIFIC, setupInfo);
+	ImportBG3D(&spec, MODEL_GROUP_LEVELSPECIFIC);
 
 
 			/* LOAD GLOBAL BG3D GEOMETRY */
 			
 	FSMakeFSSpec(gDataSpec.vRefNum, gDataSpec.parID, ":models:global.bg3d", &spec);
-	ImportBG3D(&spec, MODEL_GROUP_GLOBAL, setupInfo);
+	ImportBG3D(&spec, MODEL_GROUP_GLOBAL);
 
 	BG3D_SphereMapGeomteryMaterial(MODEL_GROUP_GLOBAL, GLOBAL_ObjType_Boost,
 								0, MULTI_TEXTURE_COMBINE_ADD, SPHEREMAP_SObjType_Sheen);			
@@ -284,33 +267,33 @@ FSSpec	spec;
 			/* LOAD SPRITES */
 			
 	FSMakeFSSpec(gDataSpec.vRefNum, gDataSpec.parID, ":sprites:infobar.sprites", &spec);
-	LoadSpriteFile(&spec, SPRITE_GROUP_INFOBAR, setupInfo);
+	LoadSpriteFile(&spec, SPRITE_GROUP_INFOBAR);
 
 	FSMakeFSSpec(gDataSpec.vRefNum, gDataSpec.parID, ":sprites:global.sprites", &spec);
-	LoadSpriteFile(&spec, SPRITE_GROUP_GLOBAL, setupInfo);
+	LoadSpriteFile(&spec, SPRITE_GROUP_GLOBAL);
 
 	FSMakeFSSpec(gDataSpec.vRefNum, gDataSpec.parID, ":sprites:spheremap.sprites", &spec);
-	LoadSpriteFile(&spec, SPRITE_GROUP_SPHEREMAPS, setupInfo);
+	LoadSpriteFile(&spec, SPRITE_GROUP_SPHEREMAPS);
 
 	FSMakeFSSpec(gDataSpec.vRefNum, gDataSpec.parID, ":sprites:stampede.sprites", &spec);
-	LoadSpriteFile(&spec, SPRITE_GROUP_LEVELSPECIFIC, setupInfo);
+	LoadSpriteFile(&spec, SPRITE_GROUP_LEVELSPECIFIC);
 
 	FSMakeFSSpec(gDataSpec.vRefNum, gDataSpec.parID, ":sprites:font.sprites", &spec);
-	LoadSpriteFile(&spec, SPRITE_GROUP_FONT, setupInfo);
+	LoadSpriteFile(&spec, SPRITE_GROUP_FONT);
 
 
 			/* LOAD PLAYER SKELETON */
 						
-	LoadASkeleton(SKELETON_TYPE_BILLY, setupInfo);
+	LoadASkeleton(SKELETON_TYPE_BILLY);
 	
 	switch(gCurrentArea)
 	{
 		case	AREA_TOWN_STAMPEDE:
-				LoadASkeleton(SKELETON_TYPE_KANGACOW, setupInfo);
+				LoadASkeleton(SKELETON_TYPE_KANGACOW);
 				break;			
 
 		case	AREA_SWAMP_STAMPEDE:
-				LoadASkeleton(SKELETON_TYPE_KANGAREX, setupInfo);
+				LoadASkeleton(SKELETON_TYPE_KANGAREX);
 				break;			
 	}
 	
@@ -334,7 +317,7 @@ FSSpec	spec;
 				break;
 	}
 
-	LoadPlayfield(&spec, setupInfo);
+	LoadPlayfield(&spec);
 
 
 
@@ -343,7 +326,6 @@ FSSpec	spec;
 
 	BG3D_SphereMapGeomteryMaterial(MODEL_GROUP_GLOBAL, GLOBAL_ObjType_Boost,
 								0, MULTI_TEXTURE_COMBINE_ADD, SPHEREMAP_SObjType_Sheen);			
-
 }
 
 
@@ -351,7 +333,7 @@ FSSpec	spec;
 
 /************************** LOAD TARGET PRACTICE ART ***************************/
 
-void LoadTargetPracticeArt(OGLSetupOutputType *setupInfo)
+void LoadTargetPracticeArt(void)
 {
 FSSpec	spec;
 
@@ -364,42 +346,42 @@ FSSpec	spec;
 			/* LOAD GLOBAL BG3D GEOMETRY */
 			
 	FSMakeFSSpec(gDataSpec.vRefNum, gDataSpec.parID, ":models:global.bg3d", &spec);
-	ImportBG3D(&spec, MODEL_GROUP_GLOBAL, setupInfo);
+	ImportBG3D(&spec, MODEL_GROUP_GLOBAL);
 
 	FSMakeFSSpec(gDataSpec.vRefNum, gDataSpec.parID, ":models:targetpractice.bg3d", &spec);
-	ImportBG3D(&spec, MODEL_GROUP_LEVELSPECIFIC, setupInfo);
+	ImportBG3D(&spec, MODEL_GROUP_LEVELSPECIFIC);
 
 
 
 			/* LOAD SPRITES */
 			
 	FSMakeFSSpec(gDataSpec.vRefNum, gDataSpec.parID, ":sprites:infobar.sprites", &spec);
-	LoadSpriteFile(&spec, SPRITE_GROUP_INFOBAR, setupInfo);
+	LoadSpriteFile(&spec, SPRITE_GROUP_INFOBAR);
 
 	FSMakeFSSpec(gDataSpec.vRefNum, gDataSpec.parID, ":sprites:global.sprites", &spec);
-	LoadSpriteFile(&spec, SPRITE_GROUP_GLOBAL, setupInfo);
+	LoadSpriteFile(&spec, SPRITE_GROUP_GLOBAL);
 
 	FSMakeFSSpec(gDataSpec.vRefNum, gDataSpec.parID, ":sprites:spheremap.sprites", &spec);
-	LoadSpriteFile(&spec, SPRITE_GROUP_SPHEREMAPS, setupInfo);
+	LoadSpriteFile(&spec, SPRITE_GROUP_SPHEREMAPS);
 
 	FSMakeFSSpec(gDataSpec.vRefNum, gDataSpec.parID, ":sprites:targetpractice.sprites", &spec);
-	LoadSpriteFile(&spec, SPRITE_GROUP_LEVELSPECIFIC, setupInfo);
+	LoadSpriteFile(&spec, SPRITE_GROUP_LEVELSPECIFIC);
 
 	FSMakeFSSpec(gDataSpec.vRefNum, gDataSpec.parID, ":sprites:font.sprites", &spec);
-	LoadSpriteFile(&spec, SPRITE_GROUP_FONT, setupInfo);
+	LoadSpriteFile(&spec, SPRITE_GROUP_FONT);
 
 
 			/* LOAD PLAYER SKELETON */
 	
 	if (gCurrentArea == AREA_TARGETPRACTICE1)
 	{			
-		LoadASkeleton(SKELETON_TYPE_KANGACOW, setupInfo);
-		LoadASkeleton(SKELETON_TYPE_SHORTY, setupInfo);
+		LoadASkeleton(SKELETON_TYPE_KANGACOW);
+		LoadASkeleton(SKELETON_TYPE_SHORTY);
 	}
 	else
 	{
-		LoadASkeleton(SKELETON_TYPE_FROGMAN, setupInfo);
-		LoadASkeleton(SKELETON_TYPE_TREMORGHOST, setupInfo);
+		LoadASkeleton(SKELETON_TYPE_FROGMAN);
+		LoadASkeleton(SKELETON_TYPE_TREMORGHOST);
 	}
 
 
@@ -413,9 +395,7 @@ FSSpec	spec;
 								0, MULTI_TEXTURE_COMBINE_ADD, SPHEREMAP_SObjType_Sheen);			
 
 	BG3D_SphereMapGeomteryMaterial(MODEL_GROUP_LEVELSPECIFIC, PRACTICE_ObjType_DeathSkull,
-								0, MULTI_TEXTURE_COMBINE_ADD, SPHEREMAP_SObjType_Satin);			
-
-
+								0, MULTI_TEXTURE_COMBINE_ADD, SPHEREMAP_SObjType_Satin);
 }
 
 

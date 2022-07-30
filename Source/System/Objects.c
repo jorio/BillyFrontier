@@ -442,7 +442,7 @@ ObjNode		*thisNodePtr;
 
 /**************************** DRAW OBJECTS ***************************/
 
-void DrawObjects(OGLSetupOutputType *setupInfo)
+void DrawObjects(void)
 {
 ObjNode		*theNode;
 unsigned long	statusBits;
@@ -471,8 +471,8 @@ int				i;
 	
 			/* GET CAMERA COORDS */
 			
-	cameraX = setupInfo->cameraPlacement.cameraLocation.x;
-	cameraZ = setupInfo->cameraPlacement.cameraLocation.z;
+	cameraX = gGameViewInfoPtr->cameraPlacement.cameraLocation.x;
+	cameraZ = gGameViewInfoPtr->cameraPlacement.cameraLocation.z;
 	
 			/***********************/
 			/* MAIN NODE TASK LOOP */
@@ -588,7 +588,7 @@ int				i;
 			/* CHECK NO FOG */
 			/****************/
 	
-		if (setupInfo->useFog)
+		if (gGameViewInfoPtr->useFog)
 		{
 			if (statusBits & STATUS_BIT_NOFOG)
 			{
@@ -755,13 +755,13 @@ int				i;
 		{
 			
 			case	SKELETON_GENRE:		
-					DrawSkeleton(theNode, setupInfo);	
+					DrawSkeleton(theNode);	
 					break;
 			
 			case	DISPLAY_GROUP_GENRE:
 					if (theNode->BaseGroup)
 					{
-						MO_DrawObject(theNode->BaseGroup, setupInfo);
+						MO_DrawObject(theNode->BaseGroup);
 					}
 					break;
 
@@ -778,7 +778,7 @@ int				i;
 						theNode->SpriteMO->objectData.scaleY = theNode->Scale.y;
 						theNode->SpriteMO->objectData.rot = theNode->Rot.y;
 
-						MO_DrawObject(theNode->SpriteMO, setupInfo);
+						MO_DrawObject(theNode->SpriteMO);
 						OGL_PopState();									// restore state
 					}
 					break;
@@ -796,7 +796,7 @@ int				i;
 //						glMatrixMode(GL_MODELVIEW);
 //						glLoadIdentity();		
 					
-						MO_DrawObject(theNode->StringCharacters[i], setupInfo);
+						MO_DrawObject(theNode->StringCharacters[i]);
 					}
 
 					OGL_PopState();									// restore state
@@ -807,7 +807,7 @@ int				i;
 					if (theNode->CustomDrawFunction)
 					{
 custom_draw:			
-						theNode->CustomDrawFunction(theNode, setupInfo);					
+						theNode->CustomDrawFunction(theNode);
 					}
 					break;
 		}
@@ -839,7 +839,7 @@ next:
 	if (noLighting)
 		OGL_EnableLighting();
 
-	if (setupInfo->useFog)
+	if (gGameViewInfoPtr->useFog)
 	{
 		if (noFog)
 			glEnable(GL_FOG);

@@ -16,7 +16,7 @@
 /****************************/
 
 static Boolean NavigatePausedMenu(void);
-static void DrawPaused(OGLSetupOutputType *setupInfo);
+static void DrawPaused(void);
 
 
 
@@ -125,7 +125,7 @@ Boolean	oldMute = gMuteMusicFlag;
 		CalcFramesPerSecond();
 		ReadKeyboard();		
 		KeepTerrainAlive();		// need to call this to keep supertiles active
-		OGL_DrawScene(gGameViewInfoPtr, DrawPaused);
+		OGL_DrawScene(DrawPaused);
 
 	}	
 	
@@ -140,7 +140,7 @@ Boolean	oldMute = gMuteMusicFlag;
 
 /*********************** DRAW PAUSED ***************************/
 
-static void DrawPaused(OGLSetupOutputType *setupInfo)
+static void DrawPaused(void)
 {
 float	x,y,leftX;
 float	dotX,dotY;
@@ -149,7 +149,7 @@ static float	dotAlpha = 1.0f;
 
 			/* DRAW THE BACKGROUND */
 	
-	DefaultDrawCallback(setupInfo);
+	DefaultDrawCallback();
 
 	
 			/*************************/

@@ -212,7 +212,7 @@ float				aspect;
 		/* ACTIVATE THE MATERIAL */
 				
 	mo = gSpriteGroupList[SPRITE_GROUP_INFOBAR][texNum].materialObject;
-	MO_DrawMaterial(mo, gGameViewInfoPtr);			
+	MO_DrawMaterial(mo);
 
 	aspect = (float)mo->objectData.height / (float)mo->objectData.width;
 
@@ -240,7 +240,7 @@ float				aspect;
 		/* ACTIVATE THE MATERIAL */
 				
 	mo = gSpriteGroupList[SPRITE_GROUP_INFOBAR][texNum].materialObject;
-	MO_DrawMaterial(mo, gGameViewInfoPtr);			
+	MO_DrawMaterial(mo);
 
 	aspect = (float)mo->objectData.width / (float)mo->objectData.height;
 
@@ -268,7 +268,7 @@ float				aspect;
 		/* ACTIVATE THE MATERIAL */
 				
 	mo = gSpriteGroupList[SPRITE_GROUP_INFOBAR][texNum].materialObject;
-	MO_DrawMaterial(mo, gGameViewInfoPtr);			
+	MO_DrawMaterial(mo);
 
 	aspect = (float)mo->objectData.height / (float)mo->objectData.width;
 
@@ -299,7 +299,7 @@ float				aspect;
 		/* ACTIVATE THE MATERIAL */
 				
 	mo = gSpriteGroupList[group][texNum].materialObject;
-	MO_DrawMaterial(mo, gGameViewInfoPtr);			
+	MO_DrawMaterial(mo);
 
 	aspect = (float)mo->objectData.height / (float)mo->objectData.width;
 
@@ -333,7 +333,7 @@ float				aspect;
 		/* ACTIVATE THE MATERIAL */
 				
 	mo = gSpriteGroupList[group][texNum].materialObject;
-	MO_DrawMaterial(mo, gGameViewInfoPtr);			
+	MO_DrawMaterial(mo);
 
 	aspect = (float)mo->objectData.height / (float)mo->objectData.width;
 
@@ -364,7 +364,7 @@ OGLMatrix3x3		m;
 		/* ACTIVATE THE MATERIAL */
 				
 	mo = gSpriteGroupList[SPRITE_GROUP_INFOBAR][texNum].materialObject;
-	MO_DrawMaterial(mo, gGameViewInfoPtr);			
+	MO_DrawMaterial(mo);
 
 				/* SET COORDS */
 				
@@ -403,7 +403,7 @@ float				aspect;
 		/* ACTIVATE THE MATERIAL */
 				
 	mo = gSpriteGroupList[SPRITE_GROUP_INFOBAR][texNum].materialObject;
-	MO_DrawMaterial(mo, gGameViewInfoPtr);			
+	MO_DrawMaterial(mo);
 
 	aspect = (float)mo->objectData.height / (float)mo->objectData.width;
 

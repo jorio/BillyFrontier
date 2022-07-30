@@ -106,9 +106,9 @@ void CreateCyclorama(void)
 
 /********************** DRAW CYCLORAMA *************************/
 
-void DrawCyclorama(ObjNode *theNode, const OGLSetupOutputType *setupInfo)
+void DrawCyclorama(ObjNode *theNode)
 {
-OGLPoint3D cameraCoord = setupInfo->cameraPlacement.cameraLocation;
+OGLPoint3D cameraCoord = gGameViewInfoPtr->cameraPlacement.cameraLocation;
 
 		/* UPDATE CYCLORAMA COORD INFO */
 		
@@ -121,7 +121,7 @@ OGLPoint3D cameraCoord = setupInfo->cameraPlacement.cameraLocation;
 
 			/* DRAW THE OBJECT */
 			
-	MO_DrawObject(theNode->BaseGroup, setupInfo);
+	MO_DrawObject(theNode->BaseGroup);
 }
 
 

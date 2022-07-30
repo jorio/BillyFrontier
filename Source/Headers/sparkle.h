@@ -32,5 +32,5 @@ typedef struct
 void InitSparkles(void);
 short GetFreeSparkle(ObjNode *theNode);
 void DeleteSparkle(short i);
-void DrawSparkles(OGLSetupOutputType *setupInfo);
+void DrawSparkles(void);
 

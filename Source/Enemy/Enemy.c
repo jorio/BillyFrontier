@@ -136,7 +136,7 @@ ObjNode	*newObj;
 // OUTPUT: true if was on spline, false if wasnt
 //
 
-void DetachEnemyFromSpline(ObjNode *theNode, void *moveCall)
+void DetachEnemyFromSpline(ObjNode *theNode, movecall_t moveCall)
 {
 	if (!(theNode->StatusBits & STATUS_BIT_ONSPLINE))	// must be on spline
 		return;

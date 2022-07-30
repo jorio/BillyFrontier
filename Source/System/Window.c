@@ -20,7 +20,7 @@
 /****************************/
 
 static void MoveFadePane(ObjNode *theNode);
-static void DrawFadePane(ObjNode *theNode, const OGLSetupOutputType* setupInfo);
+static void DrawFadePane(ObjNode *theNode);
 
 #define FaderMode			Flag[0]
 #define FaderDone			Flag[1]
@@ -94,14 +94,14 @@ void OGL_FadeOutScene(void (*drawCall)(void), void (*moveCall)(void))
 			pFaderFrameCount = fader->FaderFrameCounter;
 		}
 
-		OGL_DrawScene(gGameViewInfoPtr, drawCall);
+		OGL_DrawScene(drawCall);
 	}
 
 	// Draw one more blank frame
 	gGammaFadeFrac = 0;
 	CalcFramesPerSecond();
 	DoSDLMaintenance();
-	OGL_DrawScene(gGameViewInfoPtr, drawCall);
+	OGL_DrawScene(drawCall);
 
 #if 0
 	if (gGameView->fadeSound)
@@ -210,7 +210,7 @@ float	fps = gFramesPerSecondFrac;
 
 /***************** DRAW FADE PANE ********************/
 
-static void DrawFadePane(ObjNode* theNode, const OGLSetupOutputType* setupInfo)
+static void DrawFadePane(ObjNode* theNode)
 {
 	OGL_PushState();
 	SetInfobarSpriteState(0);

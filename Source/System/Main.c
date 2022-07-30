@@ -339,17 +339,17 @@ next:;
  
 /****************** DEFAULT DRAW CALLBACK *****************************/
 
-void DefaultDrawCallback(OGLSetupOutputType *setupInfo)
+void DefaultDrawCallback(void)
 {
 		/* DRAW OBJECTS & TERAIN */	
 
-	DrawObjects(setupInfo);												// draw objNodes which includes fences, terrain, etc.
+	DrawObjects();											// draw objNodes which includes fences, terrain, etc.
 
 			/* DRAW MISC */
 
-	DrawSparkles(setupInfo);											// draw light sparkles
-	DrawLensFlare(setupInfo);											// draw lens flare
-	DrawInfobar();												// draw infobar last		
+	DrawSparkles();											// draw light sparkles
+	DrawLensFlare();										// draw lens flare
+	DrawInfobar();											// draw infobar last		
 }
 
 

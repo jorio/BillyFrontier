@@ -15,7 +15,7 @@
 /*    PROTOTYPES            */
 /****************************/
 
-static ObjNode *MakeFrogMan(float x, float z, float rot, short animNum, void *moveCall);
+static ObjNode *MakeFrogMan(float x, float z, float rot, short animNum, movecall_t moveCall);
 static void MoveShootoutFrogMan(ObjNode *enemy);
 static void FrogManThrowBarrel(ObjNode *enemy);
 static void ShootoutFrogManHitByBulletCallback(ObjNode *bullet, ObjNode *enemy, const OGLPoint3D *impactPt);
@@ -84,7 +84,7 @@ float	rot 		= (float)itemPtr->parm[1] * (PI2/8);
 
 /************************* MAKE FROGMAN ****************************/
 
-static ObjNode *MakeFrogMan(float x, float z, float rot, short animNum, void *moveCall)
+static ObjNode *MakeFrogMan(float x, float z, float rot, short animNum, movecall_t moveCall)
 {
 ObjNode	*newObj;
 

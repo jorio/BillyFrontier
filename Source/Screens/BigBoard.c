@@ -18,7 +18,7 @@
 static void SetupBigBoardScreen(void);
 static void FreeBigBoardScreen(void);
 static void BuildBigBoardIcons(void);
-static void DrawBigBoardCallback(OGLSetupOutputType *info);
+static void DrawBigBoardCallback(void);
 static void ProcessBigBoard(void);
 static void DoBigBoardControls(void);
 static void MoveCursor(ObjNode *theNode);
@@ -146,7 +146,7 @@ const static OGLVector3D	fillDirection2 = { .3, .8, 1.0 };
 	viewDef.lights.fillColor[1].g 	= .5;
 	viewDef.lights.fillColor[1].b 	= .0;
 
-	OGL_SetupWindow(&viewDef, &gGameViewInfoPtr);
+	OGL_SetupWindow(&viewDef);
 
 
 				/************/
@@ -159,18 +159,18 @@ const static OGLVector3D	fillDirection2 = { .3, .8, 1.0 };
 			/* LOAD SPRITES */
 			
 	FSMakeFSSpec(gDataSpec.vRefNum, gDataSpec.parID, ":sprites:font.sprites", &spec);
-	LoadSpriteFile(&spec, SPRITE_GROUP_FONT, gGameViewInfoPtr);
+	LoadSpriteFile(&spec, SPRITE_GROUP_FONT);
 
 	FSMakeFSSpec(gDataSpec.vRefNum, gDataSpec.parID, ":sprites:bigboard.sprites", &spec);
-	LoadSpriteFile(&spec, SPRITE_GROUP_BIGBOARD, gGameViewInfoPtr);
+	LoadSpriteFile(&spec, SPRITE_GROUP_BIGBOARD);
 
 	FSMakeFSSpec(gDataSpec.vRefNum, gDataSpec.parID, ":sprites:infobar.sprites", &spec);
-	LoadSpriteFile(&spec, SPRITE_GROUP_INFOBAR, gGameViewInfoPtr);
+	LoadSpriteFile(&spec, SPRITE_GROUP_INFOBAR);
 
 
 			/* MAKE BACKGROUND PICTURE OBJECT */
 
-	gBackgoundPicture = MO_CreateNewObjectOfType(MO_TYPE_PICTURE, (uintptr_t)gGameViewInfoPtr, ":images:BigBoard.png");
+	gBackgoundPicture = MO_CreateNewObjectOfType(MO_TYPE_PICTURE, 0, ":images:BigBoard.png");
 
 
 			/*****************/
@@ -189,7 +189,7 @@ const static OGLVector3D	fillDirection2 = { .3, .8, 1.0 };
 	gNewObjectDefinition.moveCall 	= MoveCursor;
 	gNewObjectDefinition.rot 		= 0;
 	gNewObjectDefinition.scale 	    = 40;
-	gCursor = MakeSpriteObject(&gNewObjectDefinition, gGameViewInfoPtr);
+	gCursor = MakeSpriteObject(&gNewObjectDefinition);
 
 	gCursor->AnaglyphZ = 3.0f;
 	
@@ -219,7 +219,7 @@ static void FreeBigBoardScreen(void)
 	DisposeAllSpriteGroups();	
 	DisposeAllBG3DContainers();
 	DisposeSoundBank(SOUND_BANK_MAINMENU);
-	OGL_DisposeWindowSetup(&gGameViewInfoPtr);	
+	OGL_DisposeWindowSetup();	
 }
 
 #pragma mark -
@@ -245,7 +245,7 @@ static void ProcessBigBoard(void)
 		
 				/* DRAW */
 				
-		OGL_DrawScene(gGameViewInfoPtr, DrawBigBoardCallback);			
+		OGL_DrawScene(DrawBigBoardCallback);			
 
 				/* DO USER INPUT */
 				
@@ -289,11 +289,11 @@ ObjNode	*newObj;
 		gNewObjectDefinition.moveCall 	= MoveBulletHole;
 		gNewObjectDefinition.rot 		= RandomFloat2() * PI2;
 		gNewObjectDefinition.scale 	    = 50;
-		newObj = MakeSpriteObject(&gNewObjectDefinition, gGameViewInfoPtr);
+		newObj = MakeSpriteObject(&gNewObjectDefinition);
 		
 		newObj->AnaglyphZ = -5;
 		
-		OGL_DrawScene(gGameViewInfoPtr, DrawBigBoardCallback);			
+		OGL_DrawScene(DrawBigBoardCallback);
 	
 	
 				/* SEE WHAT WAS SELECTED */
@@ -352,13 +352,13 @@ ObjNode	*newObj;
 
 /***************** DRAW BIGBOARD CALLBACK *******************/
 
-static void DrawBigBoardCallback(OGLSetupOutputType *info)
+static void DrawBigBoardCallback(void)
 {
 int		i;
 
-	MO_DrawObject(gBackgoundPicture, info);
+	MO_DrawObject(gBackgoundPicture);
 
-	DrawObjects(info);
+	DrawObjects();
 
 
 			/* DRAW SCORE */
@@ -373,7 +373,6 @@ int		i;
 	{
 		DrawInfobarSprite(605-(i * 20), 20, 30, INFOBAR_SObjType_Heart);
 	}
-
 }
 
 
@@ -458,7 +457,7 @@ const float scale[NUM_BIGBOARD_ITEMS] =
 		gNewObjectDefinition.moveCall 	= MoveBigBoardtem;
 		gNewObjectDefinition.rot 		= 0;
 		gNewObjectDefinition.scale 	    = scale[i];
-		gBigBoardItems[i] = MakeSpriteObject(&gNewObjectDefinition, gGameViewInfoPtr);
+		gBigBoardItems[i] = MakeSpriteObject(&gNewObjectDefinition);
 		
 		gBigBoardItems[i]->Kind = i;
 		gBigBoardItems[i]->Special[0] = gNewObjectDefinition.type;
@@ -522,14 +521,14 @@ const Rect crop[NUM_BIGBOARD_ITEMS] =
 		(cy >= top) && (cy < bottom))
 	{
 		gCurrentMenuItem = theNode->Kind;		
-		ModifySpriteObjectFrame(theNode, theNode->Special[0]+1, gGameViewInfoPtr);
+		ModifySpriteObjectFrame(theNode, theNode->Special[0]+1);
 	}
 	
 			/* CURSOR NOT ON THIS */
 
 	else
 	{
-		ModifySpriteObjectFrame(theNode, theNode->Special[0], gGameViewInfoPtr);			
+		ModifySpriteObjectFrame(theNode, theNode->Special[0]);			
 	}
 }
 

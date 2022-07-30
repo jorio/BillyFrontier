@@ -41,7 +41,7 @@ static void FireBanditoShootoutGun(ObjNode *enemy);
 
 /************************* MAKE BANDITO ****************************/
 
-ObjNode *MakeBandito(float x, float z, float rot, short animNum, void *moveCall, Boolean gunInHand)
+ObjNode *MakeBandito(float x, float z, float rot, short animNum, movecall_t moveCall, Boolean gunInHand)
 {
 ObjNode	*newObj, *gun, *hat;
 

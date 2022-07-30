@@ -90,7 +90,7 @@ void PlayTargetPractice(void)
 				
 		ReadKeyboard();								
 		MoveEverything_TargetPractice();
-		OGL_DrawScene(gGameViewInfoPtr,DefaultDrawCallback);
+		OGL_DrawScene(DefaultDrawCallback);
 
 								
 				/* MISC STUFF */
@@ -226,7 +226,7 @@ const OGLPoint3D	cameraTo = { 0, 1200, 0 };
 
 			/* MAKE OGL DRAW CONTEXT */
 			
-	OGL_SetupWindow(&viewDef, &gGameViewInfoPtr);
+	OGL_SetupWindow(&viewDef);
 
 
 			/**********************/
@@ -251,7 +251,7 @@ const OGLPoint3D	cameraTo = { 0, 1200, 0 };
 			// NOTE: only call this *after* draw context is created!
 			//
 	
-	LoadTargetPracticeArt(gGameViewInfoPtr);			
+	LoadTargetPracticeArt();
 	InitInfobar();
 
 			/* INIT OTHER MANAGERS */
@@ -259,7 +259,7 @@ const OGLPoint3D	cameraTo = { 0, 1200, 0 };
 	InitPlayerGlobals();
 	
 	InitEnemyManager();
-	InitEffects(gGameViewInfoPtr);
+	InitEffects();
 	InitSparkles();
 	InitItemsManager();	
 	
@@ -323,7 +323,7 @@ static void CleanupTargetPractice(void)
 		
 	DisposeSoundBank(SOUND_BANK_LEVELSPECIFIC);
 	
-	OGL_DisposeWindowSetup(&gGameViewInfoPtr);	// do this last!			
+	OGL_DisposeWindowSetup();	// do this last!			
 }
 
 /******************** MOVE EVERYTHING ************************/
@@ -450,7 +450,7 @@ shoot:
 						
 			windowPt.x = gCrosshairsCoord.x * (gGameWindowWidth/640.0f);			// convert cursor coords to grafport window coords
 			windowPt.y = gCrosshairsCoord.y * (gGameWindowHeight/480.0f);
-			OGL_GetWorldRayAtScreenPoint(&windowPt, &ray, gGameViewInfoPtr);	// get a world-space ray for picking on the screen
+			OGL_GetWorldRayAtScreenPoint(&windowPt, &ray);							// get a world-space ray for picking on the screen
 
 			pickedObj = OGL_DoRayCollision(&ray, &worldHitCoord, STATUS_BIT_HIDDEN|STATUS_BIT_ISCULLED, CTYPE_PICKABLE);
 			if (pickedObj)
@@ -510,7 +510,7 @@ float	speed;
 	screenPt.x = (gCrosshairsCoord.x / 639.0f) * gGameWindowWidth;				// calc screen coords of crosshairs
 	screenPt.y = (gCrosshairsCoord.y / 479.0f) * gGameWindowHeight;
 					
-	OGL_GetWorldRayAtScreenPoint(&screenPt, &ray, gGameViewInfoPtr);					// get bullet direction vector
+	OGL_GetWorldRayAtScreenPoint(&screenPt, &ray);								// get bullet direction vector
 	bulletStart.x = gGameViewInfoPtr->cameraPlacement.cameraLocation.x + (ray.direction.x * 300.0f);	// get bullet start coord
 	bulletStart.y = gGameViewInfoPtr->cameraPlacement.cameraLocation.y + (ray.direction.y * 300.0f);
 	bulletStart.z = gGameViewInfoPtr->cameraPlacement.cameraLocation.z + (ray.direction.z * 300.0f);
@@ -1291,7 +1291,7 @@ OGLPoint3D	lookAt;
 		lookAt.y = offY + gDrunkLookOrigin.y;
 		lookAt.z = gDrunkLookOrigin.z;
 		
-		OGL_UpdateCameraFromTo(gGameViewInfoPtr, nil, &lookAt);
+		OGL_UpdateCameraFromTo(nil, &lookAt);
 	}
 }
 

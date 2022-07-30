@@ -18,7 +18,7 @@
 static void SetupMainMenuScreen(void);
 static void FreeMainMenuScreen(void);
 static void BuildMainMenu(int menuLevel);
-static void DrawMainMenuCallback(OGLSetupOutputType *info);
+static void DrawMainMenuCallback(void);
 static void ProcessMainMenu(void);
 static void DoMenuControls(void);
 static void MoveCursor(ObjNode *theNode);
@@ -171,7 +171,7 @@ int					i;
 	viewDef.lights.fillColor[1].g 	= .5;
 	viewDef.lights.fillColor[1].b 	= .0;
 
-	OGL_SetupWindow(&viewDef, &gGameViewInfoPtr);
+	OGL_SetupWindow(&viewDef);
 
 
 				/************/
@@ -184,10 +184,10 @@ int					i;
 			/* LOAD SPRITES */
 			
 	FSMakeFSSpec(gDataSpec.vRefNum, gDataSpec.parID, ":sprites:font.sprites", &spec);
-	LoadSpriteFile(&spec, SPRITE_GROUP_FONT, gGameViewInfoPtr);
+	LoadSpriteFile(&spec, SPRITE_GROUP_FONT);
 
 	FSMakeFSSpec(gDataSpec.vRefNum, gDataSpec.parID, ":sprites:mainmenu.sprites", &spec);
-	LoadSpriteFile(&spec, SPRITE_GROUP_MAINMENU, gGameViewInfoPtr);
+	LoadSpriteFile(&spec, SPRITE_GROUP_MAINMENU);
 
 
 
@@ -207,7 +207,7 @@ int					i;
 	gNewObjectDefinition.moveCall 	= MoveCursor;
 	gNewObjectDefinition.rot 		= 0;
 	gNewObjectDefinition.scale 	    = 40;
-	gCursor = MakeSpriteObject(&gNewObjectDefinition, gGameViewInfoPtr);
+	gCursor = MakeSpriteObject(&gNewObjectDefinition);
 
 	gCursor->AnaglyphZ = 2.0f;
 
@@ -255,7 +255,7 @@ float				y,w;
 
 						/* MAKE BACKGROUND PICTURE OBJECT */
 
-				gBackgoundPicture = MO_CreateNewObjectOfType(MO_TYPE_PICTURE, (uintptr_t)gGameViewInfoPtr, ":images:MainMenu.png");
+				gBackgoundPicture = MO_CreateNewObjectOfType(MO_TYPE_PICTURE, 0, ":images:MainMenu.png");
 
 
 						/* MAKE MENU ITEMS */
@@ -281,7 +281,7 @@ float				y,w;
 					gNewObjectDefinition.rot 		= 0;
 					gNewObjectDefinition.scale 	    = MENU_FONT_SCALE;
 					gNewObjectDefinition.slot 		= SPRITE_SLOT;
-					gMenuItems[i] = newObj = MakeFontStringObject(names[i], &gNewObjectDefinition, gGameViewInfoPtr, false);		
+					gMenuItems[i] = newObj = MakeFontStringObject(names[i], &gNewObjectDefinition, false);		
 					
 					w = GetStringWidth(names[i], gNewObjectDefinition.scale);
 					gMenuItemMinX[i] = gNewObjectDefinition.coord.x;
@@ -314,7 +314,7 @@ static void FreeMainMenuScreen(void)
 	DisposeAllSpriteGroups();	
 	DisposeAllBG3DContainers();
 	DisposeSoundBank(SOUND_BANK_MAINMENU);
-	OGL_DisposeWindowSetup(&gGameViewInfoPtr);
+	OGL_DisposeWindowSetup();
 	
 }
 
@@ -341,7 +341,7 @@ static void ProcessMainMenu(void)
 		
 				/* DRAW */
 				
-		OGL_DrawScene(gGameViewInfoPtr, DrawMainMenuCallback);			
+		OGL_DrawScene(DrawMainMenuCallback);			
 
 				/* DO USER INPUT */
 				
@@ -377,12 +377,12 @@ ObjNode	*newObj;
 		gNewObjectDefinition.moveCall 	= MoveBulletHole;
 		gNewObjectDefinition.rot 		= RandomFloat2() * PI2;
 		gNewObjectDefinition.scale 	    = 50;
-		newObj = MakeSpriteObject(&gNewObjectDefinition, gGameViewInfoPtr);
+		newObj = MakeSpriteObject(&gNewObjectDefinition);
 	
 		newObj->Kind = gMenuMode;
 		newObj->AnaglyphZ = -5;
 
-		OGL_DrawScene(gGameViewInfoPtr, DrawMainMenuCallback);			
+		OGL_DrawScene(DrawMainMenuCallback);			
 	
 	
 				/* SEE WHAT WAS SELECTED */
@@ -440,12 +440,10 @@ ObjNode	*newObj;
 
 /***************** DRAW MAINMENU CALLBACK *******************/
 
-static void DrawMainMenuCallback(OGLSetupOutputType *info)
+static void DrawMainMenuCallback(void)
 {
-	MO_DrawObject(gBackgoundPicture, info);
-
-	DrawObjects(info);
-
+	MO_DrawObject(gBackgoundPicture);
+	DrawObjects();
 }
 
 

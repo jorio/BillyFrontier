@@ -150,7 +150,7 @@ int 		i,n;
 //			because all imported textures are named with OpenGL and loaded into OpenGL!
 //
 
-void LoadSpriteFile(FSSpec *spec, int groupNum, OGLSetupOutputType *setupInfo)
+void LoadSpriteFile(FSSpec *spec, int groupNum)
 {
 short			refNum;
 int				i,w,h;
@@ -293,7 +293,7 @@ MOMaterialData	matData;
 
 /************* MAKE NEW SRITE OBJECT *************/
 
-ObjNode *MakeSpriteObject(NewObjectDefinitionType *newObjDef, OGLSetupOutputType *setupInfo)
+ObjNode *MakeSpriteObject(NewObjectDefinitionType *newObjDef)
 {
 ObjNode				*newObj;
 MOSpriteObject		*spriteMO;
@@ -321,7 +321,7 @@ MOSpriteSetupData	spriteData;
 	spriteData.type 	= newObjDef->type;								// set group subtype
 
 
-	spriteMO = MO_CreateNewObjectOfType(MO_TYPE_SPRITE, (uintptr_t)setupInfo, &spriteData);
+	spriteMO = MO_CreateNewObjectOfType(MO_TYPE_SPRITE, 0, &spriteData);
 	if (!spriteMO)
 		DoFatalAlert("MakeSpriteObject: MO_CreateNewObjectOfType failed!");
 
@@ -343,7 +343,7 @@ MOSpriteSetupData	spriteData;
 
 /*********************** MODIFY SPRITE OBJECT IMAGE ******************************/
 
-void ModifySpriteObjectFrame(ObjNode *theNode, short type, OGLSetupOutputType *setupInfo)
+void ModifySpriteObjectFrame(ObjNode *theNode, short type)
 {
 MOSpriteSetupData	spriteData;
 MOSpriteObject		*spriteMO;
@@ -363,7 +363,7 @@ MOSpriteObject		*spriteMO;
 	spriteData.group	= theNode->Group;							// set group
 	spriteData.type 	= type;										// set group subtype
 
-	spriteMO = MO_CreateNewObjectOfType(MO_TYPE_SPRITE, (uintptr_t)setupInfo, &spriteData);
+	spriteMO = MO_CreateNewObjectOfType(MO_TYPE_SPRITE, 0, &spriteData);
 	if (!spriteMO)
 		DoFatalAlert("ModifySpriteObjectFrame: MO_CreateNewObjectOfType failed!");
 
@@ -437,7 +437,7 @@ MOMaterialObject	*m;
 
 /************************** DRAW SPRITE ************************/
 
-void DrawSprite(int	group, int type, float x, float y, float scale, float rot, u_long flags, const OGLSetupOutputType *setupInfo)
+void DrawSprite(int	group, int type, float x, float y, float scale, float rot, u_long flags)
 {
 			/* SET STATE */
 					
@@ -464,7 +464,7 @@ void DrawSprite(int	group, int type, float x, float y, float scale, float rot, u
 
 		/* ACTIVATE THE MATERIAL */
 					
-	MO_DrawMaterial(gSpriteGroupList[group][type].materialObject, setupInfo);			
+	MO_DrawMaterial(gSpriteGroupList[group][type].materialObject);			
 
 
 			/* DRAW IT */
@@ -522,7 +522,7 @@ float	width = 0;
 
 /************* MAKE FONT STRING OBJECT *************/
 
-ObjNode *MakeFontStringObject(const char* cstr, NewObjectDefinitionType *newObjDef, OGLSetupOutputType *setupInfo, Boolean center)
+ObjNode *MakeFontStringObject(const char* cstr, NewObjectDefinitionType *newObjDef, Boolean center)
 {
 ObjNode				*newObj;
 MOSpriteObject		*spriteMO;
@@ -568,7 +568,7 @@ float				scale,x;
 		spriteData.loadFile = false;										// these sprites are already loaded into gSpriteList
 		spriteData.group	= newObjDef->group;								// set group
 
-		spriteMO = MO_CreateNewObjectOfType(MO_TYPE_SPRITE, (uintptr_t)setupInfo, &spriteData);
+		spriteMO = MO_CreateNewObjectOfType(MO_TYPE_SPRITE, 0, &spriteData);
 		if (!spriteMO)
 			DoFatalAlert("MakeFontStringObject: MO_CreateNewObjectOfType failed!");
 
