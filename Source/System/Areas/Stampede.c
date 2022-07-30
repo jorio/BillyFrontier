@@ -87,7 +87,7 @@ void PlayStampede(void)
 				
 		ReadKeyboard();								
 		MoveEverything_Stampede();
-		DoPlayerTerrainUpdate(gPlayerInfo.camera.cameraLocation.x, gPlayerInfo.camera.cameraLocation.z);
+		KeepTerrainAlive();
 		OGL_DrawScene(gGameViewInfoPtr,DefaultDrawCallback);
 
 								
@@ -123,13 +123,10 @@ void PlayStampede(void)
 
 		/* CLEANUP LEVEL */
 
-	OGL_FadeOutScene(DefaultDrawCallback, NULL);
+	OGL_FadeOutScene(DefaultDrawCallback, KeepTerrainAlive);
 	MyFlushEvents();
 	CleanupStampede();
-	GameScreenToBlack();	
-
-
-
+	GameScreenToBlack();
 }
 
 

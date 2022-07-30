@@ -102,7 +102,7 @@ void PlayShootout(void)
 				
 		ReadKeyboard();								
 		MoveEverything_Shootout();
-		DoPlayerTerrainUpdate(gPlayerInfo.camera.cameraLocation.x, gPlayerInfo.camera.cameraLocation.z);
+		KeepTerrainAlive();
 		OGL_DrawScene(gGameViewInfoPtr,DefaultDrawCallback);
 
 		gTimeSinceLastEnemyShot += gFramesPerSecondFrac;
@@ -145,7 +145,7 @@ void PlayShootout(void)
 
 		/* CLEANUP LEVEL */
 					
-	OGL_FadeOutScene(DefaultDrawCallback, NULL);
+	OGL_FadeOutScene(DefaultDrawCallback, KeepTerrainAlive);
 	MyFlushEvents();
 	CleanupShootout();
 	GameScreenToBlack();	

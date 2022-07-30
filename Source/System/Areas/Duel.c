@@ -136,7 +136,7 @@ void PlayDuel(Byte difficulty)
 				
 		ReadKeyboard();								
 		MoveEverything_Duel();
-		DoPlayerTerrainUpdate(gPlayerInfo.camera.cameraLocation.x, gPlayerInfo.camera.cameraLocation.z);
+		KeepTerrainAlive();
 		OGL_DrawScene(gGameViewInfoPtr,DefaultDrawCallback);
 
 								
@@ -177,7 +177,7 @@ void PlayDuel(Byte difficulty)
 		
 	}
 
-	OGL_FadeOutScene(DefaultDrawCallback, NULL);
+	OGL_FadeOutScene(DefaultDrawCallback, KeepTerrainAlive);
 
 		/* CLEANUP LEVEL */
 					

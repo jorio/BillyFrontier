@@ -124,7 +124,7 @@ Boolean	oldMute = gMuteMusicFlag;
 	
 		CalcFramesPerSecond();
 		ReadKeyboard();		
-		DoPlayerTerrainUpdate(gPlayerInfo.camera.cameraLocation.x, gPlayerInfo.camera.cameraLocation.z);		// need to call this to keep supertiles active
+		KeepTerrainAlive();		// need to call this to keep supertiles active
 		OGL_DrawScene(gGameViewInfoPtr, DrawPaused);
 
 	}	

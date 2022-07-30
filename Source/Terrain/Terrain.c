@@ -1500,6 +1500,13 @@ long	row,col;
 
 #pragma mark -
 
+/******* UPDATE TERRAIN RELATIVE TO CURRENT CAMERA LOCATION **********/
+
+void KeepTerrainAlive(void)
+{
+	DoPlayerTerrainUpdate(gPlayerInfo.camera.cameraLocation.x, gPlayerInfo.camera.cameraLocation.z);
+}
+
 /******************** DO MY TERRAIN UPDATE ********************/
 
 void DoPlayerTerrainUpdate(float x, float y)
