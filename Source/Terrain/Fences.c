@@ -104,9 +104,6 @@ static OGLPoint3D				gFencePoints[MAX_FENCES][MAX_NUBS_IN_FENCE*2];
 static OGLTextureCoord			gFenceUVs[MAX_FENCES][MAX_NUBS_IN_FENCE*2];
 static OGLColorRGBA_Byte		gFenceColors[MAX_FENCES][MAX_NUBS_IN_FENCE*2];
 
-static short	gSeaweedFrame;
-static float	gSeaweedFrameTimer;
-
 
 /********************** DISPOSE FENCES *********************/
 
@@ -151,10 +148,6 @@ FenceDefType			*fence;
 OGLPoint3D				*nubs;
 ObjNode					*obj;
 float					sink;
-
-	gSeaweedFrame = 0;
-	gSeaweedFrameTimer = 0;
-
 
 	if (gNumFences > MAX_FENCES)
 		DoFatalAlert("PrimeFences: gNumFences > MAX_FENCES");
@@ -412,17 +405,6 @@ long			f,type;
 float			cameraX, cameraZ;
 
 	theNode;
-
-			/* UPDATE SEAWEED ANIMATION */
-			
-	gSeaweedFrameTimer += gFramesPerSecondFrac;
-	if (gSeaweedFrameTimer > .09f)
-	{
-		gSeaweedFrameTimer -= .09f;
-	
-		if (++gSeaweedFrame > 5)
-			gSeaweedFrame = 0;
-	}
 
 
 			/* GET CAMERA COORDS */

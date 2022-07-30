@@ -949,6 +949,7 @@ Ptr						tempBuffer24 = nil;
 		if (hand)
 		{
    			FencePointType *fileFencePoints = (FencePointType *)*hand;
+			BYTESWAP_HANDLE("ii", FencePointType, gFenceList[i].numNubs, hand);
 
 			gFenceList[i].nubList = (OGLPoint3D *)AllocPtr(sizeof(FenceDefType) * gFenceList[i].numNubs);	// alloc new ptr for nub array
 			if (gFenceList[i].nubList == nil)
