@@ -492,48 +492,42 @@ void DrawSprite(int	group, int type, float x, float y, float scale, float rot, u
 
 /******************* DRAW FONT STRING ****************************/
 
-void DrawFontString(Str255 s, float x, float y, float scale)
+void DrawFontString(const char* cstr, float x, float y, float scale)
 {
-int		i, sp;
 float	width = 0;
 
 			/* CALCULATE THE WIDTH OF THE STRING */
 
-	for (i = 1; i <= s[0]; i++)
-		width += GetCharSpacing(s[i], scale);								
-			
+	for (const char* cursor = cstr; *cursor; cursor++)
+		width += GetCharSpacing(*cursor, scale);
+
 	x -= width * .5f;				// center it
-	
-	
+
+
 			/* DRAW EACH CHARACTER */
-			
 
-	for (i = 1; i <= s[0]; i++)
+
+	for (const char* cursor = cstr; *cursor; cursor++)
 	{
-		sp = CharToSprite(s[i]);
-	
+		char c = *cursor;
+
+		int sp = CharToSprite(c);
+
 		DrawInfobarSprite2_Centered(x, y, scale, SPRITE_GROUP_FONT, sp);
-	
-		x += GetCharSpacing(s[i], scale);								
 
-	}	
-
-
-
-
-
+		x += GetCharSpacing(c, scale);
+	}
 }
 
 
 /************* MAKE FONT STRING OBJECT *************/
 
-ObjNode *MakeFontStringObject(const Str31 s, NewObjectDefinitionType *newObjDef, OGLSetupOutputType *setupInfo, Boolean center)
+ObjNode *MakeFontStringObject(const char* cstr, NewObjectDefinitionType *newObjDef, OGLSetupOutputType *setupInfo, Boolean center)
 {
 ObjNode				*newObj;
 MOSpriteObject		*spriteMO;
 MOSpriteSetupData	spriteData;
-int					i,len;
-char				letter;			
+int					i;
 float				scale,x;
 			
 	newObjDef->group = SPRITE_GROUP_FONT;
@@ -548,17 +542,13 @@ float				scale,x;
 
 	newObj->NumStringSprites = 0;											// no sprites in there yet
 
-	len = s[0];																// get length of string
-	if (len > 31)
-		DoFatalAlert("MakeFontStringObject: string > 31 characters!");
-
 
 			/* ADJUST FOR CENTERING */
 			
 	scale = newObj->Scale.x;												// get scale factor
 	
 	if (center)
-		x = newObj->Coord.x - GetStringWidth(s, scale) * .5f;				// calc center starting x coord on left
+		x = newObj->Coord.x - GetStringWidth(cstr, scale) * .5f;			// calc center starting x coord on left
 	else
 		x = newObj->Coord.x;												// dont center text
 
@@ -568,9 +558,9 @@ float				scale,x;
 			/* MAKE SPRITE META-OBJECTS */
 			/****************************/
 	
-	for (i = 1; i <= len; i++)
+	for (const char* cursor = cstr; *cursor; cursor++)
 	{
-		letter = s[i];	
+		char letter = *cursor;
 		
 		spriteData.type = CharToSprite(letter);								// convert letter to sprite index
 		if (spriteData.type == -1)											// skip spaces
@@ -789,16 +779,14 @@ int CharToSprite(char c)
 
 /***************** GET STRING WIDTH *************************/
 
-float GetStringWidth(const u_char *s, float scale)
+float GetStringWidth(const char *cstr, float scale)
 {
-int		i;
 float	w = 0;
 
-	for (i = 1; i <= s[0]; i++)
-		w += GetCharSpacing(s[i], scale);
+	for (const char* cursor = cstr; *cursor; cursor++)
+		w += GetCharSpacing(*cursor, scale);
 
-
-	return(w);
+	return w;
 }
 
 

@@ -32,8 +32,8 @@ void ModifySpriteObjectFrame(ObjNode *theNode, short type, OGLSetupOutputType *s
 void DrawSprite(int	group, int type, float x, float y, float scale, float rot, u_long flags, const OGLSetupOutputType *setupInfo);
 void BlendASprite(int group, int type);
 
-ObjNode *MakeFontStringObject(const Str31 s, NewObjectDefinitionType *newObjDef, OGLSetupOutputType *setupInfo, Boolean center);
+ObjNode *MakeFontStringObject(const char* cstr, NewObjectDefinitionType *newObjDef, OGLSetupOutputType *setupInfo, Boolean center);
 int CharToSprite(char c);
 float GetCharSpacing(char c, float spacingScale);
-float GetStringWidth(const u_char *s, float scale);
-void DrawFontString(Str255 s, float x, float y, float scale);
+float GetStringWidth(const char* cstr, float scale);
+void DrawFontString(const char* cstr, float x, float y, float scale);
