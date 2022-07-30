@@ -24,8 +24,6 @@ static void	ConvertTexture16To24(u_short *textureBuffer2, u_char *textureBuffer3
 static void	ConvertTexture16To16(u_short *textureBuffer, int width, int height);
 static void	ConvertTexture16To32(u_short *srcBuff, u_char *destBuff, int width, int height);
 
-static void HalfTexture16(u_short *buff, int width, int height);
-
 #define BYTESWAP_HANDLE(format, type, n, handle)                                  \
 {                                                                                 \
 	if ((n) * sizeof(type) > (unsigned long) GetHandleSize((Handle) (handle)))   \
@@ -39,8 +37,6 @@ static void HalfTexture16(u_short *buff, int width, int height);
 /****************************/
 /*    CONSTANTS             */
 /****************************/
-
-#define	TILE_DEPTH			16
 
 #define	SKELETON_FILE_VERS_NUM	0x0110			// v1.1
 
@@ -679,9 +675,8 @@ long					row,col,j,i,size;
 float					yScale;
 short					fRefNum;
 OSErr					iErr;	
-Ptr						tempBuffer16 = nil;		
-Ptr						tempBuffer24 = nil;		
-			
+Ptr						tempBuffer16 = nil;
+
 				/* OPEN THE REZ-FORK */
 			
 	fRefNum = FSpOpenResFile(specPtr, fsRdPerm);
@@ -1045,13 +1040,9 @@ Ptr						tempBuffer24 = nil;
 
 				/* ALLOC BUFFERS */
 		
-	size = SUPERTILE_TEXMAP_SIZE * SUPERTILE_TEXMAP_SIZE * 2;						// calc size of supertile 32-bit texture
+	size = SUPERTILE_TEXMAP_SIZE * SUPERTILE_TEXMAP_SIZE * 2;						// calc size of supertile 16-bit texture
 	tempBuffer16 = AllocPtr(size);
 	if (tempBuffer16 == nil)
-		DoFatalAlert("ReadDataFromPlayfieldFile: AllocPtr failed!");
-
-	tempBuffer24 = AllocPtr(SUPERTILE_TEXMAP_SIZE * SUPERTILE_TEXMAP_SIZE * 3);		// alloc for 24bit pixels
-	if (tempBuffer24 == nil)
 		DoFatalAlert("ReadDataFromPlayfieldFile: AllocPtr failed!");
 
 
@@ -1080,46 +1071,25 @@ Ptr						tempBuffer24 = nil;
 
 				/* READ & DECOMPRESS IT */
 
-#if TILE_DEPTH == 16		
-		decompressedSize = LZSS_Decode(fRefNum, tempBuffer16, compressedSize);				
-#else
-		decompressedSize = LZSS_Decode(fRefNum, tempBuffer24, compressedSize);				
-#endif
+		decompressedSize = LZSS_Decode(fRefNum, tempBuffer16, compressedSize);
 		width = SUPERTILE_TEXMAP_SIZE;
-		height = SUPERTILE_TEXMAP_SIZE;		
+		height = SUPERTILE_TEXMAP_SIZE;
+		GAME_ASSERT(decompressedSize == 2 * width * height);
+		ByteswapInts(sizeof(uint16_t), width*height, tempBuffer16);
 
 
 				/**************************/
 				/* CREATE MATERIAL OBJECT */
 				/**************************/
 
-#if TILE_DEPTH == 16		
-
 			/* USE PACKED PIXEL TYPE */
 
 		ConvertTexture16To16((uint16_t *)tempBuffer16, width, height);
-		
-//		if (gGamePrefs.lowVRAMMode)
-//		{
-//			HalfTexture16((u_short *)tempBuffer16, width, height);
-//			width /= 2;
-//			height /= 2;
-//		}
 
 		matData.pixelSrcFormat 	= GL_BGRA_EXT;
 		matData.pixelDstFormat 	= GL_RGBA;
 		matData.textureName[0] 	= OGL_TextureMap_Load(tempBuffer16, width, height,
 												 GL_BGRA_EXT, GL_RGBA, GL_UNSIGNED_SHORT_1_5_5_5_REV);
-
-
-
-#else
-
-		matData.pixelSrcFormat 	= GL_RGB;
-		matData.pixelDstFormat 	= GL_RGB;
-		matData.textureName[0] 	= OGL_TextureMap_Load(tempBuffer24, width, height,
-												 matData.pixelSrcFormat, matData.pixelDstFormat, GL_UNSIGNED_BYTE);
-#endif
 
 
 			/* INIT NEW MATERIAL DATA */
@@ -1159,58 +1129,6 @@ Ptr						tempBuffer24 = nil;
 		
 	if (tempBuffer16)
 		SafeDisposePtr(tempBuffer16);
-	if (tempBuffer24)
-		SafeDisposePtr(tempBuffer24);
-//	if (tempBuffer32)
-//		SafeDisposePtr(tempBuffer32);
-}
-
-
-/************************* HALF TEXTURE 16 *********************************/
-
-static void HalfTexture16(u_short *buff, int width, int height)
-{
-int	r,c;
-u_short	*p, *p2;
-
-			/* SHRINK VERTICAL */
-
-	p = buff;
-	p2 = p; // + (width * 2);
-	height /= 2;
-		
-#if 1
-	for (r = 0; r < height; r++)
-	{
-		for (c = 0; c < width; c++)
-			p[c] = p2[c];
-			
-		p += width;
-		p2 += (width *2);
-	}
-#endif	
-
-
-		/* SHRINK HORIZ */
-
-#if 1
-
-	width /= 2;
-	p = buff;
-	p2 = p; //+2;
-			
-	for (r = 0; r < height; r++)
-	{
-		for (c = 0; c < width; c++)
-		{
-			*p = *p2;
-			p++;
-			p2 += 2;
-		}
-			
-//		p++;
-	}
-#endif	
 }
 
 

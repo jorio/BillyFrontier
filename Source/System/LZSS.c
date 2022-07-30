@@ -56,13 +56,13 @@ short	*lson = nil,
 
 /*==============================================================================*/
 
-long LZSS_Decode(short fRefNum, Ptr destPtr, long sourceSize)
+size_t LZSS_Decode(short fRefNum, Ptr destPtr, long sourceSize)
 {
 int  		i, j, k, r;
 unsigned short  flags;
 Ptr			srcOriginalPtr;
 unsigned char *sourcePtr,c;
-long		decompSize = (long)destPtr;
+Ptr			initialDestPtr = destPtr;
 
 	textsize = 0;						/* text size counter */
 	codesize = 0;						/* code size counter */
@@ -130,7 +130,7 @@ long		decompSize = (long)destPtr;
 		}
 	}
 	
-	decompSize = (int)destPtr - decompSize;		// calc size of decompressed data
+	size_t decompSize = destPtr - initialDestPtr;		// calc size of decompressed data
 	
 	
 			/* CLEANUP */

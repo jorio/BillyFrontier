@@ -4,5 +4,5 @@
 // Externals
 #include "game.h"
 
-long LZSS_Decode(short fRefNum, Ptr destPtr, long sourceSize);
+size_t LZSS_Decode(short fRefNum, Ptr destPtr, long sourceSize);
 
