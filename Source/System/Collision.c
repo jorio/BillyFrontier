@@ -377,6 +377,10 @@ again:
 			targetBoxPtr = targetObj->CollisionBoxes;	
 			targetBoxPtr += target;
 		}
+		else
+		{
+			targetBoxPtr = nil;
+		}
 		
 					/********************************/
 					/* HANDLE OBJECT COLLISIONS 	*/	
@@ -1627,7 +1631,8 @@ next:
 
 Boolean SeeIfLineSegmentHitsObject(const OGLPoint3D *endPoint1, const OGLPoint3D *endPoint2, ObjNode *theNode)
 {
-OGLPoint2D	p1,p2,crossBeamP1[3],crossBeamP2[4];
+OGLPoint2D	p1, p2;
+OGLPoint2D	crossBeamP1[4], crossBeamP2[4];
 CollisionBoxType *collisionBox;
 float	ix,iz,iy;
 int		i;

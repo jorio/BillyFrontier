@@ -121,7 +121,9 @@ OGLMatrix4x4	matrix;
 void FindCoordOnJointAtFlagEvent(ObjNode *theNode, long jointNum, const OGLPoint3D *inPoint, OGLPoint3D *outPoint)
 {
 OGLMatrix4x4	matrix;
-short			time,oldTime,animNum;
+short			time = -1;
+short			oldTime;
+short			animNum;
 SkeletonObjDataType	*skeleton;
 Byte			i,numEvents;
 
@@ -140,6 +142,8 @@ Byte			i,numEvents;
 			break;	
 		}
 	}
+
+	GAME_ASSERT_MESSAGE(time >= 0, "There's no flag event in the current anim!");
 
 				/* TEMPORARILY SET THE TIME TO THE TIME OF THE FLAG EVENT */
 
@@ -165,7 +169,8 @@ Byte			i,numEvents;
 
 void FindJointMatrixAtFlagEvent(ObjNode *theNode, long jointNum, Byte flagNum, OGLMatrix4x4 *m)
 {
-short			time,oldTime;
+short			time = -1;
+short			oldTime;
 SkeletonObjDataType	*skeleton;
 SkeletonDefType	*skelDef;
 Byte			i,numEvents;
@@ -187,6 +192,8 @@ Byte			i,numEvents;
 			}
 		}
 	}
+
+	GAME_ASSERT_MESSAGE(time >= 0, "There's no flag event in the current anim!");
 
 				/* TEMPORARILY SET THE TIME TO THE TIME OF THE FLAG EVENT */
 

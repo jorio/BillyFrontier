@@ -7,7 +7,6 @@
 extern void	InitWindowStuff(void);
 ObjNode* MakeFadeEvent(Boolean	fadeIn);
 
-extern	void CleanupDisplay(void);
 void OGL_FadeOutScene(void (*drawCall)(void), void (*moveCall)(void));
 
 void Wait(long ticks);

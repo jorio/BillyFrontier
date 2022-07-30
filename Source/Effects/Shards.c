@@ -144,7 +144,6 @@ static void ExplodeGeometry_Recurse(MetaObjectPtr obj)
 {
 MOGroupObject		*groupObj;
 MOMatrixObject 		*matObj;
-OGLPoint3D			p000 = {0,0,0};
 OGLMatrix4x4		*transform;
 OGLMatrix4x4  		stashMatrix;
 int					i,numChildren;
@@ -204,24 +203,21 @@ MOVertexArrayData	*vaData;
 static void ExplodeVertexArray(MOVertexArrayData *data, MOMaterialObject *overrideTexture)
 {
 OGLPoint3D			centerPt = {0,0,0};
-u_long				ind[3],t;
+u_long				ind[3];
 OGLTextureCoord		*uvPtr;
 long				i;
 float				boomForce = gBoomForce;
 OGLPoint3D			origin;
 
-	if (gShardMode & SHARD_MODE_FROMORIGIN)
-	{
-		origin.x = gShardSrcObj->Coord.x + (gShardSrcObj->BBox.max.x + gShardSrcObj->BBox.min.x) * .5f;		// set origin to center of object's bbox
-		origin.y = gShardSrcObj->Coord.y + (gShardSrcObj->BBox.max.y + gShardSrcObj->BBox.min.y) * .5f;				
-		origin.z = gShardSrcObj->Coord.z + (gShardSrcObj->BBox.max.z + gShardSrcObj->BBox.min.z) * .5f;	
-	}	
+	origin.x = gShardSrcObj->Coord.x + (gShardSrcObj->BBox.max.x + gShardSrcObj->BBox.min.x) * .5f;		// set origin to center of object's bbox
+	origin.y = gShardSrcObj->Coord.y + (gShardSrcObj->BBox.max.y + gShardSrcObj->BBox.min.y) * .5f;				
+	origin.z = gShardSrcObj->Coord.z + (gShardSrcObj->BBox.max.z + gShardSrcObj->BBox.min.z) * .5f;	
 
 			/***************************/
 			/* SCAN THRU ALL TRIANGLES */
 			/***************************/
 					
-	for (t = 0; t < data->numTriangles; t += gShardDensity)				// scan thru all triangles
+	for (int t = 0; t < data->numTriangles; t += gShardDensity)				// scan thru all triangles
 	{
 				/* GET FREE PARTICLE INDEX */
 				

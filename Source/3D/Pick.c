@@ -660,7 +660,7 @@ int		i,j;
 	{
 		int		q = 0;
 		float	bestZ = 100000;
-		u_long	bestPick;
+		u_long	bestPick = 0;
 		
 		
 		for (i = 0; i < gNumPickHits; i++)								// scan all hits for closest z
@@ -684,13 +684,13 @@ int		i,j;
 			q += 1;
 		}	
 
-		return(bestPick);
+		return bestPick;
 	}
 
 
 			/* DIDNT HIT ANYTHING */
 
-	return(nil);
+	return 0;
 }
 
 

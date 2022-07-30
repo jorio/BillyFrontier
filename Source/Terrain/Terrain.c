@@ -682,8 +682,8 @@ OGLVector3D			*vertexNormals;
 	if (vertexColorList)
 	{
 		float				ambientR,ambientG,ambientB;
-		float				fillR0,fillG0,fillB0;
-		float				fillR1,fillG1,fillB1;
+		float				fillR0 = 1, fillG0 = 1, fillB0 = 1;
+		float				fillR1 = 1, fillG1 = 1, fillB1 = 1;
 		OGLVector3D			fillDir0,fillDir1;
 		Byte				numFillLights;
 	
@@ -1731,6 +1731,9 @@ static const Byte gridMask3[3*2][3*2] =
 				case	9:	
 						mask = gridMask9[maskRow][maskCol];
 						break;
+
+				default:
+						GAME_ASSERT_MESSAGE(false, "Unsupported supertile active range");
 			}
 						
 			if (mask == 0)

@@ -2,8 +2,7 @@
 // camera.h
 //
 
-// Externals
-#include "game.h"
+#pragma once
 
 void InitCamera_Terrain(void);
 void InitCamera_Duel(void);

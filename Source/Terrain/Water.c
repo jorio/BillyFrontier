@@ -211,14 +211,12 @@ float					y,centerX,centerZ;
 
 static void MakeWaterGeometry(void)
 {
-int						f;
 u_short					type;
-long					i,numNubs;
+long					numNubs;
 WaterDefType			*water;
 float					minX,minY,minZ,maxX,maxY,maxZ;
-double					x,y,z;
 
-	for (f = 0; f < gNumWaterPatches; f++)
+	for (int f = 0; f < gNumWaterPatches; f++)
 	{
 				/* GET WATER INFO */
 				
@@ -246,7 +244,7 @@ double					x,y,z;
 
 				/* BUILD TRIANGLE INFO */
 				
-		for (i = 0; i < gWaterTriMeshData[f].numTriangles; i++)
+		for (int i = 0; i < gWaterTriMeshData[f].numTriangles; i++)
 		{
 			gWaterTriangles[f][i].vertexIndices[0] = numNubs;							// vertex 0 is always the radial center that we appended to the end of the list
 			gWaterTriangles[f][i].vertexIndices[1] = i + 0;
@@ -271,14 +269,14 @@ double					x,y,z;
 		maxX = maxY = maxZ = -1000000;									// build new bboxes while we do this
 		minX = minY = minZ = -maxX;
 		
-		for (i = 0; i < numNubs; i++)
+		for (int i = 0; i < numNubs; i++)
 		{
 			
 					/* GET COORDS */
 					
-			x = gWaterPoints[f][i].x;
-			y = gWaterPoints[f][i].y;
-			z = gWaterPoints[f][i].z;
+			float x = gWaterPoints[f][i].x;
+			float y = gWaterPoints[f][i].y;
+			float z = gWaterPoints[f][i].z;
 					
 					/* CHECK BBOX */
 					
@@ -305,11 +303,11 @@ double					x,y,z;
 				/* BUILD UV's */
 				/**************/
 			
-		for (i = 0; i <= numNubs; i++)
+		for (int i = 0; i <= numNubs; i++)
 		{			
-			x = gWaterPoints[f][i].x;
-			y = gWaterPoints[f][i].y;
-			z = gWaterPoints[f][i].z;
+			float x = gWaterPoints[f][i].x;
+			//float y = gWaterPoints[f][i].y;
+			float z = gWaterPoints[f][i].z;
 					
 			gWaterUVs[f][i].u 	= x * .002;
 			gWaterUVs[f][i].v 	= z * .002;

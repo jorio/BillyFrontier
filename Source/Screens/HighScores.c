@@ -51,8 +51,8 @@ enum
 
 typedef struct
 {
-	unsigned char	name[MAX_NAME_LENGTH+1];
-	unsigned long	score;
+	char		name[MAX_NAME_LENGTH+1];
+	uint32_t	score;
 }HighScoreType;
 
 
@@ -419,8 +419,9 @@ int		texNum;
 
 static void DrawHighScoresAndCursor(void)
 {
-float	y,cursorY,cursorX;
-int		i,j,n;
+float	y = 0;
+float	cursorY = 0;
+float	cursorX = 0;
 char	s[16];
 float	fps = gFramesPerSecondFrac;
 
@@ -460,7 +461,7 @@ float	fps = gFramesPerSecondFrac;
 		
 		
 	y = 120;
-	for (i = 0; i < NUM_SCORES; i++)
+	for (int i = 0; i < NUM_SCORES; i++)
 	{
 		if (i == gNewScoreSlot)								// see if cursor will go on this line
 		{

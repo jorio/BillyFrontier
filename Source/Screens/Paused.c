@@ -142,9 +142,11 @@ Boolean	oldMute = gMuteMusicFlag;
 
 static void DrawPaused(void)
 {
-float	x,y,leftX;
-float	dotX,dotY;
-int		i,j;
+float	x = 0;
+float	y = 0;
+float	leftX = 0;
+float	dotX = 0;
+float	dotY = 0;
 static float	dotAlpha = 1.0f;
 
 			/* DRAW THE BACKGROUND */
@@ -177,10 +179,9 @@ static float	dotAlpha = 1.0f;
 	leftX = x + 15.0f;
 	y += 9; 
 			
-	for (j = 0; j < 3; j++)											// 3 lines of text
-	{		
+	for (int j = 0; j < 3; j++)										// 3 lines of text
+	{
 		x = leftX;
-		i = 0;
 	
 		if (j == gPausedMenuSelection)								// remember where to put dot
 		{
@@ -197,7 +198,8 @@ static float	dotAlpha = 1.0f;
 			gGlobalColorFilter.g = 1;
 			gGlobalColorFilter.b = 1;
 		}
-	
+
+		int i = 0;
 		while (gPausedStrings[gGamePrefs.language][j][i] != 0x00)
 		{
 			char	c = gPausedStrings[gGamePrefs.language][j][i];	// get char
