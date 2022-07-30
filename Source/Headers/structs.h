@@ -57,7 +57,7 @@ typedef struct
 	int16_t			numNubs;			// # nubs in spline
 	SplinePointType	**nubList;			// handle to nub list
 
-	int16_t			numPoints;			// # points in spline
+	int32_t			numPoints;			// # points in spline
 	SplinePointType	**pointList;		// handle to calculated spline points
 
 	int16_t			numItems;			// # items on the spline
@@ -71,11 +71,14 @@ typedef struct
 	int16_t			numNubs;			// # nubs in spline
 	int16_t 		_pad1;
 	int32_t			_junkptr1;
+
 	int32_t			numPoints;			// # points in spline
 	int32_t			_junkptr2;
+
 	int16_t			numItems;			// # items on the spline
 	int16_t 		_pad2;
 	int32_t			_junkptr3;
+
 	Rect			bBox;				// bounding box of spline area
 }File_SplineDefType;
 

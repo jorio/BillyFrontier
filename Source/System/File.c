@@ -831,7 +831,7 @@ Ptr						tempBuffer24 = nil;
 
 		// SOURCE PORT NOTE: we have to convert this structure manually,
 		// because the original contains 4-byte pointers
-		BYTESWAP_HANDLE("hxxiiihxxi4h", File_SplineDefType, gNumSplines, hand);
+		BYTESWAP_HANDLE("hxxi ii hxxi 4h", File_SplineDefType, gNumSplines, hand);
 
 		gSplineList = (SplineDefType **) NewHandleClear(gNumSplines * sizeof(SplineDefType));
 
@@ -840,9 +840,9 @@ Ptr						tempBuffer24 = nil;
 			const File_SplineDefType*	srcSpline = &(*((File_SplineDefType **) hand))[i];
 			SplineDefType*				dstSpline = &(*gSplineList)[i];
 
-			dstSpline->numItems		= srcSpline->numItems;
 			dstSpline->numNubs		= srcSpline->numNubs;
 			dstSpline->numPoints	= srcSpline->numPoints;
+			dstSpline->numItems		= srcSpline->numItems;
 			dstSpline->bBox			= srcSpline->bBox;
 		}
 
@@ -981,7 +981,8 @@ Ptr						tempBuffer24 = nil;
 		DetachResource(hand);
 		HLockHi(hand);
 		gWaterListHandle = (WaterDefType **)hand;
-		BYTESWAP_HANDLE("Hxx L i hxx i ff ff 4h", WaterDefType, gNumWaterPatches, hand);
+		GAME_ASSERT(MAX_WATER_POINTS == 100);		// if this changes, the byteswap format below needs to change as well
+		BYTESWAP_HANDLE("Hxx L i hxx i 200f ff 4h", WaterDefType, gNumWaterPatches, hand);
 		gWaterList = *gWaterListHandle;
 	}
 	else
