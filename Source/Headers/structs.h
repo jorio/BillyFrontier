@@ -87,16 +87,16 @@ typedef struct
 		
 typedef struct
 {
-	long 				parentBone;			 			// index to previous bone
-	void				*ignored1;			
-	OGLMatrix4x4		ignored2;	
-	void				*ignored3;
-	unsigned char		ignored4[32];		
+	int32_t				parentBone;			 			// index to previous bone
+	uint32_t			ignored1;
+	OGLMatrix4x4		ignored2;
+	uint32_t			*ignored3;
+	unsigned char		ignored4[32];
 	OGLPoint3D			coord;							// absolute coord (not relative to parent!) 
-	u_short				numPointsAttachedToBone;		// # vertices/points that this bone has
-	u_short				*pointList;						// indecies into gDecomposedPointList
-	u_short				numNormalsAttachedToBone;		// # vertex normals this bone has
-	u_short				*normalList;					// indecies into gDecomposedNormalsList
+	uint16_t			numPointsAttachedToBone;		// # vertices/points that this bone has
+	uint16_t			*pointList;						// indecies into gDecomposedPointList
+	uint16_t			numNormalsAttachedToBone;		// # vertex normals this bone has
+	uint16_t			*normalList;					// indecies into gDecomposedNormalsList
 }BoneDefinitionType;
 
 
@@ -119,8 +119,8 @@ typedef struct
 		
 typedef struct
 {
-	long		tick;					// time at which this state exists
-	long		accelerationMode;		// mode of in/out acceleration
+	int32_t		tick;					// time at which this state exists
+	int32_t		accelerationMode;		// mode of in/out acceleration
 	OGLPoint3D	coord;					// current 3D coords of joint (relative to link)
 	OGLVector3D	rotation;				// current rotation values of joint (relative to link)
 	OGLVector3D	scale;					// current scale values of joint mesh
@@ -131,7 +131,7 @@ typedef struct
 		
 typedef struct
 {
-	signed char			numKeyFrames[MAX_ANIMS];				// # keyframes
+	int8_t				numKeyFrames[MAX_ANIMS];				// # keyframes
 	JointKeyframeType 	**keyFrames;							// 2D array of keyframe data keyFrames[anim#][keyframe#]
 }JointKeyFrameHeader;
 

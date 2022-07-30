@@ -26,6 +26,15 @@ static void	ConvertTexture16To32(u_short *srcBuff, u_char *destBuff, int width, 
 
 static void HalfTexture16(u_short *buff, int width, int height);
 
+#define BYTESWAP_HANDLE(format, type, n, handle)                                  \
+{                                                                                 \
+	if ((n) * sizeof(type) > (unsigned long) GetHandleSize((Handle) (handle)))   \
+		DoFatalAlert("BYTESWAP_HANDLE: size mismatch!\nHdl=%ld Exp=%ld\nWhen swapping %dx %s in %s:%d", \
+			GetHandleSize((Handle) (handle)), \
+			(n) * sizeof(type), \
+			n, #type, __func__, __LINE__); \
+	ByteswapStructs((format), sizeof(type), (n), *(handle));                      \
+}
 
 /****************************/
 /*    CONSTANTS             */
@@ -164,27 +173,27 @@ QDErr		iErr;
 short		fRefNum;
 FSSpec		fsSpec;
 SkeletonDefType	*skeleton;					
-const Str63	fileNames[MAX_SKELETON_TYPES] =
+const char*	fileNames[MAX_SKELETON_TYPES] =
 {
-	":Skeletons:billy.skeleton",
-	":Skeletons:bandito.skeleton",
-	":Skeletons:rygar.skeleton",
-	":Skeletons:shorty.skeleton",
-	":Skeletons:kangacow.skeleton",
-	":Skeletons:kangarex.skeleton",
-	":Skeletons:walker.skeleton",
-	":Skeletons:tremoralien.skeleton",
-	":Skeletons:tremorghost.skeleton",
-	":Skeletons:frogman.skeleton",
+	[SKELETON_TYPE_BILLY]		= ":Skeletons:billy.skeleton",
+	[SKELETON_TYPE_BANDITO]		= ":Skeletons:bandito.skeleton",
+	[SKELETON_TYPE_RYGAR]		= ":Skeletons:rygar.skeleton",
+	[SKELETON_TYPE_SHORTY]		= ":Skeletons:shorty.skeleton",
+	[SKELETON_TYPE_KANGACOW]	= ":Skeletons:kangacow.skeleton",
+	[SKELETON_TYPE_KANGAREX]	= ":Skeletons:kangarex.skeleton",
+	[SKELETON_TYPE_WALKER]		= ":Skeletons:walker.skeleton",
+	[SKELETON_TYPE_TREMORALIEN]	= ":Skeletons:tremoralien.skeleton",
+	[SKELETON_TYPE_TREMORGHOST]	= ":Skeletons:tremorghost.skeleton",
+	[SKELETON_TYPE_FROGMAN]		= ":Skeletons:frogman.skeleton",
 };
 
+	GAME_ASSERT(skeletonType >= 0);
+	GAME_ASSERT(skeletonType < MAX_SKELETON_TYPES);
 
-	if (skeletonType < MAX_SKELETON_TYPES)
-		FSMakeFSSpec(gDataSpec.vRefNum, gDataSpec.parID, fileNames[skeletonType], &fsSpec);
-	else
-		DoFatalAlert("LoadSkeleton: Unknown skeletonType!");
-	
-	
+
+	FSMakeFSSpec(gDataSpec.vRefNum, gDataSpec.parID, fileNames[skeletonType], &fsSpec);
+
+
 			/* OPEN THE FILE'S REZ FORK */
 
 	fRefNum = FSpOpenResFile(&fsSpec,fsRdPerm);
@@ -248,12 +257,11 @@ SkeletonFile_AnimHeader_Type	*animHeaderPtr;
 			/************************/
 
 	hand = GetResource('Hedr',1000);
-	if (hand == nil)
-		DoFatalAlert("ReadDataFromSkeletonFile: Error reading header resource!");
+	GAME_ASSERT(hand);
+	BYTESWAP_HANDLE("4h", SkeletonFile_Header_Type, 1, hand);
 	headerPtr = (SkeletonFile_Header_Type *)*hand;
 	version = headerPtr->version;
-	if (version != SKELETON_FILE_VERS_NUM)
-		DoFatalAlert("Skeleton file has wrong version #");
+	GAME_ASSERT_MESSAGE(version == SKELETON_FILE_VERS_NUM, "Skeleton file has wrong version #");
 	
 	numAnims = skeleton->NumAnims = headerPtr->numAnims;			// get # anims in skeleton
 	numJoints = skeleton->NumBones = headerPtr->numJoints;			// get # joints in skeleton
@@ -297,18 +305,19 @@ SkeletonFile_AnimHeader_Type	*animHeaderPtr;
 	for (i=0; i < numJoints; i++)
 	{
 		File_BoneDefinitionType	*bonePtr;
-		u_short					*indexPtr;
+		uint16_t				*indexPtr;
 
 			/* READ BONE DATA */
-			
+
 		hand = GetResource('Bone',1000+i);
 		if (hand == nil)
 			DoFatalAlert("Error reading Bone resource!");
+		BYTESWAP_HANDLE("i32b3fHH8L", File_BoneDefinitionType, 1, hand);
 		HLock(hand);
 		bonePtr = (File_BoneDefinitionType *)*hand;
 
 			/* COPY BONE DATA INTO ARRAY */
-		
+
 		skeleton->Bones[i].parentBone = bonePtr->parentBone;								// index to previous bone
 		skeleton->Bones[i].coord = bonePtr->coord;											// absolute coord (not relative to parent!)
 		skeleton->Bones[i].numPointsAttachedToBone = bonePtr->numPointsAttachedToBone;		// # vertices/points that this bone has
@@ -316,27 +325,27 @@ SkeletonFile_AnimHeader_Type	*animHeaderPtr;
 		ReleaseResource(hand);
 
 			/* ALLOC THE POINT & NORMALS SUB-ARRAYS */
-				
-		skeleton->Bones[i].pointList = (u_short *)AllocPtr(sizeof(u_short) * (int)skeleton->Bones[i].numPointsAttachedToBone);
+
+		skeleton->Bones[i].pointList = (uint16_t *)AllocPtr(sizeof(uint16_t) * (int)skeleton->Bones[i].numPointsAttachedToBone);
 		if (skeleton->Bones[i].pointList == nil)
 			DoFatalAlert("ReadDataFromSkeletonFile: AllocPtr/pointList failed!");
 
-		skeleton->Bones[i].normalList = (u_short *)AllocPtr(sizeof(u_short) * (int)skeleton->Bones[i].numNormalsAttachedToBone);
+		skeleton->Bones[i].normalList = (uint16_t *)AllocPtr(sizeof(uint16_t) * (int)skeleton->Bones[i].numNormalsAttachedToBone);
 		if (skeleton->Bones[i].normalList == nil)
 			DoFatalAlert("ReadDataFromSkeletonFile: AllocPtr/normalList failed!");
 
 			/* READ POINT INDEX ARRAY */
-			
+
 		hand = GetResource('BonP',1000+i);
 		if (hand == nil)
 			DoFatalAlert("Error reading BonP resource!");
 		HLock(hand);
-		indexPtr = (u_short *)(*hand);
-			
+		indexPtr = (uint16_t *)(*hand);
+
 			/* COPY POINT INDEX ARRAY INTO BONE STRUCT */
 
 		for (j=0; j < skeleton->Bones[i].numPointsAttachedToBone; j++)
-			skeleton->Bones[i].pointList[j] = indexPtr[j];
+			skeleton->Bones[i].pointList[j] = Byteswap16(&indexPtr[j]);
 		ReleaseResource(hand);
 
 
@@ -346,17 +355,16 @@ SkeletonFile_AnimHeader_Type	*animHeaderPtr;
 		if (hand == nil)
 			DoFatalAlert("Error reading BonN resource!");
 		HLock(hand);
-		indexPtr = (u_short *)(*hand);
-			
+		indexPtr = (uintptr_t *)(*hand);
+
 			/* COPY NORMAL INDEX ARRAY INTO BONE STRUCT */
 
 		for (j=0; j < skeleton->Bones[i].numNormalsAttachedToBone; j++)
-			skeleton->Bones[i].normalList[j] = indexPtr[j];
+			skeleton->Bones[i].normalList[j] = Byteswap16(&indexPtr[j]);
 		ReleaseResource(hand);
-						
 	}
-	
-	
+
+
 		/*******************************/
 		/* READ POINT RELATIVE OFFSETS */
 		/*******************************/
@@ -364,14 +372,16 @@ SkeletonFile_AnimHeader_Type	*animHeaderPtr;
 		// The "relative point offsets" are the only things
 		// which do not get rebuilt in the ModelDecompose function.
 		// We need to restore these manually.
-	
+
 	hand = GetResource('RelP', 1000);
 	if (hand == nil)
 		DoFatalAlert("Error reading RelP resource!");
 	HLock(hand);
 	pointPtr = (OGLPoint3D *)*hand;
-	
+
 	i = GetHandleSize(hand) / sizeof(OGLPoint3D);
+	BYTESWAP_HANDLE("fff", OGLPoint3D, skeleton->numDecomposedPoints, hand);
+
 	if (i != skeleton->numDecomposedPoints)
 		DoFatalAlert("# of points in Reference Model has changed!");
 	else
@@ -379,12 +389,12 @@ SkeletonFile_AnimHeader_Type	*animHeaderPtr;
 			skeleton->decomposedPointList[i].boneRelPoint = pointPtr[i];
 
 	ReleaseResource(hand);
-	
-	
+
+
 			/*********************/
 			/* READ ANIM INFO   */
 			/*********************/
-			
+
 	for (i=0; i < numAnims; i++)
 	{
 				/* READ ANIM HEADER */
@@ -393,6 +403,7 @@ SkeletonFile_AnimHeader_Type	*animHeaderPtr;
 		if (hand == nil)
 			DoFatalAlert("Error getting anim header resource");
 		HLock(hand);
+		BYTESWAP_HANDLE("b32bxh", SkeletonFile_AnimHeader_Type, 1, hand);
 		animHeaderPtr = (SkeletonFile_AnimHeader_Type *)*hand;
 
 		skeleton->NumAnimEvents[i] = animHeaderPtr->numAnimEvents;			// copy # anim events in anim	
@@ -403,6 +414,7 @@ SkeletonFile_AnimHeader_Type	*animHeaderPtr;
 		hand = GetResource('Evnt',1000+i);
 		if (hand == nil)
 			DoFatalAlert("Error reading anim-event data resource!");
+		BYTESWAP_HANDLE("hbb", AnimEventType, skeleton->NumAnimEvents[i], hand);
 		animEventPtr = (AnimEventType *)*hand;
 		for (j=0;  j < skeleton->NumAnimEvents[i]; j++)
 			skeleton->AnimEventsList[i][j] = *animEventPtr++;
@@ -442,6 +454,7 @@ SkeletonFile_AnimHeader_Type	*animHeaderPtr;
 			hand = GetResource('KeyF',1000+(i*100)+j);
 			if (hand == nil)
 				DoFatalAlert("Error reading joint keyframes resource!");
+			BYTESWAP_HANDLE("ii3f3f3f", JointKeyframeType, numKeyframes, hand);
 			keyFramePtr = (JointKeyframeType *)*hand;
 			for (k = 0; k < numKeyframes; k++)												// copy this joint's keyframes for this anim
 				skeleton->JointKeyframes[j].keyFrames[i][k] = *keyFramePtr++;
