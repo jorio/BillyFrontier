@@ -11,12 +11,6 @@
 
 #include "game.h"
 #include "bones.h"
-#include "3dmath.h"
-
-extern	float				gFramesPerSecondFrac;
-extern	PlayerInfoType	gPlayerInfo;
-extern	OGLPoint3D	gCoord;
-
 
 /****************************/
 /*    PROTOTYPES            */

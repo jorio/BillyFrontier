@@ -4,26 +4,10 @@
 //TODO: IS THIS ACTUALLY REQUIRED IN BILLY FRONTIER?
 
 #include "game.h"
-#include "3dmath.h"
-#include "infobar.h"
 
 /***************/
 /* EXTERNALS   */
 /***************/
-
-extern	OGLPoint3D	gCoord;
-extern	OGLVector3D	gDelta;
-extern	float		gAutoFadeStartDist,gAutoFadeRange_Frac,gAutoFadeEndDist,gFramesPerSecondFrac,gGlobalTransparency;
-extern	FSSpec		gDataSpec;
-extern	SpriteType	*gSpriteGroupList[];
-extern	long		gNumSpritesInGroupList[];
-extern	NewObjectDefinitionType	gNewObjectDefinition;
-extern	u_long		gGlobalMaterialFlags;
-extern	Boolean		gG4;
-extern	float		gMapToUnitValue;
-extern	OGLSetupOutputType		*gGameViewInfoPtr;
-extern	MetaObjectPtr			gBG3DGroupList[MAX_BG3D_GROUPS][MAX_OBJECTS_IN_GROUP];
-
 
 /****************************/
 /*    PROTOTYPES            */

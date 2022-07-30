@@ -10,27 +10,6 @@
 /****************************/
 
 #include "game.h"
-#include "window.h"
-#include "3dmath.h"
-#include "infobar.h"
-
-extern	Boolean			gDrawLensFlare,gDisableHiccupTimer, gPlayerIsDead;
-extern	NewObjectDefinitionType	gNewObjectDefinition;
-extern	float			gFramesPerSecond,gFramesPerSecondFrac,gAutoFadeStartDist,gAutoFadeEndDist,gAutoFadeRange_Frac;
-extern	float			gTerrainPolygonSize, gGammaFadePercent;
-extern	OGLPoint3D	gCoord;
-extern	ObjNode				*gFirstNodePtr;
-extern	short		gNumSuperTilesDrawn;
-extern	float		gGlobalTransparency;
-extern	int			gNumObjectNodes,gSuperTileActiveRange;
-extern	PlayerInfoType	gPlayerInfo;
-extern	PrefsType	gGamePrefs;
-extern	short	gNumTerrainDeformations;
-extern	DeformationType	gDeformationList[];
-extern	long			gTerrainUnitWidth,gTerrainUnitDepth;
-extern	MetaObjectPtr			gBG3DGroupList[MAX_BG3D_GROUPS][MAX_OBJECTS_IN_GROUP];
-extern	Boolean		gGameIsRegistered,gSlowCPU, gPlayerToWinDuel;
-
 
 /****************************/
 /*    PROTOTYPES            */

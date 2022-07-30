@@ -10,25 +10,6 @@
 /****************************/
 
 #include "game.h"
-#include "3dmath.h"
-
-extern	NewObjectDefinitionType	gNewObjectDefinition;
-extern	OGLSetupOutputType		*gGameViewInfoPtr;
-extern	float					gFramesPerSecond,gFramesPerSecondFrac,gCurrentAspectRatio;
-extern	OGLVector3D				gWorldSunDirection;
-extern	CollisionRec			gCollisionList[];
-extern	FSSpec					gDataSpec;
-extern	OGLMatrix4x4			gWorldToWindowMatrix;
-extern	float					gGlobalTransparency,gTerrainTileDepth,gTerrainPolygonSize;
-extern	PlayerInfoType			gPlayerInfo;
-extern	SpriteType				*gSpriteGroupList[];
-extern	OGLColorRGB			gGlobalColorFilter;
-extern	float					gScratchF,gTerrainSuperTileUnitSize, gAnaglyphEyeSeparation;
-extern	PrefsType			gGamePrefs;
-extern	int				gGameWindowWidth, gGameWindowHeight,gScratch;
-extern	Boolean					gSlowCPU, gDoneFaceOff, gIsPicking;
-extern	ObjNode			*gDuelers[];
-extern	SplineDefType	**gSplineList;
 
 /****************************/
 /*    PROTOTYPES            */

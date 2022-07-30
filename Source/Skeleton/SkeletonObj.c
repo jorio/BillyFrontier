@@ -10,15 +10,7 @@
 /****************************/
 
 #include "game.h"
-#include "window.h"
-#include "3dmath.h"
 #include "bones.h"
-
-extern	NewObjectDefinitionType	gNewObjectDefinition;
-extern	OGLSetupOutputType		*gGameViewInfoPtr;
-extern	Boolean				gIsPicking;
-extern	u_long				gCurrentPickID;
-
 
 /****************************/
 /*    PROTOTYPES            */

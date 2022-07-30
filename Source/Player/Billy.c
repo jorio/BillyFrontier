@@ -10,35 +10,7 @@
 /****************************/
 
 #include "game.h"
-#include "3dmath.h"
 #include "bones.h"
-#include "infobar.h"
-
-extern	OGLBoundingBox			gWaterBBox[];
-extern	ObjNode					*gFirstNodePtr;
-extern	float					gFramesPerSecondFrac,gFramesPerSecond,gCameraLookAtYOff,gGlobalTransparency;
-extern	OGLPoint3D				gCoord;
-extern	OGLVector3D				gDelta;
-extern	NewObjectDefinitionType	gNewObjectDefinition;
-extern	OGLSetupOutputType		*gGameViewInfoPtr;
-extern	short					gNumCollisions;
-extern	CollisionRec			gCollisionList[];
-extern	PrefsType				gGamePrefs;
-extern	OGLBoundingBox			gObjectGroupBBoxList[MAX_BG3D_GROUPS][MAX_OBJECTS_IN_GROUP];
-extern	OGLVector3D				gRecentTerrainNormal;
-extern	OGLMatrix4x4			gWorldToWindowMatrix;
-extern	PlayerInfoType			gPlayerInfo;
-extern	Boolean					gFreezeCameraFromXZ;
-extern	int						gScratch;
-extern	ParticleGroupType		*gParticleGroups[];
-extern	SpriteType			*gSpriteGroupList[MAX_SPRITE_GROUPS];
-extern	float				gPlayerToCameraAngle,gGravity,gMinHeightOffGround,gCameraDistFromMe;
-extern	WaterDefType			*gWaterList;
-extern	MetaObjectPtr			gBG3DGroupList[MAX_BG3D_GROUPS][MAX_OBJECTS_IN_GROUP];
-extern	OGLColorRGB			gGlobalColorFilter;
-extern	float					gGammaFadePercent;
-extern	u_long					gAutoFadeStatusBits;
-
 
 /****************************/
 /*    PROTOTYPES            */

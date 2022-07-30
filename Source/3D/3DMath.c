@@ -10,11 +10,7 @@
 /****************************/
 
 #include "game.h"
-#include "3dmath.h"
 
-extern	float				gFramesPerSecondFrac,gFramesPerSecond;
-extern	OGLMatrix4x4		gWorldToFrustumMatrix;
-extern	PlayerInfoType	gPlayerInfo;
 
 /****************************/
 /*    PROTOTYPES            */

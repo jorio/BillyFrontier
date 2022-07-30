@@ -10,24 +10,7 @@
 /***************/
 
 #include "game.h"
-#include "3dmath.h"
 #include "bones.h"
-#include "infobar.h"
-
-extern	Byte					gDebugMode;
-extern	MetaObjectPtr			gBG3DGroupList[MAX_BG3D_GROUPS][MAX_OBJECTS_IN_GROUP];
-extern	int						gNumObjectsInBG3DGroupList[MAX_BG3D_GROUPS], gNumWorldCalcsThisFrame;
-extern	float					gFramesPerSecondFrac,gGlobalTransparency;
-extern	OGLSetupOutputType		*gGameViewInfoPtr;
-extern	MOVertexArrayData		**gLocalTriMeshesOfSkelType;
-extern	OGLColorRGB				gGlobalColorFilter;
-extern	u_long					gGlobalMaterialFlags;
-extern	uintptr_t				gCurrentPickID;
-extern	PlayerInfoType			gPlayerInfo;
-extern	OGLBoundingBox			gObjectGroupBBoxList[MAX_BG3D_GROUPS][MAX_OBJECTS_IN_GROUP];
-extern	float					gObjectGroupBSphereList[MAX_BG3D_GROUPS][MAX_OBJECTS_IN_GROUP];
-extern	Boolean					gIsPicking;
-
 
 /****************************/
 /*    PROTOTYPES            */

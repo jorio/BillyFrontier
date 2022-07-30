@@ -10,21 +10,6 @@
 /****************************/
 
 #include "game.h"
-#include "3dmath.h"
-
-extern	float				gFramesPerSecondFrac,gFramesPerSecond;
-extern	FSSpec		gDataSpec;
-extern	KeyMap gKeyMap,gNewKeys;
-extern	NewObjectDefinitionType	gNewObjectDefinition;
-extern	Boolean		gATIDriver,gDisableAnimSounds,gISpActive,gOSX;
-extern	Boolean		gHIDInitialized;
-extern	PrefsType	gGamePrefs;
-extern	OGLPoint3D	gCoord;
-extern	OGLSetupOutputType		*gGameViewInfoPtr;
-extern	OGLVector3D	gDelta;
-extern	short		gMainAppRezFile;
-extern	GDHandle				gOurDevice;
-
 
 /****************************/
 /*    PROTOTYPES            */

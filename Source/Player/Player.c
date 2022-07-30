@@ -10,30 +10,6 @@
 /****************************/
 
 #include "game.h"
-#include "3dmath.h"
-#include "infobar.h"
-
-extern	OGLPoint3D				gCoord;
-extern	OGLVector3D				gDelta;
-extern	NewObjectDefinitionType	gNewObjectDefinition;
-extern	float					gFramesPerSecondFrac, gPlayerBottomOff;
-extern	short					gNumCollisions;
-extern	CollisionRec			gCollisionList[];
-extern	OGLSetupOutputType		*gGameViewInfoPtr;
-extern	u_long 					gAutoFadeStatusBits,gScore;
-extern	int						gScratch;
-extern	Boolean				gFreezeCameraFromXZ,gFreezeCameraFromY,gPlayingFromSavedGame;
-extern	Boolean				gGameOver;
-extern	float				gGlobalTransparency,gTargetMaxSpeed,gCurrentMaxSpeed;
-extern	PrefsType			gGamePrefs;
-extern	SparkleType			gSparkles[];
-extern	SpriteType			*gSpriteGroupList[];
-extern	float				gCameraDistFromMe;
-extern	OGLBoundingBox		gWaterBBox[];
-extern	MetaObjectPtr			gBG3DGroupList[MAX_BG3D_GROUPS][MAX_OBJECTS_IN_GROUP];
-extern	NewParticleGroupDefType	gNewParticleGroupDef;
-extern	Boolean				gLevelWon[];
-extern	Boolean				gDuelWon[];
 
 /****************************/
 /*    PROTOTYPES            */

@@ -9,29 +9,6 @@
 /***************/
 
 #include "game.h"
-#include "3dmath.h"
-#include	"infobar.h"
-
-extern	OGLMatrix4x4			gViewToFrustumMatrix,gWorldToViewMatrix;
-extern	NewObjectDefinitionType	gNewObjectDefinition;
-extern	TerrainItemEntryType 	**gMasterItemList;
-extern	long					gNumSplines,gNumFences, gNumWaterPatches;
-extern	SplineDefType			**gSplineList;
-extern	float					**gMapYCoords, **gMapYCoordsOriginal,gScratchF;
-extern	Byte					**gMapSplitMode, gDebugMode;
-extern	OGLSetupOutputType		*gGameViewInfoPtr;
-extern	SuperTileItemIndexType	**gSuperTileItemIndexGrid;
-extern	int						gScratch;
-extern	PlayerInfoType			gPlayerInfo;
-extern	FenceDefType			*gFenceList;
-extern	u_long					gGameFrameNum;
-extern	OGLBoundingBox			gObjectGroupBBoxList[MAX_BG3D_GROUPS][MAX_OBJECTS_IN_GROUP];
-extern	float					gFramesPerSecond, gFramesPerSecondFrac;
-extern	WaterDefType	**gWaterListHandle;
-extern	WaterDefType	*gWaterList;
-extern	Boolean					gIsPicking;
-extern	Byte				gAnaglyphPass;
-extern	PrefsType			gGamePrefs;
 
 /****************************/
 /*  PROTOTYPES             */

@@ -10,22 +10,6 @@
 /****************************/
 
 #include "game.h"
-#include "3dmath.h"
-
-extern	NewObjectDefinitionType	gNewObjectDefinition;
-extern	ObjNode					*gCurrentNode,*gFirstNodePtr;
-extern	float				gFramesPerSecondFrac,gFramesPerSecond;
-extern	OGLPoint3D			gCoord;
-extern	OGLVector3D			gDelta;
-extern	short				gNumCollisions;
-extern	CollisionRec		gCollisionList[];
-extern	u_long		gAutoFadeStatusBits, gScore;
-extern	OGLVector3D		gRecentTerrainNormal;
-extern	Boolean				gG4,gShootoutCanProceedToNextStopPoint;
-extern	SparkleType	gSparkles[MAX_SPARKLES];
-extern	Byte			gNumEnemiesThisStopPoint[];
-extern	int				gStopPointNum, gCurrentArea;
-extern	Boolean				gLevelWon[NUM_LEVELS];
 
 /****************************/
 /*    PROTOTYPES            */

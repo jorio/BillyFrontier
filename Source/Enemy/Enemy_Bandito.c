@@ -9,29 +9,7 @@
 /*    EXTERNALS             */
 /****************************/
 
-
 #include "game.h"
-#include "3dmath.h"
-
-extern	NewObjectDefinitionType	gNewObjectDefinition;
-extern	SplineDefType			**gSplineList;
-extern	OGLPoint3D				gCoord;
-extern	int						gNumEnemies;
-extern	float					gFramesPerSecondFrac,gGlobalTransparency, gTimeSinceLastEnemyShot;
-extern	OGLVector3D			gDelta;
-extern	signed char			gNumEnemyOfKind[];
-extern	u_long		gAutoFadeStatusBits;
-extern	SpriteType	*gSpriteGroupList[MAX_SPRITE_GROUPS];
-extern	int					gMaxEnemies, gStopPointNum;
-extern	OGLSetupOutputType		*gGameViewInfoPtr;
-extern	MetaObjectPtr			gBG3DGroupList[MAX_BG3D_GROUPS][MAX_OBJECTS_IN_GROUP];
-extern	TerrainItemEntryType 	**gMasterItemList;
-extern	short					gNumTerrainItems;
-extern	SparkleType	gSparkles[];
-extern	PrefsType			gGamePrefs;
-extern	PlayerInfoType	gPlayerInfo;
-extern	Byte				gShootoutMode, gNumEnemiesThisStopPoint[];
-
 
 /****************************/
 /*    PROTOTYPES            */

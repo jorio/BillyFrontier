@@ -9,18 +9,8 @@
 /*    EXTERNALS             */
 /****************************/
 
-
 #include "game.h"
 #include "bones.h"
-#include "3dmath.h"
-
-extern	GLuint				gPickBuffer[];
-extern	int					gNumPickHits,gNumWorldCalcsThisFrame;
-extern	MOVertexArrayData	**gLocalTriMeshesOfSkelType;
-extern	ObjNode				*gFirstNodePtr;
-extern	long				gNumSuperTilesDeep,gNumSuperTilesWide;
-extern	SuperTileStatus		**gSuperTileStatusGrid;
-extern	SuperTileMemoryType	gSuperTileMemoryList[MAX_SUPERTILES];
 
 /****************************/
 /*    PROTOTYPES            */

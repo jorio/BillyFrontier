@@ -3,15 +3,10 @@
 /****************************/
 
 #include "game.h"
-#include "3dmath.h"
 
 /***************/
 /* EXTERNALS   */
 /***************/
-
-extern	float	gFramesPerSecondFrac,gFramesPerSecond,gMapToUnitValue,gTerrainSuperTileUnitSizeFrac;
-extern	SuperTileStatus	**gSuperTileStatusGrid;
-extern	long		gTerrainTileDepth, gTerrainTileWidth, gNumSuperTilesDeep, gNumSuperTilesWide;
 
 /****************************/
 /*    PROTOTYPES            */

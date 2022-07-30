@@ -13,23 +13,6 @@
 /****************************/
 
 #include "game.h"
-#include "3dmath.h"
-#include "infobar.h"
-
-extern	SDL_GLContext	gAGLContext;
-extern	Boolean			gMuteMusicFlag;
-extern	float			gCurrentAspectRatio;
-extern	SpriteType		*gSpriteGroupList[];
-extern	long			gNumSpritesInGroupList[];
-extern	int				gPolysThisFrame,gVRAMUsedThisFrame;
-extern	Boolean			gMyState_Lighting, gIsPicking;
-extern	Byte			gDebugMode;
-extern	PrefsType			gGamePrefs;
-extern	OGLMatrix4x4	gWorldToFrustumMatrix,gWorldToViewMatrix,gViewToFrustumMatrix;
-extern	OGLMatrix4x4	*gCurrentObjMatrix;
-extern	CGrafPtr				gDisplayContextGrafPtr;
-extern	OGLSetupOutputType		*gGameViewInfoPtr;
-extern	MetaObjectPtr			gBG3DGroupList[MAX_BG3D_GROUPS][MAX_OBJECTS_IN_GROUP];
 
 /****************************/
 /*    PROTOTYPES            */

@@ -10,37 +10,6 @@
 /****************************/
 
 #include "game.h"
-#include "window.h"
-#include "3dmath.h"
-#include "infobar.h"
-
-extern	int				gGameWindowWidth, gGameWindowHeight;
-extern	Boolean			gDrawLensFlare,gDisableHiccupTimer, gPlayerIsDead;
-extern	NewObjectDefinitionType	gNewObjectDefinition;
-extern	float			gFramesPerSecond,gFramesPerSecondFrac,gAutoFadeStartDist,gAutoFadeEndDist,gAutoFadeRange_Frac;
-extern	float			gTerrainPolygonSize, gGammaFadePercent, gDemoVersionTimer;
-extern	OGLPoint3D	gCoord;
-extern	ObjNode				*gFirstNodePtr;
-extern	short		gNumSuperTilesDrawn, gNumTerrainItems;
-extern	float		gGlobalTransparency, gLevelCompletedCoolDownTimer,gGravity, gScratchF;
-extern	int			gNumObjectNodes,gSuperTileActiveRange;
-extern	PlayerInfoType	gPlayerInfo;
-extern	PrefsType	gGamePrefs;
-extern	short	gNumTerrainDeformations;
-extern	DeformationType	gDeformationList[];
-extern	long			gTerrainUnitWidth,gTerrainUnitDepth, gNumSplines, gMouseDeltaX, gMouseDeltaY;
-extern	MetaObjectPtr			gBG3DGroupList[MAX_BG3D_GROUPS][MAX_OBJECTS_IN_GROUP];
-extern	Boolean					gGameIsRegistered,gSlowCPU,gGameOver, gLevelCompleted, gMouseNewButtonState;
-extern	OGLSetupOutputType		*gGameViewInfoPtr;
-extern	u_long					gGameFrameNum, gAutoFadeStatusBits, gScore;
-extern	OGLVector3D			gWorldSunDirection, gDelta;
-extern	OGLColorRGBA		gFillColor1;
-extern	TerrainItemEntryType 	**gMasterItemList;
-extern	SplineDefType	**gSplineList;
-extern	OGLBoundingBox			gObjectGroupBBoxList[MAX_BG3D_GROUPS][MAX_OBJECTS_IN_GROUP];
-extern	SparkleType	gSparkles[MAX_SPARKLES];
-extern	Boolean		gMouseRightButtonDown;
-extern	SInt32		gScrollWheelDelta;
 
 /****************************/
 /*    PROTOTYPES            */

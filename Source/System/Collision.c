@@ -10,17 +10,6 @@
 /***************/
 
 #include "game.h"
-#include "3dmath.h"
-
- 
-extern	OGLPoint3D	gCoord;
-extern	OGLVector3D	gDelta;
-extern	OGLMatrix4x4	gWorkMatrix;
-extern	ObjNode		*gFirstNodePtr;
-extern	float		gFramesPerSecond,gFramesPerSecondFrac;
-extern	PlayerInfoType	gPlayerInfo;
-extern	Boolean			gPlayerIsDead;
-
 
 /****************************/
 /*    PROTOTYPES            */

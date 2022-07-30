@@ -14,34 +14,6 @@
 #include 	"bones.h"
 #include 	"lzss.h"
 
-extern	SDL_GLContext	gAGLContext;
-extern	short			gMainAppRezFile,gCurrentSong;
-extern	short			gNumTerrainItems;
-extern	short			gPrefsFolderVRefNum;
-extern	long			gPrefsFolderDirID;
-extern	long			gTerrainTileWidth,gTerrainTileDepth,gTerrainUnitWidth,gTerrainUnitDepth,gNumUniqueSuperTiles;		
-extern	long			gNumSuperTilesDeep,gNumSuperTilesWide;
-extern	FSSpec			gDataSpec;
-extern	u_long			gScore,gLoadedScore;
-extern	float			gDemoVersionTimer,gTerrainPolygonSize,gMapToUnitValue;
-extern	float			**gMapYCoords,**gMapYCoordsOriginal;
-extern	Byte			**gMapSplitMode;
-extern	TerrainItemEntryType 	**gMasterItemList;
-extern	short			**gSuperTileTextureGrid;
-extern	FenceDefType	*gFenceList;
-extern	long			gNumFences,gNumSplines,gNumWaterPatches;
-extern	SplineDefType	**gSplineList;
-extern	int				gNumLineMarkers;
-extern	MOMaterialObject	*gSuperTileTextureObjects[MAX_SUPERTILE_TEXTURES];	
-extern	PrefsType			gGamePrefs;
-extern	Boolean			gMuteMusicFlag,gMuteMusicFlag,gLoadedDrawSprocket;
-extern	WaterDefType	**gWaterListHandle, *gWaterList;
-extern	PlayerInfoType	gPlayerInfo;
-extern	Boolean			gPlayingFromSavedGame,gG4;
-extern	LineMarkerDefType		gLineMarkerList[];
-extern	Boolean					gDisableHiccupTimer, gGameIsRegistered;
-extern	Boolean				gLevelWon[NUM_LEVELS], gDuelWon[NUM_LEVELS];
-
 /****************************/
 /*    PROTOTYPES            */
 /****************************/

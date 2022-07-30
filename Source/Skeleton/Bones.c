@@ -11,12 +11,6 @@
 
 #include "game.h"
 #include "bones.h"
-#include "3dmath.h"
-
-extern	MOVertexArrayData	**gLocalTriMeshesOfSkelType;
-extern	BG3DFileContainer		*gBG3DContainerList[];
-extern	Boolean				gIsPicking;
-
 
 /****************************/
 /*    PROTOTYPES            */

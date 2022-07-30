@@ -10,28 +10,6 @@
 /****************************/
 
 #include "game.h"
-#include	"infobar.h"
-#include	"3dmath.h"
-
-
-extern	float					gCurrentAspectRatio,gGlobalTransparency,gFramesPerSecondFrac, gTargetPracticeTimer;
-extern	PlayerInfoType			gPlayerInfo;
-extern	FSSpec					gDataSpec;
-extern	long					gTerrainUnitWidth,gTerrainUnitDepth;
-extern	OGLColorRGB				gGlobalColorFilter;
-extern	NewObjectDefinitionType	gNewObjectDefinition;
-extern	OGLSetupOutputType		*gGameViewInfoPtr;
-extern	PrefsType				gGamePrefs;
-extern	u_long					gGlobalMaterialFlags;
-extern	SpriteType				*gSpriteGroupList[];
-extern	int						gDuelKeySequenceLength, gDuelKeyBufferIndex,gCurrentArea,gDuelReflex;
-extern	Byte					gDuelKeySequence[], gDuelKeySequenceMode, gShootoutMode;
-extern	long					gNumSpritesInGroupList[];
-extern	int						gGameWindowWidth,gGameWindowHeight, gPepperCount;
-extern	OGLPoint2D				gCrosshairsCoord;
-extern	Boolean					gIsPicking, gShootoutCanProceedToNextStopPoint, gNeedToReloadNextAmmoClip;
-extern	u_long					gScore;
-
 
 /****************************/
 /*    PROTOTYPES            */

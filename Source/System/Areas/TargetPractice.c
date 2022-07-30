@@ -10,31 +10,6 @@
 /****************************/
 
 #include "game.h"
-#include "window.h"
-#include "3dmath.h"
-#include "infobar.h"
-
-extern	int				gGameWindowWidth, gGameWindowHeight;
-extern	Boolean			gDrawLensFlare,gDisableHiccupTimer, gPlayerIsDead;
-extern	NewObjectDefinitionType	gNewObjectDefinition;
-extern	float			gFramesPerSecond,gFramesPerSecondFrac,gAutoFadeStartDist,gAutoFadeEndDist,gAutoFadeRange_Frac;
-extern	float			gGammaFadePercent, gDemoVersionTimer;
-extern	OGLPoint3D	gCoord;
-extern	ObjNode				*gFirstNodePtr, *gCyc;
-extern	float		gGlobalTransparency, gLevelCompletedCoolDownTimer,gGravity, gScratchF;
-extern	int			gNumObjectNodes,gSuperTileActiveRange;
-extern	PlayerInfoType	gPlayerInfo;
-extern	PrefsType	gGamePrefs;
-extern	MetaObjectPtr			gBG3DGroupList[MAX_BG3D_GROUPS][MAX_OBJECTS_IN_GROUP];
-extern	Boolean					gGameIsRegistered,gSlowCPU,gGameOver, gLevelCompleted, gMouseNewButtonState;
-extern	OGLSetupOutputType		*gGameViewInfoPtr;
-extern	u_long					gGameFrameNum, gAutoFadeStatusBits, gScore;
-extern	OGLVector3D			gWorldSunDirection, gDelta;
-extern	OGLColorRGBA		gFillColor1;
-extern	OGLBoundingBox			gObjectGroupBBoxList[MAX_BG3D_GROUPS][MAX_OBJECTS_IN_GROUP];
-extern	OGLPoint2D			gCrosshairsCoord;
-extern	Boolean				gLevelWon[NUM_LEVELS], gMouseButtonState;
-extern	int					gCurrentArea;
 
 /****************************/
 /*    PROTOTYPES            */

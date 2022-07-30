@@ -13,18 +13,6 @@
 #include	"window.h"
 #include "Pomme.h"
 
-extern	SDL_Window*			gSDLWindow;
-extern	NewObjectDefinitionType	gNewObjectDefinition;
-extern	ObjNode	*gCurrentNode,*gFirstNodePtr;
-extern	float	gFramesPerSecondFrac;
-extern	short	gPrefsFolderVRefNum,gCurrentSong;
-extern	long	gPrefsFolderDirID;
-extern	Boolean				gOSX,gMuteMusicFlag;
-extern	PrefsType			gGamePrefs;
-extern	Boolean			gSongPlayingFlag;
-//extern	AGLDrawable		gAGLWin;
-extern	SDL_GLContext		gAGLContext;
-extern	Boolean			gISpActive;
 
 /****************************/
 /*    PROTOTYPES            */
@@ -74,7 +62,6 @@ static VideoModeType		gVideoModeList[MAX_VIDEO_MODES];
 
 long					gScreenXOffset,gScreenYOffset;
 //DSpContextReference 	gDisplayContext = nil;
-Boolean					gLoadedDrawSprocket = false;
 
 CGrafPtr				gDisplayContextGrafPtr = nil;
 
@@ -419,14 +406,14 @@ OSStatus 		theError;
 */
 	
 	/* shutdown draw sprocket */
-	
+
+#if 0
 	if (gLoadedDrawSprocket)
 	{
-#if 0
 		theError = DSpShutdown();
-#endif
 		gLoadedDrawSprocket = false;
 	}
+#endif
 	
 	gDisplayContextGrafPtr = nil;
 }

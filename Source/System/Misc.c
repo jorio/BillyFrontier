@@ -14,27 +14,9 @@
 #include <stdarg.h>
 #include "game.h"
 
-extern	SDL_Window*	gSDLWindow;
-extern	short		gMainAppRezFile;
-extern	Boolean		gISPInitialized,gOSX,gG4;
-extern	Boolean		gISpActive, gShareware;
-//extern	DSpContextReference 	gDisplayContext;
-extern	OGLSetupOutputType		*gGameViewInfoPtr;
-extern	int			gPolysThisFrame;
-extern	SDL_GLContext		gAGLContext;
-//extern	AGLDrawable		gAGLWin;
-extern	float			gDemoVersionTimer;
-extern	short	gPrefsFolderVRefNum;
-extern	long		gPrefsFolderDirID;
-extern	PrefsType			gGamePrefs;
-extern	FSSpec				gDataSpec;
-
 /****************************/
 /*    CONSTANTS             */
 /****************************/
-
-#define		ERROR_ALERT_ID		401
-
 
 #define	USE_MALLOC		1
 

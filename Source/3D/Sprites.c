@@ -10,15 +10,6 @@
 /****************************/
 
 #include "game.h"
-#include "window.h"
-#include "3dmath.h"
-#include "infobar.h"
-
-extern	SDL_GLContext	gAGLContext;
-extern	float	gCurrentAspectRatio,gGlobalTransparency;
-extern	int		gPolysThisFrame;
-extern	Boolean			gSongPlayingFlag,gMuteMusicFlag;
-extern	u_long			gGlobalMaterialFlags;
 
 /****************************/
 /*    PROTOTYPES            */

@@ -7,7 +7,6 @@
 
 #define aglGetError() GAME_ASSERT(!OGL_CheckError())
 #define aglSetCurrentContext(junk) IMPLEMENT_ME_SOFT()
-#define aglSwapBuffers(junk) IMPLEMENT_ME()
 
 /****************************/
 /*    EXTERNALS             */
@@ -15,33 +14,10 @@
 
 #include <GL/glu.h>
 #include <SDL.h>
-#include "Pomme.h"
-#include 	<string.h>
+#include <string.h>
 
 #include "game.h"
 #include "stb_image.h"
-
-
-extern SDL_Window*		gSDLWindow;
-
-extern int				gNumObjectNodes,gNumPointers;
-extern	MOMaterialObject	*gMostRecentMaterial;
-extern	short			gNumSuperTilesDrawn,gNumActiveParticleGroups,gNumFencesDrawn,gNumTerrainDeformations,gNumWaterDrawn;
-extern	PlayerInfoType	gPlayerInfo;
-extern	float			gFramesPerSecond,gCameraStartupTimer,gScratchF,gGlobalTransparency;
-extern	Byte			gDebugMode;
-extern	Boolean			gOSX;
-extern	u_long			gGlobalMaterialFlags;
-extern	uintptr_t		gCurrentPickID;
-extern	PrefsType			gGamePrefs;
-extern	int				gGameWindowWidth,gGameWindowHeight,gScratch,gNumSparkles,gNumLoopingEffects;
-extern	CGrafPtr				gDisplayContextGrafPtr;
-//extern	DSpContextReference 	gDisplayContext;
-extern	long			gNumSuperTilesDeep, gNumSuperTilesWide;
-extern	SuperTileStatus	**gSuperTileStatusGrid;
-extern	Byte			gNumEnemiesThisStopPoint[];
-extern	int				gStopPointNum;
-
 
 /****************************/
 /*    PROTOTYPES            */
@@ -656,7 +632,8 @@ do_anaglyph:
 		else
 			glPolygonMode(GL_FRONT_AND_BACK ,GL_FILL);
 	}
-	
+
+#if 0
 	if (gATIDriver)			// only if running on ATI
 	{
 		if (GetKeyState_Real(KEY_CTRL))
@@ -674,6 +651,7 @@ do_anaglyph:
 			}			
 		}
 	}
+#endif
 					
 				/* SHOW BASIC DEBUG INFO */
 

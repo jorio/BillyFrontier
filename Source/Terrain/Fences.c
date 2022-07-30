@@ -3,23 +3,10 @@
 /**********************/
 
 #include "game.h"
-#include "3dmath.h"
 
 /***************/
 /* EXTERNALS   */
 /***************/
-
-extern	OGLPoint3D	gCoord;
-extern	OGLVector3D	gDelta;
-extern	float		gAutoFadeStartDist,gAutoFadeRange_Frac,gAutoFadeEndDist,gFramesPerSecondFrac;
-extern	FSSpec		gDataSpec;
-extern	SpriteType	*gSpriteGroupList[MAX_SPRITE_GROUPS];
-extern	long		gNumSpritesInGroupList[MAX_SPRITE_GROUPS];
-extern	NewObjectDefinitionType	gNewObjectDefinition;
-extern	u_long		gGlobalMaterialFlags,gAutoFadeStatusBits;
-extern	Byte		gDebugMode;
-extern	float		gMapToUnitValue;
-
 
 /****************************/
 /*    PROTOTYPES            */

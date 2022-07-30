@@ -10,23 +10,6 @@
 /****************************/
 
 #include "game.h"
-#include "3dmath.h"
-#include "infobar.h"
-
-
-extern	float				gFramesPerSecondFrac,gFramesPerSecond,gGravity,gPlayerBottomOff,gGlobalTransparency;
-extern	OGLPoint3D			gCoord;
-extern	OGLVector3D			gDelta;
-extern	NewObjectDefinitionType	gNewObjectDefinition;
-extern	OGLSetupOutputType	*gGameViewInfoPtr;
-extern	u_long				gAutoFadeStatusBits;
-extern	Boolean				gG4;
-extern	PlayerInfoType		gPlayerInfo;
-extern	float				gCameraDistFromMe,gCameraLookAtYOff, gGammaFadePercent;
-extern	OGLBoundingBox 		gObjectGroupBBoxList[MAX_BG3D_GROUPS][MAX_OBJECTS_IN_GROUP];
-extern	short				gNumCollisions;
-extern	OGLVector3D		gRecentTerrainNormal;
-extern	OGLBoundingBox			gWaterBBox[];
 
 /****************************/
 /*    PROTOTYPES            */

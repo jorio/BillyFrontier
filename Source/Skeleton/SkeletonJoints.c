@@ -10,25 +10,15 @@
 /****************************/
 
 #include "game.h"
-#include "3dmath.h"
-
-extern	NewObjectDefinitionType	gNewObjectDefinition;
-
 
 /****************************/
 /*    PROTOTYPES            */
 /****************************/
 
-static void MakeHierarchialJointGroups(SkeletonObjDataType *skeleton);
-static void MakeJointTransforms(SkeletonObjDataType *skeleton);
-
 
 /****************************/
 /*    CONSTANTS             */
 /****************************/
-
-
-#define	SIZE_OF_JOINT_NUB	1.0f
 
 
 /*********************/

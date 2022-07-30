@@ -10,40 +10,6 @@
 /****************************/
 
 #include "game.h"
-#include "window.h"
-#include "3dmath.h"
-#include "infobar.h"
-
-extern	int				gGameWindowWidth, gGameWindowHeight;
-extern	Boolean			gDrawLensFlare,gDisableHiccupTimer, gPlayerIsDead, gOSX;
-extern	NewObjectDefinitionType	gNewObjectDefinition;
-extern	float			gFramesPerSecond,gFramesPerSecondFrac,gAutoFadeStartDist,gAutoFadeEndDist,gAutoFadeRange_Frac;
-extern	float			gTerrainPolygonSize, gDeathTimer, gGammaFadePercent, gDemoVersionTimer;
-extern	OGLPoint3D	gCoord;
-extern	ObjNode				*gFirstNodePtr;
-extern	short		gNumSuperTilesDrawn, gNumTerrainItems;
-extern	float		gGlobalTransparency, gLevelCompletedCoolDownTimer,gGravity, gScratchF, gCurrentMaxSpeed, gPlayerBottomOff;
-extern	int			gNumObjectNodes,gSuperTileActiveRange;
-extern	PlayerInfoType	gPlayerInfo;
-extern	PrefsType	gGamePrefs;
-extern	short	gNumTerrainDeformations, gNumCollisions;
-extern	DeformationType	gDeformationList[];
-extern	long			gTerrainUnitWidth,gTerrainUnitDepth, gMouseDeltaX;
-extern	MetaObjectPtr			gBG3DGroupList[MAX_BG3D_GROUPS][MAX_OBJECTS_IN_GROUP];
-extern	Boolean					gGameIsRegistered,gSlowCPU,gGameOver, gLevelCompleted, gMouseNewButtonState;
-extern	OGLSetupOutputType		*gGameViewInfoPtr;
-extern	u_long					gGameFrameNum, gAutoFadeStatusBits, gScore;
-extern	OGLVector3D			gWorldSunDirection, gDelta;
-extern	OGLColorRGBA		gFillColor1;
-extern	TerrainItemEntryType 	**gMasterItemList;
-extern	SplineDefType	**gSplineList;
-extern	OGLBoundingBox			gObjectGroupBBoxList[MAX_BG3D_GROUPS][MAX_OBJECTS_IN_GROUP];
-extern	CollisionRec	gCollisionList[];
-extern	OGLBoundingBox			gWaterBBox[];
-extern	Boolean				gLevelWon[NUM_LEVELS];
-extern	int					gCurrentArea;
-extern	NewParticleGroupDefType	gNewParticleGroupDef;
-
 
 /****************************/
 /*    PROTOTYPES            */

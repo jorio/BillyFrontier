@@ -10,24 +10,6 @@
 /****************************/
 
 #include "game.h"
-#include "3dmath.h"
-
-extern	float				gFramesPerSecondFrac,gFramesPerSecond,gCurrentAspectRatio,gTerrainPolygonSize;
-extern	OGLPoint3D			gCoord;
-extern	OGLVector3D			gDelta;
-extern	NewObjectDefinitionType	gNewObjectDefinition;
-extern	OGLBoundingBox 		gObjectGroupBBoxList[MAX_BG3D_GROUPS][MAX_OBJECTS_IN_GROUP];
-extern	OGLSetupOutputType	*gGameViewInfoPtr;
-extern	u_long				gAutoFadeStatusBits,gGlobalMaterialFlags;
-extern	Boolean				gG4;
-extern	PlayerInfoType		gPlayerInfo;
-extern	SplineDefType	**gSplineList;
-extern	SparkleType	gSparkles[MAX_SPARKLES];
-extern	short				gNumEnemies;
-extern	SpriteType	*gSpriteGroupList[];
-extern	int					gCurrentArea;
-extern	u_long				gScore;
-
 
 /****************************/
 /*    PROTOTYPES            */

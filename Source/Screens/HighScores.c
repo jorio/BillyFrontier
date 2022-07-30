@@ -10,18 +10,6 @@
 /****************************/
 
 #include "game.h"
-#include "infobar.h"
-
-extern	NewObjectDefinitionType	gNewObjectDefinition;
-extern	float			gFramesPerSecond,gFramesPerSecondFrac,gGlobalTransparency;
-extern	short	gPrefsFolderVRefNum, gCurrentSong;
-extern	long	gPrefsFolderDirID;
-extern	FSSpec	gDataSpec;
-extern	OGLSetupOutputType		*gGameViewInfoPtr;
-extern	u_long			gScore,gGlobalMaterialFlags,gLoadedScore;
-extern	Boolean			gPlayingFromSavedGame,gAllowAudioKeys, gWonGame, gLostGame;
-extern	OGLColorRGB			gGlobalColorFilter;
-extern	MOPictureObject 	*gBackgoundPicture;
 
 /****************************/
 /*    PROTOTYPES            */

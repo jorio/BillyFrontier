@@ -10,23 +10,6 @@
 /****************************/
 
 #include "game.h"
-#include "3dmath.h"
-#include "infobar.h"
-
-extern	float		gFramesPerSecondFrac,gFramesPerSecond,gGlobalTransparency, gMouseY;
-extern	FSSpec		gDataSpec;
-extern	Boolean		gGameOver,gMuteMusicFlag;
-extern	KeyMap 		gKeyMap,gNewKeys;
-extern	NewObjectDefinitionType	gNewObjectDefinition;
-extern	Boolean		gDisableAnimSounds, gMouseNewButtonState;
-extern	PrefsType	gGamePrefs;
-extern	OGLPoint3D	gCoord;
-extern	MOPictureObject 	*gBackgoundPicture;
-extern	OGLSetupOutputType		*gGameViewInfoPtr;
-extern	PlayerInfoType	gPlayerInfo;
-extern	OGLColorRGB			gGlobalColorFilter;
-extern	long			gMouseDeltaY;
-extern	int				gGameWindowHeight;
 
 /****************************/
 /*    PROTOTYPES            */

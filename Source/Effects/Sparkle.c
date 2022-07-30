@@ -10,19 +10,6 @@
 /****************************/
 
 #include "game.h"
-#include "3dmath.h"
-
-extern	float			gFramesPerSecondFrac,gFramesPerSecond,gPlayerToCameraAngle;
-extern	OGLPoint3D		gCoord;
-extern	OGLVector3D		gDelta;
-extern	NewObjectDefinitionType	gNewObjectDefinition;
-extern	OGLSetupOutputType		*gGameViewInfoPtr;
-extern	OGLVector3D		gRecentTerrainNormal;
-extern	PlayerInfoType	gPlayerInfo;
-extern	u_long			gAutoFadeStatusBits;
-extern	PrefsType			gGamePrefs;
-extern	SpriteType	*gSpriteGroupList[];
-extern	Boolean				gIsPicking;
 
 /****************************/
 /*    PROTOTYPES            */

@@ -9,26 +9,7 @@
 /* EXTERNALS   */
 /***************/
 
-#if 0
-#include <DrawSprocket.h>
-#include <CursorDevices.h>
-#include <Traps.h>
-#include <FixMath.h>
-#endif
-
 #include "game.h"
-
-
-extern	short				gMainAppRezFile;
-//extern	DSpContextReference gDisplayContext;
-extern	PlayerInfoType		gPlayerInfo;
-extern	Boolean				gOSX,gHIDInitialized;
-extern	SDL_GLContext		gAGLContext;
-//extern	AGLDrawable		gAGLWin;
-extern	float			gFramesPerSecondFrac,gFramesPerSecond,gScratchF;
-extern	PrefsType			gGamePrefs;
-extern	int					gGameWindowWidth, gGameWindowHeight;
-
 
 /**********************/
 /*     PROTOTYPES     */

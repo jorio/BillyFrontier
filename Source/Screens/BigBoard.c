@@ -10,29 +10,6 @@
 /****************************/
 
 #include "game.h"
-#include "3dmath.h"
-#include "infobar.h"
-
-extern	float				gFramesPerSecondFrac,gFramesPerSecond,gGlobalTransparency;
-extern	FSSpec		gDataSpec;
-extern	Boolean		gGameOver;
-extern	KeyMap gKeyMap,gNewKeys;
-extern	NewObjectDefinitionType	gNewObjectDefinition;
-extern	Boolean		gSongPlayingFlag,gOSX,gDisableAnimSounds, gPlayingFromSavedGame, gMouseNewButtonState, gPlayNow;
-extern	PrefsType	gGamePrefs;
-extern	OGLSetupOutputType		*gGameViewInfoPtr;
-extern	SparkleType	gSparkles[MAX_SPARKLES];
-extern	OGLPoint3D	gCoord;
-extern	OGLVector3D	gDelta;
-extern	u_long			gScore,gGlobalMaterialFlags;
-extern	float			gGammaFadePercent;
-extern	OGLColorRGB			gGlobalColorFilter;
-extern	MOPictureObject 	*gBackgoundPicture;
-extern	int					gGameWindowWidth, gGameWindowHeight, gCurrentArea, gCurrentMenuItem;
-extern	ObjNode				*gCursor;
-extern	Boolean			gLevelWon[], gGameIsRegistered, gWonGame, gLostGame;
-extern	short			gCurrentSong;
-extern	PlayerInfoType	gPlayerInfo;
 
 /****************************/
 /*    PROTOTYPES            */
