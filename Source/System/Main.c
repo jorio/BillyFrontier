@@ -36,8 +36,6 @@ OGLColorRGBA		gFillColor1 = { 1.0, 1.0, 1.0, 1};
 short	gPrefsFolderVRefNum;
 long	gPrefsFolderDirID;
 
-Boolean				gOSX = false, gG4 = false;
-
 float				gGravity = NORMAL_GRAVITY;
 
 Byte				gDebugMode = 0;				// 0 == none, 1 = fps, 2 = all
@@ -135,13 +133,6 @@ long		createdDirID;
 	OGL_Boot();
 
 
-			/*********************************/
-			/* DO BOOT CHECK FOR SCREEN MODE */
-			/*********************************/
-
-			
-	DoScreenModeDialog();	
-									
 	MyFlushEvents();
 }
 

@@ -40,10 +40,10 @@ short	i;
 
 	gNumEnemies = 0;
 
-	if (gG4)					// tweak based on horsepower
+//	if (gG4)					// tweak based on horsepower
 		gMaxEnemies = 20;
-	else
-		gMaxEnemies = 16;
+//	else
+//		gMaxEnemies = 16;
 
 	for (i=0; i < NUM_ENEMY_KINDS; i++)
 		gNumEnemyOfKind[i] = 0;

@@ -256,9 +256,6 @@ int				px,py,pw,ph;
 	if (!gDrawLensFlare)
 		return;
 
-	if (gSlowCPU)					// no lens flares if slow
-		return;
-
 	if (gIsPicking)
 		return;
 

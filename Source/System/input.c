@@ -210,11 +210,8 @@ u_short	pauseKey;
 
 			/* SEE IF DO SAFE PAUSE FOR SCREEN SHOTS */
 			
-//	if (gOSX)
-		pauseKey = KEY_F15;
-//	else
-//		pauseKey = KEY_F12;
-		
+	pauseKey = KEY_F12;
+
 	if (GetNewKeyState_Real(pauseKey))
 	{
 		Boolean o = gISpActive;
@@ -366,43 +363,17 @@ keyMap;
 			/* READ MOUSE BUTTON */
 			/*********************/
 
-				/* OS X */
-							
-	if (gOSX)
+	if (Button())							// is mouse button down?
 	{
-		if (Button())							// is mouse button down?
-		{
-			if (!gMouseButtonState)				// is this a new click?
-				gMouseNewButtonState = gMouseButtonState = true;	
-			else
-				gMouseNewButtonState = false;	
-		}
+		if (!gMouseButtonState)				// is this a new click?
+			gMouseNewButtonState = gMouseButtonState = true;	
 		else
-		{
-			gMouseButtonState = gMouseNewButtonState = false;	
-		}
+			gMouseNewButtonState = false;	
 	}
-	
-#if 0
-				/* OS 9 */
 	else
 	{
-		UInt32	state;		
-		ISpElement_GetSimpleState(gVirtualElements[2], &state);
-		if (state)
-		{
-			if (!gMouseButtonState)				// is this a new click?
-				gMouseNewButtonState = gMouseButtonState = true;	
-			else
-				gMouseNewButtonState = false;	
-		}
-		else
-		{
-			gMouseButtonState = gMouseNewButtonState = false;	
-		}
-	
+		gMouseButtonState = gMouseNewButtonState = false;	
 	}
-#endif
 }
 
 
@@ -475,9 +446,6 @@ void DoKeyConfigDialog(void)
 {
 	MyFlushEvents();
 
-	if (gOSX)
-		return;
-
 #if 0
 				/* DO ISP CONFIG DIALOG */
 	else
@@ -519,11 +487,9 @@ Boolean AreAnyNewKeysPressed(void)
 
 void GetMouseCoord(Point *point)
 {
-
-	if (gOSX)
-		GetMouse(point);
+	GetMouse(point);
 #if 0
-	else
+	// OS 9 code
 	{	
 		gMouseX += gMouseDeltaX * .13f;
 		gMouseY += gMouseDeltaY * .13f;

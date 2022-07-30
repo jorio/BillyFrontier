@@ -33,14 +33,10 @@ float	gFramesPerSecond, gFramesPerSecondFrac;
 
 int		gNumPointers = 0;
 
-Boolean	gSlowCPU = false;
-
 
 /**********************/
 /*     PROTOTYPES     */
 /**********************/
-
-static void DoSerialDialog(unsigned char *out);
 
 
 
@@ -60,9 +56,6 @@ Str255		numStr;
 	UseResFile(gMainAppRezFile);
 	NumToString(err, numStr);
 	DoAlert (numStr);
-	
-//	if (gOSX)
-//		DebugStr("ShowSystemErr has been called");
 	
 	Exit2D();
 	
@@ -504,167 +497,6 @@ Ptr		p = ptr;
 
 void VerifySystem(void)
 {
-	gOSX = true;
-	gSlowCPU = false;
-
-#if 0
-OSErr	iErr;
-long		 cpuFamily, cpuSpeed;
-NumVersion	vers;
-short		i;
-
-
-
-		/* REQUIRE CARBONLIB 1.4 */
-
-	iErr = Gestalt(gestaltCarbonVersion,(long *)&vers);
-	if (iErr)
-	{
-		ShowSystemErr_NonFatal(iErr);
-		goto carbonerr;
-	}
-	if (vers.stage == 1)
-	{
-		if (vers.nonRelRev < 0x40)
-		{
-carbonerr:		
-			DoFatalAlert("This application requires CarbonLib 1.4 or newer.  Run Software Update to get the latest version");
-		}
-	}
-
-
-
-			/* SEE IF PROCESSOR IS G4 OR NOT */
-
-	gSlowCPU = false;														// assume not slow
-				
-	iErr = Gestalt(gestaltNativeCPUfamily,&cpuFamily);
-	if (iErr != noErr)
-		DoFatalAlert("VerifySystem: gestaltNativeCPUfamily failed!");
-	
-	if (cpuFamily >= gestaltCPUG4)
-		gG4 = true;
-	else
-		gG4 = false;
-
-	if (!gG4)																// if not G4, check processor speed to see if on really fast G3
-	{
-		iErr = Gestalt(gestaltProcClkSpeed,&cpuSpeed);							
-		if (iErr == noErr)
-		{
-			if ((cpuSpeed/1000000) >= 600)										// must be at least 600mhz G3 for us to treat it like a G4
-				gG4 = true;
-			else
-			if ((cpuSpeed/1000000) <= 450)										// if 450 or less then it's a slow G3
-				gSlowCPU = true;
-		}
-	}
-
-
-		/* DETERMINE IF RUNNING ON OS X */
-
-	iErr = Gestalt(gestaltSystemVersion,(long *)&vers);
-	if (iErr != noErr)
-		DoFatalAlert("VerifySystem: gestaltSystemVersion failed!");
-				
-	if (vers.stage >= 0x10)													// see if at least OS 10
-	{
-		gOSX = true;
-		
-		if ((vers.stage == 0x10) && (vers.nonRelRev < 0x20))				// must be at least OS 10.1 !!!
-		{
-			if (!gGamePrefs.oldOSWarned)
-			{
-				DoAlert("This game requires MacOS 10.2 or later.  It might run for you on 10.1, but it will probably freeze up your computer at some point.");
-				gGamePrefs.oldOSWarned = true;
-			}
-		}
-	}
-	else
-	{
-		gOSX = false;
-		if (vers.stage < 9)						// check for OS 9
-			DoFatalAlert("This game will not run on MacOS 8.");
-		else
-		if (!gGamePrefs.oldOSWarned)
-		{
-			DoAlert("This game requires MacOS 10.2 or later.  It might run for you on MacOS 9.2.2, however, we only support it on 10.2 or later.");
-			gGamePrefs.oldOSWarned = true;
-		}
-	}
-	
-
-			/* CHECK TIME-BOMB */
-	{
-		unsigned long secs;
-		DateTimeRec	d;
-
-		GetDateTime(&secs);
-		SecondsToDate(secs, &d);
-		
-		if ((d.year > 2003) ||
-			((d.year == 2003) && (d.month > 7)))
-		{
-			DoFatalAlert("Sorry, but this beta has expired");
-		}
-	}
-
-
-
-			/* CHECK OPENGL */
-			
-	if ((Ptr) kUnresolvedCFragSymbolAddress == (Ptr) aglChoosePixelFormat) 				// check for existance of OpenGL
-		DoFatalAlert("This application needs OpenGL to function.  Please install OpenGL and try again.");
-			
-
-		/* CHECK SPROCKETS */
-		
-	if (!gOSX)
-	{
-		if ((Ptr) kUnresolvedCFragSymbolAddress == (Ptr) ISpStartup) 							// check for existance of Input Sprocket
-			DoFatalAlert("This application needs Input Sprocket to function.  Please install Game Sprockets and try again.");
-	
-		if ((Ptr) kUnresolvedCFragSymbolAddress == (Ptr) DSpStartup) 							// check for existance of Draw Sprocket
-			DoFatalAlert("This application needs Draw Sprocket to function.  Please install Game Sprockets and try again.");
-
-	}
-	
-	
-		/***********************************/
-		/* SEE IF LITTLE-SNITCH IS RUNNING */
-		/***********************************/
-	
-	{	
-		ProcessSerialNumber psn = {kNoProcess, kNoProcess};
-		ProcessInfoRec	info;
-		
-		Str255		s;
-		const char snitch[] = "LittleSnitchDaemon";
-		
-		info.processName = s;
-		info.processInfoLength = sizeof(ProcessInfoRec);
-		info.processAppSpec = nil;
-		
-		while(GetNextProcess(&psn) == noErr)
-		{
-			char	pname[256];
-			char	*matched;
-		
-			iErr = GetProcessInformation(&psn, &info);
-			if (iErr)
-				break;
-
-			p2cstrcpy(pname, &s[0]);					// convert pstring to cstring
-			
-			matched = strstr (pname, "Snitc");			// does "Snitc" appear anywhere in the process name?
-			if (matched != nil)
-			{
-				gLittleSnitch = true;
-				break;
-			}
-		}
-	}
-#endif
 }
 
 
