@@ -276,6 +276,13 @@ retryVideo:
 static void Shutdown()
 {
 	Pomme::Shutdown();
+
+	if (gSDLWindow)
+	{
+		SDL_DestroyWindow(gSDLWindow);
+		gSDLWindow = NULL;
+	}
+
 	SDL_Quit();
 }
 
