@@ -30,7 +30,9 @@ enum
 	SONG_DUEL,
 	SONG_STAMPEDE,
 	SONG_SHOOTOUT,
-	SONG_LOSE
+	SONG_LOSE,
+
+	MAX_SONGS
 };
 
 enum
@@ -169,7 +171,6 @@ short PlayEffect_Parms3D(short effectNum, const OGLPoint3D *where, u_long rateMu
 extern void	ToggleMusic(void);
 extern void	DoSoundMaintenance(void);
 extern	void LoadSoundBank(FSSpec *spec, long bankNum);
-extern	void WaitEffectsSilent(void);
 extern	void DisposeSoundBank(short bankNum);
 short PlayEffect_Parms(short effectNum, u_long leftVolume, u_long rightVolume, unsigned long rateMultiplier);
 void ChangeChannelVolume(short channel, float leftVol, float rightVol);
@@ -178,7 +179,6 @@ Boolean Update3DSoundChannel(short effectNum, short *channel, OGLPoint3D *where)
 Boolean IsEffectChannelPlaying(short chanNum);
 void UpdateListenerLocation(OGLSetupOutputType *setupInfo);
 void ChangeChannelRate(short channel, long rateMult);
-Boolean StopAChannelIfEffectNum(short *channelNum, short effectNum);
 
 
 
