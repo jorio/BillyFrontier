@@ -5,9 +5,6 @@
 /* (c)2022 Iliyas Jorio     */
 /****************************/
 
-#define aglGetError() GAME_ASSERT(!OGL_CheckError())
-#define aglSetCurrentContext(junk) IMPLEMENT_ME_SOFT()
-
 /****************************/
 /*    EXTERNALS             */
 /****************************/
@@ -380,7 +377,7 @@ OGLStyleDefType *styleDefPtr = &setupDefPtr->styles;
 	if (gDoAnisotropy)
 	{
 		glGetFloatv(GL_MAX_TEXTURE_MAX_ANISOTROPY_EXT, &gMaxAnisotropy);
-		aglGetError();
+		OGL_CheckError();
 	}
 
 	OGL_CheckError();
@@ -464,8 +461,6 @@ void OGL_PickScene(void (*drawRoutine)(void),
 		pickWidth = 1;
 	if (pickHeight < 1)
 		pickHeight = 1;
-
-  	aglSetCurrentContext(gAGLContext);									// make context current
 
 
 			/* LET'S GET INTO PICKING MODE */
@@ -634,7 +629,7 @@ do_anaglyph:
 		if (gDoAnisotropy)
 		{
 			glGetFloatv(GL_MAX_TEXTURE_MAX_ANISOTROPY_EXT, &gMaxAnisotropy);
-			aglGetError();
+			OGL_CheckError();
 		}
 		else
 			gMaxAnisotropy = 1;
