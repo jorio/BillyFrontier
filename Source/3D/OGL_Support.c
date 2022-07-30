@@ -57,7 +57,6 @@ Byte					gAnaglyphPass;
 u_char					gAnaglyphGreyTable[255];
 
 
-Boolean							gATIDriver				= false;
 static	Boolean					gDoAnisotropy 			= true;
 static	float 					gMaxAnisotropy = 1.0;
 
@@ -380,12 +379,8 @@ OGLStyleDefType *styleDefPtr = &setupDefPtr->styles;
 
 	if (gDoAnisotropy)
 	{
-#if 1
-		IMPLEMENT_ME_SOFT();
-#else
 		glGetFloatv(GL_MAX_TEXTURE_MAX_ANISOTROPY_EXT, &gMaxAnisotropy);
 		aglGetError();
-#endif
 	}
 
 	OGL_CheckError();
@@ -633,26 +628,20 @@ do_anaglyph:
 			glPolygonMode(GL_FRONT_AND_BACK ,GL_FILL);
 	}
 
-#if 0
-	if (gATIDriver)			// only if running on ATI
+	if (GetKeyState_Real(KEY_CTRL) && GetNewKeyState_Real(KEY_F11))								// Anisotropy
 	{
-		if (GetKeyState_Real(KEY_CTRL))
-		{	
-			if (GetNewKeyState_Real(KEY_F11))								// Anisotropy
-			{
-				gDoAnisotropy = !gDoAnisotropy;	
-				if (gDoAnisotropy)
-				{
-					glGetFloatv(GL_MAX_TEXTURE_MAX_ANISOTROPY_EXT, &gMaxAnisotropy);
-					aglGetError();
-				}
-				else
-					gMaxAnisotropy = 1;		
-			}			
+		gDoAnisotropy = !gDoAnisotropy;	
+		if (gDoAnisotropy)
+		{
+			glGetFloatv(GL_MAX_TEXTURE_MAX_ANISOTROPY_EXT, &gMaxAnisotropy);
+			aglGetError();
 		}
+		else
+			gMaxAnisotropy = 1;
+	
+		printf("Anisotropic filtering: %f\n", gMaxAnisotropy);
 	}
-#endif
-					
+
 				/* SHOW BASIC DEBUG INFO */
 
 	if (gDebugMode > 0)
