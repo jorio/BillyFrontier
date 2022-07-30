@@ -39,44 +39,6 @@ int		gNumPointers = 0;
 /**********************/
 
 
-
-/****************** DO SYSTEM ERROR ***************/
-
-void ShowSystemErr(long err)
-{
-Str255		numStr;
-
-	Enter2D(true);
-
-	MyFlushEvents();
-	TurnOffISp();										// MUST TURN OFF INPUT SPROK TO GET KEYBOARD EVENTS!!!
-	UseResFile(gMainAppRezFile);
-	NumToString(err, numStr);
-	DoAlert (numStr);
-	
-	Exit2D();
-	
-	CleanQuit();
-}
-
-/****************** DO SYSTEM ERROR : NONFATAL ***************/
-//
-// nonfatal
-//
-void ShowSystemErr_NonFatal(long err)
-{
-Str255		numStr;
-
-	Enter2D(true);
-
-	MyFlushEvents();
-	NumToString(err, numStr);
-	DoAlert (numStr);
-	
-	Exit2D();
-}
-
-
 /*********************** DO ALERT *******************/
 
 void DoAlert(const char* format, ...)

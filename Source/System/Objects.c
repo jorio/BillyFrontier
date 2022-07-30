@@ -199,14 +199,7 @@ Byte	group,type;
 	
 	if (type >= gNumObjectsInBG3DGroupList[group])							// see if illegal
 	{
-		Str255	s;
-		
-		DoAlert("MakeNewDisplayGroupObject: type > gNumObjectsInGroupList[]!");
-		
-		NumToString(group, s);
-		DoAlert(s);
-		NumToString(type,s);
-		DoFatalAlert(s);
+		DoFatalAlert("MakeNewDisplayGroupObject: type %d > gNumObjectsInGroupList[%d]!", type, group);
 	}
 	
 	
@@ -1258,18 +1251,10 @@ int		i;
 	if (theNode->CType == INVALID_NODE_FLAG)		// see if already deleted
 	{
 #if 0	
-		Str255	errString;
-		
-		DebugStr("Double Delete Object");	//-------
-		DoAlert("Attempted to Double Delete an Object.  Object was already deleted!");
-		NumToString(theNode->Genre,errString);		//------------
-		DoAlert(errString);					//---------
-		NumToString(theNode->Group,errString);		//------------
-		DoAlert(errString);					//---------
-		NumToString(theNode->Type,errString);		//------------
-		DoFatalAlert(errString);					//---------
+		DoFatalAlert("Attempted to Double Delete an Object. Object was already deleted!\nGenre=%d Group=%d Type=%d",
+			theNode->Genre, theNode->Group, theNode->Type);
 #else
-		return;		
+		return;
 #endif		
 	}
 

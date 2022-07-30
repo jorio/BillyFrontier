@@ -8,7 +8,6 @@
 #define SERIAL_LENGTH      12
 
 
-extern	void ShowSystemErr(long err);
 void	DoAlert(const char* format, ...);
 POMME_NORETURN void DoFatalAlert(const char* format, ...);
 extern void	Wait(long);
@@ -22,7 +21,6 @@ void *AllocPtrClear(long size);
 extern	void VerifySystem(void);
 extern	float RandomFloat(void);
 uint16_t	RandomRange(uint16_t min, uint16_t max);
-extern	void ShowSystemErr_NonFatal(long err);
 void CalcFramesPerSecond(void);
 Boolean IsPowerOf2(int num);
 float RandomFloat2(void);

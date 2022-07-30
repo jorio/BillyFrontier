@@ -198,8 +198,7 @@ const char*	fileNames[MAX_SKELETON_TYPES] =
 	if (fRefNum == -1)
 	{
 		iErr = ResError();
-		DoAlert("Error opening Skel Rez file");
-		ShowSystemErr(iErr);
+		DoFatalAlert("System Error %d opening Skel Rez file", iErr);
 	}
 	
 	UseResFile(fRefNum);
