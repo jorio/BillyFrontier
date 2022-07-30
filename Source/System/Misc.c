@@ -33,11 +33,6 @@ float	gFramesPerSecond, gFramesPerSecondFrac;
 
 int		gNumPointers = 0;
 
-
-Boolean	gGameIsRegistered = false;
-
-unsigned char	gRegInfo[64];
-
 Boolean	gSlowCPU = false;
 
 

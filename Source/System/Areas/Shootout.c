@@ -98,9 +98,6 @@ void PlayShootout(void)
 
 	while(true)
 	{
-		gDemoVersionTimer += gFramesPerSecondFrac;
-
-		
 				/* MOVE, UPDATE, & DRAW */
 				
 		ReadKeyboard();								

@@ -412,16 +412,11 @@ ObjNode	*newObj;
 									break;
 
 							case	1:							// PLAY SAVED GAME
-									if (gGameIsRegistered)
+									if (LoadSavedGame())
 									{
-										if (LoadSavedGame())
-										{
-											gPlayNow = true;
-											gPlayingFromSavedGame = true;									
-										}
+										gPlayNow = true;
+										gPlayingFromSavedGame = true;
 									}
-									else
-										DoAlert("You cannot play saved games in Demo mode.");
 									break;
 
 							case	2:							// SETTINGS

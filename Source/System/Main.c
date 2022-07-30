@@ -36,10 +36,6 @@ OGLColorRGBA		gFillColor1 = { 1.0, 1.0, 1.0, 1};
 short	gPrefsFolderVRefNum;
 long	gPrefsFolderDirID;
 
-Boolean				gShareware = false;
-
-float				gDemoVersionTimer = 0;
-
 Boolean				gOSX = false, gG4 = false;
 
 float				gGravity = NORMAL_GRAVITY;
@@ -113,22 +109,6 @@ long		createdDirID;
 	if (iErr)
 	{
 		DoFatalAlert("Can't find Data folder.");
-	}
-
-
-			/* DETERMINE IF SHAREWARE OR BOXED VERSION */
-			//
-			// The boxed version cannot play in demo mode, so it will not
-			// have the DemoQuit / DemoExpired image files.
-			//
-			
-	{
-		FSSpec	spc;
-		
-		if (FSMakeFSSpec(0, 0, ":Data:Images:DemoQuit", &spc) == noErr)
-			gShareware = true;	
-		else
-			gShareware = false;
 	}
 
 
@@ -345,9 +325,6 @@ u_long	oldScore;
 			/*****************************/
 			/* DID WE JUST WIN THE GAME? */
 			/*****************************/
-
-		if (!gGameIsRegistered)				// if not registered then bail since that's the only level
-			gGameOver = true;
 
 		for (i = 0; i < NUM_LEVELS; i++)
 			if (!gLevelWon[i])

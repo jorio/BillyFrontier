@@ -1343,15 +1343,6 @@ FSSpec			*specPtr;
 long			count, i;
 Boolean			success = false;
 
-			/* NO SAVING IN DEMO MODE */
-			
-	if (!gGameIsRegistered)
-	{
-		DoAlert("Sorry, you cannot save games in demo mode.  Please buy a serial number to unlock this feature.");
-		return(false);	
-	}
-
-
 	Enter2D(true);
 			
 			/*************************/	

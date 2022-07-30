@@ -345,10 +345,7 @@ ObjNode	*newObj;
 						
 						
 				case	6:							// SAVE GAME
-						if (gGameIsRegistered)
-							SaveGame();
-						else
-							DoAlert("You cannot save games in Demo mode.");
+						SaveGame();
 						break;
 						
 				case	7:							// END GAME
@@ -480,7 +477,7 @@ const float scale[NUM_BIGBOARD_ITEMS] =
 				
 		if (i < NUM_LEVELS)
 		{
-			if (gLevelWon[i] || ((!gGameIsRegistered) && (i > 0)))
+			if (gLevelWon[i])
 			{
 				gBigBoardItems[i]->Kind = -1;
 				gBigBoardItems[i]->ColorFilter.a = .5f;

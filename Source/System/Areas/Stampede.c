@@ -83,9 +83,6 @@ void PlayStampede(void)
 
 	while(true)
 	{
-		gDemoVersionTimer += gFramesPerSecondFrac;
-
-		
 				/* MOVE, UPDATE, & DRAW */
 				
 		ReadKeyboard();								

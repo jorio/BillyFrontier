@@ -132,9 +132,6 @@ void PlayDuel(Byte difficulty)
 
 	while(true)
 	{
-		gDemoVersionTimer += gFramesPerSecondFrac;
-
-		
 				/* MOVE, UPDATE, & DRAW */
 				
 		ReadKeyboard();								
