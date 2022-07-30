@@ -5,14 +5,12 @@
 /****************************/
 
 
-#define glClientActiveTextureARB(x) IMPLEMENT_ME_SOFT()
-#define glActiveTextureARB(x) IMPLEMENT_ME_SOFT()
-
 /****************************/
 /*    EXTERNALS             */
 /****************************/
 
 #include "game.h"
+#include "ogl_functions.h"
 
 /****************************/
 /*    PROTOTYPES            */

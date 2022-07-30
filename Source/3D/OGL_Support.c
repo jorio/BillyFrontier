@@ -18,6 +18,7 @@
 
 #include "game.h"
 #include "stb_image.h"
+#include "ogl_functions.h"
 
 /****************************/
 /*    PROTOTYPES            */
@@ -276,6 +277,16 @@ static void OGL_CreateDrawContext(OGLViewDefType *viewDefPtr)
 
 	int mkc = SDL_GL_MakeCurrent(gSDLWindow, gAGLContext);
 	GAME_ASSERT_MESSAGE(mkc == 0, SDL_GetError());
+
+
+			/* GET OPENGL EXTENSIONS */
+			//
+			// On Mac/Linux, we only need to do this once.
+			// But on Windows, we must do it whenever we create a draw context.
+			//
+
+	OGL_InitFunctions();
+
 
 
 			/* CLEAR ALL BUFFERS TO BLACK */
