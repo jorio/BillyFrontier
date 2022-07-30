@@ -12,11 +12,9 @@
 /*    EXTERNALS             */
 /****************************/
 
-#include <GL/glu.h>
-#include <SDL.h>
+#include "game.h"
 #include <string.h>
 
-#include "game.h"
 #include "stb_image.h"
 #include "ogl_functions.h"
 
@@ -293,9 +291,9 @@ static void OGL_CreateDrawContext(OGLViewDefType *viewDefPtr)
 			
 	glClearColor(0,0,0,1);
 	glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);		// clear buffer
-	SDL_GL_SwapWindow(gAGLContext);
+	SDL_GL_SwapWindow(gSDLWindow);
 	glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);		// clear buffer
-	SDL_GL_SwapWindow(gAGLContext);
+	SDL_GL_SwapWindow(gSDLWindow);
 
 
 				/* SET VARIOUS STATE INFO */
@@ -1326,9 +1324,9 @@ OGLLightDefType	*lights;
 	{
 		float	left, right;
 		float	halfFOV = setupInfo->fov * .5f;
-		float	near 	= setupInfo->hither;
-	   	float	wd2     = near * tan(halfFOV);
-		float	ndfl    = near / gAnaglyphFocallength;	
+		float	hither 	= setupInfo->hither;
+	   	float	wd2     = hither * tan(halfFOV);
+		float	ndfl    = hither / gAnaglyphFocallength;
 	
 		if (gAnaglyphPass == 0)
 		{

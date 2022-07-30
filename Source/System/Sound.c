@@ -842,7 +842,7 @@ u_long			lv2,rv2;
 
 	mySndCmd.cmd = bufferCmd;										// make it play
 	mySndCmd.param1 = 0;
-	mySndCmd.param2 = ((Ptr) *gSndHandles[bankNum][soundNum]) + gSndOffsets[bankNum][soundNum];	// pointer to SoundHeader
+	mySndCmd.ptr = ((Ptr) *gSndHandles[bankNum][soundNum]) + gSndOffsets[bankNum][soundNum];	// pointer to SoundHeader
 	SndDoImmediate(chanPtr, &mySndCmd);
 	if (myErr)
 		return(-1);

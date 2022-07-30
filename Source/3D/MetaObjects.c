@@ -699,6 +699,7 @@ void MO_SetPictureObjectCoordsToMouse(OGLSetupOutputType *info, MOPictureObject 
 {
 #if 1
 	IMPLEMENT_ME();
+#else
 MOPictureData	*picData = &obj->objectData;				//  point to pic obj's data
 Point			pt;
 int				x,y,w,h;

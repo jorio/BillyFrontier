@@ -14,7 +14,6 @@
 
 			/* SOME FLOATING POINT HELPERS */
 			
-#define INFINITE	1e20
 #define EPS 		(0.000001f)			// a very small number which is useful for FP compares close to 0
 #define	IS_ZERO(_x)  (fabs(_x) < EPS)
 
