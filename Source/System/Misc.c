@@ -685,21 +685,20 @@ static UnsignedWide time;
 UnsignedWide currTime;
 unsigned long deltaTime;
 
-do_again:
 	Microseconds(&currTime);
 	deltaTime = currTime.lo - time.lo;
 
-	gFramesPerSecond = 1000000.0f / (float)deltaTime;
-	gFramesPerSecond *= 1000.0f;
+	gFramesPerSecond = 1000000.0f / deltaTime;
 
-	if (gFramesPerSecond < MIN_FPS)					// keep at a minimum
+	if (gFramesPerSecond < MIN_FPS)			// (avoid divide by 0's later)
 		gFramesPerSecond = MIN_FPS;
-	else
-	if (gFramesPerSecond > MAX_FPS)					// if over maximum then wait
-		gFramesPerSecond = MAX_FPS;//goto do_again;
-		
-	gFramesPerSecondFrac = 1.0f/gFramesPerSecond;		// calc fractional for multiplication
 
+#if _DEBUG
+	if (GetKeyState(SDL_SCANCODE_KP_PLUS))		// debug speed-up with KP_PLUS
+		gFramesPerSecond = 10;
+#endif
+
+	gFramesPerSecondFrac = 1.0f/gFramesPerSecond;		// calc fractional for multiplication
 
 	time = currTime;	// reset for next time interval
 }

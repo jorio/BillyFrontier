@@ -12,8 +12,7 @@
 #define	GAME_FOV		1.0f
    
 #define	MIN_FPS			10
-#define MAX_FPS			100
-   
+
 #define	NORMAL_GRAVITY	4500.0f  
 
 enum

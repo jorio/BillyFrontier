@@ -276,6 +276,10 @@ static void OGL_CreateDrawContext(OGLViewDefType *viewDefPtr)
 	int mkc = SDL_GL_MakeCurrent(gSDLWindow, gAGLContext);
 	GAME_ASSERT_MESSAGE(mkc == 0, SDL_GetError());
 
+			/* ENABLE VSYNC */
+
+	SDL_GL_SetSwapInterval(1);
+
 
 			/* GET OPENGL EXTENSIONS */
 			//
