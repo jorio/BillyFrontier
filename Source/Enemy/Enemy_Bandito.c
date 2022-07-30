@@ -233,7 +233,7 @@ ObjNode	*newObj;
 short	stopPoint 	= itemPtr->parm[0];
 short	actionType 	= itemPtr->parm[1];
 float	rot 		= (float)itemPtr->parm[2] * (PI2/8);
-const 	initialAnim[] =
+const 	int initialAnim[] =
 {
 	BANDITO_ANIM_DUCK,			/* DUCK DOWN */
 	BANDITO_ANIM_DUCK,			/* DUCK LEFT */
@@ -393,7 +393,6 @@ float	fps = gFramesPerSecondFrac;
 
 static void ShootoutBanditoHitByBulletCallback(ObjNode *bullet, ObjNode *enemy, const OGLPoint3D *impactPt)
 {
-int	enemyKind = enemy->Kind;
 OGLVector3D	splatVec;
 
 	bullet;
@@ -429,7 +428,6 @@ OGLVector3D	splatVec;
 
 static void FireBanditoShootoutGun(ObjNode *enemy)
 {
-const OGLVector3D	localAim = {0,-1,0};
 const OGLPoint3D	muzzleOff = {-2, -9.3, -3.3};
 OGLPoint3D			muzzleCoord;
 OGLMatrix4x4		jm,m;

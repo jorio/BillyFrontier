@@ -895,6 +895,9 @@ const Byte	swampTable[32] =
 				newObj->ColorFilter.a = .5f;
 				newObj->StatusBits |= STATUS_BIT_GLOW | STATUS_BIT_NOZWRITES | STATUS_BIT_DOUBLESIDED;
 				break;
+
+		default:
+				GAME_ASSERT_MESSAGE(false, "Unsupported item");
 	}
 
 

@@ -1245,6 +1245,9 @@ Boolean	conform;
 				gNewObjectDefinition.type = SWAMP_ObjType_LargeRock + type;
 				conform = true;
 				break;
+
+		default:
+				GAME_ASSERT_MESSAGE(false, "Unknown area");
 	}		
 									
 	gNewObjectDefinition.group 		= MODEL_GROUP_LEVELSPECIFIC;	
@@ -1366,7 +1369,6 @@ float			x,z,placement;
 static void MoveTumbleweedOnSpline(ObjNode *theNode)
 {
 Boolean 	isInRange; 
-const ObjNode	*player = gPlayerInfo.objNode;
 
 	isInRange = IsSplineItemOnActiveTerrain(theNode);					// update its visibility
 

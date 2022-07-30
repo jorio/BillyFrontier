@@ -917,7 +917,6 @@ float	dx,dy,dz;
 
 Boolean IsPointInTriangle3D(const OGLPoint3D *point3D,	const OGLPoint3D *trianglePoints, OGLVector3D *normal)
 {
-Boolean					intersects = false;
 Byte					maximalComponent;
 unsigned long			skip;
 float					*tmp;
@@ -2577,7 +2576,7 @@ OGLMatrix4x4	m2,*m;
 	maxY = bBox->max.y;
 	maxZ = bBox->max.z;
 
-	clipCodeAND = ~0;
+	clipCodeAND = ~0u;
 					
 	for (i = 0; i < 8; i++)
 	{

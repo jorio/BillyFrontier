@@ -1360,11 +1360,9 @@ const OGLMatrix4x4		*m;
 
 void MO_DrawPicture(const MOPictureObject *picObj, const OGLSetupOutputType *setupInfo)
 {
-int				row,col,i;
 float			x,y,z;
 const MOPictureData	*picData = &picObj->objectData;
-long			numCellsW, numCellsH;
-float			cellWidth, cellHeight, ratio, offset;
+float			cellWidth, cellHeight;
 
 			
 	OGL_PushState();
@@ -1380,45 +1378,30 @@ float			cellWidth, cellHeight, ratio, offset;
 
 			/* GET DIMENSIONAL DATA */
 
-	numCellsW = 1;//picData->numCellsWide;
-	numCellsH = 1;//picData->numCellsHigh;
-	
-	cellWidth = 640.0f / (float)numCellsW;
-	cellHeight = 480.0f / (float)numCellsH;
+	cellWidth = 640.0f;
+	cellHeight = 480.0f;
 
 			/* CENTER VERTICALLY */
 			
 //	ratio = (float)picData->fullHeight / (float)picData->fullWidth;
 //	offset = gCurrentAspectRatio / ratio - 1.0f;
 	y = 0; //240.0f * offset;
-
-	i = 0;
+	x = 0;
 	z = 0;
-
-	for (row = 0; row < numCellsH; row++)
-	{
-		x = 0;
 		
-		for (col = 0; col < numCellsW; col++)
-		{
-					/* ACTIVATE THE MATERIAL */
+			/* ACTIVATE THE MATERIAL */
 					
-			//MO_DrawMaterial(picData->materials[i++], setupInfo);		// submit material #0
-			MO_DrawMaterial(picData->material, setupInfo);		// submit material #0
+	//MO_DrawMaterial(picData->materials[i++], setupInfo);		// submit material #0
+	MO_DrawMaterial(picData->material, setupInfo);		// submit material #0
 
-			glBegin(GL_QUADS);				
-			glTexCoord2f(0,1);	glVertex3f(x, y + cellHeight,z);
-			glTexCoord2f(1,1);	glVertex3f(x + cellWidth, y + cellHeight,z);
-			glTexCoord2f(1,0);	glVertex3f(x + cellWidth, y,z);
-			glTexCoord2f(0,0);	glVertex3f(x, y, z);
-			glEnd();	
+	glBegin(GL_QUADS);				
+	glTexCoord2f(0,1);	glVertex3f(x, y + cellHeight,z);
+	glTexCoord2f(1,1);	glVertex3f(x + cellWidth, y + cellHeight,z);
+	glTexCoord2f(1,0);	glVertex3f(x + cellWidth, y,z);
+	glTexCoord2f(0,0);	glVertex3f(x, y, z);
+	glEnd();	
 						
-			x += cellWidth;			
-			gPolysThisFrame += 2;										// 2 more triangles
-		}
-		y += cellHeight;
-		
-	}
+	gPolysThisFrame += 2;										// 2 more triangles
 	
 			/* RESTORE STATE */
 			

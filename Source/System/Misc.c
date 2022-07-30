@@ -694,8 +694,8 @@ unsigned long deltaTime;
 		gFramesPerSecond = MIN_FPS;
 
 #if _DEBUG
-	if (GetKeyState(SDL_SCANCODE_KP_PLUS))		// debug speed-up with KP_PLUS
-		gFramesPerSecond = 10;
+//	if (GetKeyState(SDL_SCANCODE_KP_PLUS))		// debug speed-up with KP_PLUS
+//		gFramesPerSecond = 10;
 #endif
 
 	gFramesPerSecondFrac = 1.0f/gFramesPerSecond;		// calc fractional for multiplication

@@ -69,7 +69,7 @@ enum
 
 /************************* MAKE TREMORALIEN ****************************/
 
-ObjNode *MakeTremorAlien(float x, float z, float rot, short animNum, void *moveCall, Boolean gunInHand)
+ObjNode *MakeTremorAlien(float x, float z, float rot, short animNum, movecall_t moveCall, Boolean gunInHand)
 {
 ObjNode	*newObj;
 
@@ -374,7 +374,6 @@ static void MoveShootoutTremorAlien_Throw(ObjNode *enemy)
 
 static void ShootoutTremorAlienHitByBulletCallback(ObjNode *bullet, ObjNode *enemy, const OGLPoint3D *impactPt)
 {
-int	enemyKind = enemy->Kind;
 OGLVector3D	splatVec;
 
 	bullet;
@@ -479,7 +478,6 @@ float		x,z,placement;
 static void MoveTremorAlienOnSpline(ObjNode *theNode)
 {
 Boolean 	isInRange, atEnd = false; 
-const ObjNode	*player = gPlayerInfo.objNode;
 
 	isInRange = IsSplineItemOnActiveTerrain(theNode);					// update its visibility
 

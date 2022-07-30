@@ -550,8 +550,6 @@ OGLPoint3D	from,to;
 
 void InitCamera_Duel(void)
 {		
-ObjNode	*playerObj = gPlayerInfo.objNode;
-
 	gDuelCameraMode = DUEL_CAMERA_MODE_FRONTTRACK;
 	gDuelCameraTimer = 0.0f;
 	
@@ -1078,7 +1076,6 @@ void CalcAnaglyphCameraOffset(short pass)
 OGLVector3D	aim;
 OGLVector3D	xaxis;
 float		sep = gAnaglyphEyeSeparation;
-const	OGLVector3D up = {0,1,0};
 
 	if (pass > 0)
 		sep = -sep;

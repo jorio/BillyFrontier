@@ -1467,7 +1467,6 @@ OGLVector3D	aim;
 	theNode->Scale.z -= fps * .7f;
 	if (theNode->Scale.x <= 0.0f)
 	{
-gone:	
 		DeleteObject(theNode);
 		return;	
 	}

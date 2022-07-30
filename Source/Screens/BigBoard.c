@@ -235,15 +235,11 @@ static void FreeBigBoardScreen(void)
 
 static void ProcessBigBoard(void)
 {
-float	charTimer = 2.0f;
-
 	CalcFramesPerSecond();
 	ReadKeyboard();		
 
 	while((!gPlayNow) && (!gGameOver))
 	{
-		const float fps = gFramesPerSecondFrac;
-		
 		CalcFramesPerSecond();
 		ReadKeyboard();		
 		

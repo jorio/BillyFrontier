@@ -43,7 +43,7 @@ static void MoveShootoutShorty_DuckShoot(ObjNode *enemy);
 
 /************************* MAKE SHORTY ****************************/
 
-ObjNode *MakeShorty(float x, float z, float rot, short animNum, void *moveCall, Boolean gunInHand)
+ObjNode *MakeShorty(float x, float z, float rot, short animNum, movecall_t moveCall, Boolean gunInHand)
 {
 ObjNode	*newObj, *gun, *hat;
 
@@ -239,7 +239,7 @@ ObjNode	*newObj;
 short	stopPoint 	= itemPtr->parm[0];
 short	actionType 	= itemPtr->parm[1];
 float	rot 		= (float)itemPtr->parm[2] * (PI2/8);
-const 	initialAnim[] =
+const 	int initialAnim[] =
 {
 	SHORTY_ANIM_DUCK,			/* DUCK DOWN */
 	SHORTY_ANIM_DUCK,			/* DUCK LEFT */
@@ -411,7 +411,6 @@ static void MoveShootoutShorty_DuckShoot(ObjNode *enemy)
 
 static void ShootoutShortyHitByBulletCallback(ObjNode *bullet, ObjNode *enemy, const OGLPoint3D *impactPt)
 {
-int	enemyKind = enemy->Kind;
 OGLVector3D	splatVec;
 
 	bullet;
@@ -447,7 +446,6 @@ OGLVector3D	splatVec;
 
 static void FireShortyShootoutGun(ObjNode *enemy)
 {
-const OGLVector3D	localAim = {0,-1,0};
 const OGLPoint3D	muzzleOff = {0, -9.3, -3.3};
 OGLPoint3D			muzzleCoord;
 OGLMatrix4x4		jm,m;

@@ -314,8 +314,6 @@ static void CleanupStampede(void)
 
 static void MoveEverything_Stampede(void)
 {
-float	fps = gFramesPerSecondFrac;
-
 	MoveObjects();
 	MoveSplineObjects();
 	
@@ -644,7 +642,7 @@ static Boolean DoBillyCollisionDetect_Stampede(ObjNode *theNode, Boolean useBBox
 short		i;
 ObjNode		*hitObj;
 u_char		sides;
-float		distToFloor, terrainY, fps = gFramesPerSecondFrac;
+float		distToFloor, terrainY;
 float		bottomOff;
 Boolean		killed = false;		
 	
@@ -846,7 +844,6 @@ float			x,z,placement;
 static void MoveStampedeKangaOnSpline(ObjNode *theNode)
 {
 Boolean 	isInRange; 
-const ObjNode	*player = gPlayerInfo.objNode;
 float	speedToMove;
 int		markerNum;
 
@@ -1052,7 +1049,6 @@ static void MoveStampedeKangaRexOnSpline(ObjNode *theNode)
 {
 Boolean 	isInRange; 
 float		speedToMove;
-const ObjNode	*player = gPlayerInfo.objNode;
 int			markerNum;
 
 	isInRange = IsSplineItemOnActiveTerrain(theNode);					// update its visibility

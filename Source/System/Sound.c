@@ -134,7 +134,6 @@ static EffectType	gEffectsTable[] =
 void InitSoundTools(void)
 {
 OSErr			iErr;
-short			i;
 FSSpec			spec;
 	
 	gNumLoopingEffects = 0;
@@ -208,7 +207,6 @@ int	i;
 void LoadSoundBank(FSSpec *spec, long bankNum)
 {
 short			srcFile1,numSoundsInBank,i;
-Str255			error = "Couldnt Open Sound Resource File.";
 OSErr			iErr;
 
 	StopAllEffectChannels();

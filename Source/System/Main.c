@@ -150,13 +150,12 @@ long		createdDirID;
 
 void InitDefaultPrefs(void)
 {
-int			i;
-long 		keyboardScript, languageCode;
+long 		languageCode;
 
 		/* DETERMINE WHAT LANGUAGE IS ON THIS MACHINE */
 
 	IMPLEMENT_ME_SOFT();
-	languageCode = langEnglish;		// TODO: get actual language
+	languageCode = langEnglish;		// TODO: get actual language -- but Billy is not localized anyway
 
 	switch(languageCode)
 	{

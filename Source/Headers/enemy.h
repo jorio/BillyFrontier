@@ -54,13 +54,13 @@ enum
 
 			/* ENEMY */
 			
-ObjNode *MakeEnemySkeleton(Byte skeletonType, short animNum, float x, float z, float scale, float rot, void *moveCall, u_long flags);
+ObjNode *MakeEnemySkeleton(Byte skeletonType, short animNum, float x, float z, float scale, float rot, movecall_t moveCall, uint32_t flags);
 extern	void DeleteEnemy(ObjNode *theEnemy);
 Boolean DoEnemyCollisionDetect(ObjNode *theEnemy, unsigned long ctype, Boolean useBBoxBottom);
 void EnemyTouchedPlayer(ObjNode *enemy, ObjNode *player);
 extern	void UpdateEnemy(ObjNode *theNode);
 extern	void InitEnemyManager(void);
-void DetachEnemyFromSpline(ObjNode *theNode, void *moveCall);
+void DetachEnemyFromSpline(ObjNode *theNode, movecall_t moveCall);
 ObjNode *FindClosestEnemy(OGLPoint3D *pt, float *dist);
 Boolean	IsWaterInFrontOfEnemy(float r);
 void GetEnemyHeadCoord(ObjNode *enemy, OGLPoint3D *coord);
@@ -97,7 +97,7 @@ enum
 	BANDITO_ANIM_GOTSHOT2
 };
 		
-ObjNode *MakeBandito(float x, float z, float rot, short animNum, void *moveCall, Boolean gunInHand);
+ObjNode *MakeBandito(float x, float z, float rot, short animNum, movecall_t moveCall, Boolean gunInHand);
 void UpdateBanditoAttachments(ObjNode *enemy);
 void BanditoPutGunInHand(ObjNode *enemy);
 Boolean AddBandito_Shootout(TerrainItemEntryType *itemPtr, float  x, float z);
@@ -129,7 +129,7 @@ enum
 	RYGAR_ANIM_SHOTINCHEST
 };
 		
-ObjNode *MakeRygar(float x, float z, float rot, short animNum, void *moveCall, Boolean gunInHand);
+ObjNode *MakeRygar(float x, float z, float rot, short animNum, movecall_t moveCall, Boolean gunInHand);
 void UpdateRygarAttachments(ObjNode *enemy);
 void RygarPutGunsInHands(ObjNode *enemy);
 
@@ -162,7 +162,7 @@ enum
 	SHORTY_ANIM_TOSSED
 };
 		
-ObjNode *MakeShorty(float x, float z, float rot, short animNum, void *moveCall, Boolean gunInHand);
+ObjNode *MakeShorty(float x, float z, float rot, short animNum, movecall_t moveCall, Boolean gunInHand);
 void UpdateShortyAttachments(ObjNode *enemy);
 void ShortyPutGunInHand(ObjNode *enemy);
 Boolean AddShorty_Shootout(TerrainItemEntryType *itemPtr, float  x, float z);
@@ -173,7 +173,7 @@ Boolean AddShorty_Shootout(TerrainItemEntryType *itemPtr, float  x, float z);
 		/* TREMOR ALIEN */
 		/****************/
 		
-ObjNode *MakeTremorAlien(float x, float z, float rot, short animNum, void *moveCall, Boolean gunInHand);
+ObjNode *MakeTremorAlien(float x, float z, float rot, short animNum, movecall_t moveCall, Boolean gunInHand);
 Boolean PrimeTremorAlien(long splineNum, SplineItemType *itemPtr);
 Boolean AddTremorAlien_Shootout(TerrainItemEntryType *itemPtr, float  x, float z);
 void UpdateTremorAlienAttachments(ObjNode *enemy);

@@ -231,7 +231,6 @@ static void BuildMainMenu(int menuLevel)
 ObjNode				*newObj;
 int					i;
 float				y,w;
-FSSpec				spec;
 
 
 	gMenuMode = menuLevel;
@@ -332,15 +331,11 @@ static void FreeMainMenuScreen(void)
 
 static void ProcessMainMenu(void)
 {
-float	charTimer = 2.0f;
-
 	CalcFramesPerSecond();
 	ReadKeyboard();		
 
 	while(!gPlayNow)
 	{
-		const float fps = gFramesPerSecondFrac;
-		
 		CalcFramesPerSecond();
 		ReadKeyboard();		
 		

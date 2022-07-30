@@ -339,7 +339,6 @@ static void OGL_CreateDrawContext(OGLViewDefType *viewDefPtr)
 static void OGL_SetStyles(OGLSetupInputType *setupDefPtr)
 {
 OGLStyleDefType *styleDefPtr = &setupDefPtr->styles;
-SDL_GLContext agl_ctx = gAGLContext;
 
 
 	glEnable(GL_CULL_FACE);									// activate culling
@@ -409,7 +408,6 @@ static void OGL_CreateLights(OGLLightDefType *lightDefPtr)
 {
 int		i;
 GLfloat	ambient[4];
-SDL_GLContext agl_ctx = gAGLContext;
 
 	OGL_EnableLighting();
 
@@ -835,7 +833,6 @@ GLuint OGL_TextureMap_Load(void *imageMemory, int width, int height,
 							GLint srcFormat,  GLint destFormat, GLint dataType)
 {	
 GLuint	textureName;
-SDL_GLContext agl_ctx = gAGLContext;
 								
 	if (gGamePrefs.anaglyph)
 	{
@@ -1402,7 +1399,6 @@ OGLLightDefType	*lights;
 
 void OGL_Camera_SetPlacementAndUpdateMatricesForPicking(OGLSetupOutputType *setupInfo, float pickX, float pickY, float pickWidth, float pickHeight)
 {
-SDL_GLContext agl_ctx = gAGLContext;
 OGLCameraPlacement	*placement;
 int					x,y, w, h;
 GLint				viewport[4];
@@ -1504,7 +1500,6 @@ GLenum _OGL_CheckError(const char* file, const int line)
 void OGL_PushState(void)
 {
 int	i;
-SDL_GLContext agl_ctx = gAGLContext;
 
 		/* PUSH MATRIES WITH OPENGL */
 
@@ -1544,7 +1539,6 @@ SDL_GLContext agl_ctx = gAGLContext;
 void OGL_PopState(void)
 {
 int		i;
-SDL_GLContext agl_ctx = gAGLContext;
 
 		/* RETREIVE OPENGL MATRICES */
 		
@@ -1609,8 +1603,6 @@ SDL_GLContext agl_ctx = gAGLContext;
 
 void OGL_EnableLighting(void)
 {
-	SDL_GLContext agl_ctx = gAGLContext;
-
 	gMyState_Lighting = true;
 	glEnable(GL_LIGHTING);	
 }
@@ -1619,8 +1611,6 @@ void OGL_EnableLighting(void)
 
 void OGL_DisableLighting(void)
 {
-	SDL_GLContext agl_ctx = gAGLContext;
-
 	gMyState_Lighting = false;
 	glDisable(GL_LIGHTING);	
 }
@@ -1647,19 +1637,17 @@ static void OGL_InitFont(void)
 
 static void OGL_FreeFont(void)
 {
-
-	SDL_GLContext agl_ctx = gAGLContext;
+#if 1
+	IMPLEMENT_ME_SOFT();
+#else
 	glDeleteLists(gFontList, 256);
-	
+#endif
 }
 
 /**************** OGL_DRAW STRING ********************/
 
 void OGL_DrawString(Str255 s, GLint x, GLint y)
 {
-
-	SDL_GLContext agl_ctx = gAGLContext;
-
 	OGL_PushState();
 
 	glMatrixMode (GL_MODELVIEW);

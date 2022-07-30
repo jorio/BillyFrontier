@@ -295,7 +295,6 @@ float	speed, r, y, dist, angle;
 
 static void ShootoutTremorGhostHitByBulletCallback(ObjNode *bullet, ObjNode *enemy, const OGLPoint3D *impactPt)
 {
-int	enemyKind = enemy->Kind;
 OGLVector3D	splatVec;
 
 	bullet;

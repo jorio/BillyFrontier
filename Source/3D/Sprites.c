@@ -166,7 +166,7 @@ MOMaterialData	matData;
 		/* READ # SPRITES IN THIS FILE */
 
 	count = sizeof(gNumSpritesInGroupList[0]);
-	FSRead(refNum, &count, &gNumSpritesInGroupList[groupNum]);
+	FSRead(refNum, &count, (Ptr) & gNumSpritesInGroupList[groupNum]);
 	Byteswap32SignedRW(&gNumSpritesInGroupList[groupNum]);
 
 		/* ALLOCATE MEMORY FOR SPRITE RECORDS */
@@ -182,7 +182,7 @@ MOMaterialData	matData;
 
 	for (i = 0; i < gNumSpritesInGroupList[groupNum]; i++)
 	{
-		u_char *buffer;
+		uint8_t* buffer = nil;
 
 		struct
 		{
@@ -195,7 +195,7 @@ MOMaterialData	matData;
 		} spriteHeader;
 
 		count = sizeof(spriteHeader);
-		FSRead(refNum, &count, &spriteHeader);
+		FSRead(refNum, &count, (Ptr) &spriteHeader);
 		ByteswapStructs("iifiii", sizeof(spriteHeader), 1, &spriteHeader);
 
 			/* READ WIDTH/HEIGHT, ASPECT RATIO */
@@ -214,7 +214,7 @@ MOMaterialData	matData;
 			/* READ THE SPRITE PIXEL BUFFER */
 
 		count = spriteHeader.bufferSize;
-		FSRead(refNum, &count, buffer);
+		FSRead(refNum, &count, (Ptr) buffer);
 
 
 				/*****************************/
@@ -527,7 +527,6 @@ ObjNode *MakeFontStringObject(const char* cstr, NewObjectDefinitionType *newObjD
 ObjNode				*newObj;
 MOSpriteObject		*spriteMO;
 MOSpriteSetupData	spriteData;
-int					i;
 float				scale,x;
 			
 	newObjDef->group = SPRITE_GROUP_FONT;

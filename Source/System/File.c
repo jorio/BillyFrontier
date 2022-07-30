@@ -547,7 +547,7 @@ long				count;
 				/* WRITE DATA */
 
 	count = sizeof(PrefsType);
-	FSWrite(refNum, &count, &gGamePrefs);	
+	FSWrite(refNum, &count, (Ptr) &gGamePrefs);
 	FSClose(refNum);
 	
 	
@@ -1057,21 +1057,21 @@ Ptr						tempBuffer16 = nil;
 	for (i = 0; i < gNumUniqueSuperTiles; i++)
 	{
 		static long	sizeoflong = 4;
-		int32_t	compressedSize,decompressedSize;
+		int32_t	compressedSize;
 		long	width,height;
 		MOMaterialData	matData;
 			
 		
 				/* READ THE SIZE OF THE NEXT COMPRESSED SUPERTILE TEXTURE */
 						
-		iErr = FSRead(fRefNum, &sizeoflong, &compressedSize);
+		iErr = FSRead(fRefNum, &sizeoflong, (Ptr) &compressedSize);
 		if (iErr)
 			DoFatalAlert("ReadDataFromPlayfieldFile: FSRead failed!");
 		compressedSize = Byteswap32(&compressedSize);
 
 				/* READ & DECOMPRESS IT */
 
-		decompressedSize = LZSS_Decode(fRefNum, tempBuffer16, compressedSize);
+		size_t decompressedSize = LZSS_Decode(fRefNum, tempBuffer16, compressedSize);
 		width = SUPERTILE_TEXMAP_SIZE;
 		height = SUPERTILE_TEXMAP_SIZE;
 		GAME_ASSERT(decompressedSize == 2 * width * height);

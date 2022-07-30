@@ -689,7 +689,7 @@ static void Infobar_DrawCrosshairs(void)
 static void Infobar_DrawShield(void)
 {
 float	y = 33.5;
-const	x = 203.0f;
+const	float x = 203.0f;
 
 	glDisable(GL_TEXTURE_2D);
 

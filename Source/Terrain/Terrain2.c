@@ -186,7 +186,6 @@ void FindPlayerStartCoordItems(void)
 {
 long					i,s,n;
 TerrainItemEntryType	*itemPtr;
-Boolean                 flags = false;
 SplineDefType			*spline;
 SplineItemType			*splineItems;
 float					x,z;

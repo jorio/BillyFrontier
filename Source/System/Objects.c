@@ -446,7 +446,6 @@ void DrawObjects(OGLSetupOutputType *setupInfo)
 {
 ObjNode		*theNode;
 unsigned long	statusBits;
-Boolean			noCache = false;
 Boolean			noLighting = false;
 Boolean			noZBuffer = false;
 Boolean			noZWrites = false;

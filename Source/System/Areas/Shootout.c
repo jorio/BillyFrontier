@@ -397,7 +397,6 @@ static void CountShooutoutEnemies(void)
 {
 long					i, sp;
 TerrainItemEntryType	*itemPtr;
-Boolean                 flags = false;
 
 
 	

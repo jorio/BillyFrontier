@@ -524,8 +524,6 @@ int		kind;
 		if (onBlocker)
 			shadowNode->Coord.y = highestY + SHADOW_Y_OFF;				// set shadow's Y
 		
-got_it:;
-		
 					/* IF WE WERE ON ONE THEN FINISH AND BAIL */
 					
 		if (onBlocker)
@@ -543,7 +541,6 @@ got_it:;
 
 	RotateOnTerrain(shadowNode, SHADOW_Y_OFF, nil);							// set transform matrix
 
-update:
 			/* CALC SCALE OF SHADOW */
 			
 		dist = (bottom - shadowNode->Coord.y) * (1.0f/1000.0f);					// as we go higher, shadow gets smaller
@@ -725,7 +722,7 @@ try_cull:
 		maxY = bBox->max.y;
 		maxZ = bBox->max.z;
 
-		clipCodeAND = ~0;
+		clipCodeAND = ~0u;
 //		clipCodeOR 	= 0;
 						
 		for (i = 0; i < 8; i++)
@@ -804,7 +801,6 @@ try_cull:
 				
 		if (clipCodeAND)															// check for case #2
 		{
-draw_off:	
 			theNode->StatusBits |= STATUS_BIT_ISCULLED;								// set cull bit
 		}
 		else

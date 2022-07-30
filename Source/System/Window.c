@@ -80,15 +80,6 @@ static	Boolean	gOldISpFlag;
 
 void InitWindowStuff(void)
 {
-GDHandle 		phGD;
-//DisplayIDType displayID;
-//long		totalVRAM;
-OSErr		iErr;
-Rect			r;
-float		w,h;
-
-	
-
 				/****************************/
 				/* INIT WITH DRAW SPROCKETS */
 				/****************************/
@@ -384,7 +375,6 @@ static Boolean SetupEventProc(EventRecord *event)
 
 void CleanupDisplay(void)
 {
-OSStatus 		theError;
 /*
 	if(gDisplayContext != nil)
 	{	
@@ -507,8 +497,6 @@ float	fps = gFramesPerSecondFrac;
 
 void GameScreenToBlack(void)
 {
-Rect	r;
-
 #if 1
 	IMPLEMENT_ME_SOFT();
 #else

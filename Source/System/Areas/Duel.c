@@ -367,8 +367,6 @@ static void CleanupDuel(void)
 
 static void MoveEverything_Duel(void)
 {
-float	fps = gFramesPerSecondFrac;
-
 	MoveObjects();
 	MoveSplineObjects();
 	
@@ -420,7 +418,9 @@ int		duelerType;
 		case	2:
 				newObj = MakeShorty(x, z, rot, 0, MoveDueler, false);			
 				break;
-				
+		
+		default:
+				GAME_ASSERT_MESSAGE(false, "Unsupported dueler type");
 	}
 			
 	newObj->TerrainItemPtr = itemPtr;								// keep ptr to item list
@@ -604,12 +604,13 @@ static void MovePlayer_Duel_DrawShoot(ObjNode *player)
 
 static void FirePlayerDuelGuns(ObjNode *player, Byte side)
 {
-const OGLVector3D	localAim = {0,-1,0};
 const OGLPoint3D	muzzleOff = {0, -9.3, -3.3};
 OGLVector3D			gunAim;
 OGLPoint3D			muzzleCoord, bulletTargetCoord;
 OGLMatrix4x4		jm,m;
-ObjNode				*rightGun, *leftGun, *enemy;
+ObjNode				*rightGun = nil;
+ObjNode				*leftGun = nil;
+ObjNode				*enemy = nil;
 		
 	leftGun = player->ChainNode;
 	rightGun = leftGun->ChainNode;
@@ -634,7 +635,9 @@ ObjNode				*rightGun, *leftGun, *enemy;
 		case	2:							// shoot right
 				FindJointMatrixAtFlagEvent(player, PLAYER_JOINT_LEFTHAND, 3, &jm);		// get hand matrix @ right shot event
 				break;
-				
+
+		default:
+				GAME_ASSERT_MESSAGE(false, "Unsupported shoot side for left gun");
 	}
 
 	CalcGunMatrixFromJointMatrix(leftGun, &jm, &m);							// calc gun's orientation matrix @ this moment		
@@ -676,8 +679,12 @@ ObjNode				*rightGun, *leftGun, *enemy;
 				if (side == 2)												// shoot right dueler
 					enemy = gDuelers[1];								
 				break;
+
+		default:
+				GAME_ASSERT_MESSAGE(false, "Unsupported anim #");
 	}
 
+	GAME_ASSERT(enemy);
 	CalcTargetPointAndAimOnEnemy(enemy, &muzzleCoord, &gunAim, leftGun, &bulletTargetCoord);
 
 
@@ -707,7 +714,9 @@ do_right_gun:
 		case	2:							// shoot right
 				FindJointMatrixAtFlagEvent(player, PLAYER_JOINT_RIGHTHAND, 3, &jm);		// get hand matrix @ right shot event
 				break;
-				
+
+		default:
+				GAME_ASSERT_MESSAGE(false, "Unsupported shoot side for right gun");
 	}
 																
 	CalcGunMatrixFromJointMatrix(rightGun, &jm, &m);				
@@ -748,8 +757,11 @@ do_right_gun:
 					return;													// right gun does not shoot right enemy in this anim		
 				break;
 				
+		default:
+				GAME_ASSERT_MESSAGE(false, "Unsupported anim #");
 	}
 
+	GAME_ASSERT(enemy);
 	CalcTargetPointAndAimOnEnemy(enemy, &muzzleCoord, &gunAim, rightGun, &bulletTargetCoord);
 
 
@@ -766,7 +778,6 @@ do_right_gun:
 
 static void FireEnemyDuelGun(ObjNode *enemy)
 {
-const OGLVector3D	localAim = {0,-1,0};
 const OGLPoint3D	muzzleOff = {0, -9.3, -3.3};
 OGLVector3D			gunAim;
 OGLPoint3D			muzzleCoord, bulletTargetCoord;
@@ -791,6 +802,9 @@ int					joint;
 		case	ENEMY_KIND_SHORTY:
 				joint = SHORTY_JOINT_RIGHTHAND;
 				break;
+
+		default:
+				GAME_ASSERT_MESSAGE(false, "Unsupported enemy kind");
 	}
 	
 		
@@ -953,6 +967,9 @@ int			anim;
 				case	ENEMY_KIND_SHORTY:
 						anim = RYGAR_ANIM_SHOTINCHEST;
 						break;
+
+				default:
+						GAME_ASSERT_MESSAGE(false, "Unsupported enemy kind");
 			}
 			
 			MorphToSkeletonAnim(enemy->Skeleton, anim, 1);
@@ -1251,6 +1268,9 @@ int				joint;
 			case	ENEMY_KIND_SHORTY:
 					joint = SHORTY_JOINT_CHEST;
 					break;
+
+			default:
+					GAME_ASSERT_MESSAGE(false, "Unsupported enemy kind");
 		}
 		
 	
@@ -1301,6 +1321,9 @@ int				joint;
 				case	ENEMY_KIND_SHORTY:
 						joint = SHORTY_JOINT_LEFTSHOULDER;
 						break;
+
+				default:
+						GAME_ASSERT_MESSAGE(false, "Unsupported enemy kind");
 			}
 					
 			FindCoordOnJoint(enemy, joint, &offset, targetPt);	// calc the coord of the miss
@@ -1324,6 +1347,9 @@ int				joint;
 				case	ENEMY_KIND_SHORTY:
 						joint = SHORTY_JOINT_RIGHTSHOULDER;
 						break;
+
+				default:
+						GAME_ASSERT_MESSAGE(false, "Unsupported enemy kind");
 			}
 			FindCoordOnJoint(enemy, joint, &offset, targetPt);
 		}			
@@ -1441,6 +1467,9 @@ int		anim, i;
 		case	3:										// shoot to sides and forward
 				anim = PLAYER_ANIM_DRAWSHOOT2;			
 				break;
+
+		default:
+				GAME_ASSERT_MESSAGE(false, "Unsupported num duelers");
 	}
 	
 	

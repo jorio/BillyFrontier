@@ -39,7 +39,7 @@ static void	RygarPutHatOnHead(ObjNode *hat);
 
 /************************* MAKE RYGAR ****************************/
 
-ObjNode *MakeRygar(float x, float z, float rot, short animNum, void *moveCall, Boolean gunInHand)
+ObjNode *MakeRygar(float x, float z, float rot, short animNum, movecall_t moveCall, Boolean gunInHand)
 {
 ObjNode	*newObj, *rightGun, *leftGun, *hat;
 int		i;
@@ -320,7 +320,6 @@ int				i;
 	i = enemy->Sparkles[0];												// get sparkle index
 	if (i != -1)
 	{
-		OGLMatrix4x4		m;
 		const OGLPoint3D	off = {-16,-16,-3};
 		const OGLVector3D	v = {-1,.1,0};
 		

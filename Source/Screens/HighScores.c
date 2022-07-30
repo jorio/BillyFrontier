@@ -109,8 +109,6 @@ void NewScore(Boolean justShowScores)
 		
 	while(!gExitHighScores)
 	{
-		const float fps = gFramesPerSecondFrac;
-		
 		CalcFramesPerSecond();
 		MoveObjects();				
 		OGL_DrawScene(gGameViewInfoPtr, DrawHighScoresCallback);	
@@ -588,7 +586,7 @@ long				count;
 	else
 	{
 		count = sizeof(HighScoreType) * NUM_SCORES;
-		iErr = FSRead(refNum, &count,  &gHighScores[0]);								// read data from file
+		iErr = FSRead(refNum, &count, (Ptr) &gHighScores[0]);				// read data from file
 		if (iErr)
 		{
 			FSClose(refNum);			
@@ -632,7 +630,7 @@ err:
 				/* WRITE DATA */
 				
 	count = sizeof(HighScoreType) * NUM_SCORES;
-	FSWrite(refNum, &count, &gHighScores[0]);	
+	FSWrite(refNum, &count, (Ptr) & gHighScores[0]);
 	FSClose(refNum);			
 
 }

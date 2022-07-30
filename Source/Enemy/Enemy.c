@@ -94,7 +94,7 @@ void UpdateEnemy(ObjNode *theNode)
 // OUTPUT:	ObjNode or nil if err.
 //
 
-ObjNode *MakeEnemySkeleton(Byte skeletonType, short animNum, float x, float z, float scale, float rot, void *moveCall, u_long flags)
+ObjNode *MakeEnemySkeleton(Byte skeletonType, short animNum, float x, float z, float scale, float rot, movecall_t moveCall, uint32_t flags)
 {
 ObjNode	*newObj;
 	

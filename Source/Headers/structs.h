@@ -247,6 +247,7 @@ typedef struct
 			/*  OBJECT RECORD STRUCTURE */
 			/****************************/
 
+
 struct ObjNode
 {
 	struct ObjNode	*PrevNode;			// address of previous node in linked list
@@ -384,6 +385,8 @@ struct ObjNode
 };
 typedef struct ObjNode ObjNode;
 
+typedef void(*movecall_t)(ObjNode*);
+
 
 		/* NEW OBJECT DEFINITION TYPE */
 		
@@ -393,7 +396,7 @@ typedef struct
 	OGLPoint3D		coord;
 	unsigned long	flags;
 	short			slot;
-	void			(*moveCall)(ObjNode *);
+	movecall_t		moveCall;
 	float			rot,scale;
 }NewObjectDefinitionType;
 

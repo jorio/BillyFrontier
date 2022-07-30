@@ -265,7 +265,6 @@ static void MoveShootoutFrogMan_Throw(ObjNode *enemy)
 
 static void ShootoutFrogManHitByBulletCallback(ObjNode *bullet, ObjNode *enemy, const OGLPoint3D *impactPt)
 {
-int	enemyKind = enemy->Kind;
 OGLVector3D	splatVec;
 
 	bullet;
