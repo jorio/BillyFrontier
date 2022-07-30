@@ -76,6 +76,9 @@ void PlayTargetPractice(void)
 	CalcFramesPerSecond();
 	CalcFramesPerSecond();
 
+			/* FADE IN */
+
+	MakeFadeEvent(true);
 
 		/******************/
 		/* MAIN GAME LOOP */
@@ -96,10 +99,7 @@ void PlayTargetPractice(void)
 			DoPaused();
 			
 		CalcFramesPerSecond();		
-		
-		if (gGameFrameNum == 0)											// if that was 1st frame, then create a fade event
-			MakeFadeEvent(true);
-				
+
 		gGameFrameNum++;
 		
 				
