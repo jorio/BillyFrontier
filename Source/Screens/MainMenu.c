@@ -21,8 +21,6 @@ static void BuildMainMenu(int menuLevel);
 static void DrawMainMenuCallback(OGLSetupOutputType *info);
 static void ProcessMainMenu(void);
 static void DoMenuControls(void);
-static void DrawDarkenPane(ObjNode *theNode, const OGLSetupOutputType *setupInfo);
-static void MoveDarkenPane(ObjNode *theNode);
 static void MoveCursor(ObjNode *theNode);
 static void MoveMenuItem(ObjNode *theNode);
 

@@ -146,7 +146,6 @@ extern float gCurrentMaxSpeed;
 extern float gDemoVersionTimer;
 extern float gFramesPerSecond;
 extern float gFramesPerSecondFrac;
-extern float gGammaFadePercent;
 extern float gGlobalTransparency;
 extern float gGravity;
 extern float gLevelCompletedCoolDownTimer;

@@ -18,7 +18,8 @@
 /*    PROTOTYPES            */
 /****************************/
 
-static void MoveFadeEvent(ObjNode *theNode);
+static void MoveFadePane(ObjNode *theNode);
+static void DrawFadePane(ObjNode *theNode, const OGLSetupOutputType* setupInfo);
 
 /****************************/
 /*    CONSTANTS             */
@@ -29,7 +30,7 @@ static void MoveFadeEvent(ObjNode *theNode);
 /*     VARIABLES      */
 /**********************/
 
-float		gGammaFadePercent = 100.0;
+static float	gGammaFadeFrac = 1.0;
 
 int				gGameWindowWidth, gGameWindowHeight;
 
@@ -52,11 +53,11 @@ void InitWindowStuff(void)
 
 void GammaFadeIn(void)
 {
-	while(gGammaFadePercent < 100.0f)
+	while (gGammaFadeFrac < 1.0f)
 	{
-		gGammaFadePercent += 7.0f;
-		if (gGammaFadePercent > 100.0f)
-			gGammaFadePercent = 100.0f;
+		gGammaFadeFrac += 0.07f;
+		if (gGammaFadeFrac > 1.0f)
+			gGammaFadeFrac = 1.0f;
 
 #if ALLOW_FADE	
 		IMPLEMENT_ME_SOFT(); //  DSpContext_FadeGamma(gDisplayContext, gGammaFadePercent, nil);
@@ -69,11 +70,11 @@ void GammaFadeIn(void)
 
 void GammaFadeOut(void)
 {
-	while(gGammaFadePercent > 0.0f)
+	while(gGammaFadeFrac > 0.0f)
 	{
-		gGammaFadePercent -= 7.0f;
-		if (gGammaFadePercent < 0.0f)
-			gGammaFadePercent = 0.0f;
+		gGammaFadeFrac -= 0.07f;
+		if (gGammaFadeFrac < 0.0f)
+			gGammaFadeFrac = 0.0f;
 
 #if ALLOW_FADE	
 		IMPLEMENT_ME_SOFT(); // DSpContext_FadeGamma(gDisplayContext, gGammaFadePercent, nil);
@@ -86,12 +87,12 @@ void GammaFadeOut(void)
 
 void GammaOn(void)
 {
-	if (gGammaFadePercent != 100.0f)
+	if (gGammaFadeFrac != 1.0f)
 	{
 #if ALLOW_FADE	
 		IMPLEMENT_ME_SOFT(); // DSpContext_FadeGamma(MONITORS_TO_FADE, 100, nil);
 #endif		
-		gGammaFadePercent = 100.0f;
+		gGammaFadeFrac = 1.0f;
 	}
 }
 
@@ -107,6 +108,7 @@ void CleanupDisplay(void)
 // INPUT:	fadeIn = true if want fade IN, otherwise fade OUT.
 //
 
+
 void MakeFadeEvent(Boolean	fadeIn)
 {
 ObjNode	*newObj;
@@ -118,7 +120,7 @@ ObjNode		*thisNodePtr;
 	
 	while (thisNodePtr)
 	{
-		if (thisNodePtr->MoveCall == MoveFadeEvent)
+		if (thisNodePtr->MoveCall == MoveFadePane)
 		{
 			thisNodePtr->Flag[0] = fadeIn;								// set new mode
 			return;
@@ -129,62 +131,68 @@ ObjNode		*thisNodePtr;
 
 		/* MAKE NEW FADE EVENT */
 			
-	gNewObjectDefinition.genre = EVENT_GENRE;
+	gNewObjectDefinition.genre = CUSTOM_GENRE;
 	gNewObjectDefinition.flags = 0;
 	gNewObjectDefinition.slot = SLOT_OF_DUMB + 1000;
-	gNewObjectDefinition.moveCall = MoveFadeEvent;
+	gNewObjectDefinition.moveCall = MoveFadePane;
 	newObj = MakeNewObject(&gNewObjectDefinition);
+	newObj->CustomDrawFunction = DrawFadePane;
 
 	newObj->Flag[0] = fadeIn;
 }
 
-
 /***************** MOVE FADE EVENT ********************/
 
-static void MoveFadeEvent(ObjNode *theNode)
+static void MoveFadePane(ObjNode *theNode)
 {
 float	fps = gFramesPerSecondFrac;
-				
+
 			/* SEE IF FADE IN */
 			
 	if (theNode->Flag[0])
 	{
-		gGammaFadePercent += 400.0f*fps;
-		if (gGammaFadePercent >= 100.0f)										// see if @ 100%
+		gGammaFadeFrac += 4.0f*fps;
+		if (gGammaFadeFrac >= 1.0f)										// see if @ 100%
 		{
-			gGammaFadePercent = 100.0f;
+			gGammaFadeFrac = 1.0f;
 			DeleteObject(theNode);
 		}
-#if ALLOW_FADE
-#if 1
-		IMPLEMENT_ME_SOFT();
-#else
-		if (gDisplayContext)
-			DSpContext_FadeGamma(gDisplayContext,gGammaFadePercent,nil);
-#endif
-#endif
 	}
 	
 			/* FADE OUT */
 	else
 	{
-		gGammaFadePercent -= 400.0f*fps;
-		if (gGammaFadePercent <= 0.0f)													// see if @ 0%
+		gGammaFadeFrac -= 4.0f*fps;
+		if (gGammaFadeFrac <= 0.0f)													// see if @ 0%
 		{
-			gGammaFadePercent = 0;
+			gGammaFadeFrac = 0;
 			DeleteObject(theNode);
 		}
-#if ALLOW_FADE
-#if 1
-		IMPLEMENT_ME_SOFT();
-#else
-		if (gDisplayContext)
-			DSpContext_FadeGamma(gDisplayContext,gGammaFadePercent,nil);
-#endif
-#endif
 	}
 }
 
+/***************** DRAW FADE PANE ********************/
+
+static void DrawFadePane(ObjNode* theNode, const OGLSetupOutputType* setupInfo)
+{
+	OGL_PushState();
+	SetInfobarSpriteState(0);
+
+	glDisable(GL_TEXTURE_2D);
+	SetColor4f(0, 0, 0, 1.0f - gGammaFadeFrac);// (GLfloat*)&theNode->ColorFilter);
+	glEnable(GL_BLEND);
+
+	glBegin(GL_QUADS);
+	glVertex3f(-1000, -1000, 0);
+	glVertex3f( 1000, -1000, 0);
+	glVertex3f( 1000,  1000, 0);
+	glVertex3f(-1000,  1000, 0);
+	glEnd();
+
+	glDisable(GL_BLEND);
+
+	OGL_PopState();
+}
 
 /************************ GAME SCREEN TO BLACK ************************/
 

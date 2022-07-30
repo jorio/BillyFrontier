@@ -21,8 +21,6 @@ static void BuildBigBoardIcons(void);
 static void DrawBigBoardCallback(OGLSetupOutputType *info);
 static void ProcessBigBoard(void);
 static void DoBigBoardControls(void);
-static void DrawDarkenPane(ObjNode *theNode, const OGLSetupOutputType *setupInfo);
-static void MoveDarkenPane(ObjNode *theNode);
 static void MoveCursor(ObjNode *theNode);
 static void MoveBigBoardtem(ObjNode *theNode);
 void MoveBulletHole(ObjNode *theNode);
