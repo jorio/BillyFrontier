@@ -2,10 +2,9 @@
 // items.h
 //
 
-// Externals
-#include "game.h"
+#pragma once
 
-extern	void InitItemsManager(void);
+void InitItemsManager(void);
 void CreateCyclorama(void);
 
 Boolean AddBuilding(TerrainItemEntryType *itemPtr, float  x, float z);
@@ -25,14 +24,6 @@ void DefaultBulletHitCallback(ObjNode *bullet, ObjNode *hitObj, const OGLPoint3D
 Boolean AddTable(TerrainItemEntryType *itemPtr, float  x, float z);
 Boolean AddChair(TerrainItemEntryType *itemPtr, float  x, float z);
 
-
-		
-void DefaultGotKickedCallback(ObjNode *player, ObjNode *kickedObj);
-void MoveDefaultPickup(ObjNode *theNode);
-void DefaultDropObject(ObjNode *player, ObjNode *held);
-
-Boolean CheckDropThruFence(ObjNode *player, ObjNode *held);
-
 Boolean AddDeadTree(TerrainItemEntryType *itemPtr, float  x, float z);
 Boolean AddRock(TerrainItemEntryType *itemPtr, float  x, float z);
 Boolean AddElectricFence(TerrainItemEntryType *itemPtr, float  x, float z);
@@ -47,9 +38,3 @@ Boolean AddSpearSkull(TerrainItemEntryType *itemPtr, float  x, float z);
 Boolean AddPeso(TerrainItemEntryType *itemPtr, float  x, float z);
 
 Boolean AddFreeLifePOW(TerrainItemEntryType *itemPtr, float  x, float z);
-
-
-
-
-
-
