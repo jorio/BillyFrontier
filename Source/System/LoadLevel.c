@@ -40,13 +40,6 @@ FSSpec	spec;
 			/* LOAD COMMNON DATA */
 			/*********************/
 
-#if 0
-				/* LOAD AUDIO */
-						
-	FSMakeFSSpec(gDataSpec.vRefNum, gDataSpec.parID, ":Audio:Garden.sounds", &spec);
-	LoadSoundBank(&spec, SOUND_BANK_LEVELSPECIFIC);
-#endif
-				
 
 			/* LOAD GLOBAL BG3D GEOMETRY */
 			

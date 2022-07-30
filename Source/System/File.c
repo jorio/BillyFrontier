@@ -50,10 +50,10 @@ static void HalfTexture16(u_short *buff, int width, int height);
 		
 typedef struct
 {
-	u_long		version;
-	u_long		score;
-	short		realLevel;
-	short		numLives;
+	uint32_t	version;
+	uint32_t	score;
+	int16_t		realLevel;
+	int16_t		numLives;
 	Boolean		levels[NUM_LEVELS];
 	Boolean		duels[NUM_LEVELS];
 }SaveGameType;
@@ -64,17 +64,18 @@ typedef struct
 typedef struct
 {
 	NumVersion	version;							// version of file
-	long		numItems;							// # items in map
-	long		mapWidth;							// width of map
-	long		mapHeight;							// height of map	
+	int32_t		numItems;							// # items in map
+	int32_t		mapWidth;							// width of map
+	int32_t		mapHeight;							// height of map
 	float		tileSize;							// 3D unit size of a tile
-	float		minY,maxY;							// min/max height values
-	long		numSplines;							// # splines
-	long		numFences;							// # fences
-	long		numUniqueSuperTiles;				// # unique supertile
-	long        numWaterPatches;                    // # water patches
-	long		numCheckpoints;						// # checkpoints
-	long        unused[10];
+	float		minY;								// min height value
+	float		maxY;								// max height value
+	int32_t		numSplines;							// # splines
+	int32_t		numFences;							// # fences
+	int32_t		numUniqueSuperTiles;				// # unique supertile
+	int32_t		numWaterPatches;					// # water patches
+	int32_t		numCheckpoints;						// # checkpoints
+	int32_t		unused[10];
 }PlayfieldHeaderType;
 
 
@@ -87,15 +88,16 @@ typedef struct
 		
 typedef	struct
 {
-	int		x,z;
+	int32_t		x,z;
 }FencePointType;
 
 
 typedef struct
 {
-	u_short			type;				// type of fence
-	short			numNubs;			// # nubs in fence
-	FencePointType	**nubList;			// handle to nub list	
+	uint16_t		type;				// type of fence
+	int16_t			numNubs;			// # nubs in fence
+//	FencePointType	**nubList;			// handle to nub list
+	uint32_t		_junkPtr;
 	Rect			bBox;				// bounding box of fence area	
 }FileFenceDefType;
 
@@ -239,7 +241,8 @@ static void ReadDataFromSkeletonFile(SkeletonDefType *skeleton, FSSpec *fsSpec, 
 {
 Handle				hand;
 int					i,k,j;
-long				numJoints,numAnims,numKeyframes;
+long				numJoints = 0;
+long				numAnims = 0;
 AnimEventType		*animEventPtr;
 JointKeyframeType	*keyFramePtr;
 SkeletonFile_Header_Type	*headerPtr;
@@ -355,7 +358,7 @@ SkeletonFile_AnimHeader_Type	*animHeaderPtr;
 		if (hand == nil)
 			DoFatalAlert("Error reading BonN resource!");
 		HLock(hand);
-		indexPtr = (uintptr_t *)(*hand);
+		indexPtr = (uint16_t *)(*hand);
 
 			/* COPY NORMAL INDEX ARRAY INTO BONE STRUCT */
 
@@ -445,7 +448,7 @@ SkeletonFile_AnimHeader_Type	*animHeaderPtr;
 					
 		for (i=0; i < numAnims; i++)								
 		{
-			numKeyframes = skeleton->JointKeyframes[j].numKeyFrames[i];					// get actual # of keyframes for this joint
+			unsigned int numKeyframes = skeleton->JointKeyframes[j].numKeyFrames[i];		// get actual # of keyframes for this joint
 			if (numKeyframes > MAX_KEYFRAMES)
 				DoFatalAlert("Error: numKeyframes > MAX_KEYFRAMES");
 		
@@ -674,15 +677,14 @@ Handle					hand;
 PlayfieldHeaderType		**header;
 long					row,col,j,i,size;
 float					yScale;
-float					*src;
-short					fRefNum;	
+short					fRefNum;
 OSErr					iErr;	
 Ptr						tempBuffer16 = nil;		
 Ptr						tempBuffer24 = nil;		
 			
 				/* OPEN THE REZ-FORK */
 			
-	fRefNum = FSpOpenResFile(specPtr,fsCurPerm);
+	fRefNum = FSpOpenResFile(specPtr, fsRdPerm);
 	if (fRefNum == -1)
 		DoFatalAlert("LoadPlayfield: FSpOpenResFile failed.  You seem to have a corrupt or missing file.  Please reinstall the game.");
 	UseResFile(fRefNum);
@@ -699,7 +701,8 @@ Ptr						tempBuffer24 = nil;
 		return;
 	}
 	
-	header = (PlayfieldHeaderType **)hand;	
+	header = (PlayfieldHeaderType **)hand;
+	BYTESWAP_HANDLE("4b iii fff iiiii 10i", PlayfieldHeaderType, 1, hand);
 	gNumTerrainItems		= (**header).numItems;
 	gTerrainTileWidth		= (**header).mapWidth;
 	gTerrainTileDepth		= (**header).mapHeight;	
@@ -745,8 +748,9 @@ Ptr						tempBuffer24 = nil;
 		DoFatalAlert("ReadDataFromPlayfieldFile: Error reading supertile rez resource!");
 	else																			// copy rez into 2D array
 	{
-		short *src = (short *)*hand;					
-		
+		int16_t *src = (int16_t *)*hand;
+		BYTESWAP_HANDLE("h", int16_t, gNumSuperTilesDeep*gNumSuperTilesWide, hand);
+
 		for (row = 0; row < gNumSuperTilesDeep; row++)
 			for (col = 0; col < gNumSuperTilesWide; col++)
 			{
@@ -775,7 +779,9 @@ Ptr						tempBuffer24 = nil;
 		DoAlert("ReadDataFromPlayfieldFile: Error reading height data resource!");
 	else
 	{
-		src = (float *)*hand;					
+		float* src = (float *)*hand;
+		BYTESWAP_HANDLE("f", float, (gTerrainTileWidth+1)*(gTerrainTileDepth+1), hand);
+
 		for (row = 0; row <= gTerrainTileDepth; row++)
 			for (col = 0; col <= gTerrainTileWidth; col++)
 				gMapYCoordsOriginal[row][col] = gMapYCoords[row][col] = *src++ * yScale;
@@ -796,6 +802,8 @@ Ptr						tempBuffer24 = nil;
 		DetachResource(hand);							// lets keep this data around		
 		HLockHi(hand);									// LOCK this one because we have the lookup table into this
 		gMasterItemList = (TerrainItemEntryType **)hand;
+
+		BYTESWAP_HANDLE("IIH4BH", TerrainItemEntryType, gNumTerrainItems, hand);
 	}
 	
 				/* CONVERT COORDINATES */
@@ -817,24 +825,56 @@ Ptr						tempBuffer24 = nil;
 			
 	hand = GetResource('Spln',1000);
 	if (hand)
-	{	
+	{
 		DetachResource(hand);
 		HLockHi(hand);
-		gSplineList = (SplineDefType **)hand;
+
+		// SOURCE PORT NOTE: we have to convert this structure manually,
+		// because the original contains 4-byte pointers
+		BYTESWAP_HANDLE("hxxiiihxxi4h", File_SplineDefType, gNumSplines, hand);
+
+		gSplineList = (SplineDefType **) NewHandleClear(gNumSplines * sizeof(SplineDefType));
+
+		for (i = 0; i < gNumSplines; i++)
+		{
+			const File_SplineDefType*	srcSpline = &(*((File_SplineDefType **) hand))[i];
+			SplineDefType*				dstSpline = &(*gSplineList)[i];
+
+			dstSpline->numItems		= srcSpline->numItems;
+			dstSpline->numNubs		= srcSpline->numNubs;
+			dstSpline->numPoints	= srcSpline->numPoints;
+			dstSpline->bBox			= srcSpline->bBox;
+		}
+
+		DisposeHandle(hand);
 	}
 	else
-		gNumSplines = 0;	
+	{
+		gNumSplines = 0;
+		gSplineList = nil;
+	}
 
-	
+
 			/* READ SPLINE POINT LIST */
 			
 	for (i = 0; i < gNumSplines; i++)
 	{
+		// If spline has 0 points, skip the byteswapping, but do alloc an empty handle, which the game expects.
+		if ((*gSplineList)[i].numPoints == 0)
+		{
+#if _DEBUG
+			DoAlert("WARNING: Spline #%ld has 0 points\n", i);
+#endif
+			(*gSplineList)[i].pointList = (SplinePointType**) AllocHandle(0);
+			continue;
+		}
+
 		hand = GetResource('SpPt',1000+i);
 		if (hand)
-		{	
+		{
 			DetachResource(hand);
 			HLockHi(hand);
+			BYTESWAP_HANDLE("ff", SplinePointType, (*gSplineList)[i].numPoints, hand);
 			(*gSplineList)[i].pointList = (SplinePointType **)hand;
 		}
 		else
@@ -846,17 +886,26 @@ Ptr						tempBuffer24 = nil;
 			
 	for (i = 0; i < gNumSplines; i++)
 	{
+		// If spline has 0 items, skip the byteswapping, but do alloc an empty handle, which the game expects.
+		if ((*gSplineList)[i].numItems == 0)
+		{
+			DoAlert("WARNING: Spline #%ld has 0 items\n", i);
+			(*gSplineList)[i].itemList = (SplineItemType**) AllocHandle(0);
+			continue;
+		}
+
 		hand = GetResource('SpIt',1000+i);
 		if (hand)
-		{	
+		{
 			DetachResource(hand);
 			HLockHi(hand);
+			BYTESWAP_HANDLE("fH4bH", SplineItemType, (*gSplineList)[i].numItems, hand);
 			(*gSplineList)[i].itemList = (SplineItemType **)hand;
 		}
 		else
 			DoFatalAlert("ReadDataFromPlayfieldFile: cant get spline items rez");
-	}	
-	
+	}
+
 			/****************************/
 			/* FENCE RELATED RESOURCES */
 			/****************************/
@@ -871,7 +920,8 @@ Ptr						tempBuffer24 = nil;
 		gFenceList = (FenceDefType *)AllocPtr(sizeof(FenceDefType) * gNumFences);	// alloc new ptr for fence data
 		if (gFenceList == nil)
 			DoFatalAlert("ReadDataFromPlayfieldFile: AllocPtr failed");
-			
+
+		BYTESWAP_HANDLE("Hhi4h", FileFenceDefType, gNumFences, hand);
 		inData = (FileFenceDefType *)*hand;								// get ptr to input fence list
 		
 		for (i = 0; i < gNumFences; i++)								// copy data from rez to new list
@@ -880,11 +930,14 @@ Ptr						tempBuffer24 = nil;
 			gFenceList[i].numNubs 	= inData[i].numNubs;
 			gFenceList[i].nubList 	= nil;
 			gFenceList[i].sectionVectors = nil;
-		}		
+		}
 		ReleaseResource(hand);
 	}
 	else
-		gNumFences = 0;	
+	{
+		gNumFences = 0;
+		gFenceList = nil;
+	}
 
 	
 			/* READ FENCE NUB LIST */
@@ -928,12 +981,16 @@ Ptr						tempBuffer24 = nil;
 		DetachResource(hand);
 		HLockHi(hand);
 		gWaterListHandle = (WaterDefType **)hand;
+		BYTESWAP_HANDLE("Hxx L i hxx i ff ff 4h", WaterDefType, gNumWaterPatches, hand);
 		gWaterList = *gWaterListHandle;
 	}
 	else
-		gNumWaterPatches = 0;	
-	
-	
+	{
+		gNumWaterPatches = 0;
+		gWaterListHandle = nil;
+		gWaterList = nil;
+	}
+
 
 			/*************************/
 			/* LINE MARKER RESOURCES */
@@ -943,30 +1000,33 @@ Ptr						tempBuffer24 = nil;
 	{
 		if (gNumLineMarkers > MAX_LINEMARKERS)
 			DoFatalAlert("ReadDataFromPlayfieldFile: gNumLineMarkers > MAX_LINEMARKERS");
-			
+
 				/* READ CHECKPOINT LIST */
-				
+
 		hand = GetResource('CkPt',1000);
 		if (hand)
-		{	
+		{
 			HLock(hand);
-			BlockMove(*hand, &gLineMarkerList[0], GetHandleSize(hand));		
+			BYTESWAP_HANDLE("hh 2f 2f", LineMarkerDefType, gNumLineMarkers, hand);
+			BlockMove(*hand, &gLineMarkerList[0], GetHandleSize(hand));
 			ReleaseResource(hand);
-			
+
 						/* CONVERT COORDINATES */
-						
+
 			for (i = 0; i < gNumLineMarkers; i++)
 			{
 				gLineMarkerList[i].x[0] *= gMapToUnitValue;
-				gLineMarkerList[i].z[0] *= gMapToUnitValue;	
+				gLineMarkerList[i].z[0] *= gMapToUnitValue;
 				gLineMarkerList[i].x[1] *= gMapToUnitValue;
-				gLineMarkerList[i].z[1] *= gMapToUnitValue;	
-			}			
+				gLineMarkerList[i].z[1] *= gMapToUnitValue;
+			}
 		}
 		else
-			gNumLineMarkers = 0;	
-	}	
-	
+		{
+			gNumLineMarkers = 0;
+		}
+	}
+
 
 
 			/* CLOSE REZ FILE */
@@ -995,7 +1055,7 @@ Ptr						tempBuffer24 = nil;
 
 				/* OPEN THE DATA FORK */
 				
-	iErr = FSpOpenDF(specPtr, fsCurPerm, &fRefNum);	
+	iErr = FSpOpenDF(specPtr, fsRdPerm, &fRefNum);
 	if (iErr)
 		DoFatalAlert("ReadDataFromPlayfieldFile: FSpOpenDF failed!");
 	
@@ -1004,7 +1064,7 @@ Ptr						tempBuffer24 = nil;
 	for (i = 0; i < gNumUniqueSuperTiles; i++)
 	{
 		static long	sizeoflong = 4;
-		long	compressedSize,decompressedSize;
+		int32_t	compressedSize,decompressedSize;
 		long	width,height;
 		MOMaterialData	matData;
 			
@@ -1014,10 +1074,10 @@ Ptr						tempBuffer24 = nil;
 		iErr = FSRead(fRefNum, &sizeoflong, &compressedSize);
 		if (iErr)
 			DoFatalAlert("ReadDataFromPlayfieldFile: FSRead failed!");
-	
-				
+		compressedSize = Byteswap32(&compressedSize);
+
 				/* READ & DECOMPRESS IT */
-			
+
 #if TILE_DEPTH == 16		
 		decompressedSize = LZSS_Decode(fRefNum, tempBuffer16, compressedSize);				
 #else
@@ -1035,7 +1095,7 @@ Ptr						tempBuffer24 = nil;
 
 			/* USE PACKED PIXEL TYPE */
 
-		ConvertTexture16To16((u_short *)tempBuffer16, width, height);
+		ConvertTexture16To16((uint16_t *)tempBuffer16, width, height);
 		
 //		if (gGamePrefs.lowVRAMMode)
 //		{

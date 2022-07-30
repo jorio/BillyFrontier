@@ -156,8 +156,8 @@ enum
 
 typedef struct
 {
-	short	unused;	
-	short	infoBits;
+	int16_t	unused;
+	int16_t	infoBits;
 	
 	float	x[2],z[2];			// the two endpoints	
 }LineMarkerDefType;
