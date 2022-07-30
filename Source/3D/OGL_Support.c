@@ -19,7 +19,9 @@
 /*    PROTOTYPES            */
 /****************************/
 
-static void OGL_CreateDrawContext(OGLViewDefType *viewDefPtr);
+static void OGL_CreateDrawContext(void);
+static void OGL_DisposeDrawContext(void);
+static void OGL_InitDrawContext(OGLViewDefType *viewDefPtr);
 static void OGL_SetStyles(OGLSetupInputType *setupDefPtr);
 static void OGL_CreateLights(OGLLightDefType *lightDefPtr);
 static void OGL_InitFont(void);
@@ -110,13 +112,26 @@ short	i;
 float	f;
 
 		/* GENERATE ANAGLYPH GREY CONVERSION TABLE */
-		
+
 	f = 0;
 	for (i = 0; i < 255; i++)
 	{
 		gAnaglyphGreyTable[i] = sin(f) * 255.0f;
 		f += (PI/2.0) / 255.0f;
 	}
+
+
+		/* CREATE DRAW CONTEXT THAT WILL BE USED THROUGHOUT THE GAME */
+
+	OGL_CreateDrawContext();
+}
+
+
+/******************** OGL SHUTDOWN *****************/
+
+void OGL_Shutdown(void)
+{
+	OGL_DisposeDrawContext();
 }
 
 
@@ -188,7 +203,7 @@ static OGLVector3D	v = {0,0,0};
 
 				/* SETUP */
 
-	OGL_CreateDrawContext(&setupDefPtr->view);	
+	OGL_InitDrawContext(&setupDefPtr->view);	
 	OGL_SetStyles(setupDefPtr);	
 	OGL_CreateLights(&setupDefPtr->lights);
 
@@ -224,15 +239,6 @@ void OGL_DisposeWindowSetup(void)
 
 	OGL_FreeFont();
 
-			/* NUKE GL CONTEXT */
-
-	if (gAGLContext)
-	{
-		SDL_GL_MakeCurrent(gSDLWindow, NULL);		// make context not current
-		SDL_GL_DeleteContext(gAGLContext);			// nuke context
-		gAGLContext = nil;
-	}
-
 		/* FREE MEMORY & NIL POINTER */
 
 	gGameViewInfoPtr->isActive = false;									// now inactive
@@ -245,11 +251,9 @@ void OGL_DisposeWindowSetup(void)
 
 /**************** OGL: CREATE DRAW CONTEXT *********************/
 
-static void OGL_CreateDrawContext(OGLViewDefType *viewDefPtr)
+static void OGL_CreateDrawContext(void)
 {
-	GLint			maxTexSize;
-
-
+	GAME_ASSERT_MESSAGE(!gAGLContext, "GL context already exists");
 	GAME_ASSERT_MESSAGE(gSDLWindow, "Window must be created before the DC!");
 
 			/* CREATE AGL CONTEXT & ATTACH TO WINDOW */
@@ -281,7 +285,35 @@ static void OGL_CreateDrawContext(OGLViewDefType *viewDefPtr)
 	OGL_InitFunctions();
 
 
+			/* SEE IF SUPPORT 512X512 */
 
+	GLint			maxTexSize;
+	glGetIntegerv(GL_MAX_TEXTURE_SIZE, &maxTexSize);
+	GAME_ASSERT_MESSAGE(maxTexSize >= 512, "Your graphics card doesn't support 512x512 textures.");
+}
+
+/**************** OGL: NUKE DRAW CONTEXT *********************/
+//
+// Do this when QUITTING the game!
+// The game reuses the same draw context for all scenes!
+//
+
+static void OGL_DisposeDrawContext(void)
+{
+	if (!gAGLContext)
+	{
+		return;
+	}
+
+	SDL_GL_MakeCurrent(gSDLWindow, NULL);		// make context not current
+	SDL_GL_DeleteContext(gAGLContext);			// nuke context
+	gAGLContext = nil;
+}
+
+/**************** OGL: INIT DRAW CONTEXT *********************/
+
+static void OGL_InitDrawContext(OGLViewDefType* viewDefPtr)
+{
 			/* CLEAR ALL BUFFERS TO BLACK */
 			
 	glClearColor(0,0,0,1);
@@ -313,12 +345,6 @@ static void OGL_CreateDrawContext(OGLViewDefType *viewDefPtr)
 			/* INIT DEBUG FONT */
 
 	OGL_InitFont();
-
-
-			/* SEE IF SUPPORT 512X512 */
-
-	glGetIntegerv(GL_MAX_TEXTURE_SIZE, &maxTexSize);
-	GAME_ASSERT_MESSAGE(maxTexSize >= 512, "Your graphics card doesn't support 512x512 textures.");
 
 	GAME_ASSERT(!OGL_CheckError());
 }
@@ -393,7 +419,6 @@ OGLStyleDefType *styleDefPtr = &setupDefPtr->styles;
 
 static void OGL_CreateLights(OGLLightDefType *lightDefPtr)
 {
-int		i;
 GLfloat	ambient[4];
 
 	OGL_EnableLighting();
@@ -414,7 +439,7 @@ GLfloat	ambient[4];
 			/* CREATE FILL LIGHTS */
 			/**********************/
 			
-	for (i=0; i < lightDefPtr->numFillLights; i++)
+	for (int i = 0; i < lightDefPtr->numFillLights; i++)
 	{
 		static GLfloat lightamb[4] = { 0.0, 0.0, 0.0, 1.0 };
 		GLfloat lightVec[4];
@@ -443,7 +468,15 @@ GLfloat	ambient[4];
 	
 			
 		glEnable(GL_LIGHT0+i);								// enable the light
-	}	
+	}
+
+
+			/* KILL OTHER LIGHTS THAT MIGHT STILL BE ACTIVE FROM PREVIOUS SCENE */
+
+	for (int i = lightDefPtr->numFillLights; i < MAX_FILL_LIGHTS; i++)
+	{
+		glDisable(GL_LIGHT0 + i);
+	}
 	
 }
 

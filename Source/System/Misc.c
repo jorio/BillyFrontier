@@ -95,15 +95,10 @@ static Boolean	beenHere = false;
 		if (gGameViewInfoPtr)							// see if need to dispose this
 			OGL_DisposeWindowSetup();
 
+		OGL_Shutdown();
+
 		ShutdownSound();								// cleanup sound stuff
 	}
-
-	CleanupDisplay();								// unloads Draw Sprocket
-
-#if 0
-	if (gISPInitialized)							// unload ISp
-		ISpShutdown();
-#endif
 
 	UseResFile(gMainAppRezFile);
 	

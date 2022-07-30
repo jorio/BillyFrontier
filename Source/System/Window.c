@@ -115,13 +115,6 @@ void OGL_FadeOutScene(void (*drawCall)(void), void (*moveCall)(void))
 }
 
 
-/****************** CLEANUP DISPLAY *************************/
-
-void CleanupDisplay(void)
-{
-}
-
-
 /******************** MAKE FADE EVENT *********************/
 //
 // INPUT:	fadeIn = true if want fade IN, otherwise fade OUT.
