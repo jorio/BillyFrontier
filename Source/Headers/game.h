@@ -1,5 +1,9 @@
 #pragma once
 
+#if _MSC_VER
+#define _Static_assert static_assert
+#endif
+
 #include <stdlib.h>
 #include <math.h>
 #include <SDL.h>

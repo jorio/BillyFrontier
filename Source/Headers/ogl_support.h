@@ -170,6 +170,7 @@ typedef struct
 	OGLPoint3D 			min;
 	OGLPoint3D 			max;
 	Boolean 			isEmpty;
+	uint8_t				reserved[3];							// file padding
 }OGLBoundingBox;
 
 
