@@ -121,9 +121,9 @@ void PlayTargetPractice(void)
 	}
 
 		/* CLEANUP LEVEL */
-					
+
+	OGL_FadeOutScene(DefaultDrawCallback, NULL);
 	MyFlushEvents();
-	GammaFadeOut();
 	CleanupTargetPractice();
 	GameScreenToBlack();	
 	
@@ -270,7 +270,6 @@ const OGLPoint3D	cameraTo = { 0, 1200, 0 };
 	InitCamera_TargetPractice();
 			
 	HideCursor();								// do this again to be sure!	
-	GammaFadeOut();
 
 
 		/* START MUSIC */

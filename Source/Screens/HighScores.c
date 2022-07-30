@@ -191,6 +191,8 @@ void NewScore(Boolean justShowScores)
 	}	
 
 
+	OGL_FadeOutScene(DrawHighScoresCallback, MoveObjects);
+
 		/* CLEANUP */
 		
 	if (gNewScoreSlot != -1)						// if a new score was added then update the high scores file			
@@ -198,7 +200,6 @@ void NewScore(Boolean justShowScores)
 		
 	FreeScoreScreen();
 	
-	GammaFadeOut();			
 	TurnOnISp();
 	
 	gAllowAudioKeys = true;

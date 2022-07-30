@@ -221,7 +221,6 @@ u_long	oldScore;
 		if (gGameOver)						// did user want to bail?
 			break;
 
-		GammaFadeOut();
 		MyFlushEvents();
 
 		oldScore = gScore;					// remember score in case we get killed and have to revert it

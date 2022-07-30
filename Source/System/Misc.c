@@ -48,9 +48,6 @@ Str255		numStr;
 
 	Enter2D(true);
 
-
-	/*if (gDisplayContext)
-		GammaOn();*/
 	MyFlushEvents();
 	TurnOffISp();										// MUST TURN OFF INPUT SPROK TO GET KEYBOARD EVENTS!!!
 	UseResFile(gMainAppRezFile);
@@ -72,15 +69,11 @@ Str255		numStr;
 
 	Enter2D(true);
 
-
-	/*if (gDisplayContext)
-		GammaOn();*/
 	MyFlushEvents();
 	NumToString(err, numStr);
 	DoAlert (numStr);
 	
 	Exit2D();
-			
 }
 
 

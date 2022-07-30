@@ -177,10 +177,11 @@ void PlayDuel(Byte difficulty)
 		
 	}
 
+	OGL_FadeOutScene(DefaultDrawCallback, NULL);
+
 		/* CLEANUP LEVEL */
 					
 	MyFlushEvents();
-	GammaFadeOut();
 	CleanupDuel();
 	GameScreenToBlack();	
 }
@@ -329,7 +330,6 @@ int					i;
 #endif
 			
 	HideCursor();								// do this again to be sure!	
-	GammaFadeOut();
 
 
 		/* START MUSIC */

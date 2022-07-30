@@ -72,11 +72,8 @@ static	ObjNode	*gBigBoardItems[NUM_BIGBOARD_ITEMS];
 
 void DoBigBoardScreen(void)
 {
-	
-	GammaFadeOut();
-	
 			/* SETUP */
-		
+
 	SetupBigBoardScreen();
 
 	ProcessBigBoard();
@@ -84,7 +81,6 @@ void DoBigBoardScreen(void)
 	
 			/* CLEANUP */
 
-	GammaFadeOut();
 	Wait(30);
 	FreeBigBoardScreen();
 }
@@ -264,7 +260,9 @@ static void ProcessBigBoard(void)
 			gLostGame = true;
 			gGameOver = true;		
 		}		
-	}	
+	}
+
+	OGL_FadeOutScene(DrawBigBoardCallback, MoveObjects);
 }
 
 

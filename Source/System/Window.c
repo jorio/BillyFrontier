@@ -1,7 +1,8 @@
 /****************************/
 /*        WINDOWS           */
-/* (c)2002 Pangea Software  */
 /* By Brian Greenstone      */
+/* (c)2002 Pangea Software  */
+/* (c)2022 Iliyas Jorio     */
 /****************************/
 
 
@@ -21,6 +22,11 @@
 static void MoveFadePane(ObjNode *theNode);
 static void DrawFadePane(ObjNode *theNode, const OGLSetupOutputType* setupInfo);
 
+#define FaderMode			Flag[0]
+#define FaderDone			Flag[1]
+#define FaderSpeed			SpecialF[0]
+#define FaderFrameCounter	Special[0]
+
 /****************************/
 /*    CONSTANTS             */
 /****************************/
@@ -34,6 +40,12 @@ static float	gGammaFadeFrac = 1.0;
 
 int				gGameWindowWidth, gGameWindowHeight;
 
+
+
+void DoSDLMaintenance(void)
+{
+	IMPLEMENT_ME_SOFT();
+}
 
 /****************  INIT WINDOW STUFF *******************/
 
@@ -49,52 +61,59 @@ void InitWindowStuff(void)
 #pragma mark -
 
 
-/**************** GAMMA FADE IN *************************/
+/***************** FREEZE-FRAME FADE OUT ********************/
 
-void GammaFadeIn(void)
+void OGL_FadeOutScene(void (*drawCall)(void), void (*moveCall)(void))
 {
-	while (gGammaFadeFrac < 1.0f)
+#if 0
+	if (gDebugMode)
 	{
-		gGammaFadeFrac += 0.07f;
-		if (gGammaFadeFrac > 1.0f)
-			gGammaFadeFrac = 1.0f;
-
-#if ALLOW_FADE	
-		IMPLEMENT_ME_SOFT(); //  DSpContext_FadeGamma(gDisplayContext, gGammaFadePercent, nil);
-		Wait(1);
-#endif		
+		gGammaFadeFrac = 0;
+		return;
 	}
+#endif
+
+	ObjNode* fader = MakeFadeEvent(false);
+
+	long pFaderFrameCount = fader->FaderFrameCounter;
+
+	while (!fader->FaderDone)
+	{
+		CalcFramesPerSecond();
+		DoSDLMaintenance();
+
+		if (moveCall)
+		{
+			moveCall();
+		}
+
+		// Force fader object to move even if MoveObjects was skipped
+		if (fader->FaderFrameCounter == pFaderFrameCount)	// fader wasn't moved by moveCall
+		{
+			MoveFadePane(fader);
+			pFaderFrameCount = fader->FaderFrameCounter;
+		}
+
+		OGL_DrawScene(gGameViewInfoPtr, drawCall);
+	}
+
+	// Draw one more blank frame
+	gGammaFadeFrac = 0;
+	CalcFramesPerSecond();
+	DoSDLMaintenance();
+	OGL_DrawScene(gGameViewInfoPtr, drawCall);
+
+#if 0
+	if (gGameView->fadeSound)
+	{
+		FadeSound(0);
+		KillSong();
+		StopAllEffectChannels();
+		FadeSound(1);		// restore sound volume for new playback
+	}
+#endif
 }
 
-/**************** GAMMA FADE OUT *************************/
-
-void GammaFadeOut(void)
-{
-	while(gGammaFadeFrac > 0.0f)
-	{
-		gGammaFadeFrac -= 0.07f;
-		if (gGammaFadeFrac < 0.0f)
-			gGammaFadeFrac = 0.0f;
-
-#if ALLOW_FADE	
-		IMPLEMENT_ME_SOFT(); // DSpContext_FadeGamma(gDisplayContext, gGammaFadePercent, nil);
-		Wait(1);
-#endif	
-	}
-}
-
-/********************** GAMMA ON *********************/
-
-void GammaOn(void)
-{
-	if (gGammaFadeFrac != 1.0f)
-	{
-#if ALLOW_FADE	
-		IMPLEMENT_ME_SOFT(); // DSpContext_FadeGamma(MONITORS_TO_FADE, 100, nil);
-#endif		
-		gGammaFadeFrac = 1.0f;
-	}
-}
 
 /****************** CLEANUP DISPLAY *************************/
 
@@ -108,8 +127,7 @@ void CleanupDisplay(void)
 // INPUT:	fadeIn = true if want fade IN, otherwise fade OUT.
 //
 
-
-void MakeFadeEvent(Boolean	fadeIn)
+ObjNode* MakeFadeEvent(Boolean fadeIn)
 {
 ObjNode	*newObj;
 ObjNode		*thisNodePtr;
@@ -122,23 +140,34 @@ ObjNode		*thisNodePtr;
 	{
 		if (thisNodePtr->MoveCall == MoveFadePane)
 		{
-			thisNodePtr->Flag[0] = fadeIn;								// set new mode
-			return;
+			thisNodePtr->FaderMode = fadeIn;							// set new mode
+			thisNodePtr->FaderDone = false;								// set new mode
+			return thisNodePtr;
 		}
 		thisNodePtr = thisNodePtr->NextNode;							// next node
 	}
 
 
 		/* MAKE NEW FADE EVENT */
-			
-	gNewObjectDefinition.genre = CUSTOM_GENRE;
-	gNewObjectDefinition.flags = 0;
-	gNewObjectDefinition.slot = SLOT_OF_DUMB + 1000;
-	gNewObjectDefinition.moveCall = MoveFadePane;
-	newObj = MakeNewObject(&gNewObjectDefinition);
+	
+	NewObjectDefinitionType def =
+	{
+		.genre = CUSTOM_GENRE,
+		.flags = 0,
+		.slot = SLOT_OF_DUMB + 1000,
+		.moveCall = MoveFadePane,
+		.scale = 1,
+	};
+
+	newObj = MakeNewObject(&def);
 	newObj->CustomDrawFunction = DrawFadePane;
 
-	newObj->Flag[0] = fadeIn;
+	newObj->FaderMode = fadeIn;
+	newObj->FaderDone = false;
+	newObj->FaderSpeed = 4.0f;
+	newObj->FaderFrameCounter = 0;
+
+	return newObj;
 }
 
 /***************** MOVE FADE EVENT ********************/
@@ -149,25 +178,33 @@ float	fps = gFramesPerSecondFrac;
 
 			/* SEE IF FADE IN */
 			
-	if (theNode->Flag[0])
+	if (theNode->FaderMode)
 	{
-		gGammaFadeFrac += 4.0f*fps;
+		gGammaFadeFrac += theNode->FaderSpeed * fps;
 		if (gGammaFadeFrac >= 1.0f)										// see if @ 100%
 		{
+			theNode->FaderDone = true;
 			gGammaFadeFrac = 1.0f;
-			DeleteObject(theNode);
 		}
 	}
 	
 			/* FADE OUT */
 	else
 	{
-		gGammaFadeFrac -= 4.0f*fps;
+		gGammaFadeFrac -= theNode->FaderSpeed * fps;
 		if (gGammaFadeFrac <= 0.0f)													// see if @ 0%
 		{
+			theNode->FaderDone = true;
 			gGammaFadeFrac = 0;
-			DeleteObject(theNode);
 		}
+	}
+
+	if (theNode->FaderDone)
+	{
+		if (theNode->FaderMode)			// nuke it if fading in, hold it if fading out
+			DeleteObject(theNode);
+
+		theNode->MoveCall = NULL;		// don't run this again
 	}
 }
 

@@ -122,9 +122,9 @@ void PlayStampede(void)
 	}
 
 		/* CLEANUP LEVEL */
-					
+
+	OGL_FadeOutScene(DefaultDrawCallback, NULL);
 	MyFlushEvents();
-	GammaFadeOut();
 	CleanupStampede();
 	GameScreenToBlack();	
 
@@ -275,7 +275,6 @@ OGLSetupInputType	viewDef;
 #endif
 			
 	HideCursor();								// do this again to be sure!	
-	GammaFadeOut();
 
 
 		/* START MUSIC */

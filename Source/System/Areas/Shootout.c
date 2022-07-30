@@ -145,8 +145,8 @@ void PlayShootout(void)
 
 		/* CLEANUP LEVEL */
 					
+	OGL_FadeOutScene(DefaultDrawCallback, NULL);
 	MyFlushEvents();
-	GammaFadeOut();
 	CleanupShootout();
 	GameScreenToBlack();	
 
@@ -323,7 +323,6 @@ float		x,z;
 #endif
 			
 	HideCursor();								// do this again to be sure!	
-	GammaFadeOut();
 
 
 		/* START MUSIC */

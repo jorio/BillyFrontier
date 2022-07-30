@@ -98,6 +98,10 @@ float	timeout = 40.0f;
 			if (timeout < 0.0f)
 				break;
 		}
+
+			/* FADE OUT */
+
+	OGL_FadeOutScene(DisplayPicture_Draw, MoveObjects);
 		
 	
 			/* CLEANUP */
@@ -106,15 +110,7 @@ float	timeout = 40.0f;
 	MO_DisposeObjectReference(gBackgoundPicture);
 	DisposeAllSpriteGroups();	
 
-
-			/* FADE OUT */
-			
-	GammaFadeOut();
-	
-
 	OGL_DisposeWindowSetup(&gGameViewInfoPtr);	
-	
-	
 }
 
 
@@ -133,8 +129,6 @@ static void DisplayPicture_Draw(OGLSetupOutputType *info)
 
 void DoLegalScreen(void)
 {
-	GammaFadeOut();
-
 	DisplayPicture(":images:Logo.png");
 }
 

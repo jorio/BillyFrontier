@@ -70,9 +70,6 @@ static	float	gMenuItemMaxX[MAX_MENU_ITEMS];
 
 void DoMainMenuScreen(void)
 {
-	
-	GammaFadeOut();
-	
 do_again:	
 			/* SETUP */
 		
@@ -82,7 +79,6 @@ do_again:
 	
 			/* CLEANUP */
 
-	GammaFadeOut();
 	Wait(30);
 	FreeMainMenuScreen();
 
@@ -353,7 +349,7 @@ static void ProcessMainMenu(void)
 	}	
 	
 	
-		
+	OGL_FadeOutScene(DrawMainMenuCallback, MoveObjects);
 		
 }
 
