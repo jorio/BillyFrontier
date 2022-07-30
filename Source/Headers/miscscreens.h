@@ -8,6 +8,7 @@
 
 
 #define	SCORE_NUM_DIGITS	5
+#define SCORE_FMT			"%05d"
 
 
 #define	DARKEN_PANE_Z	450.0f

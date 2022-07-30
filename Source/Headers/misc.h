@@ -14,7 +14,6 @@ extern void	Wait(long);
 extern	void CleanQuit(void);
 extern	void SetMyRandomSeed(unsigned long seed);
 extern	unsigned long MyRandomLong(void);
-extern	void FloatToString(float num, Str255 string);
 extern	Handle	AllocHandle(long size);
 extern	void *AllocPtr(long size);
 void *AllocPtrClear(long size);

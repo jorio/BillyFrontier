@@ -26,12 +26,13 @@ static void MoveHighScoresCyc(ObjNode *theNode);
 static Boolean IsThisScoreInList(u_long score);
 static short AddNewScore(u_long newScore);
 static void SaveHighScores(void);
-static void DrawScoreText(unsigned char *s, float x, float y, float scale);
+static void DrawScoreText(const char* s, float x, float y, float scale);
 
 /***************************/
 /*    CONSTANTS            */
 /***************************/
 
+static const char* kEmptyScorePlaceholder = "--------";
 
 #define	NUM_SCORES		10
 #define	MAX_NAME_LENGTH	19
@@ -358,9 +359,8 @@ static void SetHighScoresSpriteState(void)
 
 static void DrawScoreVerbage(void)
 {
-Str32	s;
-int		texNum,n,i;
-float	x;
+char	s[32];
+int		texNum;
 
 				/* SEE IF DONE */
 				
@@ -390,19 +390,18 @@ float	x;
 			/* DRAW SCORE */
 			/**************/
 
-	NumToString(gScore, s);
-	n = s[0];										// get str len
+	int n = snprintf(s, sizeof(s), "%d", gScore);
 
-	x = 320.0f - ((float)n / 2.0f) * MYSCORE_DIGIT_SPACING - (MYSCORE_DIGIT_SPACING/2);	// calc starting x
+	float x = 320.0f - ((float)n / 2.0f) * MYSCORE_DIGIT_SPACING - (MYSCORE_DIGIT_SPACING/2);	// calc starting x
 
 	
 	gGlobalColorFilter.r = 1;
 	gGlobalColorFilter.g = 1;
 	gGlobalColorFilter.b = 0;
 		
-	for (i = 1; i <= n; i++)
+	for (const char* cursor = s; *cursor; cursor++)
 	{
-		texNum = CharToSprite(s[i]);				// get texture #
+		texNum = CharToSprite(*cursor);				// get texture #
 
 		DrawInfobarSprite2(x, 240, MYSCORE_DIGIT_SPACING * 1.9f, SPRITE_GROUP_FONT, texNum);
 		x += MYSCORE_DIGIT_SPACING;
@@ -422,7 +421,7 @@ static void DrawHighScoresAndCursor(void)
 {
 float	y,cursorY,cursorX;
 int		i,j,n;
-Str32	s;
+char	s[16];
 float	fps = gFramesPerSecondFrac;
 
 		/* DELAY THE DISPLAY? */
@@ -468,10 +467,9 @@ float	fps = gFramesPerSecondFrac;
 			cursorY = y;
 			cursorX = 150.0f;
 			
-			n = gHighScores[i].name[0];						// get str len
-			for (j = 1; j <= gCursorIndex; j++)
-				cursorX += GetCharSpacing(gHighScores[i].name[j], SCORE_TEXT_SPACING);	// calc cursor position
-			
+			const char* name = gHighScores[i].name;						// get str len
+			for (; *name; name++)
+				cursorX += GetCharSpacing(*name, SCORE_TEXT_SPACING);	// calc cursor position
 		}
 		
 				/* DRAW NAME */
@@ -480,17 +478,7 @@ float	fps = gFramesPerSecondFrac;
 	
 				/* DRAW SCORE */
 				
-		NumToString(gHighScores[i].score, s);	// convert score to a text string
-		if (s[0] < SCORE_NUM_DIGITS)				// pad 0's
-		{
-			n = SCORE_NUM_DIGITS-s[0];
-			BlockMove(&s[1],&s[1+n], 20);		// shift existing data over
-			
-			for (j = 0; j < n; j++)				// pad with 0's
-				s[1+j] = '0';
-				
-			s[0] = SCORE_NUM_DIGITS;
-		}
+		snprintf(s, sizeof(s), SCORE_FMT, gHighScores[i].score);
 		DrawScoreText(s, 400, y, SCORE_TEXT_SPACING);
 		
 		y += SCORE_TEXT_SPACING * 1.05f;
@@ -503,17 +491,7 @@ float	fps = gFramesPerSecondFrac;
 		
 	if (!gJustShowScores)
 	{
-		NumToString(gScore, s);						// convert score to a text string
-		if (s[0] < SCORE_NUM_DIGITS)				// pad 0's
-		{
-			n = SCORE_NUM_DIGITS-s[0];
-			BlockMove(&s[1],&s[1+n], 20);			// shift existing data over
-			
-			for (j = 0; j < n; j++)				// pad with 0's
-				s[1+j] = '0';
-				
-			s[0] = SCORE_NUM_DIGITS;
-		}
+		snprintf(s, sizeof(s), SCORE_FMT, gScore);
 		DrawScoreText(s, 270, 56, SCORE_TEXT_SPACING * 2);
 	}	
 	
@@ -641,21 +619,13 @@ err:
 
 void ClearHighScores(void)
 {
-short				i,j;
-char				blank[MAX_NAME_LENGTH] = "               ";
-
-
-			/* INIT SCORES */
-			
-	for (i=0; i < NUM_SCORES; i++)
+	for (int i = 0; i < NUM_SCORES; i++)
 	{
-		gHighScores[i].name[0] = MAX_NAME_LENGTH;
-		for (j=0; j < MAX_NAME_LENGTH; j++)
-			gHighScores[i].name[j+1] = blank[j];
+		snprintf(gHighScores[i].name, sizeof(gHighScores[i].name), "%s", kEmptyScorePlaceholder);
 		gHighScores[i].score = 0;
 	}
 
-	SaveHighScores();		
+	SaveHighScores();
 }
 
 
@@ -684,9 +654,7 @@ got_slot:
 	for (i = NUM_SCORES-1; i > slot; i--)						// make hole
 		gHighScores[i] = gHighScores[i-1];
 	gHighScores[slot].score = newScore;							// set score in structure
-	gHighScores[slot].name[0] = MAX_NAME_LENGTH;				// clear name
-	for (i = 1; i <= MAX_NAME_LENGTH; i++)
-		gHighScores[slot].name[i] = ' ';						// clear to all spaces
+	snprintf(gHighScores[slot].name, sizeof(gHighScores[slot].name), "%s", kEmptyScorePlaceholder);		// clear name
 	return(slot);
 }
 
@@ -719,22 +687,17 @@ short	slot;
 
 /***************** DRAW SCORE TEXT ***********************/
 
-static void DrawScoreText(unsigned char *s, float x, float y, float scale)
+static void DrawScoreText(const char* s, float x, float y, float scale)
 {
-int	n,i,texNum;
-
-	n = s[0];										// get str len
-	
-	for (i = 1; i <= n; i++)
+	for (const char* cursor = s; *cursor; cursor++)
 	{
-		texNum = CharToSprite(s[i]);				// get texture #
+		char c = *cursor;
+
+		int texNum = CharToSprite(c);				// get texture #
 		if (texNum != -1)
 			DrawInfobarSprite2(x, y, scale, SPRITE_GROUP_FONT, texNum);
 			
-		x += GetCharSpacing(s[i], scale);
+		x += GetCharSpacing(c, scale);
 	}
-
-
-
 }
 

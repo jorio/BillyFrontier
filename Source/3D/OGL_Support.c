@@ -1661,12 +1661,10 @@ void OGL_DrawString(Str255 s, GLint x, GLint y)
 
 void OGL_DrawFloat(float f, GLint x, GLint y)
 {
+	char s[16];
 
-Str255	s;
-
-	FloatToString(f,s);
-	OGL_DrawString(s,x,y);
-	
+	snprintf(s, sizeof(s), "%f", f);
+	OGL_DrawString(s, x, y);
 }
 
 
@@ -1675,10 +1673,8 @@ Str255	s;
 
 void OGL_DrawInt(int f, GLint x, GLint y)
 {
+	char s[16];
 
-Str255	s;
-
-	NumToString(f,s);
-	OGL_DrawString(s,x,y);
-
+	snprintf(s, sizeof(s), "%d", f);
+	OGL_DrawString(s, x, y);
 }
