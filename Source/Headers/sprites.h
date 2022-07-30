@@ -13,9 +13,11 @@ enum
 
 typedef struct
 {
-	int				width,height;
+	int32_t			width;
+	int32_t			height;
 	float			aspectRatio;			// h/w
-	GLint			srcFormat, destFormat;
+	GLint			srcFormat;
+	GLint			destFormat;
 	MetaObjectPtr	materialObject;
 }SpriteType;
 

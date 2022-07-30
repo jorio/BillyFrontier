@@ -86,7 +86,7 @@ enum
 /*********************/
 
 SpriteType	*gSpriteGroupList[MAX_SPRITE_GROUPS];
-long		gNumSpritesInGroupList[MAX_SPRITE_GROUPS];		// note:  this must be long's since that's what we read from the sprite file!
+int32_t		gNumSpritesInGroupList[MAX_SPRITE_GROUPS];		// note:  this must be int32_t's since that's what we read from the sprite file!
 
 
 
@@ -164,10 +164,10 @@ MOMaterialData	matData;
 		DoFatalAlert("LoadSpriteFile: FSpOpenDF failed");
 
 		/* READ # SPRITES IN THIS FILE */
-		
-	count = sizeof(long);
-	FSRead(refNum, &count, &gNumSpritesInGroupList[groupNum]);
 
+	count = sizeof(gNumSpritesInGroupList[0]);
+	FSRead(refNum, &count, &gNumSpritesInGroupList[groupNum]);
+	Byteswap32SignedRW(&gNumSpritesInGroupList[groupNum]);
 
 		/* ALLOCATE MEMORY FOR SPRITE RECORDS */
 		
@@ -182,47 +182,40 @@ MOMaterialData	matData;
 
 	for (i = 0; i < gNumSpritesInGroupList[groupNum]; i++)
 	{
-		int		bufferSize;
 		u_char *buffer;
-	
+
+		struct
+		{
+			int32_t		width;
+			int32_t		height;
+			float		aspectRatio;
+			int32_t		srcFormat;
+			int32_t		destFormat;
+			int32_t		bufferSize;
+		} spriteHeader;
+
+		count = sizeof(spriteHeader);
+		FSRead(refNum, &count, &spriteHeader);
+		ByteswapStructs("iifiii", sizeof(spriteHeader), 1, &spriteHeader);
+
 			/* READ WIDTH/HEIGHT, ASPECT RATIO */
-			
-		count = sizeof(int);								
-		FSRead(refNum, &count, &gSpriteGroupList[groupNum][i].width);		
-		count = sizeof(int);								
-		FSRead(refNum, &count, &gSpriteGroupList[groupNum][i].height);		
-		count = sizeof(float);								
-		FSRead(refNum, &count, &gSpriteGroupList[groupNum][i].aspectRatio);		
-	
-	
-			/* READ SRC FORMAT */
-			
-		count = sizeof(GLint);								
-		FSRead(refNum, &count, &gSpriteGroupList[groupNum][i].srcFormat);		
 
+		gSpriteGroupList[groupNum][i].width			= spriteHeader.width;
+		gSpriteGroupList[groupNum][i].height		= spriteHeader.height;
+		gSpriteGroupList[groupNum][i].aspectRatio	= spriteHeader.aspectRatio;
+		gSpriteGroupList[groupNum][i].srcFormat		= spriteHeader.srcFormat;
+		gSpriteGroupList[groupNum][i].destFormat	= spriteHeader.destFormat;
 
-			/* READ DEST FORMAT */
-			
-		count = sizeof(GLint);	
-		FSRead(refNum, &count, &gSpriteGroupList[groupNum][i].destFormat);		
-
-
-			/* READ BUFFER SIZE */
-			
-		count = sizeof(int);	
-		FSRead(refNum, &count, &bufferSize);		
-			
-		buffer = AllocPtr(bufferSize);							// alloc memory for buffer
+		buffer = AllocPtr(spriteHeader.bufferSize);							// alloc memory for buffer
 		if (buffer == nil)
 			DoFatalAlert("LoadSpriteFile: AllocPtr failed");
-		
-	
+
+
 			/* READ THE SPRITE PIXEL BUFFER */
-			
-		count = bufferSize;				
+
+		count = spriteHeader.bufferSize;
 		FSRead(refNum, &count, buffer);
-	
-	
+
 
 				/*****************************/
 				/* CREATE NEW TEXTURE OBJECT */
@@ -522,7 +515,7 @@ float	width = 0;
 		DrawInfobarSprite2_Centered(x, y, scale, SPRITE_GROUP_FONT, sp);
 	
 		x += GetCharSpacing(s[i], scale);								
-	
+
 	}	
 
 

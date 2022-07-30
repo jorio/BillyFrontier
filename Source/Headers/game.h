@@ -190,7 +190,7 @@ extern long gMouseDeltaX;
 extern long gMouseDeltaY;
 extern long gNumFences;
 extern long gNumSplines;
-extern long gNumSpritesInGroupList[MAX_SPRITE_GROUPS];
+extern int32_t gNumSpritesInGroupList[MAX_SPRITE_GROUPS];
 extern long gNumSuperTilesDeep;
 extern long gNumSuperTilesWide;
 extern long gNumUniqueSuperTiles;
