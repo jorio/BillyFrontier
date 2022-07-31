@@ -445,7 +445,7 @@ void DrawSprite(int	group, int type, float x, float y, float scale, float rot, u
 
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
-	glOrtho(0, 640, 480, 0, 0, 1);
+	OGL_Ortho2DLogicalSize();
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();					
 

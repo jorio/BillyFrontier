@@ -380,7 +380,6 @@ int		oldTime, newTime;
 static void UpdateTargetPracticeCrosshairs(void)
 {
 float	fps = gFramesPerSecondFrac;
-Point	mousePt;
 OGLPoint2D	windowPt;
 OGLRay		ray;
 ObjNode		*pickedObj;
@@ -391,12 +390,8 @@ OGLPoint3D	worldHitCoord;
 			/* UPDATE CROSSHAIR POSITION */
 			/*****************************/
 
-	GetMouseCoord(&mousePt);
-	gCrosshairsCoord.x = ((float)mousePt.h / ((float)gGameWindowWidth * .5f)) * 640.0f;
-	gCrosshairsCoord.y = ((float)mousePt.v / ((float)gGameWindowHeight * .5f)) * 480.0f;
+	gCrosshairsCoord = GetLogicalMouseCoord();
 
-
-		
 	if (gCrosshairsCoord.y < 0.0f)							// check y coord
 		gCrosshairsCoord.y = 0;
 	else
@@ -441,9 +436,8 @@ shoot:
 		{		
 			
 				/* SEE IF HIT ANYTHING */
-						
-			windowPt.x = gCrosshairsCoord.x * (gGameWindowWidth/640.0f);			// convert cursor coords to grafport window coords
-			windowPt.y = gCrosshairsCoord.y * (gGameWindowHeight/480.0f);
+
+			windowPt = LogicalPointToWindow(gCrosshairsCoord);						// convert cursor coords to grafport window coords
 			OGL_GetWorldRayAtScreenPoint(&windowPt, &ray);							// get a world-space ray for picking on the screen
 
 			pickedObj = OGL_DoRayCollision(&ray, &worldHitCoord, STATUS_BIT_HIDDEN|STATUS_BIT_ISCULLED, CTYPE_PICKABLE);
@@ -501,9 +495,8 @@ float	speed;
 
 					/* GET BULLET INIT INFO */
 
-	screenPt.x = (gCrosshairsCoord.x / 639.0f) * gGameWindowWidth;				// calc screen coords of crosshairs
-	screenPt.y = (gCrosshairsCoord.y / 479.0f) * gGameWindowHeight;
-					
+	screenPt = LogicalPointToWindow(gCrosshairsCoord);				// calc screen coords of crosshairs
+
 	OGL_GetWorldRayAtScreenPoint(&screenPt, &ray);								// get bullet direction vector
 	bulletStart.x = gGameViewInfoPtr->cameraPlacement.cameraLocation.x + (ray.direction.x * 300.0f);	// get bullet start coord
 	bulletStart.y = gGameViewInfoPtr->cameraPlacement.cameraLocation.y + (ray.direction.y * 300.0f);

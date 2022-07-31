@@ -138,6 +138,8 @@ extern char gTextInput[SDL_TEXTINPUTEVENT_TEXT_SIZE];
 extern float **gMapYCoords;
 extern float **gMapYCoordsOriginal;
 extern float **gVertexShading;
+extern float g2DLogicalWidth;
+extern float g2DLogicalHeight;
 extern float gAutoFadeEndDist;
 extern float gAutoFadeRange_Frac;
 extern float gAutoFadeStartDist;

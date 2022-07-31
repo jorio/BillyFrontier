@@ -22,15 +22,14 @@ static void DrawDuelInfobar(void);
 static void DrawInfobarSprite_Rotated(float x, float y, float size, short texNum, float rot);
 static void DrawInfobarSprite_Centered(float x, float y, float size, short texNum);
 static void DrawInfobarSprite_Scaled(float x, float y, float scaleX, float scaleY, short texNum);
-//static void Infobar_DrawPesos(void);
-static void Infobar_DrawAmmo(void);
+static void Infobar_DrawAmmo(OGLPoint2D offset);
 static void Infobar_DrawDuelSequence(void);
 static void Infobar_DrawReflex(void);
 static void DrawShootoutInfobar(void);
 static void Infobar_DrawCrosshairs(void);
-static void Infobar_DrawShield(void);
-static void Infobar_DrawLives(void);
-static void Infobar_DrawScore(void);
+static void Infobar_DrawShield(OGLPoint2D offset);
+static void Infobar_DrawLives(OGLPoint2D offset);
+static void Infobar_DrawScore(OGLPoint2D offset);
 static void DrawStampedeInfobar(void);
 static void DrawTargetPracticeInfobar(void);
 
@@ -77,7 +76,7 @@ static void DrawTargetPracticeInfobar(void);
 #define LIVES_SCALE		(STAT_BAR_HEIGHT * .53f)
 
 
-#define	TIMER_X			530.0f
+#define	TIMER_XFROMRIGHT	(-110.0f)
 #define	TIMER_Y			2.0f
 #define	TIMER_SCALE		32.0f
 
@@ -136,7 +135,7 @@ void SetInfobarSpriteState(float anaglyphZ)
 			glOrtho(anaglyphZ, 640+anaglyphZ, 480.0f, 0, 0, 1);						
 	}
 	else
-		glOrtho(0, 640, 480.0f, 0, 0, 1);
+		OGL_Ortho2DLogicalSize();
 
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();					
@@ -468,18 +467,19 @@ float	sep = scale * DIGIT_WIDTH;
 
 /*********************** INFOBAR: DRAW LIVES ***********************/
 
-static void Infobar_DrawLives(void)
+static void Infobar_DrawLives(OGLPoint2D offset)
 {
-int		i,n;
-float	y = LIVES_Y;
+int		n;
+float	x = offset.x + LIVES_X;
+float	y = offset.y + LIVES_Y;
 
 	n = gPlayerInfo.lives;
 	if (n > 3)
 		n = 3;
 
-	for (i = 0; i < n; i++)
+	for (int i = 0; i < n; i++)
 	{
-		DrawInfobarSprite_Centered(LIVES_X, y, LIVES_SCALE, INFOBAR_SObjType_Heart);
+		DrawInfobarSprite_Centered(x, y, LIVES_SCALE, INFOBAR_SObjType_Heart);
 
 		y += STAT_BAR_HEIGHT * .3f;
 	}
@@ -493,13 +493,15 @@ float	y = LIVES_Y;
 
 static void DrawDuelInfobar(void)
 {
-	DrawInfobarSprite3(0, 0, STAT_BAR_HEIGHT, INFOBAR_SObjType_HealthFrame);
-	Infobar_DrawScore();
-	Infobar_DrawLives();
+	OGLPoint2D topLeft = WindowPointToLogical((OGLPoint2D) { 0, 0 });
+
+	DrawInfobarSprite3(topLeft.x, topLeft.y, STAT_BAR_HEIGHT, INFOBAR_SObjType_HealthFrame);
+	Infobar_DrawScore(topLeft);
+	Infobar_DrawLives(topLeft);
 	
 
 	DrawInfobarSprite2(0, 480-(640/8), 640, SPRITE_GROUP_LEVELSPECIFIC, DUEL_SObjType_StatBar);
-	Infobar_DrawDuelSequence();	
+	Infobar_DrawDuelSequence();
 	Infobar_DrawReflex();
 }
 
@@ -598,12 +600,14 @@ static float	blinkTimer = 0;
 
 static void DrawShootoutInfobar(void)
 {
-	DrawInfobarSprite3(0, 0, STAT_BAR_HEIGHT, INFOBAR_SObjType_HealthAmmoShieldFrame);
-//	Infobar_DrawPesos();
+	OGLPoint2D topLeft = WindowPointToLogical((OGLPoint2D) { 0, 0 });
 
-	Infobar_DrawShield();
-	Infobar_DrawAmmo();
-	Infobar_DrawLives();
+	DrawInfobarSprite3(topLeft.x, topLeft.y, STAT_BAR_HEIGHT, INFOBAR_SObjType_HealthAmmoShieldFrame);
+
+	Infobar_DrawShield(topLeft);
+	Infobar_DrawAmmo(topLeft);
+	Infobar_DrawLives(topLeft);
+	Infobar_DrawScore(topLeft);
 
 	if (gShootoutMode != SHOOTOUT_MODE_PLAYERKILLED)
 		Infobar_DrawCrosshairs();
@@ -612,19 +616,16 @@ static void DrawShootoutInfobar(void)
 	{
 		DrawInfobarSprite2_Centered(640.0/2, 420.0, 80, SPRITE_GROUP_LEVELSPECIFIC, SHOOTOUT_SObjType_Continue);
 	}
-	
-	Infobar_DrawScore();
-	
 }
 
 
 
 /********************** INFOBAR: DRAW AMMO *****************************/
 
-static void Infobar_DrawAmmo(void)
+static void Infobar_DrawAmmo(OGLPoint2D offset)
 {
-int		i, numBullets, numClips;
-OGLPoint2D	bulletCoords[6] =
+int		numBullets, numClips;
+static const OGLPoint2D	bulletCoords[6] =
 {
 	STAT_BAR_HEIGHT * 2.57f,		STAT_BAR_HEIGHT * .23f,
 	STAT_BAR_HEIGHT * 2.36f,		STAT_BAR_HEIGHT * .35f,
@@ -668,9 +669,9 @@ OGLPoint2D	bulletCoords[6] =
 		
 				/* DRAW BULLETS */
 				
-		for (i = 0; i < numBullets; i++)
+		for (int i = 0; i < numBullets; i++)
 		{
-			DrawInfobarSprite_Centered(bulletCoords[i].x, bulletCoords[i].y, STAT_BAR_HEIGHT * .2f, INFOBAR_SObjType_Bullet);
+			DrawInfobarSprite_Centered(offset.x + bulletCoords[i].x, offset.y + bulletCoords[i].y, STAT_BAR_HEIGHT * .2f, INFOBAR_SObjType_Bullet);
 		}	
 	}
 
@@ -678,7 +679,7 @@ OGLPoint2D	bulletCoords[6] =
 
 			/* DRAW # OF CLIPS */
 			
-	Infobar_DrawNumber(numClips, CLIPS_X, CLIPS_Y, CLIPS_SCALE, 2, true);
+	Infobar_DrawNumber(numClips, offset.x + CLIPS_X, offset.y + CLIPS_Y, CLIPS_SCALE, 2, true);
 }
 
 
@@ -687,17 +688,18 @@ OGLPoint2D	bulletCoords[6] =
 
 static void Infobar_DrawCrosshairs(void)
 {
-		DrawInfobarSprite2_Centered(gCrosshairsCoord.x, gCrosshairsCoord.y, 50, SPRITE_GROUP_LEVELSPECIFIC, SHOOTOUT_SObjType_Crosshairs);
+	DrawInfobarSprite2_Centered(gCrosshairsCoord.x, gCrosshairsCoord.y, 50, SPRITE_GROUP_LEVELSPECIFIC, SHOOTOUT_SObjType_Crosshairs);
 }
 
 
 
 /********************** INFOBAR: DRAW SHIELD **********************/
 
-static void Infobar_DrawShield(void)
+static void Infobar_DrawShield(OGLPoint2D offset)
 {
-float	y = 33.5;
-const	float x = 203.0f;
+const	float x	= offset.x + 203.0f; 
+float	y		= offset.y + 33.5;
+
 
 	glDisable(GL_TEXTURE_2D);
 
@@ -719,7 +721,6 @@ const	float x = 203.0f;
 
 
 	glColor3f(1,1,1);
-
 }
 
 
@@ -731,16 +732,11 @@ const	float x = 203.0f;
 
 static void DrawStampedeInfobar(void)
 {
-	DrawInfobarSprite3(0, 0, STAT_BAR_HEIGHT, INFOBAR_SObjType_HealthFrame);
-	Infobar_DrawScore();
-	Infobar_DrawLives();
+	OGLPoint2D topLeft = WindowPointToLogical((OGLPoint2D) { 0, 0 });
 
-
-//	DrawInfobarSprite3(0, 0, STAT_BAR_HEIGHT, INFOBAR_SObjType_HealthAmmoShieldFrame);
-//	Infobar_DrawShield();
-//	Infobar_DrawAmmo();
-//	Infobar_DrawLives();
-//	Infobar_DrawScore();
+	DrawInfobarSprite3(topLeft.x, topLeft.y, STAT_BAR_HEIGHT, INFOBAR_SObjType_HealthFrame);
+	Infobar_DrawScore(topLeft);
+	Infobar_DrawLives(topLeft);
 }
 
 
@@ -748,25 +744,28 @@ static void DrawStampedeInfobar(void)
 
 static void DrawTargetPracticeInfobar(void)
 {
+	OGLPoint2D topLeft	= WindowPointToLogical((OGLPoint2D) { 0, 0 });
+	OGLPoint2D topRight	= WindowPointToLogical((OGLPoint2D) { gGameWindowWidth, 0 });
+
 	gGlobalTransparency = 1.0f;			// set this to see if it fixes the random invisible cursor problem
 
-	DrawInfobarSprite3(0, 0, STAT_BAR_HEIGHT, INFOBAR_SObjType_HealthAmmoShieldFrame);
+	DrawInfobarSprite3(topLeft.x, topLeft.y, STAT_BAR_HEIGHT, INFOBAR_SObjType_HealthAmmoShieldFrame);
 
-	Infobar_DrawScore();
+	Infobar_DrawScore(topLeft);
 	
-	Infobar_DrawAmmo();
-	Infobar_DrawLives();
-	Infobar_DrawShield();
+	Infobar_DrawAmmo(topLeft);
+	Infobar_DrawLives(topLeft);
+	Infobar_DrawShield(topLeft);
 
 	
 			/* DRAW TIMER */
 			
-	DrawInfobarSprite3(475, 0, STAT_BAR_HEIGHT+2, INFOBAR_SObjType_TimerFrame);
-	Infobar_DrawNumber(gTargetPracticeTimer + .5f, TIMER_X, TIMER_Y, TIMER_SCALE, 3, false);
+	DrawInfobarSprite3(topRight.x - 165, topRight.y, STAT_BAR_HEIGHT+2, INFOBAR_SObjType_TimerFrame);
+	Infobar_DrawNumber(gTargetPracticeTimer + .5f, topRight.x + TIMER_XFROMRIGHT, topRight.y + TIMER_Y, TIMER_SCALE, 3, false);
 	
 			/* DRAW PEPPER COUNT */
 
-	Infobar_DrawNumber(gPepperCount, TIMER_X + 86.0f, TIMER_Y, TIMER_SCALE, 1, false);
+	Infobar_DrawNumber(gPepperCount, topRight.x + TIMER_XFROMRIGHT + 86.0f, topRight.y + TIMER_Y, TIMER_SCALE, 1, false);
 			
 
 	Infobar_DrawCrosshairs();	
@@ -777,11 +776,9 @@ static void DrawTargetPracticeInfobar(void)
 
 /****************** INFOBAR: DRAW SCORE *******************/
 
-static void Infobar_DrawScore(void)
+static void Infobar_DrawScore(OGLPoint2D offset)
 {
-	Infobar_DrawNumber(gScore, SCORE_X, SCORE_Y, SCORE_SCALE, SCORE_NUM_DIGITS, true);
-
-
+	Infobar_DrawNumber(gScore, offset.x + SCORE_X, offset.y + SCORE_Y, SCORE_SCALE, SCORE_NUM_DIGITS, true);
 }
 
 

@@ -305,13 +305,14 @@ Boolean AreAnyNewKeysPressed(void)
 
 /***************** GET MOUSE COORD *****************/
 
-void GetMouseCoord(Point *point)
+OGLPoint2D GetLogicalMouseCoord(void)
 {
-	int x;
-	int y;
-	SDL_GetMouseState(&x, &y);
-	point->h = x;
-	point->v = y;
+	int windowX = 0;
+	int windowY = 0;
+	SDL_GetMouseState(&windowX, &windowY);
+	OGLPoint2D windowPt = { windowX + 0.5f, windowY + 0.5f };
+	return WindowPointToLogical(windowPt);
+
 #if 0
 	// OS 9 code
 	{	

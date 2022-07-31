@@ -2,11 +2,7 @@
 // ogl_support.h
 //
 
-#ifndef OGL_SUP
-#define OGL_SUP
-
-// Externals
-#include "game.h"
+#pragma once
 
 #define	MAX_FILL_LIGHTS		4
 #define	MAX_TEXTURES		300
@@ -288,5 +284,6 @@ void OGL_DrawString(Str255 s, GLint x, GLint y);
 void OGL_DrawFloat(float f, GLint x, GLint y);
 void OGL_DrawInt(int f, GLint x, GLint y);
 
-
-#endif
+void OGL_Ortho2DLogicalSize(void);
+OGLPoint2D WindowPointToLogical(OGLPoint2D windowPoint);
+OGLPoint2D LogicalPointToWindow(OGLPoint2D logicalPoint);

@@ -88,7 +88,7 @@ extern	void ReadKeyboard(void);
 void TurnOnISp(void);
 void TurnOffISp(void);
 
-void GetMouseCoord(Point *point);
+OGLPoint2D GetLogicalMouseCoord(void);
 
 void DoSDLMaintenance(void);
 Boolean GetKeyState(uint16_t sdlScancode);

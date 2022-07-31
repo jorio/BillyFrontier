@@ -41,6 +41,9 @@ static void	ConvertTextureToGrey(void *imageMemory, short width, short height, G
 /*    VARIABLES      */
 /*********************/
 
+float					g2DLogicalWidth = 640;
+float					g2DLogicalHeight = 480;
+
 		/* THE ANAGLYPH SCALE FACTOR */
 		//
 		// This changes the scale of the focal length and eye separation below.
@@ -1265,6 +1268,12 @@ OGLLightDefType	*lights;
 	glViewport(x,y, w, h);
 	gCurrentAspectRatio = (float)w/(float)h;
 	
+	// Compute logical width & height for 2D elements
+	g2DLogicalHeight = 480.0f;
+	if (gCurrentAspectRatio < 4.0f / 3.0f)
+		g2DLogicalWidth = 640.0f;
+	else
+		g2DLogicalWidth = 480.0f * gCurrentAspectRatio;
 	
 			/* INIT PROJECTION MATRIX */
 			
@@ -1533,7 +1542,7 @@ void OGL_DrawString(Str255 s, GLint x, GLint y)
 	glLoadIdentity();
 	glMatrixMode (GL_PROJECTION);
 	glLoadIdentity();
-	glOrtho(0, 640, 0, 480, -10.0, 10.0);
+	OGL_Ortho2DLogicalSize();//glOrtho(0, 640, 0, 480, -10.0, 10.0);
 	
 	glDisable(GL_LIGHTING);
 	
@@ -1568,4 +1577,41 @@ void OGL_DrawInt(int f, GLint x, GLint y)
 
 	snprintf(s, sizeof(s), "%d", f);
 	OGL_DrawString(s, x, y);
+}
+
+
+#pragma mark - "2D viewport with 640x480-ish logical size"
+
+
+#define logicalXOffset (0.5f * (g2DLogicalWidth - 640.0f))
+
+void OGL_Ortho2DLogicalSize(void)
+{
+	glOrtho(-logicalXOffset, 640 + logicalXOffset, 480, 0, 0, 1);
+}
+
+OGLPoint2D WindowPointToLogical(OGLPoint2D windowPoint)
+{
+	float fx = g2DLogicalWidth / gGameWindowWidth;
+	float fy = g2DLogicalHeight / gGameWindowHeight;
+
+	return (OGLPoint2D)
+	{
+		fx * windowPoint.x - logicalXOffset,
+		fy * windowPoint.y
+	};
+}
+
+OGLPoint2D LogicalPointToWindow(OGLPoint2D logicalPoint)
+{
+	float fx = gGameWindowWidth / g2DLogicalWidth;
+	float fy = gGameWindowHeight / g2DLogicalHeight;
+
+	float dx = 0.5f * (g2DLogicalWidth - 640.0f);
+	
+	return (OGLPoint2D)
+	{
+		fx * (logicalPoint.x + logicalXOffset),
+		fy * logicalPoint.y
+	};
 }

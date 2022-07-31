@@ -452,15 +452,11 @@ static void DrawMainMenuCallback(void)
 
 static void MoveCursor(ObjNode *theNode)
 {
-Point	pt;
-
-	GetMouseCoord(&pt);
-
-	theNode->Coord.x = (pt.h / (float)gGameWindowWidth) * 640.0f;
-	theNode->Coord.y = (pt.v / (float)gGameWindowHeight) * 480.0f;
+	OGLPoint2D mouse = GetLogicalMouseCoord();
+	theNode->Coord.x = mouse.x;
+	theNode->Coord.y = mouse.y;
 
 	UpdateObjectTransforms(theNode);
-
 }
 
 

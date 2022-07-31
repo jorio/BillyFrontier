@@ -260,9 +260,9 @@ int	oldSelection = gPausedMenuSelection;
 	{
 		if (gMouseDeltaY != 0)
 		{
-			Point	pt;
-			GetMouseCoord(&pt);
-			gPausedMenuSelection = ((float)pt.v / ((float)gGameWindowHeight * .2f)) * 3.0f;
+			OGLPoint2D mouse = GetLogicalMouseCoord();
+//			gPausedMenuSelection = ((float)pt.v / ((float)gGameWindowHeight * .2f)) * 3.0f;
+			gPausedMenuSelection = (mouse.y / (g2DLogicalHeight * .2f)) * 3.0f;
 			if (gPausedMenuSelection < 0)
 				gPausedMenuSelection = 0; 
 			if (gPausedMenuSelection > 2)

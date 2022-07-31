@@ -469,7 +469,6 @@ static void UpdateCrosshairs(void)
 float	minX,maxX;
 float	fps = gFramesPerSecondFrac;
 Boolean	allowRot;
-Point	mousePt;
 
 
 	if (gShootoutMode == SHOOTOUT_MODE_PLAYERKILLED)
@@ -496,37 +495,36 @@ Point	mousePt;
 
 			/* GET MOUSE DELTAS & MOVE CROSSHAIRS */
 
-	GetMouseCoord(&mousePt);
-
+	OGLPoint2D mousePt = GetLogicalMouseCoord();
 
 				/* CHECK REAL CURSOR WINDOW PINNING TO OUR LOCAL WINDOW */
 				
-	if (mousePt.h > gCursorPinRight)
+	if (mousePt.x > gCursorPinRight)
 	{
-		gCursorPinRight = mousePt.h;
+		gCursorPinRight = mousePt.x;
 		gCursorPinLeft = gCursorPinRight - 640;
 	}
 	else
-	if (mousePt.h < gCursorPinLeft)
+	if (mousePt.x < gCursorPinLeft)
 	{
-		gCursorPinLeft = mousePt.h;
+		gCursorPinLeft = mousePt.x;
 		gCursorPinRight = gCursorPinLeft + 640;
 	}
 
-	if (mousePt.v > gCursorPinBottom)
+	if (mousePt.y > gCursorPinBottom)
 	{
-		gCursorPinBottom = mousePt.v;
+		gCursorPinBottom = mousePt.y;
 		gCursorPinTop = gCursorPinBottom - 480;
 	}
 	else
-	if (mousePt.v < gCursorPinTop)
+	if (mousePt.y < gCursorPinTop)
 	{
-		gCursorPinTop = mousePt.v;
+		gCursorPinTop = mousePt.y;
 		gCursorPinBottom = gCursorPinTop + 480;
 	}
 
-	gCrosshairsCoord.x = (float)(mousePt.h - gCursorPinLeft);
-	gCrosshairsCoord.y = (float)(mousePt.v - gCursorPinTop);
+	gCrosshairsCoord.x = (float)(mousePt.x - gCursorPinLeft);
+	gCrosshairsCoord.y = (float)(mousePt.y - gCursorPinTop);
 
 		
 	if (gCrosshairsCoord.y < 0.0f)							// check y coord
@@ -622,9 +620,8 @@ int		i, numBulletsInClip;
 
 					/* GET BULLET INIT INFO */
 
-	screenPt.x = (gCrosshairsCoord.x / 639.0f) * gGameWindowWidth;				// calc screen coords of crosshairs
-	screenPt.y = (gCrosshairsCoord.y / 479.0f) * gGameWindowHeight;
-					
+	screenPt = LogicalPointToWindow(gCrosshairsCoord);
+
 	OGL_GetWorldRayAtScreenPoint(&screenPt, &ray);								// get bullet direction vector
 	bulletStart.x = gPlayerInfo.camera.cameraLocation.x + (ray.direction.x * 40.0f);	// get bullet start coord
 	bulletStart.y = gPlayerInfo.camera.cameraLocation.y + (ray.direction.y * 40.0f);
