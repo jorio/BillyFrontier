@@ -380,8 +380,7 @@ unsigned long	someLong;
 	DoLegalScreen();
 	SDL_ShowCursor(0);
 
-
-//NewScore(true);	//----------
+//gScore = 12345; NewScore(false);	//----------
 
 		/* MAIN LOOP */
 			

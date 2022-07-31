@@ -46,7 +46,6 @@ int				gGameWindowWidth, gGameWindowHeight;
 
 void InitWindowStuff(void)
 {
-	IMPLEMENT_ME_SOFT();
 	SDL_GetWindowSize(gSDLWindow, &gGameWindowWidth, &gGameWindowHeight);
 }
 

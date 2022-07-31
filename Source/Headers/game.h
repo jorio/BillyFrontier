@@ -135,6 +135,7 @@ extern SuperTileStatus **gSuperTileStatusGrid;
 extern TerrainItemEntryType **gMasterItemList;
 extern WaterDefType **gWaterListHandle;
 extern WaterDefType *gWaterList;
+extern char gTextInput[SDL_TEXTINPUTEVENT_TEXT_SIZE];
 extern float **gMapYCoords;
 extern float **gMapYCoordsOriginal;
 extern float **gVertexShading;

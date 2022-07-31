@@ -18,10 +18,8 @@
 static void SetupScoreScreen(void);
 static void FreeScoreScreen(void);
 static void DrawHighScoresCallback(void);
-static void DrawScoreVerbage(void);
 static void DrawHighScoresAndCursor(void);
 static void SetHighScoresSpriteState(void);
-static void StartEnterName(void);
 static void MoveHighScoresCyc(ObjNode *theNode);
 static Boolean IsThisScoreInList(u_long score);
 static short AddNewScore(u_long newScore);
@@ -32,13 +30,12 @@ static void DrawScoreText(const char* s, float x, float y, float scale);
 /*    CONSTANTS            */
 /***************************/
 
-static const char* kEmptyScorePlaceholder = "--------";
+static const char* kScoreCharset = " .-?!'0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
 #define	NUM_SCORES		10
 #define	MAX_NAME_LENGTH	19
 
 #define	SCORE_TEXT_SPACING	25.0f
-
 
 enum
 {
@@ -66,12 +63,21 @@ HighScoreType	gHighScores[NUM_SCORES];
 
 static	float	gFinalScoreTimer,gFinalScoreAlpha, gCursorFlux = 0;
 
-static	short	gNewScoreSlot,gCursorIndex;
+static	short	gNewScoreSlot = -1;
+static	short	gCursorIndex = 0;
 
-static	Boolean	gExitHighScores, gJustShowScores;
+static	Boolean	gExitHighScores = false;
+static	Boolean	gJustShowScores = false;
 
 static	float	gShowScoreDelay;
 
+
+
+static void ClearHighScoreName(char name[MAX_NAME_LENGTH + 1])
+{
+	memset(name, ' ', MAX_NAME_LENGTH);
+	name[MAX_NAME_LENGTH] = '\0';
+}
 
 /*********************** NEW SCORE ***********************************/
 //
@@ -80,7 +86,6 @@ static	float	gShowScoreDelay;
 
 void NewScore(Boolean justShowScores)
 {
-
 	gJustShowScores = justShowScores;
 		
 	gAllowAudioKeys = false;					// dont interfere with name editing
@@ -114,80 +119,80 @@ void NewScore(Boolean justShowScores)
 		MoveObjects();				
 		OGL_DrawScene(DrawHighScoresCallback);	
 		
-		
+
+		ReadKeyboard();
+
 				/***********************/
 				/* JUST SHOWING SCORES */
 				/***********************/
 		
 		if (justShowScores || (gNewScoreSlot == -1))
 		{
-			ReadKeyboard();
-
 			if (gShowScoreDelay <= 0.0f)
 			{
 				if (UserWantsOut() || GetNewClickState(1))
 					gExitHighScores = true;		
 			}
 		}
-		
-		
 				/*****************************/
 				/* SEE IF USER ENTERING NAME */
 				/*****************************/
-		
-		else	
+		else if (gShowScoreDelay > 0.0f)
 		{
-			IMPLEMENT_ME();
-#if 0
-			EventRecord 	theEvent;
-			
-			GetNextEvent(keyDownMask|autoKeyMask, &theEvent);							// poll event queue
-			if ((theEvent.what == keyDown) || (theEvent.what == autoKeyMask))			// see if key pressed
+			InvalidateAllInputs();
+		}
+		else
+		{
+			if (GetNewKeyState(SDL_SCANCODE_RETURN) || GetNewKeyState(SDL_SCANCODE_KP_ENTER))
 			{
-				char	theChar = theEvent.message & charCodeMask;						// extract key
-				int		i;
-		
-				switch(theChar)
-				{
-					case	CHAR_RETURN:
-					case	CHAR_ENTER:
-							gExitHighScores = true;
-							break;
-							
-					case	CHAR_LEFT:
-							if (gCursorIndex > 0)
-								gCursorIndex--;
-							break;
-
-					case	CHAR_RIGHT:
-							if (gCursorIndex < (MAX_NAME_LENGTH-1))
-								gCursorIndex++;
-							else
-								gCursorIndex = MAX_NAME_LENGTH-1;
-							break;
-
-					case	CHAR_DELETE:
-							if (gCursorIndex > 0)
-							{
-								gCursorIndex--;
-								for (i = gCursorIndex+1; i < MAX_NAME_LENGTH; i++)
-									gHighScores[gNewScoreSlot].name[i] = gHighScores[gNewScoreSlot].name[i+1];
-								gHighScores[gNewScoreSlot].name[MAX_NAME_LENGTH] = ' ';
-							}
-							break;
-							
-					default:
-							if (gCursorIndex < MAX_NAME_LENGTH)								// dont add anything more if maxxed out now
-							{
-								if ((theChar >= 'a') && (theChar <= 'z'))					// see if convert lower case to upper case a..z
-									theChar = 'A' + (theChar-'a');
-								gHighScores[gNewScoreSlot].name[gCursorIndex+1] = theChar;
-								gCursorIndex++;
-							}
-				}
-							
+				gExitHighScores = true;
 			}
-#endif
+			else if (GetNewKeyState(SDL_SCANCODE_LEFT))
+			{
+				if (gCursorIndex > 0)
+					gCursorIndex--;
+			}
+			else if (GetNewKeyState(SDL_SCANCODE_RIGHT))
+			{
+				if (gCursorIndex < (MAX_NAME_LENGTH - 1))
+					gCursorIndex++;
+				else
+					gCursorIndex = MAX_NAME_LENGTH - 1;
+			}
+			else if (GetNewKeyState(SDL_SCANCODE_BACKSPACE))
+			{
+				if (gCursorIndex > 0)
+				{
+					gCursorIndex--;
+					for (int i = gCursorIndex; i < MAX_NAME_LENGTH; i++)
+						gHighScores[gNewScoreSlot].name[i] = gHighScores[gNewScoreSlot].name[i + 1];
+					gHighScores[gNewScoreSlot].name[MAX_NAME_LENGTH-1] = ' ';
+				}
+			}
+			else if (GetNewKeyState(SDL_SCANCODE_DELETE))
+			{
+				if (gCursorIndex < MAX_NAME_LENGTH)
+				{
+					for (int i = gCursorIndex; i < MAX_NAME_LENGTH - 1; i++)
+						gHighScores[gNewScoreSlot].name[i] = gHighScores[gNewScoreSlot].name[i + 1];
+					gHighScores[gNewScoreSlot].name[MAX_NAME_LENGTH - 1] = ' ';
+				}
+			}
+			else if (gTextInput[0])
+			{
+				char theChar = gTextInput[0];
+				if (gCursorIndex < MAX_NAME_LENGTH)								// dont add anything more if maxxed out now
+				{
+					if ((theChar >= 'a') && (theChar <= 'z'))					// see if convert lower case to upper case a..z
+						theChar = 'A' + (theChar - 'a');
+
+					if (NULL == strchr(kScoreCharset, theChar))
+						theChar = '-';
+
+					gHighScores[gNewScoreSlot].name[gCursorIndex] = theChar;
+					gCursorIndex++;
+				}
+			}
 		}
 	}	
 
@@ -355,65 +360,6 @@ static void SetHighScoresSpriteState(void)
 	glLoadIdentity();					
 }
 
-/********************* DRAW SCORE VERBAGE ****************************/
-
-static void DrawScoreVerbage(void)
-{
-char	s[32];
-int		texNum;
-
-				/* SEE IF DONE */
-				
-	gFinalScoreTimer -= gFramesPerSecondFrac;
-	if (gFinalScoreTimer <= 0.0f)
-	{
-		if (gNewScoreSlot != -1)							// see if bail or if let player enter name for high score
-		{
-			StartEnterName();
-		}
-		else
-			gExitHighScores = true;
-		return;
-	}
-	if (gFinalScoreTimer < 1.0f)							// fade out
-		gFinalScoreAlpha = gFinalScoreTimer;
-
-
-			/****************************/
-			/* DRAW BONUS TOTAL VERBAGE */
-			/****************************/
-			
-	gGlobalTransparency = gFinalScoreAlpha;
-
-
-			/**************/
-			/* DRAW SCORE */
-			/**************/
-
-	int n = snprintf(s, sizeof(s), "%d", gScore);
-
-	float x = 320.0f - ((float)n / 2.0f) * MYSCORE_DIGIT_SPACING - (MYSCORE_DIGIT_SPACING/2);	// calc starting x
-
-	
-	gGlobalColorFilter.r = 1;
-	gGlobalColorFilter.g = 1;
-	gGlobalColorFilter.b = 0;
-		
-	for (const char* cursor = s; *cursor; cursor++)
-	{
-		texNum = CharToSprite(*cursor);				// get texture #
-
-		DrawInfobarSprite2(x, 240, MYSCORE_DIGIT_SPACING * 1.9f, SPRITE_GROUP_FONT, texNum);
-		x += MYSCORE_DIGIT_SPACING;
-	}
-	
-	
-	gGlobalTransparency = 1.0f;
-	gGlobalColorFilter.r = 1;
-	gGlobalColorFilter.g = 1;
-	gGlobalColorFilter.b = 1;
-}
-
 
 /****************** DRAW HIGH SCORES AND CURSOR ***********************/
 
@@ -469,8 +415,12 @@ float	fps = gFramesPerSecondFrac;
 			cursorX = 150.0f;
 			
 			const char* name = gHighScores[i].name;						// get str len
-			for (; *name; name++)
+			int rem = gCursorIndex;
+			for (; *name && rem > 0; name++)
+			{
 				cursorX += GetCharSpacing(*name, SCORE_TEXT_SPACING);	// calc cursor position
+				rem--;
+			}
 		}
 		
 				/* DRAW NAME */
@@ -517,17 +467,7 @@ float	fps = gFramesPerSecondFrac;
 	gGlobalColorFilter.b = 1;
 
 	gGlobalTransparency = 1;
-}
-
-
-
-/************************* START ENTER NAME **********************************/
-
-static void StartEnterName(void)
-{
-	gCursorIndex = 0;
-	MyFlushEvents();
-}
+}		
 
 
 
@@ -622,7 +562,7 @@ void ClearHighScores(void)
 {
 	for (int i = 0; i < NUM_SCORES; i++)
 	{
-		snprintf(gHighScores[i].name, sizeof(gHighScores[i].name), "%s", kEmptyScorePlaceholder);
+		ClearHighScoreName(gHighScores[i].name);
 		gHighScores[i].score = 0;
 	}
 
@@ -655,7 +595,7 @@ got_slot:
 	for (i = NUM_SCORES-1; i > slot; i--)						// make hole
 		gHighScores[i] = gHighScores[i-1];
 	gHighScores[slot].score = newScore;							// set score in structure
-	snprintf(gHighScores[slot].name, sizeof(gHighScores[slot].name), "%s", kEmptyScorePlaceholder);		// clear name
+	ClearHighScoreName(gHighScores[slot].name);					// clear name
 	return(slot);
 }
 
