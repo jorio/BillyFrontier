@@ -403,7 +403,7 @@ unsigned long	someLong;
 	
 	GetDateTime ((unsigned long *)(&someLong));		// init random seed
 	SetMyRandomSeed(someLong);
-	HideCursor();
+	SDL_ShowCursor(0);
 
 
 		/* SHOW TITLES */

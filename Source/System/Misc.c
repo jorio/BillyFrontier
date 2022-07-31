@@ -84,6 +84,8 @@ void CleanQuit(void)
 {	
 static Boolean	beenHere = false;
 
+	SDL_ShowCursor(1);
+
 	if (!beenHere)
 	{
 		beenHere = true;
@@ -101,8 +103,7 @@ static Boolean	beenHere = false;
 	}
 
 	UseResFile(gMainAppRezFile);
-	
-	InitCursor();
+
 	MyFlushEvents();
 
 	SavePrefs();							// save prefs before bailing
@@ -369,8 +370,8 @@ unsigned long deltaTime;
 		gFramesPerSecond = MIN_FPS;
 
 #if _DEBUG
-//	if (GetKeyState(SDL_SCANCODE_KP_PLUS))		// debug speed-up with KP_PLUS
-//		gFramesPerSecond = 10;
+	if (GetKeyState(SDL_SCANCODE_KP_PLUS))		// debug speed-up with KP_PLUS
+		gFramesPerSecond = MIN_FPS;
 #endif
 
 	gFramesPerSecondFrac = 1.0f/gFramesPerSecond;		// calc fractional for multiplication
@@ -405,19 +406,6 @@ int		i;
 
 void MyFlushEvents(void)
 {
-	IMPLEMENT_ME_SOFT();
-#if 0
-//EventRecord 	theEvent;
-
-	FlushEvents (everyEvent, REMOVE_ALL_EVENTS);	
-	FlushEventQueue(GetMainEventQueue());
-
-			/* POLL EVENT QUEUE TO BE SURE THINGS ARE FLUSHED OUT */
-			
-	while (GetNextEvent(mDownMask|mUpMask|keyDownMask|keyUpMask|autoKeyMask, &theEvent));
-
-
-	FlushEvents (everyEvent, REMOVE_ALL_EVENTS);	
-	FlushEventQueue(GetMainEventQueue());
-#endif	
+	DoSDLMaintenance();
+	InvalidateAllInputs();
 }

@@ -121,11 +121,11 @@ void NewScore(Boolean justShowScores)
 		
 		if (justShowScores || (gNewScoreSlot == -1))
 		{
-				ReadKeyboard();
+			ReadKeyboard();
+
 			if (gShowScoreDelay <= 0.0f)
 			{
-			
-				if (AreAnyNewKeysPressed() || Button())
+				if (UserWantsOut() || GetNewClickState(1))
 					gExitHighScores = true;		
 			}
 		}

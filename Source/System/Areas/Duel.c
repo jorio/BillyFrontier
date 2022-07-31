@@ -146,14 +146,14 @@ void PlayDuel(Byte difficulty)
 								
 				/* MISC STUFF */
 		
-		if (GetKeyState_Real(KEY_APPLE) && GetKeyState_Real(KEY_F10))	// cheat to bail out
+		if (IsCheatKeyComboDown())										// cheat to bail out
 		{
 			gPlayerToWinDuel = true;
 			gPlayerIsDead = false;
 			break;
 		}
 		
-		if (GetNewKeyState_Real(KEY_ESC))								// see if paused
+		if (GetNewNeedState(kNeed_UIPause))								// see if paused
 			DoPaused();
 			
 		CalcFramesPerSecond();		
@@ -328,8 +328,6 @@ int					i;
 #else
 	InitCamera_Duel();
 #endif
-			
-	HideCursor();								// do this again to be sure!	
 
 
 		/* START MUSIC */
@@ -1132,16 +1130,16 @@ float	fps = gFramesPerSecondFrac;
 
 		/* SEE WHICH ARROW KEY IS PRESSED */
 		
-	if (GetNewKeyState_Real(KEY_UP))
+	if (GetNewNeedState(kNeed_UIUp))
 		key = 0;
 	else
-	if (GetNewKeyState_Real(KEY_RIGHT))
+	if (GetNewNeedState(kNeed_UIRight))
 		key = 1;
 	else
-	if (GetNewKeyState_Real(KEY_DOWN))
+	if (GetNewNeedState(kNeed_UIDown))
 		key = 2;
 	else
-	if (GetNewKeyState_Real(KEY_LEFT))
+	if (GetNewNeedState(kNeed_UILeft))
 		key = 3;
 	else
 		return;												// no new key is pressed

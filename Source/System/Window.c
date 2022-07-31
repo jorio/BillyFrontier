@@ -42,11 +42,6 @@ int				gGameWindowWidth, gGameWindowHeight;
 
 
 
-void DoSDLMaintenance(void)
-{
-	IMPLEMENT_ME_SOFT();
-}
-
 /****************  INIT WINDOW STUFF *******************/
 
 void InitWindowStuff(void)
@@ -229,7 +224,7 @@ static void DrawFadePane(ObjNode* theNode)
 
 void Enter2D(Boolean pauseDSp)
 {
-	InitCursor();
+	SDL_ShowCursor(1);
 	MyFlushEvents();
 }
 

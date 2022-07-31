@@ -987,7 +987,7 @@ void DoSoundMaintenance(void)
 	{
 					/* SEE IF TOGGLE MUSIC */
 
-		if (GetNewKeyState_Real(KEY_M))
+		if (GetNewKeyState(SDL_SCANCODE_M))
 		{
 			ToggleMusic();			
 		}
@@ -995,13 +995,13 @@ void DoSoundMaintenance(void)
 
 				/* SEE IF CHANGE VOLUME */
 
-		if (GetKeyState_Real(KEY_PLUS))
+		if (GetKeyState(SDL_SCANCODE_PLUS))
 		{
 			gGlobalVolume += 1.5f * gFramesPerSecondFrac;
 			UpdateGlobalVolume();
 		}
 		else
-		if (GetKeyState_Real(KEY_MINUS))
+		if (GetKeyState(SDL_SCANCODE_MINUS))
 		{
 			gGlobalVolume -= 1.5f * gFramesPerSecondFrac;
 			if (gGlobalVolume < 0.0f)
@@ -1041,7 +1041,7 @@ void DoSoundMaintenance(void)
 
 		/* ALSO CHECK OPTIONS */
 
-	if (GetNewKeyState_Real(KEY_F1))
+	if (GetNewKeyState(SDL_SCANCODE_F1))
 	{
 		DoGameOptionsDialog();
 	}

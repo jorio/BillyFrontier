@@ -96,7 +96,7 @@ void PlayStampede(void)
 								
 				/* MISC STUFF */
 		
-		if (GetNewKeyState_Real(KEY_ESC))								// see if paused
+		if (GetNewKeyState(SDL_SCANCODE_ESCAPE))						// see if paused
 			DoPaused();
 			
 		CalcFramesPerSecond();		
@@ -269,8 +269,6 @@ OGLSetupInputType	viewDef;
 #else
 //	InitCamera_Stampede();
 #endif
-			
-	HideCursor();								// do this again to be sure!	
 
 
 		/* START MUSIC */
@@ -440,10 +438,10 @@ float	r;
 
 			/* USER TURNING */
 			
-	if (GetKeyState_Real(KEY_LEFT) || (gMouseDeltaX < -10))
+	if (GetNeedState(kNeed_Left) || (gMouseDeltaX < -10))
 		player->Rot.y -= 3.0f * fps;
 	else
-	if (GetKeyState_Real(KEY_RIGHT) || (gMouseDeltaX > 10))
+	if (GetNeedState(kNeed_Right) || (gMouseDeltaX > 10))
 		player->Rot.y += 3.0f * fps;
 
 	r = player->Rot.y;
@@ -480,7 +478,7 @@ float	r;
 
 		/* SEE IF DO JUMP */
 		
-	if (GetNewKeyState_Real(KEY_SPACE) || GetNewKeyState_Real(KEY_APPLE) || gMouseNewButtonState)
+	if (GetNewNeedState(kNeed_Jump))
 	{
 		MorphToSkeletonAnim(player->Skeleton, PLAYER_ANIM_STAMPEDEJUMP, 6);
 		player->Skeleton->AnimSpeed = 1.6f;
@@ -522,10 +520,10 @@ float	r;
 			
 //	r = player->Rot.y -= gPlayerInfo.analogControlX * 3.0f * fps;
 
-	if (GetKeyState_Real(KEY_LEFT))
+	if (GetNeedState(kNeed_Left))
 		player->Rot.y -= 3.0f * fps;
 	else
-	if (GetKeyState_Real(KEY_RIGHT))
+	if (GetNeedState(kNeed_Right))
 		player->Rot.y += 3.0f * fps;
 
 	r = player->Rot.y;
@@ -547,7 +545,7 @@ float	r;
 
 		/* SEE IF DO JUMP */
 		
-	if (GetNewKeyState_Real(KEY_SPACE) || GetNewKeyState_Real(KEY_APPLE) || gMouseNewButtonState)
+	if (GetNewNeedState(kNeed_Jump))
 	{
 		MorphToSkeletonAnim(player->Skeleton, PLAYER_ANIM_STAMPEDEJUMP, 6);
 		player->Skeleton->AnimSpeed = 1.6f;

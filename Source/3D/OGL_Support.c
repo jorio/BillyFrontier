@@ -190,8 +190,6 @@ void OGL_SetupWindow(OGLSetupInputType *setupDefPtr)
 {
 static OGLVector3D	v = {0,0,0};
 
-	HideCursor();		// do this just as a safety precaution to make sure no cursor lingering around
-
 	GAME_ASSERT_MESSAGE(gGameViewInfoPtr == NULL, "gGameViewInfoPtr is already active");
 
 			/* ALLOC MEMORY FOR OUTPUT DATA */
@@ -645,7 +643,7 @@ do_anaglyph:
 		/* SEE IF SHOW DEBUG INFO */
 		/**************************/
 		
-	if (GetNewKeyState_Real(KEY_F8))
+	if (GetNewKeyState(SDL_SCANCODE_F8))
 	{
 		if (++gDebugMode > 3)
 			gDebugMode = 0;
@@ -656,7 +654,7 @@ do_anaglyph:
 			glPolygonMode(GL_FRONT_AND_BACK ,GL_FILL);
 	}
 
-	if (GetKeyState_Real(KEY_CTRL) && GetNewKeyState_Real(KEY_F11))								// Anisotropy
+	if ((GetKeyState(SDL_SCANCODE_LCTRL) || GetKeyState(SDL_SCANCODE_RCTRL)) && GetNewKeyState(SDL_SCANCODE_F11))	// Anisotropy
 	{
 		gDoAnisotropy = !gDoAnisotropy;	
 		if (gDoAnisotropy)
@@ -816,6 +814,8 @@ do_anaglyph:
 
 void OGL_GetCurrentViewport(int *x, int *y, int *w, int *h)
 {
+	SDL_GetWindowSize(gSDLWindow, &gGameWindowWidth, &gGameWindowHeight);
+
 int	t,b,l,r;
 		
 	t = gGameViewInfoPtr->clip.top;

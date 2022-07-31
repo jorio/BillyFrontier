@@ -248,10 +248,10 @@ int	oldSelection = gPausedMenuSelection;
 
 		/* SEE IF CHANGE SELECTION */
 		
-	if (GetNewKeyState_Real(KEY_UP) && (gPausedMenuSelection > 0))
+	if (GetNewNeedState(kNeed_UIUp) && (gPausedMenuSelection > 0))
 		gPausedMenuSelection--;
 	else
-	if (GetNewKeyState_Real(KEY_DOWN) && (gPausedMenuSelection < 2))
+	if (GetNewNeedState(kNeed_UIDown) && (gPausedMenuSelection < 2))
 		gPausedMenuSelection++;
 	
 			/* SEE IF USE MOUSE DELTAS */
@@ -279,7 +279,7 @@ int	oldSelection = gPausedMenuSelection;
 			/* SEE IF MAKE A SELECTION */
 			/***************************/
 			
-	if (GetNewKeyState_Real(KEY_RETURN) || GetNewKeyState_Real(KEY_SPACE) || gMouseNewButtonState)
+	if (GetNewNeedState(kNeed_UIConfirm) || GetNewClickState(1))
 	{
 		PlayEffect_Parms(EFFECT_SPURS2,FULL_CHANNEL_VOLUME/3,FULL_CHANNEL_VOLUME/4,NORMAL_CHANNEL_RATE);
 
@@ -307,7 +307,7 @@ int	oldSelection = gPausedMenuSelection;
 			/*****************************/
 
 	else
-	if (GetNewKeyState_Real(KEY_ESC))
+	if (GetNewNeedState(kNeed_UIPause) || GetNewNeedState(kNeed_UIBack))
 	{
 		continueGame = true;
 	}	

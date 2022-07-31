@@ -16,7 +16,6 @@
 /**********************/
 
 static void ReadInputValues(KeyMap *keyMap);
-//static pascal OSStatus MyMouseEventHandler(EventHandlerCallRef eventhandler, EventRef pEventRef, void *userdata);
 static void Install_MouseEventHandler(void);
 static void Remove_MouseEventHandlers(void);
 
@@ -31,15 +30,9 @@ static void Remove_MouseEventHandlers(void);
 /*     VARIABLES      */
 /**********************/
 
-Boolean		gMouseButtonState = false, gMouseNewButtonState = false;
-Boolean		gMouseRightButtonDown = false, gMouseMiddleButtonDown = false;
-SInt32		gScrollWheelDelta = 0;
-
-
-#if 0
-static	EventHandlerUPP			gMouseEventHandlerUPP = nil;
-static	EventHandlerRef			gMouseEventHandlerRef = 0;
-#endif
+//Boolean		gMouseButtonState = false, gMouseNewButtonState = false;
+//Boolean		gMouseRightButtonDown = false, gMouseMiddleButtonDown = false;
+//SInt32		gScrollWheelDelta = 0;
 
 long					gMouseDeltaX = 0;
 long					gMouseDeltaY = 0;
@@ -48,9 +41,6 @@ float			gMouseX = 640/2, gMouseY = 480/2;		// only used with ISp
 
 static	float					gReadMouseDeltasTimer = 0;
 
-KeyMap gKeyMap,gNewKeys,gOldKeys,gKeyMap_Real,gNewKeys_Real,gOldKeys_Real;
-
-
 Boolean	gISpActive 				= false;							
 Boolean	gISPInitialized			= false;
 
@@ -58,54 +48,6 @@ Boolean	gISPInitialized			= false;
 		/* CONTORL NEEDS */
 		
 #define	NEED_NUM_MOUSEMOTION	0
-
-#if 0
-ISpNeed	gControlNeeds[NUM_CONTROL_NEEDS] =
-{
-	{										// 0
-		"Mouse Movement Left & Right",
-		132,
-		0,
-		0,
-		kISpElementKind_Delta,
-		kISpElementLabel_Delta_X,
-		0,
-		0,
-		0,
-		0
-	},
-	
-	{										// 1
-		"Mouse Movement Up & Down",
-		133,
-		0,
-		0,
-		kISpElementKind_Delta,
-		kISpElementLabel_Delta_Y,
-		0,
-		0,
-		0,
-		0
-	},
-
-	{										// 2
-		"Mouse Button",
-		133,
-		0,
-		0,
-		kISpElementKind_Button,
-		kISpElementLabel_Btn_Fire,
-		0,
-		0,
-		0,
-		0
-	},
-	
-};
-
-
-static ISpElementReference	gVirtualElements[NUM_CONTROL_NEEDS];
-#endif
 
 
 
@@ -164,7 +106,7 @@ UInt32				count = 0;
 	if (!gOSX)
 	{
 		ReadKeyboard();
-		if ((!gGamePrefs.hasConfiguredISpControls) || (GetKeyState_Real(KEY_APPLE)))					// see if need to do initial control setup
+		if ((!gGamePrefs.hasConfiguredISpControls) || (GetKeyState(SDL_SCANCODE_APPLE)))					// see if need to do initial control setup
 		{
 			DoKeyConfigDialog();	
 			gGamePrefs.hasConfiguredISpControls = true;
@@ -181,49 +123,18 @@ UInt32				count = 0;
 
 void ReadKeyboard(void)
 {
-u_short	pauseKey;
+	DoSDLMaintenance();
 
-			/* READ REAL KEYBOARD & INPUT SPROCKET KEYMAP */
-			//
-			// Note:  	This will convert ISp data into a KeyMap, so the rest
-			// 			of the code looks like its just reading the real keyboard.
-			//
-			
-	ReadInputValues(&gKeyMap);
-
-
-			/* CALC WHICH KEYS ARE NEW THIS TIME */
-			
-	gNewKeys[0] = (gOldKeys[0] ^ gKeyMap[0]) & gKeyMap[0];
-	gNewKeys[1] = (gOldKeys[1] ^ gKeyMap[1]) & gKeyMap[1];
-	gNewKeys[2] = (gOldKeys[2] ^ gKeyMap[2]) & gKeyMap[2];
-	gNewKeys[3] = (gOldKeys[3] ^ gKeyMap[3]) & gKeyMap[3];
-
-
-
-				/* SEE IF QUIT GAME */
-				
-	if (GetKeyState_Real(KEY_Q) && GetKeyState_Real(KEY_APPLE))			// see if real key quit
-		CleanQuit();	
-
-
-
+#if 0
 			/* SEE IF DO SAFE PAUSE FOR SCREEN SHOTS */
 			
-	pauseKey = KEY_F12;
+	uint16_t pauseKey = KEY_F12;
 
 	if (GetNewKeyState_Real(pauseKey))
 	{
 		Boolean o = gISpActive;
 		TurnOffISp();
 
-#if 1
-		IMPLEMENT_ME_SOFT();
-#else
-		if (gAGLContext)
-			aglSetDrawable(gAGLContext, nil);			// diable gl
-#endif
-				
 		do
 		{
 #if 0
@@ -241,67 +152,7 @@ u_short	pauseKey;
 		CalcFramesPerSecond();
 		CalcFramesPerSecond();		
 	}
-		
-		
-			/* REMEMBER AS OLD MAP */
-
-	gOldKeys[0] = gKeyMap[0];
-	gOldKeys[1] = gKeyMap[1];
-	gOldKeys[2] = gKeyMap[2];
-	gOldKeys[3] = gKeyMap[3];
-}
-
-
-/**************** READ KEYBOARD_REAL *************/
-//
-// This just does a simple read of the REAL keyboard (regardless of Input Sprockets)
-//
-
-void ReadKeyboard_Real(void)
-{
-	GetKeys(gKeyMap_Real);										
-
-			/* CALC WHICH KEYS ARE NEW THIS TIME */
-			
-	gNewKeys_Real[0] = (gOldKeys_Real[0] ^ gKeyMap_Real[0]) & gKeyMap_Real[0];
-	gNewKeys_Real[1] = (gOldKeys_Real[1] ^ gKeyMap_Real[1]) & gKeyMap_Real[1];
-	gNewKeys_Real[2] = (gOldKeys_Real[2] ^ gKeyMap_Real[2]) & gKeyMap_Real[2];
-	gNewKeys_Real[3] = (gOldKeys_Real[3] ^ gKeyMap_Real[3]) & gKeyMap_Real[3];
-
-
-			/* REMEMBER AS OLD MAP */
-
-	gOldKeys_Real[0] = gKeyMap_Real[0];
-	gOldKeys_Real[1] = gKeyMap_Real[1];
-	gOldKeys_Real[2] = gKeyMap_Real[2];
-	gOldKeys_Real[3] = gKeyMap_Real[3];
-}
-
-
-/****************** GET KEY STATE: REAL ***********/
-//
-// for data from ReadKeyboard_Real
-//
-
-Boolean GetKeyState_Real(unsigned short key)
-{
-unsigned char *keyMap;
-
-	keyMap = (unsigned char *)&gKeyMap_Real;
-	return ( ( keyMap[key>>3] >> (key & 7) ) & 1);
-}
-
-/****************** GET NEW KEY STATE: REAL ***********/
-//
-// for data from ReadKeyboard_Real
-//
-
-Boolean GetNewKeyState_Real(unsigned short key)
-{
-unsigned char *keyMap;
-
-	keyMap = (unsigned char *)&gNewKeys_Real;
-	return ( ( keyMap[key>>3] >> (key & 7) ) & 1);
+#endif
 }
 
 
@@ -335,6 +186,7 @@ unsigned char *keyMap;
 #endif
 
 
+#if 0
 /********************** READ INPUT VALUES ******************************/
 //
 // Depending on mode, will either read key map from GetKeys or
@@ -375,7 +227,7 @@ keyMap;
 		gMouseButtonState = gMouseNewButtonState = false;	
 	}
 }
-
+#endif
 
 
 
@@ -436,40 +288,7 @@ UInt32		count = 0;
 }
 
 
-
-/************************ DO KEY CONFIG DIALOG ***************************/
-//
-// NOTE:  ISp must be turned ON when this is called!
-//
-
-void DoKeyConfigDialog(void)
-{
-	MyFlushEvents();
-
 #if 0
-				/* DO ISP CONFIG DIALOG */
-	else
-	{		
-		Boolean	ispWasOn = gISpActive;
-		
-		if (gAGLContext)
-			aglSetDrawable(gAGLContext, nil);			// diable gl for dialog
-
-		TurnOnISp();
-		InitCursor();
-		ISpConfigure(nil);	
-		if (!ispWasOn)
-			TurnOffISp();
-
-		if (gAGLContext)
-			//aglSetDrawable(gAGLContext, gAGLWin);		// reenable gl
-			
-		HideCursor();
-	}
-#endif
-}
-
-
 /***************** ARE ANY NEW KEYS PRESSED ****************/
 
 Boolean AreAnyNewKeysPressed(void)
@@ -479,6 +298,7 @@ Boolean AreAnyNewKeysPressed(void)
 	else
 		return(false);
 }
+#endif
 
 
 #pragma mark -
@@ -487,7 +307,11 @@ Boolean AreAnyNewKeysPressed(void)
 
 void GetMouseCoord(Point *point)
 {
-	GetMouse(point);
+	int x;
+	int y;
+	SDL_GetMouseState(&x, &y);
+	point->h = x;
+	point->v = y;
 #if 0
 	// OS 9 code
 	{	

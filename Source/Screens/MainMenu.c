@@ -360,7 +360,7 @@ static void DoMenuControls(void)
 {
 ObjNode	*newObj;
 
-	if (gMouseNewButtonState)
+	if (GetNewClickState(1))
 	{
 		PlayEffect_Parms(EFFECT_GUNSHOT2,FULL_CHANNEL_VOLUME*2/3,FULL_CHANNEL_VOLUME/3,NORMAL_CHANNEL_RATE);
 	

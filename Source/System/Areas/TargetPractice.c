@@ -95,7 +95,7 @@ void PlayTargetPractice(void)
 								
 				/* MISC STUFF */
 		
-		if (GetNewKeyState_Real(KEY_ESC))								// see if paused
+		if (GetNewKeyState(SDL_SCANCODE_ESCAPE))						// see if paused
 			DoPaused();
 			
 		CalcFramesPerSecond();		
@@ -267,8 +267,6 @@ const OGLPoint3D	cameraTo = { 0, 1200, 0 };
 			/* INIT CAMERAS */
 			
 	InitCamera_TargetPractice();
-			
-	HideCursor();								// do this again to be sure!	
 
 
 		/* START MUSIC */
@@ -424,7 +422,7 @@ OGLPoint3D	worldHitCoord;
 		
 	if (gRapidFireTimer > 0.0f)
 	{
-		if (GetKeyState_Real(kKey_Shoot) || gMouseButtonState)		// trying to rapid fire?
+		if (GetNeedState(kNeed_Shoot))		// trying to rapid fire?
 		{
 			gRapidFireDelay -= fps;
 			if (gRapidFireDelay < 0.0f)
@@ -437,7 +435,7 @@ OGLPoint3D	worldHitCoord;
 			gRapidFireDelay = 0.0f;								// not trying, so keep delay ready to go instantly
 	}
 	else
-	if (GetNewKeyState_Real(kKey_Shoot) || gMouseNewButtonState)
+	if (GetNewNeedState(kNeed_Shoot))
 	{
 shoot:	
 		

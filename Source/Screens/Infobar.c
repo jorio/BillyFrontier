@@ -633,15 +633,13 @@ OGLPoint2D	bulletCoords[6] =
 				
 	if (gNeedToReloadNextAmmoClip)
 	{
-		if (GetNewKeyState_Real(KEY_SPACE))					// user pressed the reload button?
+		if (GetNewNeedState(kNeed_Reload))					// user pressed the reload button?
 		{
 			gNeedToReloadNextAmmoClip = false;
 			PlayEffect(EFFECT_RELOAD);
 		}
 		else
 			DrawFontString("RELOAD", 640/2, 480/2, 30.0);
-		
-	
 	}
 	
 	

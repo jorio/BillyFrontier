@@ -254,7 +254,7 @@ static void ProcessBigBoard(void)
 		
 			/* CHECK FOR WIN CHEAT */
 			
-		if (GetKeyState_Real(KEY_APPLE) && GetKeyState_Real(KEY_F10))
+		if (IsCheatKeyComboDown())
 		{
 			gWonGame = false;
 			gLostGame = true;
@@ -272,7 +272,7 @@ static void DoBigBoardControls(void)
 {
 ObjNode	*newObj;
 
-	if (gMouseNewButtonState)
+	if (GetNewClickState(1))
 	{
 		PlayEffect_Parms(EFFECT_GUNSHOT2,FULL_CHANNEL_VOLUME*2/3,FULL_CHANNEL_VOLUME/3,NORMAL_CHANNEL_RATE);
 	

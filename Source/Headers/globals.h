@@ -17,6 +17,10 @@
 #define EPS 		(0.000001f)			// a very small number which is useful for FP compares close to 0
 #define	IS_ZERO(_x)  (fabs(_x) < EPS)
 
+#define GAME_CLAMP(x, lo, hi) ( (x) < (lo) ? (lo) : ( (x) > (hi) ? (hi) : (x) ) )
+#define GAME_MIN(a, b) ( (a) < (b) ? (a) : (b) )
+#define GAME_MAX(a, b) ( (a) > (b) ? (a) : (b) )
+#define	SQUARED(x)					((x)*(x))
 
 #define	MOVE_TO_FRONT		(WindowPtr)-1L
 #define	NIL_STRING			""

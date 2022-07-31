@@ -84,14 +84,14 @@ float	timeout = 40.0f;
 		
 					/* MAIN LOOP */
 						
-		while(!Button())
+		while (1)
 		{
 			CalcFramesPerSecond();
 			MoveObjects();
 			OGL_DrawScene(DisplayPicture_Draw);
 			
 			ReadKeyboard();
-			if (AreAnyNewKeysPressed())
+			if (UserWantsOut() || GetNewClickState(1))
 				break;
 				
 			timeout -= gFramesPerSecondFrac;

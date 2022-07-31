@@ -114,11 +114,11 @@ void PlayShootout(void)
 				/* MISC STUFF */
 		
 
-		if (GetKeyState_Real(KEY_APPLE) && GetKeyState_Real(KEY_F10))		// see if cheat to next stop-point		
+		if (IsCheatKeyComboDown())											// see if cheat to next stop-point		
 			gShootoutCanProceedToNextStopPoint = true;
 
 		
-		if (GetNewKeyState_Real(KEY_ESC))								// see if paused
+		if (GetNewNeedState(kNeed_UIPause))									// see if paused
 			DoPaused();
 			
 		CalcFramesPerSecond();		
@@ -164,7 +164,7 @@ float		x,z;
 		/* INIT COMMON STUFF */
 		/*********************/
 
-	gScrollWheelDelta = 0;
+//	gScrollWheelDelta = 0;
 	gPlayerIsDead 		= false;
 	gTimeSinceLastEnemyShot	 = 0;
 	gGameFrameNum 		= 0;
@@ -320,14 +320,10 @@ float		x,z;
 	InitCamera_Terrain();
 #endif
 			
-	HideCursor();								// do this again to be sure!	
-
 
 		/* START MUSIC */
 				
 	PlaySong(SONG_SHOOTOUT, true);	
-	
-	
 }
 
 
@@ -571,17 +567,17 @@ Point	mousePt;
 	else
 	if (allowRot)
 	{
-		if (GetKeyState_Real(KEY_LEFT))
+		if (GetNeedState(kNeed_UILeft))
 			gPlayerInfo.objNode->Rot.y += fps * 2.0f;
 		else
-		if (GetKeyState_Real(KEY_RIGHT))
+		if (GetNeedState(kNeed_UIRight))
 			gPlayerInfo.objNode->Rot.y -= fps * 2.0f;
-		else
-		if (gScrollWheelDelta != 0)
-		{
-			gPlayerInfo.objNode->Rot.y += fps * (float)gScrollWheelDelta * 1.4f;
-			gScrollWheelDelta = 0;						// reset to 0 since event won't clear it
-		}
+		//else
+		//if (gScrollWheelDelta != 0)
+		//{
+		//	gPlayerInfo.objNode->Rot.y += fps * (float)gScrollWheelDelta * 1.4f;
+		//	gScrollWheelDelta = 0;						// reset to 0 since event won't clear it
+		//}
 	}
 
 
@@ -589,7 +585,7 @@ Point	mousePt;
 			/* SEE IF SHOOT */
 			/****************/
 
-	if (gMouseNewButtonState && (!gNeedToReloadNextAmmoClip))
+	if (GetNewNeedState(kNeed_Shoot) && (!gNeedToReloadNextAmmoClip))
 	{
 		ShootBulletThruCrosshairs();
 	}
@@ -906,7 +902,7 @@ static void MovePlayer_Shootout_Battle(ObjNode *player)
 				/* STANDING */
 				
 		case	PLAYER_ANIM_STAND:
-				if (GetNewKeyState_Real(KEY_CTRL) || gMouseRightButtonDown)							// duck now?
+				if (GetNewNeedState(kNeed_Duck))							// duck now?
 				{	
 					MorphToSkeletonAnim(player->Skeleton, PLAYER_ANIM_DUCK, 7);
 					break;
@@ -914,7 +910,7 @@ static void MovePlayer_Shootout_Battle(ObjNode *player)
 				break;
 				
 		case	PLAYER_ANIM_DUCK:
-				if ((!GetKeyState_Real(KEY_CTRL)) && (!gMouseRightButtonDown))							// un-duck
+				if (!GetNeedState(kNeed_Duck))								// un-duck
 				{	
 					MorphToSkeletonAnim(player->Skeleton, PLAYER_ANIM_STAND, 4);
 					break;
@@ -931,7 +927,7 @@ static void MovePlayer_Shootout_Battle(ObjNode *player)
 	
 	if (gShootoutCanProceedToNextStopPoint)				// are we just waiting for the player to press TAB?
 	{
-		if (GetNewKeyState_Real(KEY_APPLE))
+		if (GetNewNeedState(kNeed_Continue))
 		{
 			GoToNextStopPoint();
 			gShootoutCanProceedToNextStopPoint = false;
