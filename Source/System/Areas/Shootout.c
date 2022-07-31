@@ -334,14 +334,12 @@ float		x,z;
 
 static void CleanupShootout(void)
 {
-
 	StopAllEffectChannels();
  	EmptySplineObjectList();
 	DeleteAllObjects();
 	FreeAllSkeletonFiles(-1);
 	DisposeTerrain();
 	DeleteAllParticleGroups();
-	DeleteAllConfettiGroups();
 	DisposeParticleSystem();
 	DisposeAllSpriteGroups();
 	

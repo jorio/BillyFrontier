@@ -307,13 +307,11 @@ const OGLPoint3D	cameraTo = { 0, 1200, 0 };
 
 static void CleanupTargetPractice(void)
 {
-
 	StopAllEffectChannels();
  	EmptySplineObjectList();
 	DeleteAllObjects();
 	FreeAllSkeletonFiles(-1);
 	DeleteAllParticleGroups();
-	DeleteAllConfettiGroups();
 	DisposeParticleSystem();
 	DisposeAllSpriteGroups();
 	

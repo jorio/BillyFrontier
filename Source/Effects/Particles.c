@@ -62,9 +62,7 @@ short			gNumActiveParticleGroups = 0;
 
 void InitEffects(void)
 {
-
 	InitParticleSystem();
-	InitConfettiManager();
 	InitShardSystem();
 
 			/* SET SPRITE BLENDING FLAGS */

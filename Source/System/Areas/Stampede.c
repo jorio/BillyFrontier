@@ -284,14 +284,12 @@ OGLSetupInputType	viewDef;
 
 static void CleanupStampede(void)
 {
-
 	StopAllEffectChannels();
  	EmptySplineObjectList();
 	DeleteAllObjects();
 	FreeAllSkeletonFiles(-1);
 	DisposeTerrain();
 	DeleteAllParticleGroups();
-	DeleteAllConfettiGroups();
 	DisposeParticleSystem();
 	DisposeAllSpriteGroups();
 	

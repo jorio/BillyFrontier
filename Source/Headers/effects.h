@@ -8,9 +8,6 @@
 #define	MAX_PARTICLE_GROUPS		70
 #define	MAX_PARTICLES			253		// (note change Byte below if > 255)
 
-#define	MAX_CONFETTI_GROUPS		70
-#define	MAX_CONFETTIS			250		// (note change Byte below if > 255)
-
 
 		/* FIRE & SMOKE */
 		
@@ -49,33 +46,6 @@ typedef struct
 	MOVertexArrayObject	*geometryObj;
 	
 }ParticleGroupType;
-
-
-		/* CONFETTI GROUP TYPE */
-		
-typedef struct
-{
-	u_long			magicNum;
-	Byte			isUsed[MAX_CONFETTIS];
-	u_long			flags;
-	Byte			confettiTextureNum;
-	float			gravity;
-	float			baseScale;
-	float			decayRate;						// shrink speed
-	float			fadeRate;
-		
-	float			fadeDelay[MAX_CONFETTIS];
-	float			alpha[MAX_CONFETTIS];
-	float			scale[MAX_CONFETTIS];
-	OGLVector3D		rot[MAX_CONFETTIS];
-	OGLVector3D		deltaRot[MAX_CONFETTIS];
-	OGLPoint3D		coord[MAX_CONFETTIS];
-	OGLVector3D		delta[MAX_CONFETTIS];
-	
-	MOVertexArrayObject	*geometryObj;
-	
-}ConfettiGroupType;
-
 
 
 enum
@@ -127,34 +97,6 @@ typedef struct
 }NewParticleDefType;
 
 
-/********** CONFETTI GROUP DEFINITION **************/
-
-typedef struct
-{
-	u_long 	magicNum;
-	u_long  flags;
-	float 	gravity;
-	float 	baseScale;
-	float 	decayRate;
-	float 	fadeRate;
-	Byte 	confettiTextureNum;
-}NewConfettiGroupDefType;
-
-
-/*************** NEW CONFETTI DEFINITION *****************/
-
-typedef struct
-{
-	short 		groupNum;
-	OGLPoint3D 	*where;
-	OGLVector3D *delta;
-	float 		scale;
-	OGLVector3D	rot,deltaRot;
-	float		fadeDelay;
-	float 		alpha;
-}NewConfettiDefType;
-
-
 #define	FULL_ALPHA	1.0f
 
 
@@ -192,20 +134,3 @@ void DoBulletImpact(const OGLPoint3D *entryPt, const OGLVector3D *splatVec, floa
 
 Boolean AddFlame(TerrainItemEntryType *itemPtr, float  x, float z);
 
-
-
-		/* CONFETTI */
-		
-void InitConfettiManager(void);
-void DeleteAllConfettiGroups(void);
-short NewConfettiGroup(NewConfettiGroupDefType *def);
-Boolean AddConfettiToGroup(NewConfettiDefType *def);
-Boolean VerifyConfettiGroupMagicNum(short group, u_long magicNum);
-void MakeConfettiExplosion(float x, float y, float z, float force, float scale, short texture, short quantityLimit);
-
-
-
-		
-
-
-	

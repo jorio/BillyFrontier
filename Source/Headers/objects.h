@@ -19,7 +19,6 @@
 #define	SPRITE_SLOT		(SLOT_OF_DUMB+100)
 #define	FENCE_SLOT		20
 #define	PARTICLE_SLOT	(SPRITE_SLOT-2)
-#define	CONFETTI_SLOT	(PARTICLE_SLOT-1)		// do confetti before particles since particles are xparent
 #define	WATER_SLOT		(PARTICLE_SLOT - 1)
 #define	POW_SLOT		87
 
