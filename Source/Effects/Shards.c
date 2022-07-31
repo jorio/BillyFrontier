@@ -93,6 +93,30 @@ int	i;
 }
 
 
+
+/******** SET SHARD XFORM MATRIX FROM SCALE, ROT, COORD **********/
+
+static void UpdateShardTransformMatrix(int i)
+{
+	OGLMatrix4x4	m1, m2;
+
+		/* SET SCALE MATRIX */
+
+	OGLMatrix4x4_SetScale(&gShards[i].matrix, gShards[i].scale, gShards[i].scale, gShards[i].scale);
+
+		/* NOW ROTATE IT */
+
+	OGLMatrix4x4_SetRotate_XYZ(&m1, gShards[i].rot.x, gShards[i].rot.y, gShards[i].rot.z);
+	OGLMatrix4x4_Multiply(&gShards[i].matrix, &m1, &m2);
+
+		/* NOW TRANSLATE IT */
+
+	OGLMatrix4x4_SetTranslate(&m1, gShards[i].coord.x, gShards[i].coord.y, gShards[i].coord.z);
+	OGLMatrix4x4_Multiply(&m2, &m1, &gShards[i].matrix);
+}
+
+
+
 /****************** EXPLODE GEOMETRY ***********************/
 
 void ExplodeGeometry(ObjNode *theNode, float boomForce, Byte particleMode, long particleDensity, float particleDecaySpeed)
@@ -205,7 +229,6 @@ static void ExplodeVertexArray(MOVertexArrayData *data, MOMaterialObject *overri
 OGLPoint3D			centerPt = {0,0,0};
 u_long				ind[3];
 OGLTextureCoord		*uvPtr;
-long				i;
 float				boomForce = gBoomForce;
 OGLPoint3D			origin;
 
@@ -221,7 +244,7 @@ OGLPoint3D			origin;
 	{
 				/* GET FREE PARTICLE INDEX */
 				
-		i = FindFreeShard();
+		int i = FindFreeShard();
 		if (i == -1)														// see if all out
 			break;
 		
@@ -318,6 +341,12 @@ OGLPoint3D			origin;
 		gShards[i].decaySpeed 	= gShardDecaySpeed;
 		gShards[i].mode 		= gShardMode;
 
+		
+				/* SET INITIAL TRANSFORM MATRIX */
+
+		UpdateShardTransformMatrix(i);
+
+				
 				/* SET VALID & INC COUNTER */
 				
 		gShards[i].isUsed = true;
@@ -325,14 +354,11 @@ OGLPoint3D			origin;
 	}
 }
 
-
 /************************** MOVE SHARDS ****************************/
 
 void MoveShards(ObjNode *theNode)
 {
 float	ty,y,fps,x,z;
-long	i;
-OGLMatrix4x4	matrix,matrix2;
 	
 	theNode;
 	
@@ -340,10 +366,17 @@ OGLMatrix4x4	matrix,matrix2;
 	if (gNumShards == 0)												// quick check if any particles at all
 		return;
 
+	GAME_ASSERT(gNumShards >= 0);
+
 	fps = gFramesPerSecondFrac;
 
-	for (i=0; i < MAX_SHARDS; i++)
+	for (int i = 0; i < MAX_SHARDS; i++)
 	{
+		if (!gShards[i].isUsed)
+		{
+			continue;
+		}
+
 				/* ROTATE IT */
 
 		gShards[i].rot.x += gShards[i].rotDelta.x * fps;
@@ -392,21 +425,9 @@ del:
 
 			/***************************/
 			/* UPDATE TRANSFORM MATRIX */
-			/***************************/			
+			/***************************/	
 
-				/* SET SCALE MATRIX */
-
-		OGLMatrix4x4_SetScale(&gShards[i].matrix, gShards[i].scale,	gShards[i].scale, gShards[i].scale);
-	
-					/* NOW ROTATE IT */
-
-		OGLMatrix4x4_SetRotate_XYZ(&matrix, gShards[i].rot.x, gShards[i].rot.y, gShards[i].rot.z);
-		OGLMatrix4x4_Multiply(&gShards[i].matrix,&matrix, &matrix2);
-	
-					/* NOW TRANSLATE IT */
-
-		OGLMatrix4x4_SetTranslate(&matrix, gShards[i].coord.x, gShards[i].coord.y, gShards[i].coord.z);
-		OGLMatrix4x4_Multiply(&matrix2,&matrix, &gShards[i].matrix);
+		UpdateShardTransformMatrix(i);
 	}
 }
 
@@ -421,6 +442,8 @@ long	i;
 	
 	if (gNumShards == 0)												// quick check if any particles at all
 		return;
+
+	GAME_ASSERT(gNumShards > 0);
 		
 	for (i=0; i < MAX_SHARDS; i++)
 	{
