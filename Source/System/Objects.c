@@ -487,8 +487,11 @@ int				i;
 			if (!(statusBits & STATUS_BIT_SCREENPICKABLE))			// skip stuff we don't want picked
 				goto next;		
 
+			IMPLEMENT_ME_SOFT();									// picking isn't needed in Billy Frontier.
+#if 0
 			gCurrentPickID = (uintptr_t)theNode;					// pass the pick ID which for this is going to be the objNode ptr.
 			glLoadName(gCurrentPickID);
+#endif
 		}
 
 

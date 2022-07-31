@@ -264,15 +264,12 @@ void OGL_Shutdown(void);
 void OGL_NewViewDef(OGLSetupInputType *viewDef);
 void OGL_SetupWindow(OGLSetupInputType *setupDefPtr);
 void OGL_DisposeWindowSetup(void);
-void OGL_PickScene(void (*drawRoutine)(void),
-					float pickX, float pickY, float pickWidth, float pickHeight);
 void OGL_DrawScene(void (*drawRoutine)(void));
 void OGL_Camera_SetPlacementAndUpdateMatrices(void);
 void OGL_MoveCameraFromTo(float fromDX, float fromDY, float fromDZ, float toDX, float toDY, float toDZ);
 void OGL_MoveCameraFrom(float fromDX, float fromDY, float fromDZ);
 void OGL_UpdateCameraFromToUp(const OGLPoint3D *from, const OGLPoint3D *to, const OGLVector3D *up);
 void OGL_UpdateCameraFromTo(const OGLPoint3D *from, const OGLPoint3D *to);
-void OGL_Camera_SetPlacementAndUpdateMatricesForPicking(float pickX, float pickY, float pickWidth, float pickHeight);
 void OGL_Texture_SetOpenGLTexture(GLuint textureName);
 GLuint OGL_TextureMap_Load(void *imageMemory, int width, int height,
 							GLint srcFormat,  GLint destFormat, GLint dataType);

@@ -50,8 +50,6 @@ static Boolean OGL_DoesLineSegIntersectTrianglePlane(OGLPoint3D	triWorldPoints[]
 static Boolean OGL_DoesLineSegIntersectTrianglePlane2(OGLPlaneEquation *planeEQ, float *distFromP1ToPlane);
 
 static Boolean OGL_PickAndGetHitInfo_Skeleton(OGLRay *ray, ObjNode *theNode, OGLPoint3D *worldHitCoord);
-static Boolean OGL_PickAndGetInfo_Terrain(OGLPoint2D *point, OGLPoint3D *worldHitCoord);
-
 
 /****************************/
 /*    CONSTANTS             */
@@ -361,64 +359,6 @@ float				d, l2, r2, m2;
 
 
 
-/**************** PICK AND GET HIT INFO ************************/
-//
-//
-// INPUT: 	point = grafPort coords of click
-//			drawFun = callback to object drawing function
-//
-// OUTPUT:  ObjNode of object picked or nil
-//			worldHitCoord = world-space coords of the pick intersection
-//
-
-ObjNode *OGL_PickAndGetHitInfo(OGLPoint2D *point, void (*drawRoutine)(void), OGLPoint3D *worldHitCoord)
-{
-u_long	pickID;
-ObjNode	*pickedObj;
-OGLRay	ray;
-				/* USE OPENGL TO DETERMINE WHAT WE HIT */
-				
-	pickID = OGL_PickAndGetPickID(point, drawRoutine);
-	if (pickID == 0)
-		return(nil);
-
-
-			/* GET THE PICKING RAY IN WORLD-SPACE */
-			
-	OGL_GetWorldRayAtScreenPoint(point, &ray);
-
-	
-			/* NOW PARSE THE OBJNODE AND DO RAY-TRIANGLE TESTS TO SEE WHERE WE HIT */
-
-	pickedObj = (ObjNode *)pickID;										// this pick ID is actually the ObjNode * of the object that was picked
-
-	switch(pickedObj->Genre)
-	{		
-		case	SKELETON_GENRE:		
-				if (OGL_PickAndGetHitInfo_Skeleton(&ray, pickedObj, worldHitCoord) == false)
-				{
-					pickedObj = nil;									// hmm... should probably never do this since OpenGL says there is a hit, but our triangle test says otherwise
-				}
-				break;
-	
-		case	DISPLAY_GROUP_GENRE:		
-				OGL_RayGetHitInfo_DisplayGroup(&ray, pickedObj, worldHitCoord);
-				break;
-				
-		case	CUSTOM_GENRE:
-				if (pickedObj->CustomDrawFunction == DrawTerrain)		// is this the terrain?
-				{				
-					OGL_PickAndGetInfo_Terrain(point, worldHitCoord);
-				}
-				break;
-				
-		default:
-				DoFatalAlert("OGL_PickAndGetHitInfo: unsupported genre");
-	}
-
-	return(pickedObj);
-}
-
 /******************** OGL: PICK AND GET HIT INFO: SKELETON *********************/
 //
 // Called from above when we know we've picked a Skeleton objNode.
@@ -629,68 +569,6 @@ float		bestDist = 10000000;
 		
 	*distToIntersection = bestDist;									// pass back the best distance that we found (if any)
 	return(gotHit);
-}
-
-
-#pragma mark -
-
-
-/*************** OGL: PICK AND GET PICK ID ********************/
-//
-// This function simply returns the user name data that was picked out of the entire scene. 
-// No useful information such as pick hit x,y,z info is given.
-//
-// INPUT: 	point = grafPort coords of click
-//			drawFun = callback to object drawing function
-//
-
-u_long OGL_PickAndGetPickID(OGLPoint2D *point, void (*drawRoutine)(void))
-{
-int		i,j;
-
-				/* DO THE PICKING */
-
-	OGL_PickScene(drawRoutine, point->x, point->y, 4, 4);
-	
-			
-			/* SEE WHETHER ANY HITS OCCURRED */	
-
-
-	if (gNumPickHits > 0)
-	{
-		int		q = 0;
-		float	bestZ = 100000;
-		u_long	bestPick = 0;
-		
-		
-		for (i = 0; i < gNumPickHits; i++)								// scan all hits for closest z
-		{
-			int		numNamesInPick;
-			float	z1,z2;
-						
-			numNamesInPick 	= gPickBuffer[q];							// get # names returned
-			
-			for (j = 0; j < numNamesInPick; j++)
-			{
-				z1 				= (float)gPickBuffer[q+1] / 0x7fffffff;		// get z1
-				z2 				= (float)gPickBuffer[q+2] / 0x7fffffff;		// get z2
-				if (z1 < bestZ)
-				{
-					bestZ = z1;
-					bestPick = gPickBuffer[q+3];						// get the ObjNode from this value					
-				}
-				q += 3;
-			}
-			q += 1;
-		}	
-
-		return bestPick;
-	}
-
-
-			/* DIDNT HIT ANYTHING */
-
-	return 0;
 }
 
 

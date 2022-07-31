@@ -37,8 +37,6 @@ static void	ConvertTextureToGrey(void *imageMemory, short width, short height, G
 
 #define	STATE_STACK_SIZE	20
 
-#define	PICK_BUFFER_SIZE	100
-
 /*********************/
 /*    VARIABLES      */
 /*********************/
@@ -97,8 +95,6 @@ Boolean		gMyState_Lighting;
 		/* PICKING */
 		
 Boolean		gIsPicking = false;
-GLuint		gPickBuffer[PICK_BUFFER_SIZE];
-int			gNumPickHits = 0;
 
 
 /******************** OGL BOOT *****************/
@@ -371,8 +367,6 @@ OGLStyleDefType *styleDefPtr = &setupDefPtr->styles;
 
     glHint(GL_FOG_HINT, GL_NICEST);		// pixel accurate fog?
 
-	glSelectBuffer(PICK_BUFFER_SIZE, gPickBuffer);				// set the selection buffer for picking
-
 
 			/* ENABLE ALPHA CHANNELS */
 			
@@ -479,53 +473,6 @@ GLfloat	ambient[4];
 }
 
 #pragma mark -
-
-/******************* OGL PICK SCENE *************************/
-
-void OGL_PickScene(void (*drawRoutine)(void),
-					float pickX, float pickY, float pickWidth, float pickHeight)
-{
-	GAME_ASSERT(gGameViewInfoPtr);										// make sure it's legit
-	GAME_ASSERT(gGameViewInfoPtr->isActive);
-
-	if (pickWidth < 1)
-		pickWidth = 1;
-	if (pickHeight < 1)
-		pickHeight = 1;
-
-
-			/* LET'S GET INTO PICKING MODE */
-
-			
-	gIsPicking 		= true;
-	gNumPickHits 	= 0;	
-	glRenderMode(GL_SELECT);
-	glInitNames();
-	gCurrentPickID 	= 0;
-	puts("TODO: This glPushName is probably not going to work! We may be forcing a 64-bit pointer into a 32-bit int");
-	glPushName(gCurrentPickID);
-
-
-
-			/* GET UPDATED GLOBAL COPIES OF THE VARIOUS MATRICES */
-
-	OGL_Camera_SetPlacementAndUpdateMatricesForPicking(pickX, pickY, pickWidth, pickHeight);
-
-
-			/* CALL INPUT DRAW FUNCTION */
-
-	if (drawRoutine != nil)
-		drawRoutine();
-
-
-		/* CLEANUP & GET OUT OF PICKING MODE */
-			
-	gNumPickHits = glRenderMode(GL_RENDER);
-	gIsPicking = false;
-	
-//	OGL_Camera_SetPlacementAndUpdateMatrices(setupInfo);
-}
-
 
 /******************* OGL DRAW SCENE *********************/
 
@@ -1395,79 +1342,6 @@ OGLLightDefType	*lights;
 	UpdateListenerLocation();
 	OGL_CheckError();
 }
-
-/************** OGL: CAMERA SET PLACEMENT & UPDATE MATRICES FOR PICKING **********************/
-//
-// This is called by OGL_PickScene to initialize all of the view matrices,
-// and to extract the current view matrices used for culling et.al.
-//
-
-void OGL_Camera_SetPlacementAndUpdateMatricesForPicking(float pickX, float pickY, float pickWidth, float pickHeight)
-{
-OGLCameraPlacement	*placement;
-int					x,y, w, h;
-GLint				viewport[4];
-
-	OGL_GetCurrentViewport(&x, &y, &w, &h);
-	gCurrentAspectRatio = (float)w/(float)h;
-
-			/* ADJUST PICK COORDS */
-			
-	pickY -= gGameViewInfoPtr->clip.bottom;			// adjust this for reasons I dont know, but it works
-	
-	pickX += pickWidth * .5f;						// make pick coords the center of the pick
-	pickY += pickHeight * .5f;
-
-
-	
-			/* INIT PROJECTION MATRIX */
-			
-	glMatrixMode(GL_PROJECTION);
-	glLoadIdentity();	
-	
-	viewport[0] = x;
-	viewport[1] = y;
-	viewport[2] = w;
-	viewport[3] = h;
-	gluPickMatrix(pickX, h - pickY, pickWidth, pickHeight, viewport);		// limit picking to this area
-
-	OGL_CheckError();
-	
-	gluPerspective (OGLMath_RadiansToDegrees(gGameViewInfoPtr->fov),	// fov
-					gCurrentAspectRatio,	// aspect
-					gGameViewInfoPtr->hither,		// hither
-					gGameViewInfoPtr->yon);		// yon
-
-	OGL_CheckError();
-	
-	
-			/* INIT MODELVIEW MATRIX */
-			
-	glMatrixMode(GL_MODELVIEW);
-	glLoadIdentity();
-	placement = &gGameViewInfoPtr->cameraPlacement;
-	gluLookAt(placement->cameraLocation.x, placement->cameraLocation.y, placement->cameraLocation.z,	
-			placement->pointOfInterest.x, placement->pointOfInterest.y, placement->pointOfInterest.z,	
-			placement->upVector.x, placement->upVector.y, placement->upVector.z);
-
-
-			/* SET CLIPPING TO OUR PANE */
-			
-	glViewport(0,0, w, h);
-
-
-			/* GET VARIOUS CAMERA MATRICES */
-			
-	glGetFloatv(GL_MODELVIEW_MATRIX, (GLfloat *)&gWorldToViewMatrix);
-	glGetFloatv(GL_PROJECTION_MATRIX, (GLfloat *)&gViewToFrustumMatrix);
-	OGLMatrix4x4_Multiply(&gWorldToViewMatrix, &gViewToFrustumMatrix, &gWorldToFrustumMatrix);
-
-	OGLMatrix4x4_GetFrustumToWindow(&gFrustumToWindowMatrix);
-	OGLMatrix4x4_Multiply(&gWorldToFrustumMatrix, &gFrustumToWindowMatrix, &gWorldToWindowMatrix);
-
-
-}
-
 
 #pragma mark -
 

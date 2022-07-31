@@ -89,7 +89,6 @@ extern Byte gShootoutMode;
 extern CollisionRec gCollisionList[/*MAX_COLLISIONS*/];
 extern FSSpec gDataSpec;
 extern FenceDefType *gFenceList;
-extern GLuint gPickBuffer[/*PICK_BUFFER_SIZE*/];
 extern KeyMap gKeyMap;
 extern KeyMap gNewKeys;
 extern LineMarkerDefType gLineMarkerList[MAX_LINEMARKERS];
@@ -178,7 +177,6 @@ extern int gNumLineMarkers;
 extern int gNumLoopingEffects;
 extern int gNumObjectNodes;
 extern int gNumObjectsInBG3DGroupList[MAX_BG3D_GROUPS];
-extern int gNumPickHits;
 extern int gNumPointers;
 extern int gNumSparkles;
 extern int gNumWorldCalcsThisFrame;
@@ -217,7 +215,6 @@ extern u_long gGameFrameNum;
 extern u_long gGlobalMaterialFlags;
 extern u_long gLoadedScore;
 extern u_long gScore;
-extern uintptr_t gCurrentPickID;
 
 #if _DEBUG
 #define IMPLEMENT_ME_SOFT() printf("IMPLEMENT ME: %s:%d\n", __func__, __LINE__)

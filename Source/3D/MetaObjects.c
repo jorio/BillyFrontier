@@ -58,8 +58,6 @@ u_long				gGlobalMaterialFlags = 0;
 
 MOMaterialObject	*gMostRecentMaterial;
 
-uintptr_t			gCurrentPickID = 0;
-
 
 /***************** INIT META OBJECT HANDLER ******************/
 
@@ -600,9 +598,12 @@ MOVertexArrayObject	*vObj;
 		case	MO_TYPE_PICKID:
 				if (gIsPicking)
 				{
+					IMPLEMENT_ME_SOFT();	// Picking isn't needed in Billy Frontier.
+#if 0
 					MOPickIDObject *pickObj = (MOPickIDObject *)object;
 					gCurrentPickID = pickObj->pickID;
 					glLoadName(gCurrentPickID);
+#endif
 				}
 				break;
 				
