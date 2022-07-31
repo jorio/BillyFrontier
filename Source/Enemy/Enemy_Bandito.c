@@ -463,7 +463,7 @@ const OGLPoint3D	headOff = {0,15,0};
 			/* MAKE BLAST EFFECT & BULLET */
 			
 	MakeGunBlast(&muzzleCoord, &muzzToPlayer);
-	PlayEffect3D(EFFECT_GUNSHOT, &muzzleCoord);
+	PlayEffect3D(EFFECT_GUNSHOT1, &muzzleCoord);
 
 	ShootEnemyBullet(&muzzleCoord, &muzzToPlayer);
 	

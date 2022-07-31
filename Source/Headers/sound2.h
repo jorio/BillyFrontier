@@ -39,7 +39,9 @@ enum
 
 enum
 {
-	EFFECT_GUNSHOT,
+	EFFECT_GUNSHOT1,
+	EFFECT_GUNSHOT2,
+	EFFECT_GUNSHOT3,
 	EFFECT_BULLETHIT,
 	EFFECT_SPURS1,
 	EFFECT_SPURS2,
@@ -47,8 +49,6 @@ enum
 	EFFECT_WIND,
 	EFFECT_MOO1,
 	EFFECT_MOO2,
-	EFFECT_GUNSHOT2,
-	EFFECT_GUNSHOT3,
 	EFFECT_RELOAD,
 	EFFECT_RICOCHET,
 	EFFECT_DUELKEY,
@@ -92,7 +92,7 @@ extern	short PlayEffect(short effectNum);
 short PlayEffect_Parms3D(short effectNum, const OGLPoint3D *where, u_long rateMultiplier, float volumeAdjust);
 extern void	ToggleMusic(void);
 extern void	DoSoundMaintenance(void);
-void LoadSoundBank(FSSpec *spec);
+void LoadSoundBank(void);
 void DisposeSoundBank(void);
 short PlayEffect_Parms(short effectNum, u_long leftVolume, u_long rightVolume, unsigned long rateMultiplier);
 void ChangeChannelVolume(short channel, float leftVol, float rightVol);

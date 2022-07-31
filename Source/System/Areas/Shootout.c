@@ -689,7 +689,7 @@ int		i, numBulletsInClip;
 
 
 
-	PlayEffect(EFFECT_GUNSHOT);			
+	PlayEffect(EFFECT_GUNSHOT1);
 }
 
 

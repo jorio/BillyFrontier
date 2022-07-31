@@ -685,7 +685,7 @@ ObjNode				*enemy = nil;
 			/* MAKE BLAST EFFECT & BULLET */
 			
 	MakeGunBlast(&muzzleCoord, &gunAim);
-	PlayEffect_Parms3D(EFFECT_GUNSHOT, &muzzleCoord, NORMAL_CHANNEL_RATE*2/3, 1.0f);
+	PlayEffect_Parms3D(EFFECT_GUNSHOT1, &muzzleCoord, NORMAL_CHANNEL_RATE*2/3, 1.0f);
 	CreateBullet(&muzzleCoord, &gunAim, &bulletTargetCoord, enemy, true);
 
 
@@ -762,7 +762,7 @@ do_right_gun:
 			/* MAKE BLAST EFFECT & BULLET */
 			
 	MakeGunBlast(&muzzleCoord, &gunAim);
-	PlayEffect_Parms3D(EFFECT_GUNSHOT, &muzzleCoord, NORMAL_CHANNEL_RATE*2/3, 1.0f);
+	PlayEffect_Parms3D(EFFECT_GUNSHOT1, &muzzleCoord, NORMAL_CHANNEL_RATE*2/3, 1.0f);
 	CreateBullet(&muzzleCoord, &gunAim, &bulletTargetCoord, enemy, true);
 
 }
@@ -814,7 +814,7 @@ int					joint;
 			/* MAKE BLAST EFFECT & BULLET */
 			
 	MakeGunBlast(&muzzleCoord, &gunAim);
-	PlayEffect_Parms3D(EFFECT_GUNSHOT, &muzzleCoord, NORMAL_CHANNEL_RATE*2/3, 1.0f);
+	PlayEffect_Parms3D(EFFECT_GUNSHOT1, &muzzleCoord, NORMAL_CHANNEL_RATE*2/3, 1.0f);
 
 
 	CreateBullet(&muzzleCoord, &gunAim, &bulletTargetCoord, gPlayerInfo.objNode, false);

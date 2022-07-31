@@ -433,7 +433,7 @@ int		i;
 	AttachShadowToObject(newObj, 0, 1, 1, false);
 
 
-	PlayEffect3D(EFFECT_GUNSHOT, muzzlePt);		
+	PlayEffect3D(EFFECT_GUNSHOT1, muzzlePt);		
 	
 	
 	

@@ -28,13 +28,12 @@ static void UpdateGlobalVolume(void);
 
 #define		MAX_CHANNELS			40
 
-#define		MAX_EFFECTS				70
-
 #define	FULL_SONG_VOLUME	0.5f
 #define FULL_EFFECTS_VOLUME	0.5f
 
 typedef struct
 {
+	const char* name;
 	float	refVol;
 }EffectType;
 
@@ -52,8 +51,8 @@ static OGLPoint3D			gEarCoords;										// coord of camera plus a tad to get pt
 static	OGLVector3D			gEyeVector;
 
 
-static	SndListHandle		gSndHandles[MAX_EFFECTS];		// handles to ALL sounds
-static  long				gSndOffsets[MAX_EFFECTS];
+static	SndListHandle		gSndHandles[NUM_EFFECTS];		// handles to ALL sounds
+static  long				gSndOffsets[NUM_EFFECTS];
 
 static	SndChannelPtr		gSndChannel[MAX_CHANNELS];
 ChannelInfoType				gChannelInfo[MAX_CHANNELS];
@@ -80,42 +79,42 @@ short				gCurrentSong = -1;
 		/* EFFECTS TABLE */
 		/*****************/
 
-static EffectType	gEffectsTable[] =
+static const EffectType	gEffectsTable[NUM_EFFECTS] =
 {
-	[EFFECT_GUNSHOT]			= {1.5},
-	[EFFECT_BULLETHIT]			= {1.3},
-	[EFFECT_SPURS1]				= {0.8},
-	[EFFECT_SPURS2]				= {0.8},
-	[EFFECT_SHIELDHIT]			= {1.0},
-	[EFFECT_WIND]				= {1.0},
-	[EFFECT_MOO1]				= {1.6},
-	[EFFECT_MOO2]				= {1.6},
-	[EFFECT_GUNSHOT2]			= {1.0},
-	[EFFECT_GUNSHOT3]			= {1.0},
-	[EFFECT_RELOAD]				= {1.0},
-	[EFFECT_RICOCHET]			= {1.1},
-	[EFFECT_DUELKEY]			= {1.0},
-	[EFFECT_DUELFAIL]			= {1.0},
-	[EFFECT_DUELKEYSDONE]		= {1.0},
-	[EFFECT_HOOF]				= {1.0},
-	[EFFECT_WALKERCRASH]		= {1.2},
-	[EFFECT_BULLETHITMETAL]		= {1.5},
-	[EFFECT_WALKERFOOTSTEP]		= {1.0},
-	[EFFECT_WALKERAMBIENT]		= {0.7},
-	[EFFECT_CRATEEXPLODE]		= {1.3},
-	[EFFECT_GLASSBREAK]			= {4.0},
-	[EFFECT_COINSMASH]			= {5.0},
-	[EFFECT_GHOSTVAPORIZE]		= {1.0},
-	[EFFECT_EMPTY]				= {1.0},
-	[EFFECT_TRAMPLED]			= {2.0},
-	[EFFECT_GETCOIN]			= {1.0},
-	[EFFECT_LAUNCHMISSILE]		= {1.0},
-	[EFFECT_EXPLOSION]			= {1.3},
-	[EFFECT_DEATHSKULL]			= {2.0},
-	[EFFECT_TIMERCHIME]			= {1.0},
-	[EFFECT_SWISH]				= {1.5},
-	[EFFECT_YELP]				= {1.7},
-	[EFFECT_ALARM]				= {1.0},
+	[EFFECT_GUNSHOT1]			= {"GUNSHOT1",			1.5},
+	[EFFECT_BULLETHIT]			= {"BULLETHIT",			1.3},
+	[EFFECT_SPURS1]				= {"SPURS1",			0.8},
+	[EFFECT_SPURS2]				= {"SPURS2",			0.8},
+	[EFFECT_SHIELDHIT]			= {"SHIELDHIT",			1.0},
+	[EFFECT_WIND]				= {"WIND",				1.0},
+	[EFFECT_MOO1]				= {"MOO1",				1.6},
+	[EFFECT_MOO2]				= {"MOO2",				1.6},
+	[EFFECT_GUNSHOT2]			= {"GUNSHOT2",			1.0},
+	[EFFECT_GUNSHOT3]			= {"GUNSHOT3",			1.0},
+	[EFFECT_RELOAD]				= {"RELOAD",			1.0},
+	[EFFECT_RICOCHET]			= {"RICOCHET",			1.1},
+	[EFFECT_DUELKEY]			= {"DUELKEY",			1.0},
+	[EFFECT_DUELFAIL]			= {"DUELFAIL",			1.0},
+	[EFFECT_DUELKEYSDONE]		= {"DUELKEYSDONE",		1.0},
+	[EFFECT_HOOF]				= {"HOOF",				1.0},
+	[EFFECT_WALKERCRASH]		= {"WALKERCRASH",		1.2},
+	[EFFECT_BULLETHITMETAL]		= {"BULLETHITMETAL",	1.5},
+	[EFFECT_WALKERFOOTSTEP]		= {"WALKERFOOTSTEP",	1.0},
+	[EFFECT_WALKERAMBIENT]		= {"WALKERAMBIENT",		0.7},
+	[EFFECT_CRATEEXPLODE]		= {"CRATEEXPLODE",		1.3},
+	[EFFECT_GLASSBREAK]			= {"GLASSBREAK",		4.0},
+	[EFFECT_COINSMASH]			= {"COINSMASH",			5.0},
+	[EFFECT_GHOSTVAPORIZE]		= {"GHOSTVAPORIZE",		1.0},
+	[EFFECT_EMPTY]				= {"EMPTY",				1.0},
+	[EFFECT_TRAMPLED]			= {"TRAMPLED",			2.0},
+	[EFFECT_GETCOIN]			= {"GETCOIN",			1.0},
+	[EFFECT_LAUNCHMISSILE]		= {"LAUNCHMISSILE",		1.0},
+	[EFFECT_EXPLOSION]			= {"EXPLOSION",			1.3},
+	[EFFECT_DEATHSKULL]			= {"DEATHSKULL",		2.0},
+	[EFFECT_TIMERCHIME]			= {"TIMERCHIME",		1.0},
+	[EFFECT_SWISH]				= {"SWISH",				1.5},
+	[EFFECT_YELP]				= {"YELP",				1.7},
+	[EFFECT_ALARM]				= {"ALARM",				1.0},
 };
 
 
@@ -126,8 +125,7 @@ static EffectType	gEffectsTable[] =
 void InitSoundTools(void)
 {
 OSErr			iErr;
-FSSpec			spec;
-	
+
 	gNumLoopingEffects = 0;
 
 	gMaxChannels = 0;
@@ -162,9 +160,7 @@ FSSpec			spec;
 		/* LOAD DEFAULT SOUNDS */
 		/***********************/
 		
-	if (FSMakeFSSpec(gDataSpec.vRefNum, gDataSpec.parID, ":Audio:Main.sounds", &spec) != noErr)
-		DoFatalAlert("InitSoundTools: where is Main.sounds?");
-	LoadSoundBank(&spec);
+	LoadSoundBank();
 }
 
 
@@ -203,11 +199,8 @@ int	i;
 
 /******************* LOAD SOUND BANK ************************/
 
-void LoadSoundBank(FSSpec *spec)
+void LoadSoundBank(void)
 {
-short			srcFile1,numSoundsInBank,i;
-OSErr			iErr;
-
 	StopAllEffectChannels();
 
 			/* DISPOSE OF EXISTING BANK */
@@ -215,38 +208,27 @@ OSErr			iErr;
 	DisposeSoundBank();
 
 
-			/* OPEN APPROPRIATE REZ FILE */
-			
-	srcFile1 = FSpOpenResFile(spec, fsRdPerm);
-	if (srcFile1 == -1)
-	{
-		DoFatalAlert("LoadSoundBank: OpenResFile failed! (System error %d)", ResError());
-	}
-
 			/****************************/
 			/* LOAD ALL EFFECTS IN BANK */
 			/****************************/
 
-	UseResFile( srcFile1 );												// open sound resource fork
-	numSoundsInBank = Count1Resources('snd ');							// count # snd's in this bank
-	if (numSoundsInBank > MAX_EFFECTS)
-		DoFatalAlert("LoadSoundBank: numSoundsInBank > MAX_EFFECTS");
-
-	for (i=0; i < numSoundsInBank; i++)
+	for (int i = 0; i < NUM_EFFECTS; i++)
 	{
+		char path[64];
+		FSSpec spec;
+		short refNum;
+
+		snprintf(path, sizeof(path), ":Audio:SoundBank:%s.aiff", gEffectsTable[i].name);
+		FSMakeFSSpec(gDataSpec.vRefNum, gDataSpec.parID, path, &spec);
+		FSpOpenDF(&spec, fsRdPerm, &refNum);
+
+
 				/* LOAD SND REZ */
-				
-		gSndHandles[i] = (SndListResource **)GetResource('snd ',BASE_EFFECT_RESOURCE+i);
-		if (gSndHandles[i] == nil) 
-		{
-			iErr = ResError();
-			DoFatalAlert("LoadSoundBank: GetResource failed! (System error %d)", iErr);
-		}
-		DetachResource((Handle)gSndHandles[i]);				// detach resource from rez file & make a normal Handle
-			
-		HNoPurge((Handle)gSndHandles[i]);						// make non-purgeable
-		HLockHi((Handle)gSndHandles[i]);
-		
+
+		gSndHandles[i] = Pomme_SndLoadFileAsResource(refNum);
+		GAME_ASSERT(gSndHandles[i]);
+
+
 				/* GET OFFSET INTO IT */
 				
 		GetSoundHeaderOffset(gSndHandles[i], &gSndOffsets[i]);
@@ -255,12 +237,12 @@ OSErr			iErr;
 				/* PRE-DECOMPRESS IT */
 
 		Pomme_DecompressSoundResource(&gSndHandles[i], &gSndOffsets[i]);
+
+
+		FSClose(refNum);
 	}
 
-	UseResFile(gMainAppRezFile );								// go back to normal res file
-	CloseResFile(srcFile1);
-
-	gNumSndsInBank = numSoundsInBank;					// remember how many sounds we've got
+	gNumSndsInBank = NUM_EFFECTS;					// remember how many sounds we've got
 }
 
 

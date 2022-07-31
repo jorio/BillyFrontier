@@ -543,7 +543,7 @@ float	speed;
 	AttachShadowToObject(newObj, 0, 1, 1, false);
 
 
-	PlayEffect(EFFECT_GUNSHOT);	
+	PlayEffect(EFFECT_GUNSHOT1);
 	
 	return(true);		
 }
