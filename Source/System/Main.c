@@ -320,7 +320,6 @@ void DefaultDrawCallback(void)
 
 	DrawSparkles();											// draw light sparkles
 	DrawLensFlare();										// draw lens flare
-	DrawInfobar();											// draw infobar last		
 }
 
 

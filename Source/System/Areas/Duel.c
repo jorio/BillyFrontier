@@ -178,7 +178,7 @@ void PlayDuel(Byte difficulty)
 		
 	}
 
-	OGL_FadeOutScene(DefaultDrawCallback, KeepTerrainAlive);
+	OGL_FadeOutScene(DrawObjects, KeepTerrainAlive);
 
 		/* CLEANUP LEVEL */
 					

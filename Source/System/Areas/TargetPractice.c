@@ -122,7 +122,7 @@ void PlayTargetPractice(void)
 
 		/* CLEANUP LEVEL */
 
-	OGL_FadeOutScene(DefaultDrawCallback, NULL);
+	OGL_FadeOutScene(DrawObjects, NULL);
 	MyFlushEvents();
 	CleanupTargetPractice();
 	

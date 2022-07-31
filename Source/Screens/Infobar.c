@@ -15,6 +15,8 @@
 /*    PROTOTYPES            */
 /****************************/
 
+static void DrawInfobar(ObjNode* infobarObj);
+
 static void DrawDuelInfobar(void);
 
 static void DrawInfobarSprite_Rotated(float x, float y, float size, short texNum, float rot);
@@ -90,11 +92,21 @@ static void DrawTargetPracticeInfobar(void);
 // Called at beginning of level
 //
 
-void InitInfobar(void)
-{		
+ObjNode* InitInfobar(void)
+{
+	NewObjectDefinitionType def =
+	{
+		.scale = 1,
+		.genre = CUSTOM_GENRE,
+		.slot = SPRITE_SLOT,
+		.flags = STATUS_BIT_DONTCULL | STATUS_BIT_DONTPURGE | STATUS_BIT_NOZBUFFER | STATUS_BIT_NOZWRITES | STATUS_BIT_NOFOG,
+	};
 
+	ObjNode* infobarObj = MakeNewObject(&def);
 
+	infobarObj->CustomDrawFunction = DrawInfobar;
 
+	return infobarObj;
 }
 
 
@@ -133,7 +145,7 @@ void SetInfobarSpriteState(float anaglyphZ)
 
 /********************** DRAW INFOBAR ****************************/
 
-void DrawInfobar(void)
+static void DrawInfobar(ObjNode* infobarObj)
 {
 
 	if (gIsPicking)

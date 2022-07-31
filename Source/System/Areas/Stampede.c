@@ -123,7 +123,7 @@ void PlayStampede(void)
 
 		/* CLEANUP LEVEL */
 
-	OGL_FadeOutScene(DefaultDrawCallback, KeepTerrainAlive);
+	OGL_FadeOutScene(DrawObjects, KeepTerrainAlive);
 	MyFlushEvents();
 	CleanupStampede();
 }

@@ -4,23 +4,17 @@
 
 #pragma once
 
-// Externals
-#include "game.h"
-
 #define INVALID_NODE_FLAG	0xdeadbeef			// put into CType when node is deleted
 
 #define	TERRAIN_SLOT	1
-#define	TRIGGER_SLOT	4						// needs to be early in the collision list
+#define	FENCE_SLOT		20
 #define	PLAYER_SLOT		200
 #define	ENEMY_SLOT		(PLAYER_SLOT+10)
-#define	SNAIL_SLOT		(ENEMY_SLOT+50)
-#define LURE_SLOT		(TRIGGER_SLOT + 5)
 #define	SLOT_OF_DUMB	3000
 #define	SPRITE_SLOT		(SLOT_OF_DUMB+100)
-#define	FENCE_SLOT		20
+#define	FADEPANE_SLOT	(SLOT_OF_DUMB+1000)
 #define	PARTICLE_SLOT	(SPRITE_SLOT-2)
 #define	WATER_SLOT		(PARTICLE_SLOT - 1)
-#define	POW_SLOT		87
 
 enum
 {

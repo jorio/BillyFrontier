@@ -2,11 +2,10 @@
 // infobar.h
 //
 
-// Externals
-#include "game.h"
+#pragma once 
 
-void InitInfobar(void);
-void DrawInfobar(void);
+ObjNode* InitInfobar(void);
+
 void DrawInfobarSprite(float x, float y, float size, short texNum);
 void DrawInfobarSprite2_Centered(float x, float y, float size, short group, short texNum);
 void DrawInfobarSprite2(float x, float y, float size, short group, short texNum);
