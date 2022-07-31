@@ -218,7 +218,6 @@ static void FreeBigBoardScreen(void)
 	FreeAllSkeletonFiles(-1);
 	DisposeAllSpriteGroups();	
 	DisposeAllBG3DContainers();
-	DisposeSoundBank(SOUND_BANK_MAINMENU);
 	OGL_DisposeWindowSetup();	
 }
 

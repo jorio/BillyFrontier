@@ -35,7 +35,6 @@ static void UpdateGlobalVolume(void);
 
 typedef struct
 {
-	Byte	bank,sound;
 	float	refVol;
 }EffectType;
 
@@ -53,8 +52,8 @@ static OGLPoint3D			gEarCoords;										// coord of camera plus a tad to get pt
 static	OGLVector3D			gEyeVector;
 
 
-static	SndListHandle		gSndHandles[MAX_SOUND_BANKS][MAX_EFFECTS];		// handles to ALL sounds
-static  long				gSndOffsets[MAX_SOUND_BANKS][MAX_EFFECTS];
+static	SndListHandle		gSndHandles[MAX_EFFECTS];		// handles to ALL sounds
+static  long				gSndOffsets[MAX_EFFECTS];
 
 static	SndChannelPtr		gSndChannel[MAX_CHANNELS];
 ChannelInfoType				gChannelInfo[MAX_CHANNELS];
@@ -64,7 +63,7 @@ static short				gMaxChannels = 0;
 
 static short				gMostRecentChannel = -1;
 
-static short				gNumSndsInBank[MAX_SOUND_BANKS] = {0,0};
+static short				gNumSndsInBank = 0;
 
 
 Boolean						gSongPlayingFlag = false;
@@ -80,50 +79,43 @@ short				gCurrentSong = -1;
 		/*****************/
 		/* EFFECTS TABLE */
 		/*****************/
-		
-		/*****************/
-		/* EFFECTS TABLE */
-		/*****************/
-		
+
 static EffectType	gEffectsTable[] =
 {
-	SOUND_BANK_SONG,0, 1.0,									// EFFECT_SONG
-
-	SOUND_BANK_MAIN,SOUND_DEFAULT_GUNSHOT, 1.5,				// EFFECT_GUNSHOT
-	SOUND_BANK_MAIN,SOUND_DEFAULT_BULLETHIT, 1.3,			// EFFECT_BULLETHIT
-	SOUND_BANK_MAIN,SOUND_DEFAULT_SPURS1,.8,				// EFFECT_SPURS1
-	SOUND_BANK_MAIN,SOUND_DEFAULT_SPURS2, .8,				// EFFECT_SPURS2
-	SOUND_BANK_MAIN,SOUND_DEFAULT_SHIELDHIT, 1.0,			// EFFECT_SHIELDHIT
-	SOUND_BANK_MAIN,SOUND_DEFAULT_WIND, 1.0,				// EFFECT_WIND
-	SOUND_BANK_MAIN,SOUND_DEFAULT_MOO1,1.6,					// EFFECT_MOO1
-	SOUND_BANK_MAIN,SOUND_DEFAULT_MOO2,1.6,					// EFFECT_MOO2
-	SOUND_BANK_MAIN,SOUND_DEFAULT_GUNSHOT2, 1.0,			// EFFECT_GUNSHOT2
-	SOUND_BANK_MAIN,SOUND_DEFAULT_GUNSHOT3, 1.0,			// EFFECT_GUNSHOT3
-	SOUND_BANK_MAIN,SOUND_DEFAULT_RELOAD, 1.0,				// EFFECT_RELOAD
-	SOUND_BANK_MAIN,SOUND_DEFAULT_RICOCHET, 1.1,			// EFFECT_RICOCHET
-	SOUND_BANK_MAIN,SOUND_DEFAULT_DUELKEY, 1.0,				// EFFECT_DUELKEY
-	SOUND_BANK_MAIN,SOUND_DEFAULT_DUELFAIL, 1.0,			// EFFECT_DUELFAIL
-	SOUND_BANK_MAIN,SOUND_DEFAULT_DUELKEYSDONE, 1.0,		// EFFECT_DUELKEYSDONE
-	SOUND_BANK_MAIN,SOUND_DEFAULT_HOOF, 1.0,				// EFFECT_HOOF
-	SOUND_BANK_MAIN,SOUND_DEFAULT_WALKERCRASH, 1.2,			// EFFECT_WALKERCRASH
-	SOUND_BANK_MAIN,SOUND_DEFAULT_BULLETHITMETAL, 1.5,		// EFFECT_BULLETHITMETAL
-	SOUND_BANK_MAIN,SOUND_DEFAULT_WALKERFOOTSTEP, 1.0,		// EFFECT_WALKERFOOTSTEP
-	SOUND_BANK_MAIN,SOUND_DEFAULT_WALKERAMBIENT, .7,		// EFFECT_WALKERAMBIENT
-	SOUND_BANK_MAIN,SOUND_DEFAULT_CREATEEXPLODE, 1.3,		// EFFECT_CRATEEXPLODE
-	SOUND_BANK_MAIN,SOUND_DEFAULT_GLASSBREAK, 4.0,			// EFFECT_GLASSBREAK
-	SOUND_BANK_MAIN,SOUND_DEFAULT_COINSMASH, 5.0,			// EFFECT_COINSMASH
-	SOUND_BANK_MAIN,SOUND_DEFAULT_GHOSTVAPORIZE, 1.0,		// EFFECT_GHOSTVAPORIZE
-	SOUND_BANK_MAIN,SOUND_DEFAULT_EMPTY, 1.0,				// EFFECT_EMPTY
-	SOUND_BANK_MAIN,SOUND_DEFAULT_TRAMPLED, 2.0,			// EFFECT_TRAMPLED
-	SOUND_BANK_MAIN,SOUND_DEFAULT_GETCOIN, 1.0,				// EFFECT_GETCOIN
-	SOUND_BANK_MAIN,SOUND_DEFAULT_LAUNCHMISSILE, 1.0,		// EFFECT_LAUNCHMISSILE
-	SOUND_BANK_MAIN,SOUND_DEFAULT_EXPLOSION, 1.3,			// EFFECT_EXPLOSION
-	SOUND_BANK_MAIN,SOUND_DEFAULT_DEATHSKULL, 2.0,			// EFFECT_DEATHSKULL
-	SOUND_BANK_MAIN,SOUND_DEFAULT_TIMERCHIME, 1.0,			// EFFECT_TIMERCHIME
-	SOUND_BANK_MAIN,SOUND_DEFAULT_SWISH, 1.5,				// EFFECT_SWISH
-	SOUND_BANK_MAIN,SOUND_DEFAULT_YELP, 1.7,				// EFFECT_YELP
-	SOUND_BANK_MAIN,SOUND_DEFAULT_ALARM, 1.0,				// EFFECT_ALARM
-
+	[EFFECT_GUNSHOT]			= {1.5},
+	[EFFECT_BULLETHIT]			= {1.3},
+	[EFFECT_SPURS1]				= {0.8},
+	[EFFECT_SPURS2]				= {0.8},
+	[EFFECT_SHIELDHIT]			= {1.0},
+	[EFFECT_WIND]				= {1.0},
+	[EFFECT_MOO1]				= {1.6},
+	[EFFECT_MOO2]				= {1.6},
+	[EFFECT_GUNSHOT2]			= {1.0},
+	[EFFECT_GUNSHOT3]			= {1.0},
+	[EFFECT_RELOAD]				= {1.0},
+	[EFFECT_RICOCHET]			= {1.1},
+	[EFFECT_DUELKEY]			= {1.0},
+	[EFFECT_DUELFAIL]			= {1.0},
+	[EFFECT_DUELKEYSDONE]		= {1.0},
+	[EFFECT_HOOF]				= {1.0},
+	[EFFECT_WALKERCRASH]		= {1.2},
+	[EFFECT_BULLETHITMETAL]		= {1.5},
+	[EFFECT_WALKERFOOTSTEP]		= {1.0},
+	[EFFECT_WALKERAMBIENT]		= {0.7},
+	[EFFECT_CRATEEXPLODE]		= {1.3},
+	[EFFECT_GLASSBREAK]			= {4.0},
+	[EFFECT_COINSMASH]			= {5.0},
+	[EFFECT_GHOSTVAPORIZE]		= {1.0},
+	[EFFECT_EMPTY]				= {1.0},
+	[EFFECT_TRAMPLED]			= {2.0},
+	[EFFECT_GETCOIN]			= {1.0},
+	[EFFECT_LAUNCHMISSILE]		= {1.0},
+	[EFFECT_EXPLOSION]			= {1.3},
+	[EFFECT_DEATHSKULL]			= {2.0},
+	[EFFECT_TIMERCHIME]			= {1.0},
+	[EFFECT_SWISH]				= {1.5},
+	[EFFECT_YELP]				= {1.7},
+	[EFFECT_ALARM]				= {1.0},
 };
 
 
@@ -143,7 +135,7 @@ FSSpec			spec;
 
 			/* INIT BANK INFO */
 
-	memset(gNumSndsInBank, 0, sizeof(gNumSndsInBank));
+	gNumSndsInBank = 0;
 
 			/******************/
 			/* ALLOC CHANNELS */
@@ -172,7 +164,7 @@ FSSpec			spec;
 		
 	if (FSMakeFSSpec(gDataSpec.vRefNum, gDataSpec.parID, ":Audio:Main.sounds", &spec) != noErr)
 		DoFatalAlert("InitSoundTools: where is Main.sounds?");
-	LoadSoundBank(&spec, SOUND_BANK_MAIN);
+	LoadSoundBank(&spec);
 }
 
 
@@ -194,7 +186,14 @@ int	i;
 		/* DISPOSE OF CHANNELS */
 		
 	for (i = 0; i < gMaxChannels; i++)
-		SndDisposeChannel(gSndChannel[i], true);	
+	{
+		SndDisposeChannel(gSndChannel[i], true);
+		gSndChannel[i] = nil;
+	}
+
+	SndDisposeChannel(gMusicChannel, true);
+	gMusicChannel = nil;
+
 	gMaxChannels = 0;
 	
 	
@@ -204,19 +203,16 @@ int	i;
 
 /******************* LOAD SOUND BANK ************************/
 
-void LoadSoundBank(FSSpec *spec, long bankNum)
+void LoadSoundBank(FSSpec *spec)
 {
 short			srcFile1,numSoundsInBank,i;
 OSErr			iErr;
 
 	StopAllEffectChannels();
 
-	if (bankNum >= MAX_SOUND_BANKS)
-		DoFatalAlert("LoadSoundBank: bankNum >= MAX_SOUND_BANKS");
-
 			/* DISPOSE OF EXISTING BANK */
 			
-	DisposeSoundBank(bankNum);
+	DisposeSoundBank();
 
 
 			/* OPEN APPROPRIATE REZ FILE */
@@ -240,53 +236,49 @@ OSErr			iErr;
 	{
 				/* LOAD SND REZ */
 				
-		gSndHandles[bankNum][i] = (SndListResource **)GetResource('snd ',BASE_EFFECT_RESOURCE+i);
-		if (gSndHandles[bankNum][i] == nil) 
+		gSndHandles[i] = (SndListResource **)GetResource('snd ',BASE_EFFECT_RESOURCE+i);
+		if (gSndHandles[i] == nil) 
 		{
 			iErr = ResError();
 			DoFatalAlert("LoadSoundBank: GetResource failed! (System error %d)", iErr);
 		}
-		DetachResource((Handle)gSndHandles[bankNum][i]);				// detach resource from rez file & make a normal Handle
+		DetachResource((Handle)gSndHandles[i]);				// detach resource from rez file & make a normal Handle
 			
-		HNoPurge((Handle)gSndHandles[bankNum][i]);						// make non-purgeable
-		HLockHi((Handle)gSndHandles[bankNum][i]);
+		HNoPurge((Handle)gSndHandles[i]);						// make non-purgeable
+		HLockHi((Handle)gSndHandles[i]);
 		
 				/* GET OFFSET INTO IT */
 				
-		GetSoundHeaderOffset(gSndHandles[bankNum][i], &gSndOffsets[bankNum][i]);
+		GetSoundHeaderOffset(gSndHandles[i], &gSndOffsets[i]);
 
 
 				/* PRE-DECOMPRESS IT */
 
-		Pomme_DecompressSoundResource(&gSndHandles[bankNum][i], &gSndOffsets[bankNum][i]);
+		Pomme_DecompressSoundResource(&gSndHandles[i], &gSndOffsets[i]);
 	}
 
 	UseResFile(gMainAppRezFile );								// go back to normal res file
 	CloseResFile(srcFile1);
 
-	gNumSndsInBank[bankNum] = numSoundsInBank;					// remember how many sounds we've got
+	gNumSndsInBank = numSoundsInBank;					// remember how many sounds we've got
 }
 
 
 /******************** DISPOSE SOUND BANK **************************/
 
-void DisposeSoundBank(short bankNum)
+void DisposeSoundBank()
 {
-short	i; 
-
-
-	if (bankNum > MAX_SOUND_BANKS)
-		return;
-
 	StopAllEffectChannels();									// make sure all sounds are stopped before nuking any banks
 
 			/* FREE ALL SAMPLES */
 			
-	for (i=0; i < gNumSndsInBank[bankNum]; i++)
-		DisposeHandle((Handle)gSndHandles[bankNum][i]);
+	for (int i = 0; i < gNumSndsInBank; i++)
+	{
+		DisposeHandle((Handle)gSndHandles[i]);
+		gSndHandles[i] = nil;
+	}
 
-
-	gNumSndsInBank[bankNum] = 0;
+	gNumSndsInBank = 0;
 }
 
 
@@ -506,15 +498,9 @@ void ToggleMusic(void)
 short PlayEffect3D(short effectNum, const OGLPoint3D *where)
 {
 short					theChan;
-Byte					bankNum,soundNum;
 u_long					leftVol, rightVol;
 
-			/* GET BANK & SOUND #'S FROM TABLE */
-			
-	bankNum 	= gEffectsTable[effectNum].bank;
-	soundNum 	= gEffectsTable[effectNum].sound;
-
-	if (soundNum >= gNumSndsInBank[bankNum])					// see if illegal sound #
+	if (effectNum >= gNumSndsInBank)					// see if illegal sound #
 	{
 		DoFatalAlert("Illegal sound number %d!", effectNum);
 	}
@@ -546,15 +532,9 @@ u_long					leftVol, rightVol;
 short PlayEffect_Parms3D(short effectNum, const OGLPoint3D *where, u_long rateMultiplier, float volumeAdjust)
 {
 short			theChan;
-Byte			bankNum,soundNum;
 u_long			leftVol, rightVol;
 
-			/* GET BANK & SOUND #'S FROM TABLE */
-			
-	bankNum 	= gEffectsTable[effectNum].bank;
-	soundNum 	= gEffectsTable[effectNum].sound;
-
-	if (soundNum >= gNumSndsInBank[bankNum])					// see if illegal sound #
+	if (effectNum >= gNumSndsInBank)					// see if illegal sound #
 	{
 		DoFatalAlert("Illegal sound number %d!", effectNum);
 	}
@@ -773,7 +753,6 @@ short  PlayEffect_Parms(short effectNum, u_long leftVolume, u_long rightVolume, 
 SndCommand 		mySndCmd;
 SndChannelPtr	chanPtr;
 short			theChan;
-Byte			bankNum,soundNum;
 OSErr			myErr;
 u_long			lv2,rv2;
 //static UInt32          loopStart, loopEnd;
@@ -783,12 +762,7 @@ u_long			lv2,rv2;
 	rightVolume *= gEffectsTable[effectNum].refVol;
 
 	
-			/* GET BANK & SOUND #'S FROM TABLE */
-			
-	bankNum = gEffectsTable[effectNum].bank;
-	soundNum = gEffectsTable[effectNum].sound;
-
-	if (soundNum >= gNumSndsInBank[bankNum])					// see if illegal sound #
+	if (effectNum >= gNumSndsInBank)							// see if illegal sound #
 	{
 		DoFatalAlert("Illegal sound number %d!", effectNum);
 	}
@@ -831,7 +805,7 @@ u_long			lv2,rv2;
 
 	mySndCmd.cmd = bufferCmd;										// make it play
 	mySndCmd.param1 = 0;
-	mySndCmd.ptr = ((Ptr) *gSndHandles[bankNum][soundNum]) + gSndOffsets[bankNum][soundNum];	// pointer to SoundHeader
+	mySndCmd.ptr = ((Ptr) *gSndHandles[effectNum]) + gSndOffsets[effectNum];	// pointer to SoundHeader
 	SndDoImmediate(chanPtr, &mySndCmd);
 	if (myErr)
 		return(-1);
