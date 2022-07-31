@@ -14,6 +14,7 @@
 #define	DARKEN_PANE_Z	450.0f
 
 
+void DoWarmUpScreen(void);
 void DisplayPicture(const char* path);
 void DoPaused(void);
 

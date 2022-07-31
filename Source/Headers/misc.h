@@ -17,7 +17,6 @@ extern	unsigned long MyRandomLong(void);
 extern	Handle	AllocHandle(long size);
 extern	void *AllocPtr(long size);
 void *AllocPtrClear(long size);
-extern	void VerifySystem(void);
 extern	float RandomFloat(void);
 uint16_t	RandomRange(uint16_t min, uint16_t max);
 void CalcFramesPerSecond(void);

@@ -137,6 +137,8 @@ ObjNode		*thisNodePtr;
 
 
 		/* MAKE NEW FADE EVENT */
+
+	gGammaFadeFrac = fadeIn ? 0 : 1.0f;
 	
 	NewObjectDefinitionType def =
 	{

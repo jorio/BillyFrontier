@@ -83,9 +83,6 @@ void ToolBoxInit(void)
 OSErr		iErr;
 long		createdDirID;
 
- 	MoreMasters(); 	MoreMasters(); 	MoreMasters(); MoreMasters(); 	MoreMasters(); 	MoreMasters();
-
-	MyFlushEvents();
 	gMainAppRezFile = CurResFile();
 
 			/* CHECK PREFERENCES FOLDER */
@@ -108,32 +105,6 @@ long		createdDirID;
 	{
 		DoFatalAlert("Can't find Data folder.");
 	}
-
-
-			/********************/
-			/* INIT PREFERENCES */
-			/********************/
-	
-	InitDefaultPrefs();
-	LoadPrefs(&gGamePrefs);	
-
-
-		/* FIRST VERIFY SYSTEM BEFORE GOING TOO FAR */
-				
-	VerifySystem();
-
-
-			/* INIT ISP OR HID */
-			
- 	InitInput();
-
-
-			/* BOOT OGL */
-			
-	OGL_Boot();
-
-
-	MyFlushEvents();
 }
 
 
@@ -381,36 +352,34 @@ unsigned long	someLong;
 				/**************/
 				/* BOOT STUFF */
 				/**************/
-				
+
 	ToolBoxInit();
 
+	InitDefaultPrefs();
+	LoadPrefs(&gGamePrefs);
 
-
-
-			/* INIT SOME OF MY STUFF */
-
+	InitInput();
+	OGL_Boot();
 	InitSpriteManager();
 	InitBG3DManager();
 	InitWindowStuff();
+	InitObjectManager();
+
+	GetDateTime((unsigned long*)(&someLong));		// init random seed
+	SetMyRandomSeed(someLong);
+
+	DoWarmUpScreen();
+
 	InitTerrainManager();
 	InitSkeletonManager();
 	InitSoundTools();
 
 
-			/* INIT MORE MY STUFF */
-					
-	InitObjectManager();
-	
-	GetDateTime ((unsigned long *)(&someLong));		// init random seed
-	SetMyRandomSeed(someLong);
-	SDL_ShowCursor(0);
-
-
 		/* SHOW TITLES */
 
 	PlaySong(SONG_THEME, true);
-
 	DoLegalScreen();
+	SDL_ShowCursor(0);
 
 
 //NewScore(true);	//----------

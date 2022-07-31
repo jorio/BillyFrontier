@@ -333,19 +333,6 @@ Ptr		p = ptr;
 }
 
 
-
-#pragma mark -
-
-
-/******************* VERIFY SYSTEM ******************/
-
-void VerifySystem(void)
-{
-}
-
-
-
-
 #pragma mark -
 
 

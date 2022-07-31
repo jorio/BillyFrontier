@@ -36,6 +36,35 @@ OGLSetupOutputType	*gScreenViewInfoPtr = nil;
 
 
 
+/******* DO PROGRAM WARM-UP SCREEN AS WE PRELOAD ASSETS **********/
+
+void DoWarmUpScreen(void)
+{
+	OGLSetupInputType	viewDef;
+
+			/* SETUP VIEW */
+
+	OGL_NewViewDef(&viewDef);
+//	viewDef.view.pillarboxRatio = PILLARBOX_RATIO_FULLSCREEN;
+//	viewDef.view.fontName = "rockfont";
+
+	OGL_SetupWindow(&viewDef);
+
+			/* SHOW IT */
+
+	for (int i = 0; i < 8; i++)
+	{
+		OGL_DrawScene(DrawObjects);
+		DoSDLMaintenance();
+	}
+
+			/* CLEANUP */
+
+	DeleteAllObjects();
+
+	OGL_DisposeWindowSetup();
+}
+
 
 /********************** DISPLAY PICTURE **************************/
 //
@@ -78,9 +107,11 @@ float	timeout = 40.0f;
 		/***********/
 			
 	
-	MakeFadeEvent(true);
 	ReadKeyboard();
 	CalcFramesPerSecond();
+	CalcFramesPerSecond();
+
+	MakeFadeEvent(true);
 		
 					/* MAIN LOOP */
 						
