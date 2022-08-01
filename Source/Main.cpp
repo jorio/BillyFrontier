@@ -172,7 +172,7 @@ static void Boot()
 
 	// Load game prefs before starting
 	InitDefaultPrefs();
-//	LoadPrefs();
+	LoadPrefs();
 
 retryVideo:
 	// Initialize SDL video subsystem
@@ -186,7 +186,6 @@ retryVideo:
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 2);
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 0);
 
-#if 0
 	gCurrentAntialiasingLevel = gGamePrefs.antialiasingLevel;
 	if (gCurrentAntialiasingLevel != 0)
 	{
@@ -197,6 +196,7 @@ retryVideo:
 	// Determine display
 	int display = gGamePrefs.monitorNum;
 
+#if 0
 	// Display # given on CLI takes precedence over prefs
 	if (gCommandLine.display != 0)
 	{
@@ -205,6 +205,7 @@ retryVideo:
 		SavePrefs();
 		printf("Will try display %d\n", display);
 	}
+#endif
 
 	if (display >= SDL_GetNumVideoDisplays())
 	{
@@ -214,6 +215,7 @@ retryVideo:
 	// Determine initial window size
 	int initialWidth = 640;
 	int initialHeight = 480;
+#if 0
 	if (gCommandLine.windowedWidth != 0 && gCommandLine.windowedHeight != 0)
 	{
 		// Window size given on CLI takes precedence
@@ -221,12 +223,7 @@ retryVideo:
 		initialHeight = gCommandLine.windowedHeight;
 	}
 	else
-#else
-	int display = 0;
-	int initialWidth = 1024;
-	int initialHeight = 768;
 #endif
-
 	{
 		GetInitialWindowSize(display, initialWidth, initialHeight);
 	}
@@ -246,10 +243,7 @@ retryVideo:
 			printf("Couldn't create SDL window with the requested MSAA level. Retrying without MSAA...\n");
 
 			// retry without MSAA
-			IMPLEMENT_ME_SOFT();
-#if 0
 			gGamePrefs.antialiasingLevel = 0;
-#endif
 			SDL_QuitSubSystem(SDL_INIT_VIDEO);
 			goto retryVideo;
 		}

@@ -8,6 +8,9 @@
 #define	kGameID 			'ALMO'
 #define	kSavedGameFileType	'ALsv'
 
+#define PREFS_FOLDER_NAME	"BillyFrontier"
+#define PREFS_MAGIC			"Billy Frontier Prefs v01"
+
 		/***********************/
 		/* RESOURCE STURCTURES */
 		/***********************/
@@ -52,26 +55,24 @@ typedef struct
 
 
 		/* PREFERENCES */
-		
-#define	MAX_HTTP_NOTES	1000
-		
-#define	CURRENT_PREFS_VERS	0xA0E0		
-		
+
+#define	CURRENT_PREFS_VERS	0xA0E1
+
 typedef struct
 {
-	Byte	difficulty;
-	Boolean	showScreenModeDialog;
-	short	depth;
-	int		screenWidth;
-	int		screenHeight;
-	double	videoHz;
-	Byte	language;
-	Boolean	deepZ;
-	Boolean	hasConfiguredISpControls;
-	Boolean	oldOSWarned;
-	Boolean	anaglyph;
-	Boolean	anaglyphColor;
-	u_long	version;
+	uint32_t version;
+
+	// Legacy stuff left for source code compat
+	struct
+	{
+		uint8_t anaglyph : 1;
+		uint8_t anaglyphColor : 1;
+	};
+
+	Boolean	fullscreen;
+	Byte	antialiasingLevel;
+	Byte	monitorNum;
+
 }PrefsType;
 
 
@@ -81,7 +82,11 @@ typedef struct
 //=================================================
 
 SkeletonDefType *LoadSkeletonFile(short skeletonType);
-extern	OSErr LoadPrefs(PrefsType *prefBlock);
+
+void InitPrefsFolder(bool createIt);
+OSErr LoadUserDataFile(const char* filename, const char* magic, long payloadLength, Ptr payloadPtr);
+OSErr SaveUserDataFile(const char* filename, const char* magic, long payloadLength, Ptr payloadPtr);
+OSErr LoadPrefs(void);
 void SavePrefs(void);
 
 void LoadPlayfield(FSSpec *specPtr);

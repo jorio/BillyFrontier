@@ -166,6 +166,7 @@ extern float gTerrainPolygonSize;
 extern float gTerrainSuperTileUnitSize;
 extern float gTerrainSuperTileUnitSizeFrac;
 extern float gTimeSinceLastEnemyShot;
+extern int gCurrentAntialiasingLevel; 
 extern int gCurrentArea;
 extern int gCurrentMenuItem;
 extern int gDuelKeyBufferIndex;

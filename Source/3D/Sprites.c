@@ -534,8 +534,12 @@ float				scale,x;
 
 
 				/* ATTACH META OBJECT TO OBJNODE */
-			
+		
+		GAME_ASSERT_MESSAGE(newObj->NumStringSprites < sizeof(newObj->StringCharacters) / sizeof(newObj->StringCharacters[0]), "String is too long!");
+
 		newObj->StringCharacters[newObj->NumStringSprites++] = spriteMO;
+
+		
 
 next:
 		x += GetCharSpacing(letter, scale);									// next letter x coord

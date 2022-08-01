@@ -76,6 +76,7 @@ Boolean				gLevelWon[NUM_LEVELS];
 //======================================================================================
 
 
+
 /****************** TOOLBOX INIT  *****************/
 
 void ToolBoxInit(void)
@@ -86,13 +87,8 @@ long		createdDirID;
 	gMainAppRezFile = CurResFile();
 
 			/* CHECK PREFERENCES FOLDER */
-			
-	iErr = FindFolder(kOnSystemDisk,kPreferencesFolderType,kDontCreateFolder,			// locate the folder
-					&gPrefsFolderVRefNum,&gPrefsFolderDirID);
-	if (iErr != noErr)
-		DoAlert("Warning: Cannot locate the Preferences folder.");
 
-	iErr = DirCreate(gPrefsFolderVRefNum,gPrefsFolderDirID,"Billy",&createdDirID);		// make folder in there
+	InitPrefsFolder(true);
 
 
 
@@ -112,52 +108,14 @@ long		createdDirID;
 
 void InitDefaultPrefs(void)
 {
-long 		languageCode;
+	memset(&gGamePrefs, 0, sizeof(gGamePrefs));
 
-		/* DETERMINE WHAT LANGUAGE IS ON THIS MACHINE */
-
-	IMPLEMENT_ME_SOFT();
-	languageCode = langEnglish;		// TODO: get actual language -- but Billy is not localized anyway
-
-	switch(languageCode)
-	{
-		case	langFrench:
-				gGamePrefs.language 			= LANGUAGE_FRENCH;
-				break;
-
-		case	langGerman:
-				gGamePrefs.language 			= LANGUAGE_GERMAN;
-				break;
-
-		case	langSpanish:
-				gGamePrefs.language 			= LANGUAGE_SPANISH;
-				break;
-
-		case	langItalian:
-				gGamePrefs.language 			= LANGUAGE_ITALIAN;
-				break;
-
-		case	langDutch:
-				gGamePrefs.language 			= LANGUAGE_DUTCH;
-				break;
-	
-		default:
-				gGamePrefs.language 			= LANGUAGE_ENGLISH;
-	}
-	
-			
 	gGamePrefs.version				= CURRENT_PREFS_VERS;						
-	gGamePrefs.difficulty			= 0;	
-	gGamePrefs.showScreenModeDialog = true;
-	gGamePrefs.depth				= 32;
-	gGamePrefs.screenWidth			= 640;
-	gGamePrefs.screenHeight			= 480;
-	gGamePrefs.videoHz				= 0;
-	gGamePrefs.deepZ				= true;
-	gGamePrefs.hasConfiguredISpControls = false;
-	gGamePrefs.oldOSWarned 			= false;
-	gGamePrefs.anaglyph				=  false;
+	gGamePrefs.anaglyph				= false;
 	gGamePrefs.anaglyphColor		= true;
+
+	gGamePrefs.antialiasingLevel	= 2;
+	gGamePrefs.fullscreen			= true;
 }
 
 
@@ -355,7 +313,7 @@ unsigned long	someLong;
 	ToolBoxInit();
 
 	InitDefaultPrefs();
-	LoadPrefs(&gGamePrefs);
+	LoadPrefs();
 
 	InitInput();
 	OGL_Boot();
@@ -367,7 +325,14 @@ unsigned long	someLong;
 	GetDateTime((unsigned long*)(&someLong));		// init random seed
 	SetMyRandomSeed(someLong);
 
+
+			/* DO BOOT CHECK FOR SCREEN MODE */
+
+	SetFullscreenMode(true);
+
 	DoWarmUpScreen();
+
+
 
 	InitTerrainManager();
 	InitSkeletonManager();

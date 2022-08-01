@@ -244,11 +244,8 @@ static void ParseAltEnter(void)
 	if (GetNewKeyState(SDL_SCANCODE_RETURN)
 		&& (GetKeyState(SDL_SCANCODE_LALT) || GetKeyState(SDL_SCANCODE_RALT)))
 	{
-		IMPLEMENT_ME_SOFT();
-#if 0
 		gGamePrefs.fullscreen = !gGamePrefs.fullscreen;
 		SetFullscreenMode(false);
-#endif
 
 		InvalidateAllInputs();
 	}

@@ -14,3 +14,4 @@ void Wait(long ticks);
 void Enter2D(Boolean pauseDSp);
 void Exit2D(void);
 
+void SetFullscreenMode(bool enforceDisplayPref);

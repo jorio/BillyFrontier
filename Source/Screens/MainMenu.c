@@ -36,7 +36,29 @@ static void MoveMenuItem(ObjNode *theNode);
 
 enum
 {
-	MENU_PAGE_MAIN
+	MENU_PAGE_MAIN,
+	MENU_PAGE_SETTINGS
+};
+
+enum
+{
+	kMainMenu_PlayNewGame,
+	kMainMenu_PlaySavedGame,
+	kMainMenu_Settings,
+	kMainMenu_HighScores,
+	kMainMenu_Credits,
+	kMainMenu_Exit,
+	kMainMenu_COUNT,
+};
+
+enum
+{
+	kSettingsMenu_Fullscreen,
+	kSettingsMenu_Display,
+	kSettingsMenu_Antialiasing,
+	kSettingsMenu_Spacer,
+	kSettingsMenu_Back,
+	kSettingsMenu_COUNT,
 };
 
 
@@ -211,21 +233,47 @@ int					i;
 
 /********************* BUILD MAIN MENU ***************************/
 
+static ObjNode* NewMenuItem(int i, const char* name)
+{
+	ObjNode* newObj;
+
+	gNewObjectDefinition.coord.x = 130;
+	gNewObjectDefinition.coord.y = 140.0f + MENU_FONT_SCALE * i; //y;
+	gNewObjectDefinition.coord.z = 0;
+	gNewObjectDefinition.flags = 0;
+	gNewObjectDefinition.moveCall = MoveMenuItem;
+	gNewObjectDefinition.rot = 0;
+	gNewObjectDefinition.scale = MENU_FONT_SCALE;
+	gNewObjectDefinition.slot = SPRITE_SLOT;
+	gMenuItems[i] = newObj = MakeFontStringObject(name, &gNewObjectDefinition, false);
+
+	float w = GetStringWidth(name, gNewObjectDefinition.scale);
+	gMenuItemMinX[i] = gNewObjectDefinition.coord.x;
+	gMenuItemMaxX[i] = gMenuItemMinX[i] + w;
+
+
+	newObj->Kind = i;
+
+	newObj->AnaglyphZ = 1.0f;
+
+//	y += gNewObjectDefinition.scale * 1.0f;
+
+	return newObj;
+}
+
 static void BuildMainMenu(int menuLevel)
 {
-ObjNode				*newObj;
-int					i;
-float				y,w;
-
-
 	gMenuMode = menuLevel;
 
 			/* DELETE EXISTING MENU DATA */
 			
 	if (gBackgoundPicture)
-		MO_DisposeObjectReference(gBackgoundPicture);	
+	{
+		MO_DisposeObjectReference(gBackgoundPicture);
+		gBackgoundPicture = NULL;
+	}
 	
-	for (i = 0; i < MAX_MENU_ITEMS; i++)
+	for (int i = 0; i < MAX_MENU_ITEMS; i++)
 	{
 		if (gMenuItems[i])
 		{
@@ -241,55 +289,85 @@ float				y,w;
 				/* MAIN MENU */
 				/*************/
 				
-		case	MENU_PAGE_MAIN:
+		case MENU_PAGE_MAIN:
+		{
+			gBackgoundPicture = MO_CreateNewObjectOfType(MO_TYPE_PICTURE, 0, ":images:MainMenu.png");
 
+			for (int i = 0; i < kMainMenu_COUNT; i++)
+			{	
+				static const char* names[kMainMenu_COUNT] =
+				{
+					[kMainMenu_PlayNewGame]		= "PLAY NEW GAME",
+					[kMainMenu_PlaySavedGame]	= "PLAY SAVED GAME",
+					[kMainMenu_Settings]		= "SETTINGS",
+					[kMainMenu_HighScores]		= "HIGH SCORES",
+					[kMainMenu_Credits]			= "CREDITS",
+					[kMainMenu_Exit]			= "EXIT",
+				};
 
-						/* MAKE BACKGROUND PICTURE OBJECT */
+				NewMenuItem(i, names[i]);
+			}
 
-				gBackgoundPicture = MO_CreateNewObjectOfType(MO_TYPE_PICTURE, 0, ":images:MainMenu.png");
+			break;
+		}
 
+		case MENU_PAGE_SETTINGS:
+		{
+			gBackgoundPicture = MO_CreateNewObjectOfType(MO_TYPE_PICTURE, 0, ":images:MainMenu.png");
 
-						/* MAKE MENU ITEMS */
-						
-				y = 140.0f;
-				for (i = 0; i < 6; i++)
-				{	
-					static const Str31 names[] =
-					{
-						"PLAY NEW GAME",
-						"PLAY SAVED GAME",
-						"SETTINGS",
-						"HIGH SCORES",
-						"CREDITS",
-						"EXIT",
-					};
-				
-					gNewObjectDefinition.coord.x 	= 130;
-					gNewObjectDefinition.coord.y 	= y;
-					gNewObjectDefinition.coord.z 	= 0;
-					gNewObjectDefinition.flags 		= 0;
-					gNewObjectDefinition.moveCall 	= MoveMenuItem;
-					gNewObjectDefinition.rot 		= 0;
-					gNewObjectDefinition.scale 	    = MENU_FONT_SCALE;
-					gNewObjectDefinition.slot 		= SPRITE_SLOT;
-					gMenuItems[i] = newObj = MakeFontStringObject(names[i], &gNewObjectDefinition, false);		
-					
-					w = GetStringWidth(names[i], gNewObjectDefinition.scale);
-					gMenuItemMinX[i] = gNewObjectDefinition.coord.x;
-					gMenuItemMaxX[i] = gMenuItemMinX[i] + w;
-					
-									
-					newObj->Kind = i;
-										
-					newObj->AnaglyphZ = 1.0f;
-										
-					y += gNewObjectDefinition.scale * 1.0f;
-					
+			for (int i = 0; i < kSettingsMenu_COUNT; i++)
+			{
+				char buf[64];
+				buf[0] = '\0';
+				const char* name = buf;
+
+				switch (i)
+				{
+					case kSettingsMenu_Fullscreen:
+						if (gGamePrefs.fullscreen)
+							name = "FULLSCREEN . . . . . . . . .YES";
+						else
+							name = "FULLSCREEN . . . . . . . . . NO";
+						break;
+
+					case kSettingsMenu_Display:
+						snprintf(buf, sizeof(buf), "DISPLAY . . . . . . . . . . . . . %d", gGamePrefs.monitorNum + 1);
+						break;
+
+					case kSettingsMenu_Antialiasing:
+						if (!gGamePrefs.antialiasingLevel)
+							name =                     "ANTIALIASING . . . . . . . .OFF";
+						else
+							snprintf(buf, sizeof(buf), "ANTIALIASING . . . . .MSAA %dx", 1 << gGamePrefs.antialiasingLevel);
+						break;
+
+					case kSettingsMenu_Back:
+						name = "BACK";
 				}
-				break;				
-	}
-		
+				
+				NewMenuItem(i, name);
+			}
 
+			if (gGamePrefs.antialiasingLevel != gCurrentAntialiasingLevel)
+			{
+				int i = kSettingsMenu_COUNT;
+
+				gNewObjectDefinition.coord.x = 130;
+				gNewObjectDefinition.coord.y = 390; //y;
+				gNewObjectDefinition.coord.z = 0;
+				gNewObjectDefinition.flags = 0;
+				gNewObjectDefinition.moveCall = nil;// MoveMenuItem;
+				gNewObjectDefinition.rot = 0;
+				gNewObjectDefinition.scale = MENU_FONT_SCALE * 0.6;
+				gNewObjectDefinition.slot = SPRITE_SLOT;
+				gMenuItems[i++] = MakeFontStringObject("THE NEW ANTIALIASING SETTING WILL", &gNewObjectDefinition, false);
+				gNewObjectDefinition.coord.y += 20;
+				gMenuItems[i++] = MakeFontStringObject("TAKE EFFECT WHEN YOU RESTART THE GAME.", &gNewObjectDefinition, false);
+			}
+
+			break;
+		}
+	}
 }
 
 
@@ -380,44 +458,69 @@ ObjNode	*newObj;
 
 			switch(gMenuMode)
 			{
-				case	MENU_PAGE_MAIN:
-						switch(gCurrentMenuItem)
-						{
-							case	0:							// PLAY NEW GAME
-									gPlayNow = true;
-									break;
+				case MENU_PAGE_MAIN:
+					switch(gCurrentMenuItem)
+					{
+						case kMainMenu_PlayNewGame:
+								gPlayNow = true;
+								break;
 
-							case	1:							// PLAY SAVED GAME
-									if (LoadSavedGame())
-									{
-										gPlayNow = true;
-										gPlayingFromSavedGame = true;
-									}
-									break;
+						case kMainMenu_PlaySavedGame:
+							if (LoadSavedGame())
+							{
+								gPlayNow = true;
+								gPlayingFromSavedGame = true;
+							}
+							break;
 
-							case	2:							// SETTINGS
-									DoGameOptionsDialog();
-									break;
+						case kMainMenu_Settings:
+							gMenuMode = MENU_PAGE_SETTINGS;
+							BuildMainMenu(MENU_PAGE_SETTINGS);
+							break;
 						
-							case	3:							// HIGH SCORES
-									gShowHighScores = true;
-									gPlayNow = true;
-									break;
+						case kMainMenu_HighScores:
+							gShowHighScores = true;
+							gPlayNow = true;
+							break;
 
-							case	4:							// CREDITS
-									gShowCredits = true;
-									gPlayNow = true;
-									break;
+						case kMainMenu_Credits:
+							gShowCredits = true;
+							gPlayNow = true;
+							break;
 						
-							case	5:							// EXIT
-									CleanQuit();
-									break;
-						
-						
-						}
-						break;
-			
-			
+						case kMainMenu_Exit:
+							CleanQuit();
+							break;
+					}
+					break;
+
+				case MENU_PAGE_SETTINGS:
+					switch (gCurrentMenuItem)
+					{
+						case kSettingsMenu_Fullscreen:
+							gGamePrefs.fullscreen = !gGamePrefs.fullscreen;
+							SetFullscreenMode(true);
+							BuildMainMenu(MENU_PAGE_SETTINGS);
+							break;
+
+						case kSettingsMenu_Display:
+							gGamePrefs.monitorNum++;
+							gGamePrefs.monitorNum %= SDL_GetNumVideoDisplays();
+							SetFullscreenMode(true);
+							BuildMainMenu(MENU_PAGE_SETTINGS);
+							break;
+
+						case kSettingsMenu_Antialiasing:
+							gGamePrefs.antialiasingLevel++;
+							gGamePrefs.antialiasingLevel %= 4;
+							BuildMainMenu(MENU_PAGE_SETTINGS);
+							break;
+
+						case kSettingsMenu_Back:
+							gMenuMode = MENU_PAGE_MAIN;
+							BuildMainMenu(MENU_PAGE_MAIN);
+							break;
+					}
 			}
 		}
 	}

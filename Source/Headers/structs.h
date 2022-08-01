@@ -377,7 +377,7 @@ struct ObjNode
 	MOSpriteObject		*SpriteMO;				// ref to sprite meta object for sprite genre.
 	
 	Byte				NumStringSprites;		// # sprites to build string (NOT SAME AS LENGTH OF STRING B/C SPACES ET.AL.)
-	MOSpriteObject		*StringCharacters[31];	// sprites for each character
+	MOSpriteObject		*StringCharacters[64];	// sprites for each character
 
 	float				AnaglyphZ;
 

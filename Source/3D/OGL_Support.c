@@ -498,9 +498,8 @@ void OGL_DrawScene(void (*drawRoutine)(void))
 
 	if (gDebugMode)
 	{
-		gVRAMUsedThisFrame = gGameWindowWidth * gGameWindowHeight * (gGamePrefs.depth / 8);				// backbuffer size
+		gVRAMUsedThisFrame = gGameWindowWidth * gGameWindowHeight * (/*gGamePrefs.depth*/32 / 8);				// backbuffer size
 		gVRAMUsedThisFrame += gGameWindowWidth * gGameWindowHeight * 2;										// z-buffer size
-		gVRAMUsedThisFrame += gGamePrefs.screenWidth * gGamePrefs.screenHeight * (gGamePrefs.depth / 8);	// display size
 	}
 			
 			
