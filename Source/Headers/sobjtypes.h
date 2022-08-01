@@ -259,7 +259,7 @@ enum
 
 enum
 {
-	DUEL_SObjType_StatBar,
+	DUEL_SObjType_StatBar4x3,
 	
 	DUEL_SObjType_UpArrow,
 	DUEL_SObjType_RightArrow,
@@ -273,6 +273,8 @@ enum
 	
 	DUEL_SObjType_ReflexDot,
 	DUEL_SObjType_FullLight,
+
+	DUEL_SObjType_StatBarWidescreen,
 
 	DUEL_SObjType_COUNT,
 };

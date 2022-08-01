@@ -500,7 +500,8 @@ static void DrawDuelInfobar(void)
 	Infobar_DrawLives(topLeft);
 	
 
-	DrawInfobarSprite2(0, 480-(640/8), 640, SPRITE_GROUP_DUEL, DUEL_SObjType_StatBar);
+	DrawInfobarSprite2(0, 480-(640/8), 640, SPRITE_GROUP_DUEL,
+		gCurrentAspectRatio <= (4.0f / 3.0f + EPS) ? DUEL_SObjType_StatBar4x3 : DUEL_SObjType_StatBarWidescreen);
 	Infobar_DrawDuelSequence();
 	Infobar_DrawReflex();
 }
