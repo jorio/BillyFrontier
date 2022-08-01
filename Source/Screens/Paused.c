@@ -95,46 +95,33 @@ static const char *gPausedStrings[MAX_LANGUAGES][3] =
 
 void DoPaused(void)
 {
-Boolean	oldMute = gMuteMusicFlag;
-
-
-	
 	gPausedMenuSelection = 0;
 	
-	if (!gMuteMusicFlag)							// see if pause music
-		ToggleMusic();
-
-	
+	PauseAllChannels(true);
 
 				/*************/
 				/* MAIN LOOP */
 				/*************/
-				
+
 	CalcFramesPerSecond();
 	ReadKeyboard();		
 	
 	while(true)
 	{
 			/* SEE IF MAKE SELECTION */
-		
+
 		if (NavigatePausedMenu())
 			break;
 
 			/* DRAW STUFF */
-	
+
 		CalcFramesPerSecond();
 		ReadKeyboard();		
 		KeepTerrainAlive();		// need to call this to keep supertiles active
 		OGL_DrawScene(DrawPaused);
+	}
 
-	}	
-	
-	
-	
-	if (!oldMute)									// see if restart music
-		ToggleMusic();
-
-	
+	PauseAllChannels(false);
 }
 
 
