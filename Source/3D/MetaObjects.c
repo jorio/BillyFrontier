@@ -1225,10 +1225,10 @@ OGLPoint2D			p[4];
 			/* DRAW IT */
 			
 	glBegin(GL_QUADS);
-	glTexCoord2f(0,1);	glVertex2f(p[0].x + x, p[0].y + y);
-	glTexCoord2f(1,1);	glVertex2f(p[1].x + x, p[1].y + y);
-	glTexCoord2f(1,0);	glVertex2f(p[2].x + x, p[2].y + y);
-	glTexCoord2f(0,0);	glVertex2f(p[3].x + x, p[3].y + y);
+	glTexCoord2f(0,0);	glVertex2f(p[0].x + x, p[0].y + y);
+	glTexCoord2f(1,0);	glVertex2f(p[1].x + x, p[1].y + y);
+	glTexCoord2f(1,1);	glVertex2f(p[2].x + x, p[2].y + y);
+	glTexCoord2f(0,1);	glVertex2f(p[3].x + x, p[3].y + y);
 	glEnd();	
 			
 

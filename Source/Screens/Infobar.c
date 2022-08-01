@@ -230,10 +230,10 @@ float				aspect;
 			/* DRAW IT */
 			
 	glBegin(GL_QUADS);
-	glTexCoord2f(0,1);	glVertex2f(x, 		y);
-	glTexCoord2f(1,1);	glVertex2f(x+size, 	y);
-	glTexCoord2f(1,0);	glVertex2f(x+size,  y+(size*aspect));
-	glTexCoord2f(0,0);	glVertex2f(x,		y+(size*aspect));
+	glTexCoord2f(0,0);	glVertex2f(x, 		y);
+	glTexCoord2f(1,0);	glVertex2f(x+size, 	y);
+	glTexCoord2f(1,1);	glVertex2f(x+size,  y+(size*aspect));
+	glTexCoord2f(0,1);	glVertex2f(x,		y+(size*aspect));
 	glEnd();	
 }
 
@@ -258,10 +258,10 @@ float				aspect;
 			/* DRAW IT */
 			
 	glBegin(GL_QUADS);
-	glTexCoord2f(0,1);	glVertex2f(x, 					y);
-	glTexCoord2f(1,1);	glVertex2f(x+(size*aspect), 	y);
-	glTexCoord2f(1,0);	glVertex2f(x+(size*aspect),		y+size);
-	glTexCoord2f(0,0);	glVertex2f(x,					y+size);
+	glTexCoord2f(0,0);	glVertex2f(x, 					y);
+	glTexCoord2f(1,0);	glVertex2f(x+(size*aspect), 	y);
+	glTexCoord2f(1,1);	glVertex2f(x+(size*aspect),		y+size);
+	glTexCoord2f(0,1);	glVertex2f(x,					y+size);
 	glEnd();	
 }
 
@@ -289,10 +289,10 @@ float				aspect;
 			/* DRAW IT */
 			
 	glBegin(GL_QUADS);
-	glTexCoord2f(0,1);	glVertex2f(x, 		y);
-	glTexCoord2f(1,1);	glVertex2f(x+size, 	y);
-	glTexCoord2f(1,0);	glVertex2f(x+size,  y+(size*aspect));
-	glTexCoord2f(0,0);	glVertex2f(x,		y+(size*aspect));
+	glTexCoord2f(0,0);	glVertex2f(x, 		y);
+	glTexCoord2f(1,0);	glVertex2f(x+size, 	y);
+	glTexCoord2f(1,1);	glVertex2f(x+size,  y+(size*aspect));
+	glTexCoord2f(0,1);	glVertex2f(x,		y+(size*aspect));
 	glEnd();	
 }
 
@@ -317,10 +317,10 @@ float				aspect;
 			/* DRAW IT */
 			
 	glBegin(GL_QUADS);
-	glTexCoord2f(0,1);	glVertex2f(x, 		y);
-	glTexCoord2f(1,1);	glVertex2f(x+size, 	y);
-	glTexCoord2f(1,0);	glVertex2f(x+size,  y+(size*aspect));
-	glTexCoord2f(0,0);	glVertex2f(x,		y+(size*aspect));
+	glTexCoord2f(0,0);	glVertex2f(x, 		y);
+	glTexCoord2f(1,0);	glVertex2f(x+size, 	y);
+	glTexCoord2f(1,1);	glVertex2f(x+size,  y+(size*aspect));
+	glTexCoord2f(0,1);	glVertex2f(x,		y+(size*aspect));
 	glEnd();	
 }
 
@@ -352,10 +352,10 @@ float				aspect;
 			/* DRAW IT */
 			
 	glBegin(GL_QUADS);
-	glTexCoord2f(0,1);	glVertex2f(x, 		y);
-	glTexCoord2f(1,1);	glVertex2f(x+size, 	y);
-	glTexCoord2f(1,0);	glVertex2f(x+size,  y+(size*aspect));
-	glTexCoord2f(0,0);	glVertex2f(x,		y+(size*aspect));
+	glTexCoord2f(0,0);	glVertex2f(x, 		y);
+	glTexCoord2f(1,0);	glVertex2f(x+size, 	y);
+	glTexCoord2f(1,1);	glVertex2f(x+size,  y+(size*aspect));
+	glTexCoord2f(0,1);	glVertex2f(x,		y+(size*aspect));
 	glEnd();	
 }
 
@@ -394,10 +394,10 @@ OGLMatrix3x3		m;
 			/* DRAW IT */
 			
 	glBegin(GL_QUADS);
-	glTexCoord2f(0,1);	glVertex2f(p[0].x + x, p[0].y + y);
-	glTexCoord2f(1,1);	glVertex2f(p[1].x + x, p[1].y + y);
-	glTexCoord2f(1,0);	glVertex2f(p[2].x + x, p[2].y + y);
-	glTexCoord2f(0,0);	glVertex2f(p[3].x + x, p[3].y + y);
+	glTexCoord2f(0,0);	glVertex2f(p[0].x + x, p[0].y + y);
+	glTexCoord2f(1,0);	glVertex2f(p[1].x + x, p[1].y + y);
+	glTexCoord2f(1,1);	glVertex2f(p[2].x + x, p[2].y + y);
+	glTexCoord2f(0,1);	glVertex2f(p[3].x + x, p[3].y + y);
 	glEnd();	
 }
 
@@ -419,10 +419,10 @@ float				aspect;
 			/* DRAW IT */
 			
 	glBegin(GL_QUADS);
-	glTexCoord2f(0,1);	glVertex2f(x, 			y);
-	glTexCoord2f(1,1);	glVertex2f(x+scaleX, 	y);
-	glTexCoord2f(1,0);	glVertex2f(x+scaleX, 	y+(scaleY*aspect));
-	glTexCoord2f(0,0);	glVertex2f(x,			y+(scaleY*aspect));
+	glTexCoord2f(0,0);	glVertex2f(x, 			y);
+	glTexCoord2f(1,0);	glVertex2f(x+scaleX, 	y);
+	glTexCoord2f(1,1);	glVertex2f(x+scaleX, 	y+(scaleY*aspect));
+	glTexCoord2f(0,1);	glVertex2f(x,			y+(scaleY*aspect));
 	glEnd();	
 }
 
@@ -500,7 +500,7 @@ static void DrawDuelInfobar(void)
 	Infobar_DrawLives(topLeft);
 	
 
-	DrawInfobarSprite2(0, 480-(640/8), 640, SPRITE_GROUP_LEVELSPECIFIC, DUEL_SObjType_StatBar);
+	DrawInfobarSprite2(0, 480-(640/8), 640, SPRITE_GROUP_DUEL, DUEL_SObjType_StatBar);
 	Infobar_DrawDuelSequence();
 	Infobar_DrawReflex();
 }
@@ -528,9 +528,9 @@ float	x, spacing = 42.5f;
 			int	key = gDuelKeySequence[i];
 			
 			if (gDuelKeyBufferIndex > i)							// set completed keys as semi-trans
-				DrawInfobarSprite2_Centered(x, DUEL_SEQ_Y, DUEL_SEQ_SCALE, SPRITE_GROUP_LEVELSPECIFIC, DUEL_SObjType_UpArrowOff + key);
+				DrawInfobarSprite2_Centered(x, DUEL_SEQ_Y, DUEL_SEQ_SCALE, SPRITE_GROUP_DUEL, DUEL_SObjType_UpArrowOff + key);
 			else
-				DrawInfobarSprite2_Centered(x, DUEL_SEQ_Y, DUEL_SEQ_SCALE, SPRITE_GROUP_LEVELSPECIFIC, DUEL_SObjType_UpArrow + key);
+				DrawInfobarSprite2_Centered(x, DUEL_SEQ_Y, DUEL_SEQ_SCALE, SPRITE_GROUP_DUEL, DUEL_SObjType_UpArrow + key);
 			
 			x += spacing;
 		}
@@ -555,8 +555,8 @@ static float	blinkTimer = 0;
 	{
 		if (i >= gDuelReflex)
 			continue;
-			
-		DrawInfobarSprite2(x, REFLEX_Y, REFLEX_SCALE, SPRITE_GROUP_LEVELSPECIFIC, DUEL_SObjType_ReflexDot);
+
+		DrawInfobarSprite2(x, REFLEX_Y, REFLEX_SCALE, SPRITE_GROUP_DUEL, DUEL_SObjType_ReflexDot);
 
 		if (i == 7)
 			x = 337.0f;
@@ -577,9 +577,9 @@ static float	blinkTimer = 0;
 			
 		if (blinkTimer < .3f)
 		{
-			DrawInfobarSprite2_Centered(320.5, 463, 41, SPRITE_GROUP_LEVELSPECIFIC, DUEL_SObjType_FullLight);
-		
-		
+			DrawInfobarSprite2_Centered(320.5, 463, 41, SPRITE_GROUP_DUEL, DUEL_SObjType_FullLight);
+
+
 			glBlendFunc(GL_SRC_ALPHA, GL_ONE);
 			gGlobalTransparency = .9;
 			DrawInfobarSprite2_Centered(320.5, 463, 100, SPRITE_GROUP_PARTICLES, PARTICLE_SObjType_RedSpark);
@@ -614,7 +614,7 @@ static void DrawShootoutInfobar(void)
 	
 	if (gShootoutCanProceedToNextStopPoint)
 	{
-		DrawInfobarSprite2_Centered(640.0/2, 420.0, 80, SPRITE_GROUP_LEVELSPECIFIC, SHOOTOUT_SObjType_Continue);
+		DrawInfobarSprite2_Centered(640.0/2, 420.0, 80, SPRITE_GROUP_INFOBAR, INFOBAR_SObjType_CommandKey);
 	}
 }
 
@@ -688,7 +688,7 @@ static const OGLPoint2D	bulletCoords[6] =
 
 static void Infobar_DrawCrosshairs(void)
 {
-	DrawInfobarSprite2_Centered(gCrosshairsCoord.x, gCrosshairsCoord.y, 50, SPRITE_GROUP_LEVELSPECIFIC, SHOOTOUT_SObjType_Crosshairs);
+	DrawInfobarSprite2_Centered(gCrosshairsCoord.x, gCrosshairsCoord.y, 50, SPRITE_GROUP_CURSOR, CURSOR_SObjType_Crosshairs);
 }
 
 

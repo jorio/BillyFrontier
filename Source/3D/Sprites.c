@@ -1,7 +1,8 @@
 /****************************/
 /*   	SPRITES.C			*/
-/* (c)2000 Pangea Software  */
 /* By Brian Greenstone      */
+/* (c)2000 Pangea Software  */
+/* (c)2022 Iliyas Jorio     */
 /****************************/
 
 
@@ -23,7 +24,23 @@
 
 #define	FONT_WIDTH	.51f
 
-
+const struct
+{
+	const char* name;
+	int numSprites;
+}
+kSpriteCollections[MAX_SPRITE_GROUPS] =
+{
+	[SPRITE_GROUP_BIGBOARD]		= {"BIGBOARD",		BIGBOARD_SObjType_COUNT},
+	[SPRITE_GROUP_CURSOR]		= {"CURSOR",		CURSOR_SObjType_COUNT},
+	[SPRITE_GROUP_DUEL]			= {"DUEL",			DUEL_SObjType_COUNT},
+	[SPRITE_GROUP_FONT]			= {"FONT",			FONT_SObjType_COUNT},
+	[SPRITE_GROUP_GLOBAL]		= {"GLOBAL",		GLOBAL_SObjType_COUNT},
+	[SPRITE_GROUP_INFOBAR]		= {"INFOBAR",		INFOBAR_SObjType_COUNT},
+	[SPRITE_GROUP_PARTICLES]	= {"PARTICLE",		PARTICLE_SObjType_COUNT},
+	[SPRITE_GROUP_SPHEREMAPS]	= {"SPHEREMAP",		SPHEREMAP_SObjType_COUNT},
+	[SPRITE_GROUP_STAMPEDE]		= {"STAMPEDE",		STAMPEDE_SObjType_COUNT},
+};
 
 enum
 {
@@ -150,24 +167,14 @@ int 		i,n;
 //			because all imported textures are named with OpenGL and loaded into OpenGL!
 //
 
-void LoadSpriteFile(FSSpec *spec, int groupNum)
+void LoadSpriteGroup(int groupNum)
 {
 short			refNum;
-int				i,w,h;
+int				w,h;
 long			count;
 MOMaterialData	matData;
 
-
-		/* OPEN THE FILE */
-
-	if (FSpOpenDF(spec, fsRdPerm, &refNum) != noErr)
-		DoFatalAlert("LoadSpriteFile: FSpOpenDF failed");
-
-		/* READ # SPRITES IN THIS FILE */
-
-	count = sizeof(gNumSpritesInGroupList[0]);
-	FSRead(refNum, &count, (Ptr) & gNumSpritesInGroupList[groupNum]);
-	Byteswap32SignedRW(&gNumSpritesInGroupList[groupNum]);
+	gNumSpritesInGroupList[groupNum] = kSpriteCollections[groupNum].numSprites;
 
 		/* ALLOCATE MEMORY FOR SPRITE RECORDS */
 		
@@ -180,42 +187,21 @@ MOMaterialData	matData;
 			/* READ EACH SPRITE */
 			/********************/
 
-	for (i = 0; i < gNumSpritesInGroupList[groupNum]; i++)
+	for (int i = 0; i < gNumSpritesInGroupList[groupNum]; i++)
 	{
-		uint8_t* buffer = nil;
+		char path[64];
+		snprintf(path, sizeof(path), ":sprites:%s:%s%03d.png", kSpriteCollections[groupNum].name, kSpriteCollections[groupNum].name, i);
+		puts(path);
 
-		struct
-		{
-			int32_t		width;
-			int32_t		height;
-			float		aspectRatio;
-			int32_t		srcFormat;
-			int32_t		destFormat;
-			int32_t		bufferSize;
-		} spriteHeader;
+		GLuint texture = OGL_TextureMap_LoadImageFile(path, &w, &h);
 
-		count = sizeof(spriteHeader);
-		FSRead(refNum, &count, (Ptr) &spriteHeader);
-		ByteswapStructs("iifiii", sizeof(spriteHeader), 1, &spriteHeader);
+				/* READ WIDTH/HEIGHT, ASPECT RATIO */
 
-			/* READ WIDTH/HEIGHT, ASPECT RATIO */
-
-		gSpriteGroupList[groupNum][i].width			= spriteHeader.width;
-		gSpriteGroupList[groupNum][i].height		= spriteHeader.height;
-		gSpriteGroupList[groupNum][i].aspectRatio	= spriteHeader.aspectRatio;
-		gSpriteGroupList[groupNum][i].srcFormat		= spriteHeader.srcFormat;
-		gSpriteGroupList[groupNum][i].destFormat	= spriteHeader.destFormat;
-
-		buffer = AllocPtr(spriteHeader.bufferSize);							// alloc memory for buffer
-		if (buffer == nil)
-			DoFatalAlert("LoadSpriteFile: AllocPtr failed");
-
-
-			/* READ THE SPRITE PIXEL BUFFER */
-
-		count = spriteHeader.bufferSize;
-		FSRead(refNum, &count, (Ptr) buffer);
-
+		gSpriteGroupList[groupNum][i].width			= w;
+		gSpriteGroupList[groupNum][i].height		= h;
+		gSpriteGroupList[groupNum][i].aspectRatio	= (float) h / (float) w;		// yes, h/w is weird, but that's what the drawing routines expect
+		gSpriteGroupList[groupNum][i].srcFormat		= GL_RGBA;
+		gSpriteGroupList[groupNum][i].destFormat	= GL_RGBA;
 
 				/*****************************/
 				/* CREATE NEW TEXTURE OBJECT */
@@ -236,56 +222,13 @@ MOMaterialData	matData;
 		matData.pixelDstFormat	= gSpriteGroupList[groupNum][i].destFormat;
 		
 		matData.texturePixels[0]= nil;											// we're going to preload
-
-					/* SPRITE IS 16-BIT PACKED PIXEL FORMAT */
-					
-		if (matData.pixelSrcFormat == GL_UNSIGNED_SHORT_1_5_5_5_REV)
-		{
-			matData.textureName[0] = OGL_TextureMap_Load(buffer, matData.width, matData.height, GL_BGRA_EXT, GL_RGBA, GL_UNSIGNED_SHORT_1_5_5_5_REV); // load 16 as 16
-		
-		}
-		
-				/* CONVERT 24-BIT TO 16--BIT */
-				
-		else
-		if ((matData.pixelSrcFormat == GL_RGB) && (matData.pixelDstFormat == GL_RGB5_A1))
-		{
-			u_short	*buff16 = (u_short *)AllocPtr(matData.width*matData.height*2);			// alloc buff for 16-bit texture
-						
-			ConvertTexture24To16(buffer, buff16, matData.width, matData.height);
-			matData.textureName[0] = OGL_TextureMap_Load(buff16, matData.width, matData.height, GL_BGRA_EXT, GL_RGBA, GL_UNSIGNED_SHORT_1_5_5_5_REV); // load 16 as 16
-			
-			SafeDisposePtr((Ptr)buff16);							// dispose buff
-
-		}
-		
-				/* USE INPUT FORMATS */
-		else
-		{		
-			matData.textureName[0] 	= OGL_TextureMap_Load(buffer,
-													 matData.width,
-													 matData.height,
-													 matData.pixelSrcFormat,
-													 matData.pixelDstFormat, GL_UNSIGNED_BYTE);
-		}
+		matData.textureName[0] = texture;
 			
 		gSpriteGroupList[groupNum][i].materialObject = MO_CreateNewObjectOfType(MO_TYPE_MATERIAL, 0, &matData);
 
 		if (gSpriteGroupList[groupNum][i].materialObject == nil)
 			DoFatalAlert("LoadSpriteFile: MO_CreateNewObjectOfType failed");
-	
-	
-		SafeDisposePtr((Ptr)buffer);														// free the buffer
-
 	}
-
-
-	
-		/* CLOSE FILE */
-			
-	FSClose(refNum);
-	
-
 }
 
 

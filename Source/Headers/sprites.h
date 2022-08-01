@@ -25,7 +25,7 @@ typedef struct
 void InitSpriteManager(void);
 void DisposeAllSpriteGroups(void);
 void DisposeSpriteGroup(int groupNum);
-void LoadSpriteFile(FSSpec *spec, int groupNum);
+void LoadSpriteGroup(int groupNum);
 ObjNode *MakeSpriteObject(NewObjectDefinitionType *newObjDef);
 void BlendAllSpritesInGroup(short group);
 void ModifySpriteObjectFrame(ObjNode *theNode, short type);

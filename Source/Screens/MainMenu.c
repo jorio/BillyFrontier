@@ -29,12 +29,6 @@ static void MoveMenuItem(ObjNode *theNode);
 /*    CONSTANTS             */
 /****************************/
 
-enum
-{
-	MAINMENU_SObjType_Cursor,
-	MAINMENU_SObjType_BulletHole
-};
-
 
 
 
@@ -182,12 +176,9 @@ int					i;
 
 
 			/* LOAD SPRITES */
-			
-	FSMakeFSSpec(gDataSpec.vRefNum, gDataSpec.parID, ":sprites:font.sprites", &spec);
-	LoadSpriteFile(&spec, SPRITE_GROUP_FONT);
 
-	FSMakeFSSpec(gDataSpec.vRefNum, gDataSpec.parID, ":sprites:mainmenu.sprites", &spec);
-	LoadSpriteFile(&spec, SPRITE_GROUP_MAINMENU);
+	LoadSpriteGroup(SPRITE_GROUP_FONT);
+	LoadSpriteGroup(SPRITE_GROUP_CURSOR);
 
 
 
@@ -197,8 +188,8 @@ int					i;
 
 			/* CURSOR */
 			
-	gNewObjectDefinition.group 		= SPRITE_GROUP_MAINMENU;	
-	gNewObjectDefinition.type 		= MAINMENU_SObjType_Cursor;
+	gNewObjectDefinition.group 		= SPRITE_GROUP_CURSOR;	
+	gNewObjectDefinition.type 		= CURSOR_SObjType_Crosshairs;
 	gNewObjectDefinition.coord.x 	= 0;
 	gNewObjectDefinition.coord.y 	= 0;
 	gNewObjectDefinition.coord.z 	= 0;
@@ -366,8 +357,8 @@ ObjNode	*newObj;
 
 				/* MAKE BULLET HOLE */
 					
-		gNewObjectDefinition.group 		= SPRITE_GROUP_MAINMENU;	
-		gNewObjectDefinition.type 		= MAINMENU_SObjType_BulletHole;
+		gNewObjectDefinition.group 		= SPRITE_GROUP_CURSOR;	
+		gNewObjectDefinition.type 		= CURSOR_SObjType_BulletHole;
 		gNewObjectDefinition.coord.x 	= gCursor->Coord.x;
 		gNewObjectDefinition.coord.y 	= gCursor->Coord.y;
 		gNewObjectDefinition.coord.z 	= 0;

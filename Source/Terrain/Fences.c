@@ -55,7 +55,7 @@ static const short			gFenceTexture[NUM_FENCE_TYPES][2] =
 {
 	SPRITE_GROUP_GLOBAL,		GLOBAL_SObjType_Fence_Wood,		// wood
 	SPRITE_GROUP_GLOBAL,		GLOBAL_SObjType_Fence_White,		// white wood
-	SPRITE_GROUP_LEVELSPECIFIC,	STAMPEDE_SObjType_Fence_Canyon,		// canyon
+	SPRITE_GROUP_STAMPEDE,		STAMPEDE_SObjType_Fence_Canyon,		// canyon
 	SPRITE_GROUP_GLOBAL,		GLOBAL_SObjType_Fence_TallGrass,
 	SPRITE_GROUP_GLOBAL,		GLOBAL_SObjType_Fence_SmallGrass,
 	SPRITE_GROUP_GLOBAL,		GLOBAL_SObjType_Fence_SwampTree,

@@ -6,24 +6,20 @@
 
 enum
 {
-	SPRITE_GROUP_SPHEREMAPS 		= 	0,
-	SPRITE_GROUP_INFOBAR			=	1,
-	SPRITE_GROUP_LEVELSPECIFIC		= 	2,
-	SPRITE_GROUP_PARTICLES			=	3,
-	SPRITE_GROUP_BONUS				= 	4,
-	SPRITE_GROUP_HIGHSCORES			=	4,
-	SPRITE_GROUP_LOSE				=	4,
-	SPRITE_GROUP_WIN				= 	4,
-	SPRITE_GROUP_TITLE				=	4,
-	SPRITE_GROUP_MAINMENU			=	4,
-	SPRITE_GROUP_BIGBOARD			=	4,
-	SPRITE_GROUP_GLOBAL				= 	5,
-	SPRITE_GROUP_FONT				= 	6,
+	SPRITE_GROUP_BIGBOARD,
+	SPRITE_GROUP_CURSOR,
+	SPRITE_GROUP_DUEL,
+	SPRITE_GROUP_FONT,
+	SPRITE_GROUP_GLOBAL,
+	SPRITE_GROUP_INFOBAR,
+	SPRITE_GROUP_PARTICLES,
+	SPRITE_GROUP_SPHEREMAPS,
+	SPRITE_GROUP_STAMPEDE,
 	MAX_SPRITE_GROUPS
 };
 
 		/* GLOBAL SPRITES */
-		
+
 enum
 {
 	GLOBAL_SObjType_Shadow_Circular,
@@ -37,8 +33,9 @@ enum
 	GLOBAL_SObjType_Fence_SwampTree,
 	GLOBAL_SObjType_Fence_PicketFence,
 	
-	GLOBAL_SObjType_SwampWater
-	
+	GLOBAL_SObjType_SwampWater,
+
+	GLOBAL_SObjType_COUNT,
 };
 
 
@@ -46,7 +43,7 @@ enum
 
 
 		/* SPHEREMAP SPRITES */
-		
+
 enum
 {
 	SPHEREMAP_SObjType_Satin,
@@ -57,13 +54,15 @@ enum
 	SPHEREMAP_SObjType_DarkYosemite,
 	SPHEREMAP_SObjType_Red,
 	SPHEREMAP_SObjType_Tundra,
-	SPHEREMAP_SObjType_SheenAlpha
+	SPHEREMAP_SObjType_SheenAlpha,
+
+	SPHEREMAP_SObjType_COUNT,
 };
 
 
 
 		/* PARTICLE SPRITES */
-		
+
 enum
 {
 	PARTICLE_SObjType_WhiteSpark,
@@ -108,10 +107,12 @@ enum
 	PARTICLE_SObjType_Flame7,
 	PARTICLE_SObjType_Flame8,
 	PARTICLE_SObjType_Flame9,
-	PARTICLE_SObjType_Flame10
+	PARTICLE_SObjType_Flame10,
+
+	PARTICLE_SObjType_COUNT,
 };
 
-/******************* DIALOG SOBJTYPES *************************/
+/******************* FONT SOBJTYPES *************************/
 
 enum
 {
@@ -212,15 +213,15 @@ enum
 	FONT_SObjType_Y,
 	FONT_SObjType_Z,
 	
-	FONT_SObjType_Cursor
+	FONT_SObjType_Cursor,
 
+	FONT_SObjType_COUNT,
 };
 
 /******************* INFOBAR SOBJTYPES *************************/
 
 enum
 {
-
 	INFOBAR_SObjType_HealthFrame,
 	INFOBAR_SObjType_HealthAmmoFrame,
 	INFOBAR_SObjType_HealthAmmoShieldFrame,
@@ -244,7 +245,11 @@ enum
 	INFOBAR_SObjType_PausedFrame,
 	INFOBAR_SObjType_PausedDot,
 	
-	INFOBAR_SObjType_TimerFrame	
+	INFOBAR_SObjType_TimerFrame,
+
+	INFOBAR_SObjType_CommandKey,
+
+	INFOBAR_SObjType_COUNT,
 };
 
 
@@ -267,34 +272,51 @@ enum
 	DUEL_SObjType_LeftArrowOff,
 	
 	DUEL_SObjType_ReflexDot,
-	DUEL_SObjType_FullLight
+	DUEL_SObjType_FullLight,
+
+	DUEL_SObjType_COUNT,
 };
 
-/******************* SHOOTOUT SPRITES *************************/
+/******************* CURSOR SPRITES *************************/
 
 enum
 {
-	SHOOTOUT_SObjType_Crosshairs,
-	SHOOTOUT_SObjType_Continue
+	CURSOR_SObjType_Crosshairs,
+	CURSOR_SObjType_BulletHole,
+	CURSOR_SObjType_COUNT,
 };
 
 /******************* STAMPEDE SPRITES *************************/
 
 enum
 {
-	STAMPEDE_SObjType_Fence_Canyon
+	STAMPEDE_SObjType_Fence_Canyon,
+	STAMPEDE_SObjType_COUNT,
 };
 
+/******************* BIGBOARD SPRITES *************************/
 
-/******************* TARGET PRACTICE SPRITES *************************/
 
 enum
 {
-	TARGET_SObjType_Sight
+	BIGBOARD_SObjType_TownShootoutIcon,
+	BIGBOARD_SObjType_TownShootoutIcon2,
+	BIGBOARD_SObjType_TownStampedeIcon,
+	BIGBOARD_SObjType_TownStampedeIcon2,
+	BIGBOARD_SObjType_TownTargetsIcon,
+	BIGBOARD_SObjType_TownTargetsIcon2,
+
+	BIGBOARD_SObjType_SwampShootoutIcon,
+	BIGBOARD_SObjType_SwampShootoutIcon2,
+	BIGBOARD_SObjType_SwampStampedeIcon,
+	BIGBOARD_SObjType_SwampStampedeIcon2,
+	BIGBOARD_SObjType_SwampTargetsIcon,
+	BIGBOARD_SObjType_SwampTargetsIcon2,
+
+	BIGBOARD_SObjType_SaveGameIcon,
+	BIGBOARD_SObjType_SaveGameIcon2,
+	BIGBOARD_SObjType_EndGameIcon,
+	BIGBOARD_SObjType_EndGameIcon2,
+
+	BIGBOARD_SObjType_COUNT
 };
-
-
-
-
-
-

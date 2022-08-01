@@ -266,10 +266,9 @@ OGLSetupInputType	viewDef;
 				/************/
 
 			/* LOAD SPRITES */
-			
-	FSMakeFSSpec(gDataSpec.vRefNum, gDataSpec.parID, ":sprites:font.sprites", &spec);
-	LoadSpriteFile(&spec, SPRITE_GROUP_FONT);
-		
+
+	LoadSpriteGroup(SPRITE_GROUP_FONT);
+
 			/* CREATE BACKGROUND OBJECT */
 
 	const char* backgroundImagePath = NULL;

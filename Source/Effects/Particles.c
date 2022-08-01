@@ -92,10 +92,9 @@ ObjNode	*obj;
 
 
 			/* LOAD SPRITES */
-			
-	FSMakeFSSpec(gDataSpec.vRefNum, gDataSpec.parID, ":sprites:particle.sprites", &spec);
-	LoadSpriteFile(&spec, SPRITE_GROUP_PARTICLES);
-	
+
+	LoadSpriteGroup(SPRITE_GROUP_PARTICLES);
+
 	BlendAllSpritesInGroup(SPRITE_GROUP_PARTICLES);
 
 

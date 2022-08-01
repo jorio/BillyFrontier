@@ -30,32 +30,6 @@ void MoveBulletHole(ObjNode *theNode);
 /*    CONSTANTS             */
 /****************************/
 
-enum
-{
-	BIGBOARD_SObjType_Cursor,
-	BIGBOARD_SObjType_BulletHole,
-
-	BIGBOARD_SObjType_TownShootoutIcon,
-	BIGBOARD_SObjType_TownShootoutIcon2,
-	BIGBOARD_SObjType_TownStampedeIcon,
-	BIGBOARD_SObjType_TownStampedeIcon2,
-	BIGBOARD_SObjType_TownTargetsIcon,
-	BIGBOARD_SObjType_TownTargetsIcon2,
-
-	BIGBOARD_SObjType_SwampShootoutIcon,
-	BIGBOARD_SObjType_SwampShootoutIcon2,
-	BIGBOARD_SObjType_SwampStampedeIcon,
-	BIGBOARD_SObjType_SwampStampedeIcon2,
-	BIGBOARD_SObjType_SwampTargetsIcon,
-	BIGBOARD_SObjType_SwampTargetsIcon2,
-	
-	BIGBOARD_SObjType_SaveGameIcon,
-	BIGBOARD_SObjType_SaveGameIcon2,
-	BIGBOARD_SObjType_EndGameIcon,
-	BIGBOARD_SObjType_EndGameIcon2
-	
-};
-
 
 
 #define	NUM_BIGBOARD_ITEMS	8
@@ -158,14 +132,10 @@ const static OGLVector3D	fillDirection2 = { .3, .8, 1.0 };
 
 			/* LOAD SPRITES */
 			
-	FSMakeFSSpec(gDataSpec.vRefNum, gDataSpec.parID, ":sprites:font.sprites", &spec);
-	LoadSpriteFile(&spec, SPRITE_GROUP_FONT);
-
-	FSMakeFSSpec(gDataSpec.vRefNum, gDataSpec.parID, ":sprites:bigboard.sprites", &spec);
-	LoadSpriteFile(&spec, SPRITE_GROUP_BIGBOARD);
-
-	FSMakeFSSpec(gDataSpec.vRefNum, gDataSpec.parID, ":sprites:infobar.sprites", &spec);
-	LoadSpriteFile(&spec, SPRITE_GROUP_INFOBAR);
+	LoadSpriteGroup(SPRITE_GROUP_CURSOR);
+	LoadSpriteGroup(SPRITE_GROUP_FONT);
+	LoadSpriteGroup(SPRITE_GROUP_BIGBOARD);
+	LoadSpriteGroup(SPRITE_GROUP_INFOBAR);
 
 
 			/* MAKE BACKGROUND PICTURE OBJECT */
@@ -179,8 +149,8 @@ const static OGLVector3D	fillDirection2 = { .3, .8, 1.0 };
 
 			/* CURSOR */
 			
-	gNewObjectDefinition.group 		= SPRITE_GROUP_BIGBOARD;	
-	gNewObjectDefinition.type 		= BIGBOARD_SObjType_Cursor;
+	gNewObjectDefinition.group 		= SPRITE_GROUP_CURSOR;	
+	gNewObjectDefinition.type 		= CURSOR_SObjType_Crosshairs;
 	gNewObjectDefinition.coord.x 	= 0;
 	gNewObjectDefinition.coord.y 	= 0;
 	gNewObjectDefinition.coord.z 	= 0;
@@ -278,8 +248,8 @@ ObjNode	*newObj;
 
 				/* MAKE BULLET HOLE */
 					
-		gNewObjectDefinition.group 		= SPRITE_GROUP_BIGBOARD;	
-		gNewObjectDefinition.type 		= BIGBOARD_SObjType_BulletHole;
+		gNewObjectDefinition.group 		= SPRITE_GROUP_CURSOR;
+		gNewObjectDefinition.type 		= CURSOR_SObjType_BulletHole;
 		gNewObjectDefinition.coord.x 	= gCursor->Coord.x;
 		gNewObjectDefinition.coord.y 	= gCursor->Coord.y;
 		gNewObjectDefinition.coord.z 	= 0;

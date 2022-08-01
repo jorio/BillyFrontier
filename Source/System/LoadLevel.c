@@ -72,20 +72,11 @@ FSSpec	spec;
 
 			/* LOAD SPRITES */
 			
-	FSMakeFSSpec(gDataSpec.vRefNum, gDataSpec.parID, ":sprites:infobar.sprites", &spec);
-	LoadSpriteFile(&spec, SPRITE_GROUP_INFOBAR);
-
-	FSMakeFSSpec(gDataSpec.vRefNum, gDataSpec.parID, ":sprites:global.sprites", &spec);
-	LoadSpriteFile(&spec, SPRITE_GROUP_GLOBAL);
-
-	FSMakeFSSpec(gDataSpec.vRefNum, gDataSpec.parID, ":sprites:spheremap.sprites", &spec);
-	LoadSpriteFile(&spec, SPRITE_GROUP_SPHEREMAPS);
-
-	FSMakeFSSpec(gDataSpec.vRefNum, gDataSpec.parID, ":sprites:duel.sprites", &spec);
-	LoadSpriteFile(&spec, SPRITE_GROUP_LEVELSPECIFIC);
-
-	FSMakeFSSpec(gDataSpec.vRefNum, gDataSpec.parID, ":sprites:font.sprites", &spec);
-	LoadSpriteFile(&spec, SPRITE_GROUP_FONT);
+	LoadSpriteGroup(SPRITE_GROUP_INFOBAR);
+	LoadSpriteGroup(SPRITE_GROUP_GLOBAL);
+	LoadSpriteGroup(SPRITE_GROUP_SPHEREMAPS);
+	LoadSpriteGroup(SPRITE_GROUP_DUEL);
+	LoadSpriteGroup(SPRITE_GROUP_FONT);
 
 
 			/* LOAD PLAYER SKELETON */
@@ -161,20 +152,11 @@ FSSpec	spec;
 
 			/* LOAD SPRITES */
 			
-	FSMakeFSSpec(gDataSpec.vRefNum, gDataSpec.parID, ":sprites:infobar.sprites", &spec);
-	LoadSpriteFile(&spec, SPRITE_GROUP_INFOBAR);
-
-	FSMakeFSSpec(gDataSpec.vRefNum, gDataSpec.parID, ":sprites:global.sprites", &spec);
-	LoadSpriteFile(&spec, SPRITE_GROUP_GLOBAL);
-
-	FSMakeFSSpec(gDataSpec.vRefNum, gDataSpec.parID, ":sprites:spheremap.sprites", &spec);
-	LoadSpriteFile(&spec, SPRITE_GROUP_SPHEREMAPS);
-
-	FSMakeFSSpec(gDataSpec.vRefNum, gDataSpec.parID, ":sprites:shootout.sprites", &spec);
-	LoadSpriteFile(&spec, SPRITE_GROUP_LEVELSPECIFIC);
-
-	FSMakeFSSpec(gDataSpec.vRefNum, gDataSpec.parID, ":sprites:font.sprites", &spec);
-	LoadSpriteFile(&spec, SPRITE_GROUP_FONT);
+	LoadSpriteGroup(SPRITE_GROUP_INFOBAR);
+	LoadSpriteGroup(SPRITE_GROUP_GLOBAL);
+	LoadSpriteGroup(SPRITE_GROUP_SPHEREMAPS);
+	LoadSpriteGroup(SPRITE_GROUP_CURSOR);
+	LoadSpriteGroup(SPRITE_GROUP_FONT);
 
 
 			/* LOAD PLAYER SKELETON */
@@ -265,21 +247,12 @@ FSSpec	spec;
 
 
 			/* LOAD SPRITES */
-			
-	FSMakeFSSpec(gDataSpec.vRefNum, gDataSpec.parID, ":sprites:infobar.sprites", &spec);
-	LoadSpriteFile(&spec, SPRITE_GROUP_INFOBAR);
 
-	FSMakeFSSpec(gDataSpec.vRefNum, gDataSpec.parID, ":sprites:global.sprites", &spec);
-	LoadSpriteFile(&spec, SPRITE_GROUP_GLOBAL);
-
-	FSMakeFSSpec(gDataSpec.vRefNum, gDataSpec.parID, ":sprites:spheremap.sprites", &spec);
-	LoadSpriteFile(&spec, SPRITE_GROUP_SPHEREMAPS);
-
-	FSMakeFSSpec(gDataSpec.vRefNum, gDataSpec.parID, ":sprites:stampede.sprites", &spec);
-	LoadSpriteFile(&spec, SPRITE_GROUP_LEVELSPECIFIC);
-
-	FSMakeFSSpec(gDataSpec.vRefNum, gDataSpec.parID, ":sprites:font.sprites", &spec);
-	LoadSpriteFile(&spec, SPRITE_GROUP_FONT);
+	LoadSpriteGroup(SPRITE_GROUP_INFOBAR);
+	LoadSpriteGroup(SPRITE_GROUP_GLOBAL);
+	LoadSpriteGroup(SPRITE_GROUP_SPHEREMAPS);
+	LoadSpriteGroup(SPRITE_GROUP_STAMPEDE);
+	LoadSpriteGroup(SPRITE_GROUP_FONT);
 
 
 			/* LOAD PLAYER SKELETON */
@@ -355,20 +328,11 @@ FSSpec	spec;
 
 			/* LOAD SPRITES */
 			
-	FSMakeFSSpec(gDataSpec.vRefNum, gDataSpec.parID, ":sprites:infobar.sprites", &spec);
-	LoadSpriteFile(&spec, SPRITE_GROUP_INFOBAR);
-
-	FSMakeFSSpec(gDataSpec.vRefNum, gDataSpec.parID, ":sprites:global.sprites", &spec);
-	LoadSpriteFile(&spec, SPRITE_GROUP_GLOBAL);
-
-	FSMakeFSSpec(gDataSpec.vRefNum, gDataSpec.parID, ":sprites:spheremap.sprites", &spec);
-	LoadSpriteFile(&spec, SPRITE_GROUP_SPHEREMAPS);
-
-	FSMakeFSSpec(gDataSpec.vRefNum, gDataSpec.parID, ":sprites:targetpractice.sprites", &spec);
-	LoadSpriteFile(&spec, SPRITE_GROUP_LEVELSPECIFIC);
-
-	FSMakeFSSpec(gDataSpec.vRefNum, gDataSpec.parID, ":sprites:font.sprites", &spec);
-	LoadSpriteFile(&spec, SPRITE_GROUP_FONT);
+	LoadSpriteGroup(SPRITE_GROUP_INFOBAR);
+	LoadSpriteGroup(SPRITE_GROUP_GLOBAL);
+	LoadSpriteGroup(SPRITE_GROUP_SPHEREMAPS);
+	LoadSpriteGroup(SPRITE_GROUP_CURSOR);
+	LoadSpriteGroup(SPRITE_GROUP_FONT);
 
 
 			/* LOAD PLAYER SKELETON */
