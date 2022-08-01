@@ -313,8 +313,7 @@ static void CleanupTargetPractice(void)
 	FreeAllSkeletonFiles(-1);
 	DeleteAllParticleGroups();
 	DisposeParticleSystem();
-	DisposeAllSpriteGroups();
-	
+
 	DisposeAllBG3DContainers();
 
 	OGL_DisposeWindowSetup();	// do this last!			

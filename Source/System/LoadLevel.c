@@ -75,8 +75,8 @@ FSSpec	spec;
 	LoadSpriteGroup(SPRITE_GROUP_INFOBAR);
 	LoadSpriteGroup(SPRITE_GROUP_GLOBAL);
 	LoadSpriteGroup(SPRITE_GROUP_SPHEREMAPS);
-	LoadSpriteGroup(SPRITE_GROUP_DUEL);
 	LoadSpriteGroup(SPRITE_GROUP_FONT);
+	LoadSpriteGroup(SPRITE_GROUP_DUEL);
 
 
 			/* LOAD PLAYER SKELETON */

@@ -302,10 +302,7 @@ static void FreeMainMenuScreen(void)
 	MO_DisposeObjectReference(gBackgoundPicture);	
 	gBackgoundPicture = nil;
 	FreeAllSkeletonFiles(-1);
-	DisposeAllSpriteGroups();	
-	DisposeAllBG3DContainers();
 	OGL_DisposeWindowSetup();
-	
 }
 
 #pragma mark -

@@ -139,7 +139,6 @@ float	timeout = 40.0f;
 			
 	DeleteAllObjects();
 	MO_DisposeObjectReference(gBackgoundPicture);
-	DisposeAllSpriteGroups();	
 
 	OGL_DisposeWindowSetup();	
 }

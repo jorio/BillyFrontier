@@ -307,7 +307,6 @@ static void FreeScoreScreen(void)
 		MO_DisposeObjectReference(gBackgoundPicture);	
 		gBackgoundPicture = nil;
 	}
-	DisposeAllSpriteGroups();	
 	DisposeAllBG3DContainers();
 	OGL_DisposeWindowSetup();
 }

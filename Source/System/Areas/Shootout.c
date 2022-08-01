@@ -341,8 +341,7 @@ static void CleanupShootout(void)
 	DisposeTerrain();
 	DeleteAllParticleGroups();
 	DisposeParticleSystem();
-	DisposeAllSpriteGroups();
-	
+
 	DisposeAllBG3DContainers();
 
 	OGL_DisposeWindowSetup();	// do this last!			

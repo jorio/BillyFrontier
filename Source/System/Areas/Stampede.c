@@ -291,7 +291,7 @@ static void CleanupStampede(void)
 	DisposeTerrain();
 	DeleteAllParticleGroups();
 	DisposeParticleSystem();
-	DisposeAllSpriteGroups();
+	DisposeSpriteGroup(SPRITE_GROUP_STAMPEDE);
 	
 	DisposeAllBG3DContainers();
 

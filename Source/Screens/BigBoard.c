@@ -135,7 +135,7 @@ const static OGLVector3D	fillDirection2 = { .3, .8, 1.0 };
 	LoadSpriteGroup(SPRITE_GROUP_CURSOR);
 	LoadSpriteGroup(SPRITE_GROUP_FONT);
 	LoadSpriteGroup(SPRITE_GROUP_BIGBOARD);
-	LoadSpriteGroup(SPRITE_GROUP_INFOBAR);
+	LoadSpriteGroup(SPRITE_GROUP_INFOBAR);		// for hearts
 
 
 			/* MAKE BACKGROUND PICTURE OBJECT */
@@ -186,7 +186,7 @@ static void FreeBigBoardScreen(void)
 	MO_DisposeObjectReference(gBackgoundPicture);	
 	gBackgoundPicture = nil;
 	FreeAllSkeletonFiles(-1);
-	DisposeAllSpriteGroups();	
+	DisposeSpriteGroup(SPRITE_GROUP_BIGBOARD);
 	DisposeAllBG3DContainers();
 	OGL_DisposeWindowSetup();	
 }

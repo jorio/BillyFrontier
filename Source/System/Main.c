@@ -373,6 +373,14 @@ unsigned long	someLong;
 	InitSkeletonManager();
 	InitSoundTools();
 
+		/* PRELOAD ASSETS */
+
+	LoadSpriteGroup(SPRITE_GROUP_CURSOR);
+	LoadSpriteGroup(SPRITE_GROUP_FONT);
+	LoadSpriteGroup(SPRITE_GROUP_GLOBAL);
+	LoadSpriteGroup(SPRITE_GROUP_PARTICLES);
+	LoadSpriteGroup(SPRITE_GROUP_SPHEREMAPS);
+	LoadSpriteGroup(SPRITE_GROUP_INFOBAR);
 
 		/* SHOW TITLES */
 

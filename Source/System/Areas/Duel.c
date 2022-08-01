@@ -350,7 +350,7 @@ static void CleanupDuel(void)
 	DisposeTerrain();
 	DeleteAllParticleGroups();
 	DisposeParticleSystem();
-	DisposeAllSpriteGroups();
+	DisposeSpriteGroup(SPRITE_GROUP_DUEL);
 	
 	DisposeAllBG3DContainers();
 
