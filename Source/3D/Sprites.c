@@ -174,6 +174,13 @@ int				w,h;
 long			count;
 MOMaterialData	matData;
 
+	if (gNumSpritesInGroupList[groupNum] != 0)
+	{
+		// Already loaded
+		GAME_ASSERT(gNumSpritesInGroupList[groupNum] == kSpriteCollections[groupNum].numSprites);
+		return;
+	}
+
 	gNumSpritesInGroupList[groupNum] = kSpriteCollections[groupNum].numSprites;
 
 		/* ALLOCATE MEMORY FOR SPRITE RECORDS */

@@ -377,8 +377,8 @@ float					minX,minY,minZ,maxX,maxY,maxZ;
 									gFencePoints[f][j-2].x, gFencePoints[f][j-2].y, gFencePoints[f][j-2].z) * textureUOff;
 			}
 						
-			gFenceUVs[f][j].v 		= 0;									// bottom
-			gFenceUVs[f][j+1].v 	= 1.0;									// top
+			gFenceUVs[f][j].v 		= 1.0f;									// bottom
+			gFenceUVs[f][j+1].v 	= 0.0f;									// top
 			gFenceUVs[f][j].u 		= gFenceUVs[f][j+1].u = u;
 		}
 		

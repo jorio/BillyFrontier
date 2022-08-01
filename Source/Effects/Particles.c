@@ -185,7 +185,6 @@ static void DeleteParticleGroup(long groupNum)
 
 short NewParticleGroup(NewParticleGroupDefType *def)
 {
-short					p,i,j,k;
 OGLTextureCoord			*uv;
 MOVertexArrayData 		vertexArrayData;
 MOTriangleIndecies		*t;
@@ -195,7 +194,7 @@ MOTriangleIndecies		*t;
 			/* SCAN FOR A FREE GROUP */
 			/*************************/
 			
-	for (i = 0; i < MAX_PARTICLE_GROUPS; i++)
+	for (int i = 0; i < MAX_PARTICLE_GROUPS; i++)
 	{
 		if (gParticleGroups[i] == nil)
 		{
@@ -209,7 +208,7 @@ MOTriangleIndecies		*t;
 				/* INITIALIZE THE GROUP */
 			
 			gParticleGroups[i]->type = def->type;						// set type
-			for (p = 0; p < MAX_PARTICLES; p++)						// mark all unused
+			for (int p = 0; p < MAX_PARTICLES; p++)						// mark all unused
 				gParticleGroups[i]->isUsed[p] = false;
 			
 			gParticleGroups[i]->flags 				= def->flags;
@@ -246,22 +245,22 @@ MOTriangleIndecies		*t;
 					/* INIT UV ARRAYS */
 					
 			uv = vertexArrayData.uvs[0];
-			for (j=0; j < (MAX_PARTICLES*4); j+=4)
+			for (int j = 0; j < (MAX_PARTICLES*4); j += 4)
 			{
-				uv[j].u = 0;									// upper left
-				uv[j].v = 1;
-				uv[j+1].u = 0;									// lower left
-				uv[j+1].v = 0;	
-				uv[j+2].u = 1;									// lower right
-				uv[j+2].v = 0;	
-				uv[j+3].u = 1;									// upper right
-				uv[j+3].v = 1;				
+				uv[j  ].u = 0;									// upper(?) left
+				uv[j  ].v = 0;
+				uv[j+1].u = 0;									// lower(?) left
+				uv[j+1].v = 1;	
+				uv[j+2].u = 1;									// lower(?) right
+				uv[j+2].v = 1;	
+				uv[j+3].u = 1;									// upper(?) right
+				uv[j+3].v = 0;				
 			}
 						
 					/* INIT TRIANGLE ARRAYS */
 					
 			t = vertexArrayData.triangles;
-			for (j = k = 0; j < (MAX_PARTICLES*2); j+=2, k+=4)
+			for (int j = 0, k = 0; j < (MAX_PARTICLES*2); j+=2, k+=4)
 			{
 				t[j].vertexIndices[0] = k;							// triangle A
 				t[j].vertexIndices[1] = k+1;
@@ -1856,10 +1855,10 @@ OGLPoint3D	verts[4];
 			/* DRAW QUAD */
 						
 	glBegin(GL_QUADS);				
-	glTexCoord2f(0,.99);	glVertex3fv((GLfloat *)&verts[0]);
-	glTexCoord2f(.99,.99);	glVertex3fv((GLfloat *)&verts[1]);
-	glTexCoord2f(.99,0);	glVertex3fv((GLfloat *)&verts[2]);
-	glTexCoord2f(0,0);		glVertex3fv((GLfloat *)&verts[3]);
+	glTexCoord2f(0.00,0.00);	glVertex3fv((GLfloat *)&verts[0]);
+	glTexCoord2f(0.99,0.00);	glVertex3fv((GLfloat *)&verts[1]);
+	glTexCoord2f(0.99,0.99);	glVertex3fv((GLfloat *)&verts[2]);
+	glTexCoord2f(0.00,0.99);	glVertex3fv((GLfloat *)&verts[3]);
 	glEnd();	
 
 	gGlobalTransparency = 1.0f;

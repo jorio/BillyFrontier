@@ -20,9 +20,6 @@
 
 static void ReadDataFromSkeletonFile(SkeletonDefType *skeleton, FSSpec *fsSpec, int skeletonType);
 static void ReadDataFromPlayfieldFile(FSSpec *specPtr);
-static void	ConvertTexture16To24(u_short *textureBuffer2, u_char *textureBuffer3, int width, int height);
-static void	ConvertTexture16To16(u_short *textureBuffer, int width, int height);
-static void	ConvertTexture16To32(u_short *srcBuff, u_char *destBuff, int width, int height);
 
 #define BYTESWAP_HANDLE(format, type, n, handle)                                  \
 {                                                                                 \
@@ -1083,12 +1080,10 @@ Ptr						tempBuffer16 = nil;
 
 			/* USE PACKED PIXEL TYPE */
 
-		ConvertTexture16To16((uint16_t *)tempBuffer16, width, height);
-
 		matData.pixelSrcFormat 	= GL_BGRA_EXT;
-		matData.pixelDstFormat 	= GL_RGBA;
+		matData.pixelDstFormat 	= GL_RGB;		// Billy Frontier's terrain textures are always opaque. This isn't necessarily the case in all Pangea games (e.g. Otto)
 		matData.textureName[0] 	= OGL_TextureMap_Load(tempBuffer16, width, height,
-												 GL_BGRA_EXT, GL_RGBA, GL_UNSIGNED_SHORT_1_5_5_5_REV);
+												 GL_BGRA_EXT, GL_RGB, GL_UNSIGNED_SHORT_1_5_5_5_REV);
 
 
 			/* INIT NEW MATERIAL DATA */
@@ -1129,122 +1124,6 @@ Ptr						tempBuffer16 = nil;
 	if (tempBuffer16)
 		SafeDisposePtr(tempBuffer16);
 }
-
-
-/*********************** CONVERT TEXTURE; 16 TO 24 ***********************************/
-
-static void	ConvertTexture16To24(u_short *textureBuffer2, u_char *textureBuffer3, int width, int height)
-{
-int		x,y;
-u_short	srcPixel;
-u_long	r,g,b;
-u_char	*dest;
-
-	textureBuffer3 += (width * 3) * (height - 1);				// flip Y while we do this!
-
-	for (y = 0; y < height; y++)
-	{
-		dest = textureBuffer3;
-		
-		for (x = 0; x < width; x++)
-		{
-			srcPixel = textureBuffer2[x];						// get 16bit pixel
-
-			b = srcPixel & 0x1f;
-			g = (srcPixel & (0x1f << 5)) >> 5;
-			r = (srcPixel & (0x1f << 10)) >> 10;
-			
-			*dest++ = r<<3;			// save red byte
-			*dest++ = g<<3;			// save green byte
-			*dest++ = b<<3;			// save blue byte
-		}
-		
-		textureBuffer2 += width;
-		textureBuffer3 -= (width*3);
-	}
-}		
-
-
-/*********************** CONVERT TEXTURE; 16 TO 32 ***********************************/
-
-static void	ConvertTexture16To32(u_short *srcBuff, u_char *destBuff, int width, int height)
-{
-int		x,y;
-u_short	srcPixel;
-u_long	r,g,b;
-u_char	*dest;
-
-	destBuff += (width * 4) * (height - 1);				// flip Y while we do this!
-
-	for (y = 0; y < height; y++)
-	{
-		dest = destBuff;
-		
-		for (x = 0; x < width; x++)
-		{
-			srcPixel = srcBuff[x];						// get 16bit pixel
-
-			b = srcPixel & 0x1f;
-			g = (srcPixel & (0x1f << 5)) >> 5;
-			r = (srcPixel & (0x1f << 10)) >> 10;
-			
-			*dest++ = r<<3;			// save red byte
-			*dest++ = g<<3;			// save green byte
-			*dest++ = b<<3;			// save blue byte
-			
-			if (srcPixel & 0x8000)		// see if set alpha
-				*dest++ = 0xff;
-			else
-				*dest++ = 0x00;
-		}
-		
-		srcBuff += width;
-		destBuff -= width*4;
-	}
-}		
-
-
-/*********************** CONVERT TEXTURE; 16 TO 16 ***********************************/
-//
-// Simply flips Y since OGL Textures are screwey
-//
-
-static void	ConvertTexture16To16(u_short *textureBuffer, int width, int height)
-{
-int		x,y;
-u_short	pixel,*bottom;
-u_short	*dest;
-Boolean	blackOpaq;
-
-	blackOpaq = true;	//(gLevelNum != LEVEL_NUM_CLOUD);			// make black transparent on cloud
-
-
-	bottom = textureBuffer + ((height - 1) * width);
-
-	for (y = 0; y < height / 2; y++)
-	{
-		dest = bottom;
-		
-		for (x = 0; x < width; x++)
-		{
-			pixel = textureBuffer[x];						// get 16bit pixel
-			if ((pixel & 0x7fff) || blackOpaq)				// check/set alpha
-				pixel |= 0x8000;
-			else
-				pixel &= 0x7fff;
-				
-			textureBuffer[x] = bottom[x];
-			if ((textureBuffer[x] & 0x7fff) || blackOpaq)
-				textureBuffer[x] |= 0x8000;
-			else
-				textureBuffer[x] &= 0x7fff;
-			bottom[x] = pixel;
-		}
-
-		textureBuffer += width;
-		bottom -= width;
-	}
-}		
 
 
 #pragma mark -
