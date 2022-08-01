@@ -61,8 +61,6 @@ int					gStopPointNum;
 Byte			gNumEnemiesThisStopPoint[MAX_STOP_POINTS];
 
 OGLPoint2D			gCrosshairsCoord;			// screen coords based on 640x480 system
-static int			gCursorPinLeft, gCursorPinRight;
-static int			gCursorPinTop, gCursorPinBottom;
 
 static float		gStepUpOffset = 0, gOutOfAmmoTimer = 100;
 static Boolean		gStepUp = false;
@@ -181,10 +179,6 @@ float		x,z;
 	
 	gCrosshairsCoord.x = 640/2;
 	gCrosshairsCoord.y = 480/2;
-	gCursorPinLeft = 0;
-	gCursorPinRight = 640;
-	gCursorPinTop = 0;
-	gCursorPinBottom = 480;
 
 	gStepUpOffset 		= 0;
 	gStepUp 			= false;
@@ -324,6 +318,11 @@ float		x,z;
 		/* START MUSIC */
 				
 	PlaySong(SONG_SHOOTOUT, true);	
+
+
+		/* GRAB MOUSE CURSOR SO IT CAN'T ESCAPE WINDOW */
+
+	SDL_SetWindowGrab(gSDLWindow, true);
 }
 
 
@@ -335,6 +334,8 @@ float		x,z;
 static void CleanupShootout(void)
 {
 	gShootoutMode = SHOOTOUT_MODE_NONE;				// don't leak shootout mode to duel
+
+	SDL_SetWindowGrab(gSDLWindow, false);		// un-grab the mouse cursor
 
 	StopAllEffectChannels();
  	EmptySplineObjectList();
@@ -498,34 +499,8 @@ Boolean	allowRot;
 
 	OGLPoint2D mousePt = GetLogicalMouseCoord();
 
-				/* CHECK REAL CURSOR WINDOW PINNING TO OUR LOCAL WINDOW */
-				
-	if (mousePt.x > gCursorPinRight)
-	{
-		gCursorPinRight = mousePt.x;
-		gCursorPinLeft = gCursorPinRight - 640;
-	}
-	else
-	if (mousePt.x < gCursorPinLeft)
-	{
-		gCursorPinLeft = mousePt.x;
-		gCursorPinRight = gCursorPinLeft + 640;
-	}
 
-	if (mousePt.y > gCursorPinBottom)
-	{
-		gCursorPinBottom = mousePt.y;
-		gCursorPinTop = gCursorPinBottom - 480;
-	}
-	else
-	if (mousePt.y < gCursorPinTop)
-	{
-		gCursorPinTop = mousePt.y;
-		gCursorPinBottom = gCursorPinTop + 480;
-	}
-
-	gCrosshairsCoord.x = (float)(mousePt.x - gCursorPinLeft);
-	gCrosshairsCoord.y = (float)(mousePt.y - gCursorPinTop);
+	gCrosshairsCoord = mousePt;
 
 		
 	if (gCrosshairsCoord.y < 0.0f)							// check y coord

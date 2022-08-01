@@ -274,6 +274,11 @@ const OGLPoint3D	cameraTo = { 0, 1200, 0 };
 	PlaySong(SONG_STAMPEDE, true);	
 	
 
+		/* GRAB MOUSE CURSOR SO IT CAN'T ESCAPE WINDOW */
+
+	SDL_SetWindowGrab(gSDLWindow, true);
+
+
 			/*******************/	
 			/* MAKE BACKGROUND */
 			/*******************/	
@@ -307,6 +312,8 @@ const OGLPoint3D	cameraTo = { 0, 1200, 0 };
 
 static void CleanupTargetPractice(void)
 {
+	SDL_SetWindowGrab(gSDLWindow, false);		// un-grab the mouse cursor
+
 	StopAllEffectChannels();
  	EmptySplineObjectList();
 	DeleteAllObjects();
@@ -390,19 +397,6 @@ OGLPoint3D	worldHitCoord;
 			/*****************************/
 
 	gCrosshairsCoord = GetLogicalMouseCoord();
-
-	if (gCrosshairsCoord.y < 0.0f)							// check y coord
-		gCrosshairsCoord.y = 0;
-	else
-	if (gCrosshairsCoord.y >= 480.0f)
-		gCrosshairsCoord.y = 479;
-
-	if (gCrosshairsCoord.x < 0.0f)							// check y coord
-		gCrosshairsCoord.x = 0;
-	else
-	if (gCrosshairsCoord.x >= 640.0f)
-		gCrosshairsCoord.x = 639;
-
 
 			/****************/
 			/* SEE IF SHOOT */

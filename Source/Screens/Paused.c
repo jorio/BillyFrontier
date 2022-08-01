@@ -49,6 +49,12 @@ static const char *gPausedStrings[3] =
 
 void DoPaused(void)
 {
+	Boolean hadWindowGrab = SDL_GetWindowGrab(gSDLWindow);
+	int didShowCursor = SDL_ShowCursor(SDL_QUERY);
+
+	SDL_SetWindowGrab(gSDLWindow, false);
+	SDL_ShowCursor(1);
+
 	gPausedMenuSelection = 0;
 	
 	PauseAllChannels(true);
@@ -76,6 +82,9 @@ void DoPaused(void)
 	}
 
 	PauseAllChannels(false);
+
+	SDL_SetWindowGrab(gSDLWindow, hadWindowGrab);
+	SDL_ShowCursor(didShowCursor);
 }
 
 
