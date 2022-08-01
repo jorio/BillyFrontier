@@ -54,7 +54,7 @@ static void MoveCrosshairsBullet(ObjNode *bullet);
 /****************************/
 
 
-Byte		gShootoutMode;
+Byte		gShootoutMode = SHOOTOUT_MODE_NONE;
 
 int					gStopPointNum;
 
@@ -334,6 +334,8 @@ float		x,z;
 
 static void CleanupShootout(void)
 {
+	gShootoutMode = SHOOTOUT_MODE_NONE;				// don't leak shootout mode to duel
+
 	StopAllEffectChannels();
  	EmptySplineObjectList();
 	DeleteAllObjects();

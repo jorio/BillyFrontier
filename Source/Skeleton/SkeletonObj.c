@@ -300,7 +300,7 @@ int					i;
 	skeletonDefPtr = gLoadedSkeletonsList[sourceSkeletonNum];				// get ptr to source skeleton definition info
 	if (skeletonDefPtr == nil)
 	{
-		DoFatalAlert("MakeNewSkeletonBaseData: Skeleton data #%d isn't loaded!");
+		DoFatalAlert("MakeNewSkeletonBaseData: Skeleton data #%d isn't loaded!", sourceSkeletonNum);
 	}
 		
 
