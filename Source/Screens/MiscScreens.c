@@ -159,7 +159,7 @@ ObjNode *pane;
 		
 	gNewObjectDefinition.genre		= CUSTOM_GENRE;		
 	gNewObjectDefinition.flags 		= STATUS_BIT_NOZWRITES|STATUS_BIT_NOLIGHTING|STATUS_BIT_NOFOG|STATUS_BIT_DOUBLESIDED;									
-	gNewObjectDefinition.slot 		= SLOT_OF_DUMB+100;
+	gNewObjectDefinition.slot 		= SPRITE_SLOT-1;
 	gNewObjectDefinition.moveCall 	= MoveDarkenPane;
 	pane = MakeNewObject(&gNewObjectDefinition);
 
