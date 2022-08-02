@@ -220,7 +220,7 @@ static void MoveDarkenPane(ObjNode *theNode)
 static void DrawDarkenPane(ObjNode *theNode)
 {
 	glDisable(GL_TEXTURE_2D);
-	SetColor4fv((GLfloat *)&theNode->ColorFilter);
+	SetColor4fv(theNode->ColorFilter);
 	glEnable(GL_BLEND);
 
 	glBegin(GL_QUADS);				

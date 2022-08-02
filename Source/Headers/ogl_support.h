@@ -14,11 +14,11 @@
 {																				\
 	if (USE_GL_COLOR_MATERIAL)													\
 	{																			\
-		glColor4fv((GLfloat *)colorVV);		/* set current diffuse color */		\
+		glColor4fv(&colorVV.r);				/* set current diffuse color */		\
 	}																			\
 	else																		\
 	{																			\
-		glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE, (GLfloat *)colorVV);	\
+		glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE, &colorVV.r);	\
 	}																			\
 }
 

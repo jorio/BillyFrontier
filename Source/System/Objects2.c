@@ -573,7 +573,7 @@ int	shadowType = theNode->Kind;
 
 			/* SUBMIT THE MATRIX */
 
-	glMultMatrixf((GLfloat *)&theNode->BaseTransformMatrix);
+	glMultMatrixf(theNode->BaseTransformMatrix.value);
 
 
 			/* SUBMIT SHADOW TEXTURE */
@@ -1011,11 +1011,11 @@ MOTriangleIndecies	*tris;
 			/************************************************/	
 			/* TRANSFORM ALL OF THESE POINTS TO WORLD-SPACE */
 			/************************************************/	
-			
+
 				/* GET THE TRANSFORM MATRIX WE'VE BUILT */
-					
-	glGetFloatv(GL_MODELVIEW_MATRIX, (GLfloat *)&localToWorld);	
-			
+
+	glGetFloatv(GL_MODELVIEW_MATRIX, localToWorld.value);
+
 				/* TRANSFORM EACH POINT INTO THE BUFFER */
 	
 	OGLPoint3D_TransformArray(&data->points[0], &localToWorld,	worldBuffer,  numPoints);

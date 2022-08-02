@@ -1048,7 +1048,7 @@ u_long				matFlags;
 	diffColor2.b *= gGlobalColorFilter.b;
 
 
-	SetColor4fv(&diffColor2);						// set current diffuse color
+	SetColor4fv(diffColor2);						// set current diffuse color
 #if USE_GL_COLOR_MATERIAL
 //	glEnable(GL_COLOR_MATERIAL);	//-------- continuously reenable this since OGL seems to have a bug where it will magically get disabled. 
 #endif										

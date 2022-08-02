@@ -466,9 +466,9 @@ long	i;
 				MO_DrawMaterial(gShards[i].material);
 
 					/* SET MATRIX */
-					
-			glPushMatrix();		
-			glMultMatrixf((GLfloat *)&gShards[i].matrix);
+
+			glPushMatrix();
+			glMultMatrixf(gShards[i].matrix.value);
 
 
 					/* DRAW THE TRIANGLE */

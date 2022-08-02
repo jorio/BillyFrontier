@@ -1844,13 +1844,13 @@ OGLPoint3D	verts[4];
 
 
 			/* DRAW QUAD */
-						
-	glBegin(GL_QUADS);				
-	glTexCoord2f(0.00,0.00);	glVertex3fv((GLfloat *)&verts[0]);
-	glTexCoord2f(0.99,0.00);	glVertex3fv((GLfloat *)&verts[1]);
-	glTexCoord2f(0.99,0.99);	glVertex3fv((GLfloat *)&verts[2]);
-	glTexCoord2f(0.00,0.99);	glVertex3fv((GLfloat *)&verts[3]);
-	glEnd();	
+
+	glBegin(GL_QUADS);
+	glTexCoord2f(0.00f, 0.00f);		glVertex3fv(&verts[0].x);
+	glTexCoord2f(0.99f, 0.00f);		glVertex3fv(&verts[1].x);
+	glTexCoord2f(0.99f, 0.99f);		glVertex3fv(&verts[2].x);
+	glTexCoord2f(0.00f, 0.99f);		glVertex3fv(&verts[3].x);
+	glEnd();
 
 	gGlobalTransparency = 1.0f;
 	
