@@ -804,7 +804,7 @@ Ptr						tempBuffer16 = nil;
 		if ((*gSplineList)[i].numPoints == 0)
 		{
 #if _DEBUG
-			DoAlert("WARNING: Spline #%ld has 0 points\n", i);
+			printf("WARNING: Spline #%ld has 0 points\n", i);
 #endif
 			(*gSplineList)[i].pointList = (SplinePointType**) AllocHandle(0);
 			continue;
@@ -830,7 +830,9 @@ Ptr						tempBuffer16 = nil;
 		// If spline has 0 items, skip the byteswapping, but do alloc an empty handle, which the game expects.
 		if ((*gSplineList)[i].numItems == 0)
 		{
-			DoAlert("WARNING: Spline #%ld has 0 items\n", i);
+#if _DEBUG
+			printf("WARNING: Spline #%ld has 0 items\n", i);
+#endif
 			(*gSplineList)[i].itemList = (SplineItemType**) AllocHandle(0);
 			continue;
 		}
