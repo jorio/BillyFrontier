@@ -15,7 +15,6 @@
 /*    PROTOTYPES            */
 /****************************/
 
-static void DisplayPicture_Draw(void);
 static void MoveDarkenPane(ObjNode *theNode);
 static void DrawDarkenPane(ObjNode *theNode);
 
@@ -29,10 +28,6 @@ static void DrawDarkenPane(ObjNode *theNode);
 /*********************/
 /*    VARIABLES      */
 /*********************/
-
-MOPictureObject 	*gBackgoundPicture = nil;
-
-OGLSetupOutputType	*gScreenViewInfoPtr = nil;
 
 
 
@@ -95,10 +90,9 @@ float	timeout = 40.0f;
 
 
 			/* CREATE BACKGROUND OBJECT */
-
-	gBackgoundPicture = MO_CreateNewObjectOfType(MO_TYPE_PICTURE, 0, path);
-	if (!gBackgoundPicture)
-		DoFatalAlert("DisplayPicture: MO_CreateNewObjectOfType failed");
+	
+	ObjNode* picObj = MakeBackgroundPictureObject(path);
+	GAME_ASSERT(picObj);
 
 
 
@@ -119,7 +113,7 @@ float	timeout = 40.0f;
 		{
 			CalcFramesPerSecond();
 			MoveObjects();
-			OGL_DrawScene(DisplayPicture_Draw);
+			OGL_DrawScene(DrawObjects);
 			
 			ReadKeyboard();
 			if (UserWantsOut() || GetNewClickState(1))
@@ -132,24 +126,14 @@ float	timeout = 40.0f;
 
 			/* FADE OUT */
 
-	OGL_FadeOutScene(DisplayPicture_Draw, MoveObjects);
+	OGL_FadeOutScene(DrawObjects, MoveObjects);
 		
 	
 			/* CLEANUP */
 			
 	DeleteAllObjects();
-	MO_DisposeObjectReference(gBackgoundPicture);
 
 	OGL_DisposeWindowSetup();	
-}
-
-
-/***************** DISPLAY PICTURE: DRAW *******************/
-
-static void DisplayPicture_Draw(void)
-{
-	MO_DrawObject(gBackgoundPicture);
-	DrawObjects();
 }
 
 

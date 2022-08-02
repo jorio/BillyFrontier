@@ -286,7 +286,7 @@ OGLSetupInputType	viewDef;
 			backgroundImagePath = ":images:LoseScreen.jpg";
 	}
 
-	gBackgoundPicture = MO_CreateNewObjectOfType(MO_TYPE_PICTURE, 0, backgroundImagePath);
+	MakeBackgroundPictureObject(backgroundImagePath);
 }
 
 
@@ -298,11 +298,6 @@ static void FreeScoreScreen(void)
 {				
 	MyFlushEvents();
 	DeleteAllObjects();
-	if (gBackgoundPicture)
-	{
-		MO_DisposeObjectReference(gBackgoundPicture);	
-		gBackgoundPicture = nil;
-	}
 	DisposeAllBG3DContainers();
 	OGL_DisposeWindowSetup();
 }
@@ -313,9 +308,6 @@ static void FreeScoreScreen(void)
 
 static void DrawHighScoresCallback(void)
 {
-	if (gBackgoundPicture)
-		MO_DrawObject(gBackgoundPicture);
-
 	DrawObjects();
 
 

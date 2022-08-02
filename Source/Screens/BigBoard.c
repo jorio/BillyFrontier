@@ -73,7 +73,6 @@ static const OGLVector3D	fillDirection2 = { .3, .8, 1.0 };
 		PlaySong(SONG_THEME, true);
 
 	gCurrentMenuItem = -1;
-	gBackgoundPicture = nil;
 	
 	gPlayNow = false;
 	gGameOver = false;
@@ -139,7 +138,7 @@ static const OGLVector3D	fillDirection2 = { .3, .8, 1.0 };
 
 			/* MAKE BACKGROUND PICTURE OBJECT */
 
-	gBackgoundPicture = MO_CreateNewObjectOfType(MO_TYPE_PICTURE, 0, ":images:BigBoard.png");
+	MakeBackgroundPictureObject(":images:BigBoard.png");
 
 
 			/*****************/
@@ -182,8 +181,6 @@ static void FreeBigBoardScreen(void)
 {				
 	MyFlushEvents();
 	DeleteAllObjects();
-	MO_DisposeObjectReference(gBackgoundPicture);	
-	gBackgoundPicture = nil;
 	FreeAllSkeletonFiles(-1);
 	DisposeSpriteGroup(SPRITE_GROUP_BIGBOARD);
 	DisposeAllBG3DContainers();
@@ -324,8 +321,6 @@ ObjNode	*newObj;
 static void DrawBigBoardCallback(void)
 {
 int		i;
-
-	MO_DrawObject(gBackgoundPicture);
 
 	DrawObjects();
 

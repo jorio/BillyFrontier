@@ -119,8 +119,4 @@ void DoObjectFriction(ObjNode *theNode, float friction);
 void CalcDisplayGroupWorldPoints(ObjNode *theNode);
 
 
-
-
-
-
-
+ObjNode* MakeBackgroundPictureObject(const char* path);

@@ -19,7 +19,6 @@
 static void SetupMainMenuScreen(void);
 static void FreeMainMenuScreen(void);
 static void BuildMainMenu(int menuLevel);
-static void DrawMainMenuCallback(void);
 static void ProcessMainMenu(void);
 static void DoMenuControls(void);
 static void MoveCursor(ObjNode *theNode);
@@ -151,7 +150,6 @@ int					i;
 	gPlayingFromSavedGame = false;
 	gInactivityTimer = 0;
 	gCurrentMenuItem = -1;
-	gBackgoundPicture = nil;
 	
 	for (i = 0; i < MAX_MENU_ITEMS; i++)
 		gMenuItems[i] = nil;
@@ -237,7 +235,7 @@ int					i;
 
 			/* BACKGROUND */
 
-	gBackgoundPicture = MO_CreateNewObjectOfType(MO_TYPE_PICTURE, 0, ":images:MainMenu.png");
+	MakeBackgroundPictureObject(":images:MainMenu.png");
 
 			/* LAY OUT MENU*/
 
@@ -526,7 +524,7 @@ static void ProcessMainMenu(void)
 		
 				/* DRAW */
 				
-		OGL_DrawScene(DrawMainMenuCallback);			
+		OGL_DrawScene(DrawObjects);			
 
 				/* DO USER INPUT */
 
@@ -534,7 +532,7 @@ static void ProcessMainMenu(void)
 	}	
 	
 	
-	OGL_FadeOutScene(DrawMainMenuCallback, MoveObjects);
+	OGL_FadeOutScene(DrawObjects, MoveObjects);
 		
 }
 
@@ -568,7 +566,7 @@ ObjNode	*newObj;
 	newObj->Kind = gMenuMode;
 	newObj->AnaglyphZ = -5;
 
-	OGL_DrawScene(DrawMainMenuCallback);			
+	OGL_DrawScene(DrawObjects);			
 	
 	
 				/* SEE WHAT WAS SELECTED */

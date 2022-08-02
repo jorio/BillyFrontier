@@ -1055,20 +1055,26 @@ MOTriangleIndecies	*tris;
 
 
 
+#pragma mark -
 
+/**************** ENCAPSULATE PICTURE METAOBJ WITHIN AN OBJNODE **********************/
 
+ObjNode* MakeBackgroundPictureObject(const char* path)
+{
+	MetaObjectPtr pictureMO = MO_CreateNewObjectOfType(MO_TYPE_PICTURE, 0, path);
 
+	NewObjectDefinitionType def =
+	{
+		.genre = DISPLAY_GROUP_GENRE,
+		.slot = SPRITE_SLOT - 50,
+		.scale = 1,
+	};
 
+	ObjNode* newObj = MakeNewObject(&def);
+	CreateBaseGroup(newObj);											// create group object
+	MO_AttachToGroupStart(newObj->BaseGroup, pictureMO);
 
+	MO_DisposeObjectReference(pictureMO);
 
-
-
-
-
-
-
-
-
-
-
-
+	return newObj;
+}
