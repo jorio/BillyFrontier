@@ -29,8 +29,13 @@ static const char* DotConcat(const char* prefix, const char* suffix, float targe
 /*    CONSTANTS             */
 /****************************/
 
-
-
+#if __APPLE__
+	#define EXPOSE_MSAA_SETTING			0
+	#define EXPOSE_DISPLAY_SETTING		0
+#else
+	#define EXPOSE_MSAA_SETTING			1
+	#define EXPOSE_DISPLAY_SETTING		1
+#endif
 
 #define	MAX_MENU_ITEMS	20
 
@@ -57,8 +62,12 @@ enum
 enum
 {
 	kSettingsMenu_Fullscreen,
+#if EXPOSE_DISPLAY_SETTING
 	kSettingsMenu_Display,
+#endif
+#if EXPOSE_MSAA_SETTING
 	kSettingsMenu_Antialiasing,
+#endif
 	kSettingsMenu_Spacer1,
 	kSettingsMenu_ResetHighScores,
 	kSettingsMenu_Spacer2,
@@ -369,11 +378,14 @@ static void BuildMainMenu_Settings(void)
 			name = DotConcat("FULLSCREEN", gGamePrefs.fullscreen ? "YES" : "NO", TW);
 			break;
 
+#if EXPOSE_DISPLAY_SETTING
 		case kSettingsMenu_Display:
 			snprintf(suffix, sizeof(suffix), "%d", gGamePrefs.monitorNum + 1);
 			name = DotConcat("DISPLAY", suffix, TW);
 			break;
+#endif
 
+#if EXPOSE_MSAA_SETTING
 		case kSettingsMenu_Antialiasing:
 			if (!gGamePrefs.antialiasingLevel)
 				snprintf(suffix, sizeof(suffix), "OFF");
@@ -381,6 +393,7 @@ static void BuildMainMenu_Settings(void)
 				snprintf(suffix, sizeof(suffix), "MSAA %dx", 1 << gGamePrefs.antialiasingLevel);
 			name = DotConcat("ANTIALIASING", suffix, TW);
 			break;
+#endif
 
 		case kSettingsMenu_ResetHighScores:
 			if (!gAreYouSure)
@@ -720,18 +733,22 @@ ObjNode	*newObj;
 					BuildMainMenu(MENU_PAGE_SETTINGS);
 					break;
 
+#if EXPOSE_DISPLAY_SETTING
 				case kSettingsMenu_Display:
 					gGamePrefs.monitorNum++;
 					gGamePrefs.monitorNum %= SDL_GetNumVideoDisplays();
 					SetFullscreenMode(true);
 					BuildMainMenu(MENU_PAGE_SETTINGS);
 					break;
+#endif
 
+#if EXPOSE_MSAA_SETTING
 				case kSettingsMenu_Antialiasing:
 					gGamePrefs.antialiasingLevel++;
 					gGamePrefs.antialiasingLevel %= 4;
 					BuildMainMenu(MENU_PAGE_SETTINGS);
 					break;
+#endif
 
 				case kSettingsMenu_ResetHighScores:
 					if (!gAreYouSure)
