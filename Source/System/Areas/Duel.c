@@ -346,6 +346,7 @@ static void CleanupDuel(void)
 	StopAllEffectChannels();
  	EmptySplineObjectList();
 	DeleteAllObjects();
+	gPlayerInfo.objNode = nil;
 	FreeAllSkeletonFiles(-1);
 	DisposeTerrain();
 	DeleteAllParticleGroups();

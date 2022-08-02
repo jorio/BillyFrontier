@@ -62,8 +62,6 @@ static	float 					gMaxAnisotropy = 1.0;
 
 SDL_GLContext			gAGLContext = nil;
 
-static GLuint 			gFontList;
-
 
 OGLMatrix4x4	gViewToFrustumMatrix,gWorldToViewMatrix,gWorldToFrustumMatrix;
 OGLMatrix4x4	gWorldToWindowMatrix,gFrustumToWindowMatrix;
@@ -614,115 +612,70 @@ do_anaglyph:
 
 	if (gDebugMode > 0)
 	{
-#if 1
-		IMPLEMENT_ME_SOFT();
-#else
 		int		y = 100;
-		int		mem = FreeMem();
-		
-		if (mem < gMinRAM)		// poll for lowest RAM free
-			gMinRAM = mem;
-		
-		
+
 		OGL_DrawString("fps:", 20,y);
 		OGL_DrawInt(gFramesPerSecond+.5f, 100,y);
 		y += 15;
 
-		OGL_DrawString("#tri:", 20,y);
+		OGL_DrawString("tris:", 20,y);
 		OGL_DrawInt(gPolysThisFrame, 100,y);
 		y += 15;
-#endif
 
 
-#if 0							// show supertile status grid
+#if 1							// show supertile status grid
 		{
 			int	row, col;
-			float	x = 0;
+			float	x = 20;
 			
 			for (row = 0; row < gNumSuperTilesDeep; row++)
 			{
 				for (col = 0; col < gNumSuperTilesWide; col++)
 				{
 					if (gSuperTileStatusGrid[row][col].playerHereFlag)
-						OGL_DrawString("X", x,y);
+						OGL_DrawString("o", x,y);
 					else
-						OGL_DrawString("O", x,y);
+						OGL_DrawString(".", x,y);
 					x += 5.0f;
 				}
-				x = 0;
+				x = 20;
 				y += 5.0f;
-			}		
+			}
+
+			y += 15;
 		}
-#endif		
+#endif
 
-#if 0
-		OGL_DrawString("input x:", 20,y);
-		OGL_DrawFloat(gPlayerInfo.analogControlX, 100,y);
-		y += 15;
-		OGL_DrawString("input y:", 20,y);
-		OGL_DrawFloat(gPlayerInfo.analogControlZ, 100,y);
+		OGL_DrawString("ter y:", 20,y);
+		OGL_DrawInt((int) GetTerrainY(gPlayerInfo.coord.x, gPlayerInfo.coord.z), 100,y);
 		y += 15;
 
-		OGL_DrawString("ter Y:", 20,y);
-		OGL_DrawInt(GetTerrainY(gPlayerInfo.coord.x, gPlayerInfo.coord.z), 100,y);
-		y += 15;		
-		
-		OGL_DrawString("#loopsfx:", 20,y);
-		OGL_DrawInt(gNumLoopingEffects, 100,y);
+		OGL_DrawString("vram kb:", 20,y);
+		OGL_DrawInt(gVRAMUsedThisFrame/1024, 100,y);
 		y += 15;
 
-		OGL_DrawString("#free RAM:", 20,y);
-		OGL_DrawInt(mem, 100,y);
-		y += 15;
-
-		OGL_DrawString("min RAM:", 20,y);
-		OGL_DrawInt(gMinRAM, 100,y);
-		y += 15;
-
-		OGL_DrawString("used VRAM:", 20,y);
-		OGL_DrawInt(gVRAMUsedThisFrame, 100,y);
-		y += 15;
-
-		OGL_DrawString("OGL Mem:", 20,y);
-		OGL_DrawInt(glmGetInteger(GLM_CURRENT_MEMORY), 100,y);
-		y += 15;
-
-
-		OGL_DrawString("#sparkles:", 20,y);
+		OGL_DrawString("sparkles:", 20,y);
 		OGL_DrawInt(gNumSparkles, 100,y);
 		y += 15;
 
 		if (gPlayerInfo.objNode)
 		{
-			OGL_DrawString("ground?:", 20,y);
+			OGL_DrawString("ground", 20,y);
 			if (gPlayerInfo.objNode->StatusBits & STATUS_BIT_ONGROUND)
 				OGL_DrawString("Y", 100,y);
 			else
 				OGL_DrawString("N", 100,y);
 			y += 15;
-		}		
+		}
 
-
-		OGL_DrawString("#H2O:", 20,y);
+		OGL_DrawString("water:", 20,y);
 		OGL_DrawInt(gNumWaterDrawn, 100,y);
 		y += 15;
 
-		OGL_DrawString("#scratchI:", 20,y);
-		OGL_DrawInt(gScratch, 100,y);
+		OGL_DrawString("pointers:", 20,y);
+		OGL_DrawInt(gNumPointers, 100,y);
 		y += 15;
-
-
-
-
-
-//		OGL_DrawString("# pointers:", 20,y);
-//		OGL_DrawInt(gNumPointers, 100,y);
-//		y += 15;
-
-#endif
-
-	}		
-			
+	}
 
 
             /**************/
@@ -1496,14 +1449,6 @@ void OGL_DisableLighting(void)
 
 static void OGL_InitFont(void)
 {
-#if 1
-	IMPLEMENT_ME_SOFT();
-#else
-	gFontList = glGenLists(256);
- 
-    if (!aglUseFont(gAGLContext, kFontIDMonaco, bold, 9, 0, 256, gFontList))
-		DoFatalAlert("OGL_InitFont: aglUseFont failed");
-#endif
 }
 
 
@@ -1511,11 +1456,6 @@ static void OGL_InitFont(void)
 
 static void OGL_FreeFont(void)
 {
-#if 1
-	IMPLEMENT_ME_SOFT();
-#else
-	glDeleteLists(gFontList, 256);
-#endif
 }
 
 /**************** OGL_DRAW STRING ********************/
@@ -1524,23 +1464,15 @@ void OGL_DrawString(const char* s, GLint x, GLint y)
 {
 	OGL_PushState();
 
-	glMatrixMode (GL_MODELVIEW);
-	glLoadIdentity();
-	glMatrixMode (GL_PROJECTION);
-	glLoadIdentity();
-	OGL_Ortho2DLogicalSize();//glOrtho(0, 640, 0, 480, -10.0, 10.0);
+	SetInfobarSpriteState(0);
 	
 	glDisable(GL_LIGHTING);
 	
-	glDisable(GL_TEXTURE_2D);
-	glColor3f(1,1,1);
-	glRasterPos2i(x, 480-y);
+	glEnable(GL_TEXTURE_2D);
 
-	glListBase(gFontList);
-	glCallLists(s[0], GL_UNSIGNED_BYTE, &s[1]);
+	DrawFontString(s, x, y, 15.0f, false);
 	
 	OGL_PopState();
-	
 }
 
 /**************** OGL_DRAW FLOAT ********************/

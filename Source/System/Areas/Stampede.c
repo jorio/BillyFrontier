@@ -287,6 +287,7 @@ static void CleanupStampede(void)
 	StopAllEffectChannels();
  	EmptySplineObjectList();
 	DeleteAllObjects();
+	gPlayerInfo.objNode = nil;
 	FreeAllSkeletonFiles(-1);
 	DisposeTerrain();
 	DeleteAllParticleGroups();

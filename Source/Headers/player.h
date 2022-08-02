@@ -106,12 +106,6 @@ typedef struct
 			
 	int					waterPatch;	
 
-	
-			/* CONTROL INFO */
-			
-	float				analogControlX,analogControlZ;
-	
-	
 			/* INVENTORY INFO */
 			
 	SInt8				lives;

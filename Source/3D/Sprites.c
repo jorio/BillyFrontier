@@ -439,16 +439,19 @@ void DrawSprite(int	group, int type, float x, float y, float scale, float rot, u
 
 /******************* DRAW FONT STRING ****************************/
 
-void DrawFontString(const char* cstr, float x, float y, float scale)
+void DrawFontString(const char* cstr, float x, float y, float scale, Boolean center)
 {
-float	width = 0;
+	if (center)
+	{
+		/* CALCULATE THE WIDTH OF THE STRING */
 
-			/* CALCULATE THE WIDTH OF THE STRING */
+		float	width = 0;
+		for (const char* cursor = cstr; *cursor; cursor++)
+			width += GetCharSpacing(*cursor, scale);
 
-	for (const char* cursor = cstr; *cursor; cursor++)
-		width += GetCharSpacing(*cursor, scale);
+		x -= width * .5f;				// center it
+	}
 
-	x -= width * .5f;				// center it
 
 
 			/* DRAW EACH CHARACTER */
@@ -460,7 +463,8 @@ float	width = 0;
 
 		int sp = CharToSprite(c);
 
-		DrawInfobarSprite2_Centered(x, y, scale, SPRITE_GROUP_FONT, sp);
+		if (sp >= 0)
+			DrawInfobarSprite2_Centered(x, y, scale, SPRITE_GROUP_FONT, sp);
 
 		x += GetCharSpacing(c, scale);
 	}

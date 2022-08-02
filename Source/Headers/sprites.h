@@ -36,4 +36,4 @@ ObjNode *MakeFontStringObject(const char* cstr, NewObjectDefinitionType *newObjD
 int CharToSprite(char c);
 float GetCharSpacing(char c, float spacingScale);
 float GetStringWidth(const char* cstr, float scale);
-void DrawFontString(const char* cstr, float x, float y, float scale);
+void DrawFontString(const char* cstr, float x, float y, float scale, Boolean center);

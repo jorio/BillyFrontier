@@ -69,8 +69,6 @@ Boolean						gSongPlayingFlag = false;
 Boolean						gLoopSongFlag = true;
 Boolean						gAllowAudioKeys = true;
 
-int							gNumLoopingEffects;
-
 Boolean				gMuteMusicFlag = false;
 short				gCurrentSong = -1;
 
@@ -125,8 +123,6 @@ static const EffectType	gEffectsTable[NUM_EFFECTS] =
 void InitSoundTools(void)
 {
 OSErr			iErr;
-
-	gNumLoopingEffects = 0;
 
 	gMaxChannels = 0;
 	gMostRecentChannel = -1;
@@ -293,7 +289,6 @@ short		c = *channelNum;
 	
 	if (gChannelInfo[c].isLooping)
 	{
-		gNumLoopingEffects--;
 		gChannelInfo[c].isLooping = false;
 	}
 	

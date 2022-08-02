@@ -647,7 +647,7 @@ static const OGLPoint2D	bulletCoords[6] =
 				/********************************************/
 				/* ARE WE WAITING FOR THE PLAYER TO RELOAD? */
 				/********************************************/
-				
+
 	if (gNeedToReloadNextAmmoClip)
 	{
 		if (GetNewNeedState(kNeed_Reload))					// user pressed the reload button?
@@ -656,7 +656,7 @@ static const OGLPoint2D	bulletCoords[6] =
 			PlayEffect(EFFECT_RELOAD);
 		}
 		else
-			DrawFontString("RELOAD", 640/2, 480/2, 30.0);
+			DrawFontString("RELOAD", 640/2, 480/2, 30.0, true);
 	}
 	
 	
