@@ -99,7 +99,7 @@ float	x = 0;
 float	y = 0;
 float	leftX = 0;
 float	dotX = 0;
-float	dotY = 0;
+float	dotY = -100;	// offscreen when we're not selecting anything
 static float	dotAlpha = 1.0f;
 
 			/* DRAW THE BACKGROUND */
@@ -176,7 +176,7 @@ static float	dotAlpha = 1.0f;
 	if (dotAlpha > PI2)
 		dotAlpha -= PI2;		
 	gGlobalTransparency = (1.0f + sin(dotAlpha)) * .8f;
-			
+
 	DrawInfobarSprite2(dotX, dotY, 16, SPRITE_GROUP_INFOBAR, INFOBAR_SObjType_PausedDot);
 
 	gGlobalTransparency = 1.0f;
@@ -209,18 +209,23 @@ int	oldSelection = gPausedMenuSelection;
 	
 			/* SEE IF USE MOUSE DELTAS */
 			
-	else
+	else if (gMouseDeltaY != 0)
 	{
-		if (gMouseDeltaY != 0)
+		gPausedMenuSelection = -1;
+
+		OGLPoint2D mouse = GetLogicalMouseCoord();
+
+		float YY = 210 + (LETTER_SPACING_Y) * 0.5f;
+		float HH = LETTER_SPACING_Y;
+		if (mouse.x > 320 - PAUSED_FRAME_WIDTH / 2 && mouse.x < 320 + PAUSED_FRAME_WIDTH / 2)
 		{
-			OGLPoint2D mouse = GetLogicalMouseCoord();
-//			gPausedMenuSelection = ((float)pt.v / ((float)gGameWindowHeight * .2f)) * 3.0f;
-			gPausedMenuSelection = (mouse.y / (g2DLogicalHeight * .2f)) * 3.0f;
-			if (gPausedMenuSelection < 0)
-				gPausedMenuSelection = 0; 
-			if (gPausedMenuSelection > 2)
-				gPausedMenuSelection = 2; 
-		}	
+			if (mouse.y > YY && mouse.y < YY + HH)
+				gPausedMenuSelection = 0;
+			else if (mouse.y > YY + HH && mouse.y < YY + 2 * HH)
+				gPausedMenuSelection = 1;
+			else if (mouse.y > YY + 2 * HH && mouse.y < YY + 3 * HH)
+				gPausedMenuSelection = 2;
+		}
 	}
 	
 	
@@ -231,8 +236,12 @@ int	oldSelection = gPausedMenuSelection;
 			/***************************/
 			/* SEE IF MAKE A SELECTION */
 			/***************************/
-			
-	if (GetNewNeedState(kNeed_UIConfirm) || GetNewClickState(1))
+
+	// Only check mouse clicks if we have focus to prevent misclicks
+	bool gotMouseFocus = SDL_GetWindowFlags(gSDLWindow) & SDL_WINDOW_MOUSE_FOCUS;
+
+	if (GetNewNeedState(kNeed_UIConfirm)
+		|| (gotMouseFocus && GetNewClickState(1)))
 	{
 		PlayEffect_Parms(EFFECT_SPURS2,FULL_CHANNEL_VOLUME/3,FULL_CHANNEL_VOLUME/4,NORMAL_CHANNEL_RATE);
 
@@ -260,7 +269,9 @@ int	oldSelection = gPausedMenuSelection;
 			/*****************************/
 
 	else
-	if (GetNewNeedState(kNeed_UIPause) || GetNewNeedState(kNeed_UIBack))
+	if (GetNewNeedState(kNeed_UIPause)
+		|| GetNewNeedState(kNeed_UIBack)
+		|| GetNewClickState(3))
 	{
 		continueGame = true;
 	}	
