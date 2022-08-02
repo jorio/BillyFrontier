@@ -39,6 +39,7 @@ static void BillyGotTrampled(ObjNode *player);
 static Boolean DoBillyCollisionDetect_Stampede(ObjNode *theNode, Boolean useBBoxForTerrain);
 
 static void MakeDust(OGLPoint3D *pt);
+static void MoveInstructions(ObjNode* theNode);
 
 
 /****************************/
@@ -261,6 +262,27 @@ OGLSetupInputType	viewDef;
 	PrimeFences();
 	
 	
+			/* MAKE INSTRUCTIONS */
+
+	{
+		ObjNode* promptObj = NULL;
+
+		NewObjectDefinitionType textDef =
+		{
+			.coord = {640 / 2, 480 / 2 + 80, 0},
+			.slot = SPRITE_SLOT - 1,
+			.scale = 30,
+			.moveCall = MoveInstructions,
+		};
+
+		promptObj = MakeFontStringObject("GET TO THE FINISH LINE", &textDef, true);
+		promptObj->SpecialF[0] = 18;
+
+		textDef.coord.y += 30;
+		promptObj = MakeFontStringObject("BEFORE THE KANGA-COWS", &textDef, true);
+		promptObj->SpecialF[0] = 18;
+	}
+
 						
 			/* INIT CAMERAS */
 			
@@ -743,8 +765,13 @@ static void BillyGotTrampled(ObjNode *player)
 	if (player->Skeleton->AnimNum != PLAYER_ANIM_STAMPEDETRAMPLED)
 	{
 		KillPlayer(PLAYER_DEATH_TYPE_TRAMPLED);
-		PlayEffect3D(EFFECT_TRAMPLED, &player->Coord);
-		PlayEffect3D(EFFECT_YELP, &player->Coord);
+
+		if (!gPlayerIsDead)		// avoid grating endless playback if animation somehow doesn't begin
+		{
+			PlayEffect3D(EFFECT_TRAMPLED, &player->Coord);
+			PlayEffect3D(EFFECT_YELP, &player->Coord);
+		}
+
 		StartLevelCompletion(3.0);
 		gPlayerIsDead = true;
 	}
@@ -756,6 +783,9 @@ static void BillyGotTrampled(ObjNode *player)
 static void BillyTripped(ObjNode *player)
 {
 	if (player->Skeleton->AnimNum == PLAYER_ANIM_TRIPPED)			// already tripped?
+		return;
+
+	if (gPlayerIsDead)												// don't interrupt death anim
 		return;
 
 	if (player->Speed2D > 300.0f)
@@ -1186,13 +1216,21 @@ static void MoveBoost(ObjNode *theNode)
 }
 
 
+#pragma mark -
 
 
+/******************* MOVE "GET N PEPPERS" ***************************/
 
+static void MoveInstructions(ObjNode* theNode)
+{
+	theNode->SpecialF[0] -= gFramesPerSecondFrac * 2.5f;
 
-
-
-
-
-
-
+	if (theNode->SpecialF[0] <= 0)
+	{
+		DeleteObject(theNode);
+	}
+	else if (theNode->SpecialF[0] < 1.0f)
+	{
+		theNode->ColorFilter.a = theNode->SpecialF[0];
+	}
+}
