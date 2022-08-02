@@ -315,7 +315,7 @@ unsigned long	someLong;
 	InitWindowStuff();
 	InitObjectManager();
 
-	GetDateTime((unsigned long*)(&someLong));		// init random seed
+	GetDateTime(&someLong);		// init random seed
 	SetMyRandomSeed(someLong);
 
 
@@ -354,7 +354,7 @@ unsigned long	someLong;
 	{		
 		MyFlushEvents();
 
-		DoMainMenuScreen();
+		DoMainMenuScreen(0);
 						
 		PlayGame_Arcade();
 	}

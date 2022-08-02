@@ -214,6 +214,7 @@ enum
 	FONT_SObjType_Z,
 	
 	FONT_SObjType_Cursor,
+	FONT_SObjType_Percent,
 
 	FONT_SObjType_COUNT,
 };

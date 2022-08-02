@@ -719,7 +719,10 @@ int CharToSprite(char c)
 			case	'\'':
 					s = FONT_SObjType_Apostrophe;
 					break;
-		
+			
+			case	'%':
+					s = FONT_SObjType_Percent;
+					break;
 		
 			default:
 					s = -1;

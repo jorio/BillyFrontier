@@ -4,13 +4,7 @@
 /* By Brian Greenstone      */
 /****************************/
 
-#ifndef MYGLOBALS_H
-#define MYGLOBALS_H
-
-//#include <textutils.h>
-
-//#include <qdoffscreen.h>
-
+#pragma once
 
 			/* SOME FLOATING POINT HELPERS */
 			
@@ -208,15 +202,3 @@ enum
 
 
 #include "structs.h"
-
-#endif
-
-
-
-
-
-
-
-
-
-

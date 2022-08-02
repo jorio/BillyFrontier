@@ -80,8 +80,7 @@ typedef struct
 typedef struct
 {
 	uint32_t	score;
-	int16_t		realLevel;
-	int16_t		numLives;
+	Byte		numLives;
 	Boolean		levels[NUM_LEVELS];
 	Boolean		duels[NUM_LEVELS];
 }SaveGameType;

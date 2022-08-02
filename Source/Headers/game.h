@@ -74,6 +74,7 @@ extern Boolean gPlayNow;
 extern Boolean gPlayerIsDead;
 extern Boolean gPlayerToWinDuel;
 extern Boolean gPlayingFromSavedGame;
+extern Boolean gShowSaveMenu;
 extern Boolean gShootoutCanProceedToNextStopPoint;
 extern Boolean gSongPlayingFlag;
 extern Boolean gWonGame;

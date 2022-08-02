@@ -46,9 +46,12 @@ static	ObjNode	*gBigBoardItems[NUM_BIGBOARD_ITEMS];
 
 void DoBigBoardScreen(void)
 {
+again:
 			/* SETUP */
 
 	SetupBigBoardScreen();
+
+	gShowSaveMenu = false;
 
 	ProcessBigBoard();
 
@@ -57,6 +60,13 @@ void DoBigBoardScreen(void)
 
 	Wait(30);
 	FreeBigBoardScreen();
+
+
+	if (gShowSaveMenu)
+	{
+		DoMainMenuScreen(3);
+		goto again;
+	}
 }
 
 
@@ -184,7 +194,9 @@ static void FreeBigBoardScreen(void)
 	FreeAllSkeletonFiles(-1);
 	DisposeSpriteGroup(SPRITE_GROUP_BIGBOARD);
 	DisposeAllBG3DContainers();
-	OGL_DisposeWindowSetup();	
+	OGL_DisposeWindowSetup();
+
+	memset(gBigBoardItems, 0, sizeof(gBigBoardItems));
 }
 
 #pragma mark -
@@ -194,10 +206,12 @@ static void FreeBigBoardScreen(void)
 
 static void ProcessBigBoard(void)
 {
+	gShowSaveMenu = false;
+
 	CalcFramesPerSecond();
 	ReadKeyboard();		
 
-	while((!gPlayNow) && (!gGameOver))
+	while((!gPlayNow) && (!gGameOver) && !(gShowSaveMenu))
 	{
 		CalcFramesPerSecond();
 		ReadKeyboard();		
@@ -302,8 +316,7 @@ ObjNode	*newObj;
 						
 						
 				case	6:							// SAVE GAME
-						//SaveGame();
-						IMPLEMENT_ME();
+						gShowSaveMenu = true;
 						break;
 						
 				case	7:							// END GAME

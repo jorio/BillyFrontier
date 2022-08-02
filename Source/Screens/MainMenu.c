@@ -16,9 +16,8 @@
 /*    PROTOTYPES            */
 /****************************/
 
-static void SetupMainMenuScreen(void);
+static void SetupMainMenuScreen(Byte startMenu);
 static void FreeMainMenuScreen(void);
-static void BuildMainMenu(int menuLevel);
 static void ProcessMainMenu(void);
 static void DoMenuControls(void);
 static void MoveCursor(ObjNode *theNode);
@@ -38,7 +37,9 @@ enum
 {
 	MENU_PAGE_MAIN,
 	MENU_PAGE_SETTINGS,
-	MENU_PAGE_SAVEDGAMES,
+	MENU_PAGE_LOADGAME,
+	MENU_PAGE_SAVEGAME,
+	NUM_MENU_PAGES
 };
 
 enum
@@ -72,7 +73,7 @@ enum
 /*    VARIABLES      */
 /*********************/
 
-Boolean	gPlayNow, gShowCredits, gShowHighScores;
+Boolean	gPlayNow, gShowCredits, gShowHighScores, gShowSaveMenu;
 
 static	float	gInactivityTimer;
 
@@ -95,12 +96,12 @@ static	int		gAreYouSure = 0;
 
 /********************** DO MAINMENU SCREEN **************************/
 
-void DoMainMenuScreen(void)
+void DoMainMenuScreen(Byte startMenu)
 {
 do_again:	
 			/* SETUP */
 		
-	SetupMainMenuScreen();
+	SetupMainMenuScreen(startMenu);
 
 	ProcessMainMenu();
 	
@@ -132,12 +133,14 @@ do_again:
 
 /********************* SETUP MAINMENU SCREEN **********************/
 
-static void SetupMainMenuScreen(void)
+static void SetupMainMenuScreen(Byte startMenu)
 {
 OGLSetupInputType	viewDef;
 static const OGLVector3D	fillDirection1 = { -.7, .9, -1.0 };
 static const OGLVector3D	fillDirection2 = { .3, .8, 1.0 };
 int					i;
+
+	GAME_ASSERT(startMenu < NUM_MENU_PAGES);
 
 	if (gCurrentSong != SONG_THEME)
 		PlaySong(SONG_THEME, true);
@@ -239,7 +242,7 @@ int					i;
 
 			/* LAY OUT MENU*/
 
-	BuildMainMenu(0);
+	BuildMainMenu(startMenu);
 
 
 	MakeFadeEvent(true);
@@ -412,25 +415,44 @@ static void BuildMainMenu_SavedGames(void)
 		char prefix[32];
 		char suffix[32];
 
-		if (gAreYouSure)
-		{
-			snprintf(prefix, sizeof(prefix), "DELETE FILE %d", i + 1);
-		}
-		else
-		{
-			snprintf(prefix, sizeof(prefix), "FILE %d", i + 1);
-		}
-
 		SaveGameType scratch;
 		OSErr iErr = LoadSavedGame(i, &scratch);
 
-		if (iErr)
+		int completionPercent = 0;
+		if (iErr == noErr)
 		{
-			snprintf(suffix, sizeof(suffix), "EMPTY");
+			for (int i = 0; i < NUM_LEVELS; i++)
+			{
+				if (scratch.duels[i]) completionPercent++;
+				if (scratch.levels[i]) completionPercent++;
+			}
+			completionPercent = roundf(completionPercent * 100.0f / (2.0f * NUM_LEVELS));
+		}
+
+		if (gMenuMode == MENU_PAGE_LOADGAME)
+		{
+			if (gAreYouSure)
+			{
+				snprintf(prefix, sizeof(prefix), "DELETE %d", i + 1);
+			}
+			else
+			{
+				snprintf(prefix, sizeof(prefix), "FILE %d", i + 1);
+			}
 		}
 		else
 		{
-			snprintf(suffix, sizeof(suffix), SCORE_FMT, scratch.score);
+			snprintf(prefix, sizeof(prefix), "OVERWRITE %d", i + 1);
+		}
+
+
+		if (iErr)
+		{
+			snprintf(suffix, sizeof(suffix), "" /*"EMPTY"*/);
+		}
+		else
+		{
+			snprintf(suffix, sizeof(suffix), "%05dpts. . . %02d%%", scratch.score, completionPercent);
 		}
 
 		NewMenuItem(i, DotConcat(prefix, suffix));
@@ -438,14 +460,17 @@ static void BuildMainMenu_SavedGames(void)
 
 	NewMenuItem(i++, "");
 
-	gMenuIndex_DeleteFile = i;
-	NewMenuItem(i++, !gAreYouSure ? "DELETE FILE" : "CANCEL DELETE");
+	if (gMenuMode == MENU_PAGE_LOADGAME)
+	{
+		gMenuIndex_DeleteFile = i;
+		NewMenuItem(i++, !gAreYouSure ? "DELETE FILE" : "CANCEL DELETE");
+	}
 
 	gMenuIndex_Back = i;
-	NewMenuItem(i++, "BACK");
+	NewMenuItem(i++, gMenuMode == MENU_PAGE_LOADGAME ? "BACK" : "CANCEL");
 }
 
-static void BuildMainMenu(int menuLevel)
+void BuildMainMenu(int menuLevel)
 {
 			/* CHECK IF ENTERING DIFFERENT MENU */
 
@@ -482,7 +507,11 @@ static void BuildMainMenu(int menuLevel)
 			BuildMainMenu_Settings();
 			break;
 
-		case MENU_PAGE_SAVEDGAMES:
+		case MENU_PAGE_LOADGAME:
+			BuildMainMenu_SavedGames();
+			break;
+
+		case MENU_PAGE_SAVEGAME:
 			BuildMainMenu_SavedGames();
 			break;
 	}
@@ -495,10 +524,10 @@ static void FreeMainMenuScreen(void)
 {				
 	MyFlushEvents();
 	DeleteAllObjects();
-	MO_DisposeObjectReference(gBackgoundPicture);	
-	gBackgoundPicture = nil;
 	FreeAllSkeletonFiles(-1);
 	OGL_DisposeWindowSetup();
+
+	memset(gMenuItems, 0, sizeof(gMenuItems));
 }
 
 #pragma mark -
@@ -586,7 +615,7 @@ ObjNode	*newObj;
 					break;
 
 				case kMainMenu_PlaySavedGame:
-					BuildMainMenu(MENU_PAGE_SAVEDGAMES);
+					BuildMainMenu(MENU_PAGE_LOADGAME);
 					break;
 
 				case kMainMenu_Settings:
@@ -653,11 +682,11 @@ ObjNode	*newObj;
 			}
 			break;
 
-		case MENU_PAGE_SAVEDGAMES:
+		case MENU_PAGE_LOADGAME:
 			if (gCurrentMenuItem == gMenuIndex_DeleteFile)
 			{
 				gAreYouSure = !gAreYouSure;
-				BuildMainMenu(MENU_PAGE_SAVEDGAMES);
+				BuildMainMenu(MENU_PAGE_LOADGAME);
 			}
 			else if (gCurrentMenuItem == gMenuIndex_Back)
 			{
@@ -689,22 +718,29 @@ ObjNode	*newObj;
 				{
 					DeleteSavedGame(fileSlot);							// nuke the save
 					gAreYouSure = 0;									// back to non-delete mode
-					BuildMainMenu(MENU_PAGE_SAVEDGAMES);				// lay out same menu again
+					BuildMainMenu(MENU_PAGE_LOADGAME);					// lay out same menu again
 				}
+			}
+			break;
+
+
+		case MENU_PAGE_SAVEGAME:
+			if (gCurrentMenuItem == gMenuIndex_Back)
+			{
+				gPlayNow = true;
+			}
+			else if (gCurrentMenuItem < MAX_SAVE_FILES)
+			{
+				int fileSlot = gCurrentMenuItem;
+
+				SaveGame(fileSlot);
+
+				gPlayNow = true;
 			}
 			break;
 	}
 }
 
-
-
-/***************** DRAW MAINMENU CALLBACK *******************/
-
-static void DrawMainMenuCallback(void)
-{
-	MO_DrawObject(gBackgoundPicture);
-	DrawObjects();
-}
 
 
 #pragma mark -

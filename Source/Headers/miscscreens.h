@@ -18,7 +18,8 @@ void DoPaused(void);
 void DoLegalScreen(void);
 ObjNode *MakeDarkenPane(void);
 
-void DoMainMenuScreen(void);
+void BuildMainMenu(int);
+void DoMainMenuScreen(Byte startMenu);
 void MoveBulletHole(ObjNode *theNode);
 
 
