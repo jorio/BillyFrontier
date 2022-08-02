@@ -79,7 +79,7 @@ static	float	gInactivityTimer;
 
 ObjNode	*gCursor = nil;
 
-static	int		gMenuMode ;
+static	int		gMenuMode = -1;
 int		gCurrentMenuItem = -1;
 
 static	ObjNode	*gMenuItems[MAX_MENU_ITEMS];
@@ -529,6 +529,8 @@ static void FreeMainMenuScreen(void)
 	OGL_DisposeWindowSetup();
 
 	memset(gMenuItems, 0, sizeof(gMenuItems));
+
+	gMenuMode = -1;
 }
 
 #pragma mark -
@@ -829,11 +831,8 @@ int		i = theNode->Kind;
 
 void MoveBulletHole(ObjNode *theNode)
 {
-	if (gMenuMode != theNode->Kind)	
+	if (gMenuMode != -1 && gMenuMode != theNode->Kind)
 		DeleteObject(theNode);
-
-
-
 }
 
 

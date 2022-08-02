@@ -18,7 +18,7 @@
 static void SetupBigBoardScreen(void);
 static void FreeBigBoardScreen(void);
 static void BuildBigBoardIcons(void);
-static void DrawBigBoardCallback(void);
+static void DrawBigBoardInfo(ObjNode* theNode);
 static void ProcessBigBoard(void);
 static void DoBigBoardControls(void);
 static void MoveCursor(ObjNode *theNode);
@@ -172,9 +172,23 @@ static const OGLVector3D	fillDirection2 = { .3, .8, 1.0 };
 	gCursor->AnaglyphZ = 3.0f;
 	
 
-		/* ICONS */
+			/* ICONS */
 	
 	BuildBigBoardIcons();
+
+
+			/* INFO */
+
+	NewObjectDefinitionType infoDef =
+	{
+		.genre = CUSTOM_GENRE,
+		.scale = 1,
+		.slot = SPRITE_SLOT,
+	};
+	ObjNode* infoObj = MakeNewObject(&infoDef);
+	infoObj->CustomDrawFunction = DrawBigBoardInfo;
+
+			/* FADE IN */
 	
 	MakeFadeEvent(true);
 }
@@ -224,7 +238,7 @@ static void ProcessBigBoard(void)
 		
 				/* DRAW */
 				
-		OGL_DrawScene(DrawBigBoardCallback);			
+		OGL_DrawScene(DrawObjects);			
 
 				/* DO USER INPUT */
 				
@@ -237,11 +251,11 @@ static void ProcessBigBoard(void)
 		{
 			gWonGame = false;
 			gLostGame = true;
-			gGameOver = true;		
+			gGameOver = true;
 		}		
 	}
 
-	OGL_FadeOutScene(DrawBigBoardCallback, MoveObjects);
+	OGL_FadeOutScene(DrawObjects, MoveObjects);
 }
 
 
@@ -265,14 +279,14 @@ ObjNode	*newObj;
 		gNewObjectDefinition.coord.z 	= 0;
 		gNewObjectDefinition.flags 		= 0;
 		gNewObjectDefinition.slot 		= SPRITE_SLOT+1;
-		gNewObjectDefinition.moveCall 	= MoveBulletHole;
+		gNewObjectDefinition.moveCall	= nil; //MoveBulletHole;
 		gNewObjectDefinition.rot 		= RandomFloat2() * PI2;
 		gNewObjectDefinition.scale 	    = 50;
 		newObj = MakeSpriteObject(&gNewObjectDefinition);
 		
 		newObj->AnaglyphZ = -5;
 		
-		OGL_DrawScene(DrawBigBoardCallback);
+		OGL_DrawScene(DrawObjects);
 	
 	
 				/* SEE WHAT WAS SELECTED */
@@ -331,25 +345,26 @@ ObjNode	*newObj;
 
 /***************** DRAW BIGBOARD CALLBACK *******************/
 
-static void DrawBigBoardCallback(void)
+static void DrawBigBoardInfo(ObjNode* theNode)
 {
-int		i;
+	(void) theNode;
 
-	DrawObjects();
-
+	OGL_PushState();
 
 			/* DRAW SCORE */
-			
+
 	SetInfobarSpriteState(0);
 	Infobar_DrawNumber(gScore, 15, 15, 45, SCORE_NUM_DIGITS, true);
 
 
 			/* DRAW LIVES */			
 
-	for (i = 0; i < gPlayerInfo.lives; i++)
+	for (int i = 0; i < gPlayerInfo.lives; i++)
 	{
 		DrawInfobarSprite(605-(i * 20), 20, 30, INFOBAR_SObjType_Heart);
 	}
+
+	OGL_PopState();
 }
 
 
