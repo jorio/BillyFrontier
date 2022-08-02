@@ -765,6 +765,7 @@ float	s;
 		case	',':
 		case	'!':
 		case	kMacRoman_iexcl:
+		case	'\t':				// actually a narrow space, not a tab; used in DotConcat, must be same width as period
 				s = .25;
 				break;
 
@@ -785,7 +786,6 @@ float	s;
 		case	't':
 		case	'r':
 		case	'j':
-		case	'9':
 		case	kMacRoman_auml:
 		case	'a':
 		case	kMacRoman_aacute:
@@ -825,6 +825,7 @@ float	s;
 		case	'6':
 		case	'7':
 		case	'8':
+		case	'9':
 		case	'S':
 				s = .4f;
 				break;

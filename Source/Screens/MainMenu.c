@@ -22,6 +22,7 @@ static void ProcessMainMenu(void);
 static void DoMenuControls(void);
 static void MoveCursor(ObjNode *theNode);
 static void MoveMenuItem(ObjNode *theNode);
+static const char* DotConcat(const char* prefix, const char* suffix, float targetWidth);
 
 
 /****************************/
@@ -115,6 +116,17 @@ do_again:
 
 	if (gShowCredits)
 	{
+		NewObjectDefinitionType def =
+		{
+			.coord = {320, 180, 0},
+			.scale = 28,
+			.slot = SPRITE_SLOT
+		};
+		def.coord.y += 33; MakeFontStringObject(DotConcat("programming", "Brian Greenstone", 16), &def, true);
+		def.coord.y += 33; MakeFontStringObject(DotConcat("art direction", "Scott Harper", 16), &def, true);
+		def.coord.y += 33; MakeFontStringObject(DotConcat("animation", "Peter Greenstone", 16), &def, true);
+		def.coord.y += 33; MakeFontStringObject(DotConcat("music", "Aleksander Dimitrijevic", 16), &def, true);
+		def.coord.y += 33; MakeFontStringObject(DotConcat("modern version", "Iliyas Jorio", 16), &def, true);
 		DisplayPicture(":images:Credits.jpg");
 		goto do_again;
 	}
@@ -309,17 +321,15 @@ static void BuildMainMenu_Root(void)
 	}
 }
 
-static const char* DotConcat(const char* prefix, const char* suffix)
+static const char* DotConcat(const char* prefix, const char* suffix, float targetWidth)
 {
-	const float kTargetWidth = 13.0f;
 	static char buf[64];
 
 	memset(buf, 0, sizeof(buf));		// clear with 0s
 
 	float width = GetStringWidth(prefix, 1) + GetStringWidth(suffix, 1);
 
-	float dotWidth = GetStringWidth(".", 1);
-	float spaceWidth = GetStringWidth(" ", 1);
+	float dotWidth = GetCharSpacing('.', 1);
 
 	int cursor = snprintf(buf, sizeof(buf), "%s", prefix);
 	if (cursor < 0)
@@ -327,26 +337,14 @@ static const char* DotConcat(const char* prefix, const char* suffix)
 
 	bool flipflop = false;
 
-	while (width < kTargetWidth
-		&& cursor < sizeof(buf)-1)		// -1 for nul terminator
+	while (width < targetWidth
+		&& cursor < sizeof(buf) - 1)		// -1 for nul terminator
 	{
-		if (flipflop)
-		{
-			if (width + dotWidth/2.0f >= kTargetWidth)
-				break;
+		if (width + dotWidth * 0.4f > targetWidth)		// * 0.4 for some tolerance
+			break;
 
-			buf[cursor++] = '.';
-			width += dotWidth;
-		}
-		else
-		{
-			if (width + spaceWidth/2.0f >= kTargetWidth)
-				break;
-
-			buf[cursor++] = ' ';
-			width += spaceWidth;
-		}
-
+		buf[cursor++] = flipflop ? '.' : '\t';
+		width += dotWidth;
 		flipflop = !flipflop;
 	}
 
@@ -357,6 +355,7 @@ fail:
 
 static void BuildMainMenu_Settings(void)
 {
+	const char TW = 13;
 	char suffix[32];
 
 	for (int i = 0; i < kSettingsMenu_COUNT; i++)
@@ -367,12 +366,12 @@ static void BuildMainMenu_Settings(void)
 		switch (i)
 		{
 		case kSettingsMenu_Fullscreen:
-			name = DotConcat("FULLSCREEN", gGamePrefs.fullscreen ? "YES" : "NO");
+			name = DotConcat("FULLSCREEN", gGamePrefs.fullscreen ? "YES" : "NO", TW);
 			break;
 
 		case kSettingsMenu_Display:
 			snprintf(suffix, sizeof(suffix), "%d", gGamePrefs.monitorNum + 1);
-			name = DotConcat("DISPLAY", suffix);
+			name = DotConcat("DISPLAY", suffix, TW);
 			break;
 
 		case kSettingsMenu_Antialiasing:
@@ -380,7 +379,7 @@ static void BuildMainMenu_Settings(void)
 				snprintf(suffix, sizeof(suffix), "OFF");
 			else
 				snprintf(suffix, sizeof(suffix), "MSAA %dx", 1 << gGamePrefs.antialiasingLevel);
-			name = DotConcat("ANTIALIASING", suffix);
+			name = DotConcat("ANTIALIASING", suffix, TW);
 			break;
 
 		case kSettingsMenu_ResetHighScores:
@@ -488,10 +487,10 @@ static void BuildMainMenu_SavedGames(void)
 		}
 		else
 		{
-			snprintf(suffix, sizeof(suffix), "%05dpts. . . %02d%%", scratch.score, completionPercent);
+			snprintf(suffix, sizeof(suffix), "%5dpts\t.\t.\t.\t%2d%%", scratch.score, completionPercent);
 		}
 
-		NewMenuItem(i, DotConcat(prefix, suffix));
+		NewMenuItem(i, DotConcat(prefix, suffix, 13));
 	}
 
 	NewMenuItem(i++, "");
