@@ -770,7 +770,7 @@ static void DrawTargetPracticeInfobar(void)
 			/* DRAW TIMER */
 			
 	DrawInfobarSprite3(topRight.x - 165, topRight.y, STAT_BAR_HEIGHT+2, INFOBAR_SObjType_TimerFrame);
-	Infobar_DrawNumber(gTargetPracticeTimer + .5f, topRight.x + TIMER_XFROMRIGHT, topRight.y + TIMER_Y, TIMER_SCALE, 3, false);
+	Infobar_DrawNumber((int)gTargetPracticeTimer, topRight.x + TIMER_XFROMRIGHT, topRight.y + TIMER_Y, TIMER_SCALE, 3, false);
 	
 			/* DRAW PEPPER COUNT */
 

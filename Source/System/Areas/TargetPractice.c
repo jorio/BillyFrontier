@@ -32,6 +32,8 @@ static void MoveBonusCoin(ObjNode *theNode);
 static void StartDrunkeness(void);
 static void UpdateDrunkeness(void);
 
+static void MoveInstructions(ObjNode* theNode);
+
 
 /****************************/
 /*    CONSTANTS             */
@@ -156,9 +158,11 @@ const OGLPoint3D	cameraTo = { 0, 1200, 0 };
 	gCrosshairsCoord.x = 640/2;
 	gCrosshairsCoord.y = 480/2;
 
-	gOrbLaunchTimer = .5f;
+//	gOrbLaunchTimer = .5f;
+	gOrbLaunchTimer = 1.5f;
 
-	gTargetPracticeTimer = 60.0f;			// # seconds
+//	gTargetPracticeTimer = 60.0f;			// # seconds
+	gTargetPracticeTimer = 61.0f;			// # seconds
 	gDrunkTimer	= 0;
 	gRapidFireTimer = 0;
 
@@ -299,6 +303,24 @@ const OGLPoint3D	cameraTo = { 0, 1200, 0 };
 //	gCyc->Rot.x  = -.9f;
 	gCyc->CustomDrawFunction = DrawCyclorama;		
 	
+
+			/* MAKE INSTRUCTIONS */
+
+	{
+		char prompt[32];
+		snprintf(prompt, sizeof(prompt), "GET %d PEPPERS", gPepperCount);
+
+		NewObjectDefinitionType textDef =
+		{
+			.coord = {640 / 2, 480 / 2 - 64, 0},
+			.slot = SPRITE_SLOT - 1,
+			.scale = 40,
+			.moveCall = MoveInstructions,
+		};
+
+		ObjNode* promptObj = MakeFontStringObject(prompt, &textDef, true);
+		promptObj->SpecialF[0] = 9;
+	}
 }
 
 
@@ -1275,18 +1297,18 @@ OGLPoint3D	lookAt;
 
 
 
+/******************* MOVE "GET N PEPPERS" ***************************/
 
+static void MoveInstructions(ObjNode* theNode)
+{
+	theNode->SpecialF[0] -= gFramesPerSecondFrac * 2.5f;
 
-
-
-
-
-
-
-
-
-
-
-
-
-
+	if (theNode->SpecialF[0] <= 0)
+	{
+		DeleteObject(theNode);
+	}
+	else if (theNode->SpecialF[0] < 1.0f)
+	{
+		theNode->ColorFilter.a = theNode->SpecialF[0];
+	}
+}
