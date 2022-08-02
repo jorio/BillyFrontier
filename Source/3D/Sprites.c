@@ -719,11 +719,15 @@ int CharToSprite(char c)
 			case	'\'':
 					s = FONT_SObjType_Apostrophe;
 					break;
-			
+
 			case	'%':
 					s = FONT_SObjType_Percent;
 					break;
-		
+
+			case	'/':
+					s = FONT_SObjType_Slash;
+					break;
+
 			default:
 					s = -1;
 		
@@ -764,7 +768,7 @@ float	s;
 				s = .25;
 				break;
 
-		case	CHAR_APOSTROPHE:
+		case	'\'':
 		case	's':
 		case	'p':
 		case	'l':				// L

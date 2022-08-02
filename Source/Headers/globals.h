@@ -16,10 +16,6 @@
 #define GAME_MAX(a, b) ( (a) > (b) ? (a) : (b) )
 #define	SQUARED(x)					((x)*(x))
 
-#define	MOVE_TO_FRONT		(WindowPtr)-1L
-#define	NIL_STRING			""
-#define REMOVE_ALL_EVENTS	 0
-
 
 
 		/* CLOSE ENOUGH TO ZERO */
@@ -63,15 +59,6 @@ typedef	unsigned short u_short;
 
 #define	PI					((float)3.1415926535898)
 #define PI2					(2.0f*PI)
-
-#define	CHAR_ENTER			0x03
-#define	CHAR_RETURN			0x0d	/* ASCII code for Return key */
-#define CHAR_UP				0x1e
-#define CHAR_DOWN			0x1f
-#define	CHAR_LEFT			0x1c
-#define	CHAR_RIGHT			0x1d
-#define	CHAR_DELETE			0x08
-#define	CHAR_APOSTROPHE		0x27
 
 															
 							// COLLISION SIDE INFO

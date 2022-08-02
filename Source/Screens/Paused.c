@@ -127,7 +127,25 @@ static float	dotAlpha = 1.0f;
 
 				/* DRAW TEXT */
 		
-	
+	switch (gCurrentArea)
+	{
+		case AREA_TOWN_SHOOTOUT:
+		case AREA_SWAMP_SHOOTOUT:
+//			DrawFontString("SHOOTOUT", 320, 370, 30, true);
+			DrawFontString("DUCK with Ctrl or Right Click", 320, 400, 20, true);
+			DrawFontString("TURN with Arrows or A/D", 320, 420, 20, true);
+//			DrawFontString("hold Shift to turn FASTER", 320, 440, 20, true);
+			break;
+
+		case AREA_TOWN_STAMPEDE:
+		case AREA_SWAMP_STAMPEDE:
+//			DrawFontString("STAMPEDE", 320, 370, 30, true);
+//			DrawFontString("get to the finish line before the kangacows!", 320, 400, 20, true);
+			DrawFontString("TURN with Arrows or A/D", 320, 420, 20, true);
+			DrawFontString("JUMP with Spacebar", 320, 440, 20, true);
+			break;
+	}
+
 		
 	leftX = x + 15.0f;
 	y += 9; 
