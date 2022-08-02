@@ -128,7 +128,6 @@ ObjNode	*obj;
 
 void DisposeParticleSystem(void)
 {
-	DisposeSpriteGroup(SPRITE_GROUP_PARTICLES);
 }
 
 
