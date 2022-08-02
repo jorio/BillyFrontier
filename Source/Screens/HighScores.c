@@ -17,8 +17,7 @@
 
 static void SetupScoreScreen(void);
 static void FreeScoreScreen(void);
-static void DrawHighScoresCallback(void);
-static void DrawHighScoresAndCursor(void);
+static void DrawHighScoresAndCursor(ObjNode* theNode);
 static void SetHighScoresSpriteState(void);
 static Boolean IsThisScoreInList(u_long score);
 static short AddNewScore(u_long newScore);
@@ -116,7 +115,7 @@ void NewScore(Boolean justShowScores)
 	{
 		CalcFramesPerSecond();
 		MoveObjects();				
-		OGL_DrawScene(DrawHighScoresCallback);	
+		OGL_DrawScene(DrawObjects);
 		
 
 		ReadKeyboard();
@@ -196,7 +195,7 @@ void NewScore(Boolean justShowScores)
 	}	
 
 
-	OGL_FadeOutScene(DrawHighScoresCallback, MoveObjects);
+	OGL_FadeOutScene(DrawObjects, MoveObjects);
 
 		/* CLEANUP */
 		
@@ -287,6 +286,17 @@ OGLSetupInputType	viewDef;
 	}
 
 	MakeBackgroundPictureObject(backgroundImagePath);
+
+			/* SCENE DRIVER */
+
+	NewObjectDefinitionType def =
+	{
+		.scale = 1,
+		.genre = CUSTOM_GENRE,
+		.slot = SPRITE_SLOT
+	};
+	ObjNode* scene = MakeNewObject(&def);
+	scene->CustomDrawFunction = DrawHighScoresAndCursor;
 }
 
 
@@ -300,29 +310,6 @@ static void FreeScoreScreen(void)
 	DeleteAllObjects();
 	DisposeAllBG3DContainers();
 	OGL_DisposeWindowSetup();
-}
-
-
-
-/***************** DRAW HIGHSCORES CALLBACK *******************/
-
-static void DrawHighScoresCallback(void)
-{
-	DrawObjects();
-
-
-			/* DRAW SPRITES */
-			
-	OGL_PushState();
-
-	SetHighScoresSpriteState();
-
-	DrawHighScoresAndCursor();
-
-
-	OGL_PopState();
-	gGlobalMaterialFlags = 0;
-	gGlobalTransparency = 1.0;
 }
 
 
@@ -349,13 +336,16 @@ static void SetHighScoresSpriteState(void)
 
 /****************** DRAW HIGH SCORES AND CURSOR ***********************/
 
-static void DrawHighScoresAndCursor(void)
+static void DrawHighScoresAndCursor(ObjNode* theNode)
 {
 float	y = 0;
 float	cursorY = 0;
 float	cursorX = 0;
 char	s[16];
 float	fps = gFramesPerSecondFrac;
+
+	(void) theNode;
+
 
 		/* DELAY THE DISPLAY? */
 		
@@ -367,6 +357,17 @@ float	fps = gFramesPerSecondFrac;
 			MakeDarkenPane();
 		return;
 	}
+
+
+
+
+		/* DRAW SPRITES */
+
+	OGL_PushState();
+
+	SetHighScoresSpriteState();
+
+
 
 	gFinalScoreAlpha += fps;						// fade in
 	if (gFinalScoreAlpha > .99f)
@@ -416,7 +417,7 @@ float	fps = gFramesPerSecondFrac;
 				/* DRAW SCORE */
 				
 		snprintf(s, sizeof(s), SCORE_FMT, gHighScores[i].score);
-		DrawScoreText(s, 400, y, SCORE_TEXT_SPACING);
+		DrawScoreText(s, 450, y, SCORE_TEXT_SPACING);
 		
 		y += SCORE_TEXT_SPACING * 1.05f;
 	}	
@@ -453,6 +454,9 @@ float	fps = gFramesPerSecondFrac;
 	gGlobalColorFilter.b = 1;
 
 	gGlobalTransparency = 1;
+
+	OGL_PopState();
+	gGlobalMaterialFlags = 0;
 }
 
 
