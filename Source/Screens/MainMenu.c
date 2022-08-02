@@ -239,7 +239,10 @@ int					i;
 
 			/* BACKGROUND */
 
-	MakeBackgroundPictureObject(":images:MainMenu.png");
+	if (startMenu != MENU_PAGE_SAVEGAME)		// blank background when saving game
+	{
+		MakeBackgroundPictureObject(":images:MainMenu.png");
+	}
 
 			/* LAY OUT MENU*/
 
@@ -266,6 +269,12 @@ static ObjNode* NewMenuItem(int i, const char* name)
 	gNewObjectDefinition.rot = 0;
 	gNewObjectDefinition.scale = MENU_FONT_SCALE;
 	gNewObjectDefinition.slot = SPRITE_SLOT;
+
+	if (gMenuMode == MENU_PAGE_SAVEGAME)
+	{
+		gNewObjectDefinition.coord.y += 40;
+	}
+
 	gMenuItems[i] = newObj = MakeFontStringObject(name, &gNewObjectDefinition, false);
 
 	float w = GetStringWidth(name, gNewObjectDefinition.scale);
@@ -409,6 +418,32 @@ static void BuildMainMenu_Settings(void)
 
 static void BuildMainMenu_SavedGames(void)
 {
+	if (gMenuMode == MENU_PAGE_SAVEGAME)
+	{
+		char title[32];
+
+		int completionPercent = 0;
+		for (int i = 0; i < NUM_LEVELS; i++)
+		{
+			if (gDuelWon[i]) completionPercent++;
+			if (gLevelWon[i]) completionPercent++;
+		}
+		completionPercent = roundf(completionPercent * 100.0f / (2.0f * NUM_LEVELS));
+
+		snprintf(title, sizeof(title), "%d pts, %d%% complete", gScore, completionPercent);
+
+		gNewObjectDefinition.coord.x = 640/2;
+		gNewObjectDefinition.coord.y = 100;
+		gNewObjectDefinition.coord.z = 0;
+		gNewObjectDefinition.flags = 0;
+		gNewObjectDefinition.moveCall = nil;//MoveMenuItem;
+		gNewObjectDefinition.rot = 0;
+		gNewObjectDefinition.scale = MENU_FONT_SCALE * 1.5f;
+		gNewObjectDefinition.slot = SPRITE_SLOT;
+
+		MakeFontStringObject(title, &gNewObjectDefinition, true);
+	}
+
 	int i = 0;
 
 	for (i = 0; i < MAX_SAVE_FILES; i++)
@@ -468,7 +503,7 @@ static void BuildMainMenu_SavedGames(void)
 	}
 
 	gMenuIndex_Back = i;
-	NewMenuItem(i++, gMenuMode == MENU_PAGE_LOADGAME ? "BACK" : "CANCEL");
+	NewMenuItem(i++, gMenuMode == MENU_PAGE_LOADGAME ? "BACK" : "CANCEL SAVE");
 }
 
 void BuildMainMenu(int menuLevel)
