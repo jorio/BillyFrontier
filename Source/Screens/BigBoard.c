@@ -305,7 +305,8 @@ ObjNode	*newObj;
 						
 						
 				case	6:							// SAVE GAME
-						SaveGame();
+						//SaveGame();
+						IMPLEMENT_ME();
 						break;
 						
 				case	7:							// END GAME

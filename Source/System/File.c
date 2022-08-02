@@ -37,20 +37,6 @@ static void ReadDataFromPlayfieldFile(FSSpec *specPtr);
 
 #define	SKELETON_FILE_VERS_NUM	0x0110			// v1.1
 
-#define	SAVE_GAME_VERSION	0x0100		// 1.0
-
-		/* SAVE GAME */
-		
-typedef struct
-{
-	uint32_t	version;
-	uint32_t	score;
-	int16_t		realLevel;
-	int16_t		numLives;
-	Boolean		levels[NUM_LEVELS];
-	Boolean		duels[NUM_LEVELS];
-}SaveGameType;
-
 
 		/* PLAYFIELD HEADER */
 		
@@ -102,49 +88,6 @@ typedef struct
 /**********************/
 
 float	g3DTileSize, g3DMinY, g3DMaxY;
-
-
-
-/****************** SET DEFAULT DIRECTORY ********************/
-//
-// This function needs to be called for OS X because OS X doesnt automatically
-// set the default directory to the application directory.
-//
-
-void SetDefaultDirectory(void)
-{
-	IMPLEMENT_ME_SOFT();
-#if 0
-ProcessSerialNumber serial;
-ProcessInfoRec info;
-FSSpec	app_spec;
-WDPBRec wpb;
-OSErr	iErr;		
-		
-	serial.highLongOfPSN = 0;
-	serial.lowLongOfPSN = kCurrentProcess;
-	
-	
-	info.processInfoLength = sizeof(ProcessInfoRec);
-	info.processName = NULL;
-	info.processAppSpec = &app_spec;
-
-	iErr = GetProcessInformation(&serial, & info);
-
-	wpb.ioVRefNum = app_spec.vRefNum;
-	wpb.ioWDDirID = app_spec.parID;
-	wpb.ioNamePtr = NULL;
-	
-	iErr = PBHSetVolSync(&wpb);
-	
-	
-		/* ALSO SET SAVED GAME SPEC TO DESKTOP */
-		
-	iErr = FindFolder(kOnSystemDisk,kDesktopFolderType,kDontCreateFolder,			// locate the desktop folder
-					&gSavedGameSpec.vRefNum,&gSavedGameSpec.parID);
-	gSavedGameSpec.name[0] = 0;
-#endif
-}
 
 
 
@@ -1140,23 +1083,17 @@ Ptr						tempBuffer16 = nil;
 // Returns true if saving was successful
 //
 
-Boolean SaveGame(void)
+OSErr SaveGame(int fileSlot)
 {
 SaveGameType	saveData;
-#if 0
-short			fRefNum;
-FSSpec			*specPtr;
-long			count, i;
-#endif
-Boolean			success = false;
-
-	Enter2D(true);
 			
 			/*************************/	
 			/* CREATE SAVE GAME DATA */
 			/*************************/	
-					
-	saveData.version		= SAVE_GAME_VERSION;				// save file version #
+
+	memset(&saveData, 0, sizeof(saveData));
+
+//	saveData.version		= SAVE_GAME_VERSION;				// save file version #
 	saveData.score 			= gScore;
 	saveData.numLives 		= gPlayerInfo.lives;
 
@@ -1170,139 +1107,62 @@ Boolean			success = false;
 		/* DO NAV SERVICES */
 		/*******************/
 
-#if 1
-	IMPLEMENT_ME();
-#else
-	if (PutFileWithNavServices(&navReply, &gSavedGameSpec))
-		goto bail;	
-	specPtr = &gSavedGameSpec;	
-	if (navReply.replacing)										// see if delete old
-		FSpDelete(specPtr);
+	char path[64];
+	snprintf(path, sizeof(path), "BillySave%d", fileSlot);
 
-
-
-				/* CREATE & OPEN THE REZ-FORK */
-			
-	if (FSpCreate(specPtr, kGameID,kSavedGameFileType,nil) != noErr)
-	{
-		DoAlert("Error creating Save file");
-		goto bail;
-	}
-	
-	FSpOpenDF(specPtr,fsRdWrPerm, &fRefNum);
-	if (fRefNum == -1)
-	{
-		DoAlert("Error opening Save file");
-		goto bail;
-	}
-				
-	
-				/* WRITE TO FILE */
-
-	count = sizeof(SaveGameType);
-	if (FSWrite(fRefNum, &count, (Ptr)&saveData) != noErr)
-	{
-		DoAlert("Error writing Save file");
-		FSClose(fRefNum);
-		goto bail;
-	}
-
-			/* CLOSE FILE */
-			
-	FSClose(fRefNum);						
-
-
-			/* CLEANUP NAV SERVICES */
-				
-	NavCompleteSave(&navReply, kNavTranslateInPlace);
-	
-	success = true;
-	
-bail:	
-	NavDisposeReply(&navReply);
-	HideCursor();
-	Exit2D();
-	TurnOnISp();
-#endif
-	return(success);
+	return SaveUserDataFile(path, "Billy Frontier Save v00", sizeof(SaveGameType), (Ptr) & saveData);
 }
 
+/***************************** DELETE SAVED GAME ********************************/
+
+OSErr DeleteSavedGame(int fileSlot)
+{
+	FSSpec spec;
+	OSErr iErr;
+	char path[64];
+
+	snprintf(path, sizeof(path), "BillySave%d", fileSlot);
+
+	iErr = MakeFSSpecForUserDataFile(path, &spec);
+
+	if (noErr == iErr)
+	{
+		printf("Deleting %s\n", path);
+		iErr = FSpDelete(&spec);
+	}
+
+	return iErr;
+}
 
 /***************************** LOAD SAVED GAME ********************************/
 
-Boolean LoadSavedGame(void)
+OSErr LoadSavedGame(int fileSlot, SaveGameType* saveDataPtr)
 {
-#if 0
-SaveGameType	saveData;
-short			fRefNum;
-long			count, i;
-#endif
-Boolean			success = false;
+	char path[64];
+	snprintf(path, sizeof(path), "BillySave%d", fileSlot);
 
-	Enter2D(true);
-	MyFlushEvents();	
-	
-
-				/* GET FILE WITH NAVIGATION SERVICES */
-#if 1
-	IMPLEMENT_ME();
-#else
-	if (GetFileWithNavServices(&gSavedGameSpec) != noErr)
-		goto bail;
-	
-	
-				/* OPEN THE REZ-FORK */
-			
-	FSpOpenDF(&gSavedGameSpec,fsRdPerm, &fRefNum);
-	if (fRefNum == -1)
-	{
-		DoAlert("Error opening Save file");
-		goto bail;
-	}
-
-				/* READ FROM FILE */
-
-	count = sizeof(SaveGameType);
-	if (FSRead(fRefNum, &count, &saveData) != noErr)
-	{
-		DoAlert("Error reading Save file");
-		FSClose(fRefNum);
-		goto bail;
-	}
-
-			/* CLOSE FILE */
-			
-	FSClose(fRefNum);						
-
-	
-			/**********************/	
-			/* USE SAVE GAME DATA */
-			/**********************/	
-					
-	gLoadedScore = gScore = saveData.score;
-	gPlayerInfo.lives 	= saveData.numLives;
-	if (gPlayerInfo.lives > 20)							// check for corruption
-		gPlayerInfo.lives = 0;
-		
-	for (i = 0; i < NUM_LEVELS; i++)
-	{
-		gLevelWon[i] = saveData.levels[i];
-		gDuelWon[i] = saveData.duels[i];
-	}
-		
-	success = true;
-			
-		
-bail:
-	Exit2D();
-	HideCursor();
-	TurnOnISp();
-	
-#endif
-	return(success);
+	return LoadUserDataFile(path, "Billy Frontier Save v00", sizeof(SaveGameType), (Ptr) saveDataPtr);
 }
 
+/***************************** USE SAVED GAME ********************************/
 
+void UseSavedGame(const SaveGameType* saveData)
+{
+		/**********************/
+		/* USE SAVE GAME DATA */
+		/**********************/
+
+	gLoadedScore = gScore = saveData->score;
+	gPlayerInfo.lives = saveData->numLives;
+	if (gPlayerInfo.lives > 20)							// check for corruption
+		gPlayerInfo.lives = 0;
+
+	for (int i = 0; i < NUM_LEVELS; i++)
+	{
+		gLevelWon[i] = saveData->levels[i];
+		gDuelWon[i] = saveData->duels[i];
+	}
+}
 
 #pragma mark -
 

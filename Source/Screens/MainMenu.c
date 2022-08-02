@@ -1,7 +1,8 @@
 /****************************/
 /*   	MAINMENU SCREEN.C	*/
-/* (c)2002 Pangea Software  */
 /* By Brian Greenstone      */
+/* (c)2002 Pangea Software  */
+/* (c)2022 Iliyas Jorio     */
 /****************************/
 
 
@@ -37,7 +38,8 @@ static void MoveMenuItem(ObjNode *theNode);
 enum
 {
 	MENU_PAGE_MAIN,
-	MENU_PAGE_SETTINGS
+	MENU_PAGE_SETTINGS,
+	MENU_PAGE_SAVEDGAMES,
 };
 
 enum
@@ -56,8 +58,11 @@ enum
 	kSettingsMenu_Fullscreen,
 	kSettingsMenu_Display,
 	kSettingsMenu_Antialiasing,
-	kSettingsMenu_Spacer,
+	kSettingsMenu_Spacer1,
+	kSettingsMenu_ResetHighScores,
+	kSettingsMenu_Spacer2,
 	kSettingsMenu_Back,
+
 	kSettingsMenu_COUNT,
 };
 
@@ -80,6 +85,13 @@ int		gCurrentMenuItem = -1;
 static	ObjNode	*gMenuItems[MAX_MENU_ITEMS];
 static	float	gMenuItemMinX[MAX_MENU_ITEMS];
 static	float	gMenuItemMaxX[MAX_MENU_ITEMS];
+
+
+static	int		gMenuIndex_DeleteFile = -1;
+static	int		gMenuIndex_Back = -1;
+static	Boolean	gDeleteMode = false;
+
+static	int		gAreYouSure = 0;
 
 
 /********************** DO MAINMENU SCREEN **************************/
@@ -223,6 +235,12 @@ int					i;
 
 	gCursor->AnaglyphZ = 2.0f;
 
+			/* BACKGROUND */
+
+	gBackgoundPicture = MO_CreateNewObjectOfType(MO_TYPE_PICTURE, 0, ":images:MainMenu.png");
+
+			/* LAY OUT MENU*/
+
 	BuildMainMenu(0);
 
 
@@ -234,6 +252,8 @@ int					i;
 
 static ObjNode* NewMenuItem(int i, const char* name)
 {
+	GAME_ASSERT(i < MAX_MENU_ITEMS);
+
 	ObjNode* newObj;
 
 	gNewObjectDefinition.coord.x = 130;
@@ -260,17 +280,188 @@ static ObjNode* NewMenuItem(int i, const char* name)
 	return newObj;
 }
 
+static void BuildMainMenu_Root(void)
+{
+	for (int i = 0; i < kMainMenu_COUNT; i++)
+	{
+		static const char* names[kMainMenu_COUNT] =
+		{
+			[kMainMenu_PlayNewGame] = "PLAY NEW GAME",
+			[kMainMenu_PlaySavedGame] = "PLAY SAVED GAME",
+			[kMainMenu_Settings] = "SETTINGS",
+			[kMainMenu_HighScores] = "HIGH SCORES",
+			[kMainMenu_Credits] = "CREDITS",
+			[kMainMenu_Exit] = "EXIT",
+		};
+
+		NewMenuItem(i, names[i]);
+	}
+}
+
+static const char* DotConcat(const char* prefix, const char* suffix)
+{
+	const float kTargetWidth = 13.0f;
+	static char buf[64];
+
+	memset(buf, 0, sizeof(buf));		// clear with 0s
+
+	float width = GetStringWidth(prefix, 1) + GetStringWidth(suffix, 1);
+
+	float dotWidth = GetStringWidth(".", 1);
+	float spaceWidth = GetStringWidth(" ", 1);
+
+	int cursor = snprintf(buf, sizeof(buf), "%s", prefix);
+	if (cursor < 0)
+		goto fail;
+
+	bool flipflop = false;
+
+	while (width < kTargetWidth
+		&& cursor < sizeof(buf)-1)		// -1 for nul terminator
+	{
+		if (flipflop)
+		{
+			if (width + dotWidth/2.0f >= kTargetWidth)
+				break;
+
+			buf[cursor++] = '.';
+			width += dotWidth;
+		}
+		else
+		{
+			if (width + spaceWidth/2.0f >= kTargetWidth)
+				break;
+
+			buf[cursor++] = ' ';
+			width += spaceWidth;
+		}
+
+		flipflop = !flipflop;
+	}
+
+	snprintf(buf + cursor, sizeof(buf) - cursor, "%s", suffix);
+fail:
+	return buf;
+}
+
+static void BuildMainMenu_Settings(void)
+{
+	char suffix[32];
+
+	for (int i = 0; i < kSettingsMenu_COUNT; i++)
+	{
+		suffix[0] = '\0';
+		const char* name = "";
+
+		switch (i)
+		{
+		case kSettingsMenu_Fullscreen:
+			name = DotConcat("FULLSCREEN", gGamePrefs.fullscreen ? "YES" : "NO");
+			break;
+
+		case kSettingsMenu_Display:
+			snprintf(suffix, sizeof(suffix), "%d", gGamePrefs.monitorNum + 1);
+			name = DotConcat("DISPLAY", suffix);
+			break;
+
+		case kSettingsMenu_Antialiasing:
+			if (!gGamePrefs.antialiasingLevel)
+				snprintf(suffix, sizeof(suffix), "OFF");
+			else
+				snprintf(suffix, sizeof(suffix), "MSAA %dx", 1 << gGamePrefs.antialiasingLevel);
+			name = DotConcat("ANTIALIASING", suffix);
+			break;
+
+		case kSettingsMenu_ResetHighScores:
+			if (!gAreYouSure)
+				name = "RESET HIGH SCORES";
+			else
+				name = "ARE YOU SURE? confirm reset scores";
+			break;
+
+		case kSettingsMenu_Back:
+			name = "BACK";
+			break;
+		}
+
+		NewMenuItem(i, name);
+	}
+
+	if (gGamePrefs.antialiasingLevel != gCurrentAntialiasingLevel)
+	{
+		int i = kSettingsMenu_COUNT;
+
+		gNewObjectDefinition.coord.x = 130;
+		gNewObjectDefinition.coord.y = 390; //y;
+		gNewObjectDefinition.coord.z = 0;
+		gNewObjectDefinition.flags = 0;
+		gNewObjectDefinition.moveCall = nil;// MoveMenuItem;
+		gNewObjectDefinition.rot = 0;
+		gNewObjectDefinition.scale = MENU_FONT_SCALE * 0.6;
+		gNewObjectDefinition.slot = SPRITE_SLOT;
+		gMenuItems[i++] = MakeFontStringObject("THE NEW ANTIALIASING SETTING WILL", &gNewObjectDefinition, false);
+		gNewObjectDefinition.coord.y += 20;
+		gMenuItems[i++] = MakeFontStringObject("TAKE EFFECT WHEN YOU RESTART THE GAME.", &gNewObjectDefinition, false);
+	}
+}
+
+static void BuildMainMenu_SavedGames(void)
+{
+	int i = 0;
+
+	for (i = 0; i < MAX_SAVE_FILES; i++)
+	{
+		char prefix[32];
+		char suffix[32];
+
+		if (gAreYouSure)
+		{
+			snprintf(prefix, sizeof(prefix), "DELETE FILE %d", i + 1);
+		}
+		else
+		{
+			snprintf(prefix, sizeof(prefix), "FILE %d", i + 1);
+		}
+
+		SaveGameType scratch;
+		OSErr iErr = LoadSavedGame(i, &scratch);
+
+		if (iErr)
+		{
+			snprintf(suffix, sizeof(suffix), "EMPTY");
+		}
+		else
+		{
+			snprintf(suffix, sizeof(suffix), SCORE_FMT, scratch.score);
+		}
+
+		NewMenuItem(i, DotConcat(prefix, suffix));
+	}
+
+	NewMenuItem(i++, "");
+
+	gMenuIndex_DeleteFile = i;
+	NewMenuItem(i++, !gAreYouSure ? "DELETE FILE" : "CANCEL DELETE");
+
+	gMenuIndex_Back = i;
+	NewMenuItem(i++, "BACK");
+}
+
 static void BuildMainMenu(int menuLevel)
 {
+			/* CHECK IF ENTERING DIFFERENT MENU */
+
+	if (gMenuMode != menuLevel)
+	{
+		gAreYouSure = 0;
+		gDeleteMode;
+	}
+
+			/* SET MENU AS CURRENT */
+
 	gMenuMode = menuLevel;
 
 			/* DELETE EXISTING MENU DATA */
-			
-	if (gBackgoundPicture)
-	{
-		MO_DisposeObjectReference(gBackgoundPicture);
-		gBackgoundPicture = NULL;
-	}
 	
 	for (int i = 0; i < MAX_MENU_ITEMS; i++)
 	{
@@ -281,91 +472,21 @@ static void BuildMainMenu(int menuLevel)
 		}
 	}
 	
+			/* LAY OUT MENU ITEMS */
 	
-	switch(menuLevel)
+	switch (menuLevel)
 	{
-				/*************/
-				/* MAIN MENU */
-				/*************/
-				
 		case MENU_PAGE_MAIN:
-		{
-			gBackgoundPicture = MO_CreateNewObjectOfType(MO_TYPE_PICTURE, 0, ":images:MainMenu.png");
-
-			for (int i = 0; i < kMainMenu_COUNT; i++)
-			{	
-				static const char* names[kMainMenu_COUNT] =
-				{
-					[kMainMenu_PlayNewGame]		= "PLAY NEW GAME",
-					[kMainMenu_PlaySavedGame]	= "PLAY SAVED GAME",
-					[kMainMenu_Settings]		= "SETTINGS",
-					[kMainMenu_HighScores]		= "HIGH SCORES",
-					[kMainMenu_Credits]			= "CREDITS",
-					[kMainMenu_Exit]			= "EXIT",
-				};
-
-				NewMenuItem(i, names[i]);
-			}
-
+			BuildMainMenu_Root();
 			break;
-		}
 
 		case MENU_PAGE_SETTINGS:
-		{
-			gBackgoundPicture = MO_CreateNewObjectOfType(MO_TYPE_PICTURE, 0, ":images:MainMenu.png");
-
-			for (int i = 0; i < kSettingsMenu_COUNT; i++)
-			{
-				char buf[64];
-				buf[0] = '\0';
-				const char* name = buf;
-
-				switch (i)
-				{
-					case kSettingsMenu_Fullscreen:
-						if (gGamePrefs.fullscreen)
-							name = "FULLSCREEN . . . . . . . . .YES";
-						else
-							name = "FULLSCREEN . . . . . . . . . NO";
-						break;
-
-					case kSettingsMenu_Display:
-						snprintf(buf, sizeof(buf), "DISPLAY . . . . . . . . . . . . . %d", gGamePrefs.monitorNum + 1);
-						break;
-
-					case kSettingsMenu_Antialiasing:
-						if (!gGamePrefs.antialiasingLevel)
-							name =                     "ANTIALIASING . . . . . . . .OFF";
-						else
-							snprintf(buf, sizeof(buf), "ANTIALIASING . . . . .MSAA %dx", 1 << gGamePrefs.antialiasingLevel);
-						break;
-
-					case kSettingsMenu_Back:
-						name = "BACK";
-				}
-				
-				NewMenuItem(i, name);
-			}
-
-			if (gGamePrefs.antialiasingLevel != gCurrentAntialiasingLevel)
-			{
-				int i = kSettingsMenu_COUNT;
-
-				gNewObjectDefinition.coord.x = 130;
-				gNewObjectDefinition.coord.y = 390; //y;
-				gNewObjectDefinition.coord.z = 0;
-				gNewObjectDefinition.flags = 0;
-				gNewObjectDefinition.moveCall = nil;// MoveMenuItem;
-				gNewObjectDefinition.rot = 0;
-				gNewObjectDefinition.scale = MENU_FONT_SCALE * 0.6;
-				gNewObjectDefinition.slot = SPRITE_SLOT;
-				gMenuItems[i++] = MakeFontStringObject("THE NEW ANTIALIASING SETTING WILL", &gNewObjectDefinition, false);
-				gNewObjectDefinition.coord.y += 20;
-				gMenuItems[i++] = MakeFontStringObject("TAKE EFFECT WHEN YOU RESTART THE GAME.", &gNewObjectDefinition, false);
-			}
-
+			BuildMainMenu_Settings();
 			break;
-		}
+
+		case MENU_PAGE_SAVEDGAMES:
+			BuildMainMenu_SavedGames();
+			break;
 	}
 }
 
@@ -408,7 +529,7 @@ static void ProcessMainMenu(void)
 		OGL_DrawScene(DrawMainMenuCallback);			
 
 				/* DO USER INPUT */
-				
+
 		DoMenuControls();
 	}	
 	
@@ -420,108 +541,160 @@ static void ProcessMainMenu(void)
 
 /*********************** DO MENU CONTROLS ***********************/
 
+
 static void DoMenuControls(void)
 {
 ObjNode	*newObj;
 
-	if (GetNewClickState(1))
-	{
-		PlayEffect_Parms(EFFECT_GUNSHOT2,FULL_CHANNEL_VOLUME*2/3,FULL_CHANNEL_VOLUME/3,NORMAL_CHANNEL_RATE);
+	if (!GetNewClickState(1))
+		return;
 	
+	PlayEffect_Parms(EFFECT_GUNSHOT2,FULL_CHANNEL_VOLUME*2/3,FULL_CHANNEL_VOLUME/3,NORMAL_CHANNEL_RATE);
 
 				/* MAKE BULLET HOLE */
-					
-		gNewObjectDefinition.group 		= SPRITE_GROUP_CURSOR;	
-		gNewObjectDefinition.type 		= CURSOR_SObjType_BulletHole;
-		gNewObjectDefinition.coord.x 	= gCursor->Coord.x;
-		gNewObjectDefinition.coord.y 	= gCursor->Coord.y;
-		gNewObjectDefinition.coord.z 	= 0;
-		gNewObjectDefinition.flags 		= 0;
-		gNewObjectDefinition.slot 		= SPRITE_SLOT+1;
-		gNewObjectDefinition.moveCall 	= MoveBulletHole;
-		gNewObjectDefinition.rot 		= RandomFloat2() * PI2;
-		gNewObjectDefinition.scale 	    = 50;
-		newObj = MakeSpriteObject(&gNewObjectDefinition);
-	
-		newObj->Kind = gMenuMode;
-		newObj->AnaglyphZ = -5;
 
-		OGL_DrawScene(DrawMainMenuCallback);			
+	gNewObjectDefinition.group 		= SPRITE_GROUP_CURSOR;	
+	gNewObjectDefinition.type 		= CURSOR_SObjType_BulletHole;
+	gNewObjectDefinition.coord.x 	= gCursor->Coord.x;
+	gNewObjectDefinition.coord.y 	= gCursor->Coord.y;
+	gNewObjectDefinition.coord.z 	= 0;
+	gNewObjectDefinition.flags 		= 0;
+	gNewObjectDefinition.slot 		= SPRITE_SLOT-1;
+	gNewObjectDefinition.moveCall 	= MoveBulletHole;
+	gNewObjectDefinition.rot 		= RandomFloat2() * PI2;
+	gNewObjectDefinition.scale 	    = 50;
+	newObj = MakeSpriteObject(&gNewObjectDefinition);
+	
+	newObj->Kind = gMenuMode;
+	newObj->AnaglyphZ = -5;
+
+	OGL_DrawScene(DrawMainMenuCallback);			
 	
 	
 				/* SEE WHAT WAS SELECTED */
-	
-		if (gCurrentMenuItem != -1)
-		{
-			PlayEffect_Parms(EFFECT_RICOCHET,FULL_CHANNEL_VOLUME/2,FULL_CHANNEL_VOLUME,NORMAL_CHANNEL_RATE);
 
-			switch(gMenuMode)
+	if (gCurrentMenuItem == -1)
+		return;
+
+	PlayEffect_Parms(EFFECT_RICOCHET,FULL_CHANNEL_VOLUME/2,FULL_CHANNEL_VOLUME,NORMAL_CHANNEL_RATE);
+
+	switch(gMenuMode)
+	{
+		case MENU_PAGE_MAIN:
+			switch(gCurrentMenuItem)
 			{
-				case MENU_PAGE_MAIN:
-					switch(gCurrentMenuItem)
-					{
-						case kMainMenu_PlayNewGame:
-								gPlayNow = true;
-								break;
-
-						case kMainMenu_PlaySavedGame:
-							if (LoadSavedGame())
-							{
-								gPlayNow = true;
-								gPlayingFromSavedGame = true;
-							}
-							break;
-
-						case kMainMenu_Settings:
-							gMenuMode = MENU_PAGE_SETTINGS;
-							BuildMainMenu(MENU_PAGE_SETTINGS);
-							break;
-						
-						case kMainMenu_HighScores:
-							gShowHighScores = true;
-							gPlayNow = true;
-							break;
-
-						case kMainMenu_Credits:
-							gShowCredits = true;
-							gPlayNow = true;
-							break;
-						
-						case kMainMenu_Exit:
-							CleanQuit();
-							break;
-					}
+				case kMainMenu_PlayNewGame:
+					gPlayNow = true;
 					break;
 
-				case MENU_PAGE_SETTINGS:
-					switch (gCurrentMenuItem)
-					{
-						case kSettingsMenu_Fullscreen:
-							gGamePrefs.fullscreen = !gGamePrefs.fullscreen;
-							SetFullscreenMode(true);
-							BuildMainMenu(MENU_PAGE_SETTINGS);
-							break;
+				case kMainMenu_PlaySavedGame:
+					BuildMainMenu(MENU_PAGE_SAVEDGAMES);
+					break;
 
-						case kSettingsMenu_Display:
-							gGamePrefs.monitorNum++;
-							gGamePrefs.monitorNum %= SDL_GetNumVideoDisplays();
-							SetFullscreenMode(true);
-							BuildMainMenu(MENU_PAGE_SETTINGS);
-							break;
+				case kMainMenu_Settings:
+					BuildMainMenu(MENU_PAGE_SETTINGS);
+					break;
+						
+				case kMainMenu_HighScores:
+					gShowHighScores = true;
+					gPlayNow = true;
+					break;
 
-						case kSettingsMenu_Antialiasing:
-							gGamePrefs.antialiasingLevel++;
-							gGamePrefs.antialiasingLevel %= 4;
-							BuildMainMenu(MENU_PAGE_SETTINGS);
-							break;
-
-						case kSettingsMenu_Back:
-							gMenuMode = MENU_PAGE_MAIN;
-							BuildMainMenu(MENU_PAGE_MAIN);
-							break;
-					}
+				case kMainMenu_Credits:
+					gShowCredits = true;
+					gPlayNow = true;
+					break;
+						
+				case kMainMenu_Exit:
+					CleanQuit();
+					break;
 			}
-		}
+			break;
+
+		case MENU_PAGE_SETTINGS:
+			switch (gCurrentMenuItem)
+			{
+				case kSettingsMenu_Fullscreen:
+					gGamePrefs.fullscreen = !gGamePrefs.fullscreen;
+					SetFullscreenMode(true);
+					BuildMainMenu(MENU_PAGE_SETTINGS);
+					break;
+
+				case kSettingsMenu_Display:
+					gGamePrefs.monitorNum++;
+					gGamePrefs.monitorNum %= SDL_GetNumVideoDisplays();
+					SetFullscreenMode(true);
+					BuildMainMenu(MENU_PAGE_SETTINGS);
+					break;
+
+				case kSettingsMenu_Antialiasing:
+					gGamePrefs.antialiasingLevel++;
+					gGamePrefs.antialiasingLevel %= 4;
+					BuildMainMenu(MENU_PAGE_SETTINGS);
+					break;
+
+				case kSettingsMenu_ResetHighScores:
+					if (!gAreYouSure)
+					{
+						gAreYouSure++;
+						BuildMainMenu(MENU_PAGE_SETTINGS);
+					}
+					else
+					{
+						gAreYouSure = 0;
+						ClearHighScores();
+						BuildMainMenu(MENU_PAGE_SETTINGS);
+					}
+					
+					break;
+
+				case kSettingsMenu_Back:
+					SavePrefs();
+					BuildMainMenu(MENU_PAGE_MAIN);
+					break;
+			}
+			break;
+
+		case MENU_PAGE_SAVEDGAMES:
+			if (gCurrentMenuItem == gMenuIndex_DeleteFile)
+			{
+				gAreYouSure = !gAreYouSure;
+				BuildMainMenu(MENU_PAGE_SAVEDGAMES);
+			}
+			else if (gCurrentMenuItem == gMenuIndex_Back)
+			{
+				BuildMainMenu(MENU_PAGE_MAIN);
+			}
+			else if (gCurrentMenuItem < MAX_SAVE_FILES)
+			{
+				int fileSlot = gCurrentMenuItem;
+
+				if (!gAreYouSure)										// not in delete mode; load the save
+				{
+					SaveGameType saveGame;
+					memset(&saveGame, 0, sizeof(saveGame));				// clear it just to be sure
+
+					if (noErr == LoadSavedGame(fileSlot, &saveGame))	// try to load the save
+					{
+						UseSavedGame(&saveGame);						// commit it to gameplay variables
+						gPlayingFromSavedGame = true;
+					}
+					else
+					{
+						gPlayingFromSavedGame = false;					// save invalid; initialize blank game
+					}
+					
+					
+					gPlayNow = true;
+				}
+				else
+				{
+					DeleteSavedGame(fileSlot);							// nuke the save
+					gAreYouSure = 0;									// back to non-delete mode
+					BuildMainMenu(MENU_PAGE_SAVEDGAMES);				// lay out same menu again
+				}
+			}
+			break;
 	}
 }
 

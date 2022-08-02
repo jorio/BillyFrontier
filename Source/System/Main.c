@@ -89,8 +89,6 @@ OSErr		iErr;
 
 			/* MAKE FSSPEC FOR DATA FOLDER */
 	
-	SetDefaultDirectory();							// be sure to get the default directory
-
 	iErr = FSMakeFSSpec(0, 0, ":Data:Images", &gDataSpec);
 	if (iErr)
 	{
@@ -105,7 +103,7 @@ void InitDefaultPrefs(void)
 {
 	memset(&gGamePrefs, 0, sizeof(gGamePrefs));
 
-	gGamePrefs.version				= CURRENT_PREFS_VERS;						
+//	gGamePrefs.version				= CURRENT_PREFS_VERS;						
 	gGamePrefs.anaglyph				= false;
 	gGamePrefs.anaglyphColor		= true;
 

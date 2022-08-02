@@ -11,6 +11,9 @@
 #define PREFS_FOLDER_NAME	"BillyFrontier"
 #define PREFS_MAGIC			"Billy Frontier Prefs v01"
 
+#define SAVE_MAGIC			"Billy Frontier Save v01"
+#define MAX_SAVE_FILES		5
+
 		/***********************/
 		/* RESOURCE STURCTURES */
 		/***********************/
@@ -56,12 +59,8 @@ typedef struct
 
 		/* PREFERENCES */
 
-#define	CURRENT_PREFS_VERS	0xA0E1
-
 typedef struct
 {
-	uint32_t version;
-
 	// Legacy stuff left for source code compat
 	struct
 	{
@@ -76,6 +75,16 @@ typedef struct
 }PrefsType;
 
 
+		/* SAVE GAME */
+
+typedef struct
+{
+	uint32_t	score;
+	int16_t		realLevel;
+	int16_t		numLives;
+	Boolean		levels[NUM_LEVELS];
+	Boolean		duels[NUM_LEVELS];
+}SaveGameType;
 
 
 
@@ -90,10 +99,11 @@ OSErr LoadPrefs(void);
 void SavePrefs(void);
 
 void LoadPlayfield(FSSpec *specPtr);
-void SetDefaultDirectory(void);
 
-Boolean SaveGame(void);
-Boolean LoadSavedGame(void);
+OSErr SaveGame(int fileSlot);
+OSErr DeleteSavedGame(int fileSlot);
+OSErr LoadSavedGame(int fileSlot, SaveGameType* saveDataPtr);
+void UseSavedGame(const SaveGameType* saveData);
 
 
 void LoadTargetPracticeArt(void);
