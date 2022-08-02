@@ -151,6 +151,7 @@ int					i;
 	gShowCredits 	= false;
 	gShowHighScores = false;
 	gPlayingFromSavedGame = false;
+	gShowSaveMenu	= false;
 	gInactivityTimer = 0;
 	gCurrentMenuItem = -1;
 	
@@ -568,10 +569,46 @@ static void ProcessMainMenu(void)
 
 /*********************** DO MENU CONTROLS ***********************/
 
+static void PlayRicochet(void)
+{
+	PlayEffect_Parms(EFFECT_RICOCHET, FULL_CHANNEL_VOLUME / 2, FULL_CHANNEL_VOLUME, NORMAL_CHANNEL_RATE);
+}
 
 static void DoMenuControls(void)
 {
 ObjNode	*newObj;
+
+				/* SEE IF USER WANTS TO BACK OUT WITH ESCAPE KEY */
+
+	if (GetNewNeedState(kNeed_UIBack))
+	{
+				/* IF INITIATED ACTION THAT REQUIRES CONFIRMATION, CANCEL IT */
+
+		if (gAreYouSure)
+		{
+			gAreYouSure = 0;
+			PlayRicochet();
+			BuildMainMenu(gMenuMode);
+			return;
+		}
+
+				/* OTHERWISE JUST BACK OUT TO ROOT MENU */
+		switch (gMenuMode)
+		{
+			case MENU_PAGE_SETTINGS:
+			case MENU_PAGE_LOADGAME:
+				PlayRicochet();
+				BuildMainMenu(MENU_PAGE_MAIN);
+				return;
+
+			case MENU_PAGE_SAVEGAME:
+				PlayRicochet();
+				gPlayNow = true;
+				return;
+		}
+	}
+
+				/* NEED MOUSE CLICK TO PROCEED */
 
 	if (!GetNewClickState(1))
 		return;
@@ -603,7 +640,7 @@ ObjNode	*newObj;
 	if (gCurrentMenuItem == -1)
 		return;
 
-	PlayEffect_Parms(EFFECT_RICOCHET,FULL_CHANNEL_VOLUME/2,FULL_CHANNEL_VOLUME,NORMAL_CHANNEL_RATE);
+	PlayRicochet();
 
 	switch(gMenuMode)
 	{

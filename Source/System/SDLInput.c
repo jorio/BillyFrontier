@@ -83,6 +83,7 @@ InputBinding kDefaultBindings[NUM_CONTROL_NEEDS] =
 	[kNeed_UIBack] =
 	{
 		.hardKey = SDL_SCANCODE_BACKSPACE,
+		.userKey = {SDL_SCANCODE_ESCAPE},
 		.hardPad = SDL_CONTROLLER_BUTTON_BACK,
 	},
 
