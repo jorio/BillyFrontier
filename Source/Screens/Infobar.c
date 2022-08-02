@@ -618,7 +618,12 @@ static void DrawShootoutInfobar(void)
 	
 	if (gShootoutCanProceedToNextStopPoint)
 	{
-		DrawInfobarSprite2_Centered(640.0/2, 420.0, 80, SPRITE_GROUP_INFOBAR, INFOBAR_SObjType_CommandKey);
+#if __APPLE__
+		int key = INFOBAR_SObjType_CommandKey;
+#else
+		int key = INFOBAR_SObjType_AltKey;
+#endif
+		DrawInfobarSprite2_Centered(640.0/2, 420.0, 80, SPRITE_GROUP_INFOBAR, key);
 	}
 }
 

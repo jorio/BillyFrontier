@@ -249,6 +249,7 @@ enum
 	INFOBAR_SObjType_TimerFrame,
 
 	INFOBAR_SObjType_CommandKey,
+	INFOBAR_SObjType_AltKey,
 
 	INFOBAR_SObjType_COUNT,
 };
