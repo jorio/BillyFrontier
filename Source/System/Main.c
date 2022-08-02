@@ -99,7 +99,7 @@ void InitDefaultPrefs(void)
 	gGamePrefs.anaglyph				= false;
 	gGamePrefs.anaglyphColor		= true;
 
-	gGamePrefs.antialiasingLevel	= 2;
+	gGamePrefs.antialiasingLevel	= 0;
 	gGamePrefs.fullscreen			= true;
 }
 
