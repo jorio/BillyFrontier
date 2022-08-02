@@ -16,10 +16,6 @@
 /*    PROTOTYPES            */
 /****************************/
 
-static void CheckPlayerActionControls(ObjNode *theNode);
-static void DoPlayerFrictionAndGravity_Terrain(ObjNode *theNode, float friction);
-
-static float CalcWalkAnimSpeed(ObjNode *theNode);
 static void	BillyPutLeftGunInHolster(ObjNode *leftGun);
 static void	BillyPutRightGunInHolster(ObjNode *rightGun);
 static void	PutHatOnHead(ObjNode *hat);
@@ -30,37 +26,12 @@ static void	PutHatOnHead(ObjNode *hat);
 /*    CONSTANTS             */
 /****************************/
 
-#define	PLAYER_WATER_FRICTION	200.0f
-#define	PLAYER_AIR_FRICTION		800.0f	//400.0f
-#define	PLAYER_LANDING_FRICTION	600.0f
-#define	PLAYER_DEFAULT_FRICTION	4000.0f	//2500.0f
-#define	PLAYER_HEAVY_FRICTION	5000.0f
-
-
-#define	JUMP_DELTA				2000.0f
-#define	HOP_DELTA				1300.0f
-
-#define	DELTA_SUBDIV			8.0f				// smaller == more subdivisions per frame
-
-#define	CONTROL_SENSITIVITY		3000.0f //2200.0f
-#define	CONTROL_SENSITIVITY_AIR	5000.0f
-
-#define	WALK_STAND_THRESHOLD	0.3f
-
-#define	KEY_THRUST				4000.0f
 
 /*********************/
 /*    VARIABLES      */
 /*********************/
 
-#define	PickupNow			Flag[0]
-#define	KickHitNow			Flag[0]
-
-
-
 float			gPlayerBottomOff = 0;
-
-short			gPlayerMultiPassCount = 0;
 
 
 //
@@ -178,19 +149,6 @@ ObjNode	*player, *leftGun, *rightGun, *hat;
 
 
 
-/******************* CALC WALK ANIM SPEED **********************/
-
-static float CalcWalkAnimSpeed(ObjNode *theNode)
-{
-float	speed = CalcQuickDistance(0,0,gDelta.x, gDelta.z) * .007f;
-	theNode;
-	
-	return(speed);
-}
-
-
-
-
 #pragma mark -
 
 /************************ UPDATE BILLY ***************************/
@@ -283,88 +241,6 @@ const float fps = gFramesPerSecondFrac;
 		
 	UpdatePlayerShield();	
 }
-
-
-
-/************************ DO FRICTION & GRAVITY ****************************/
-//
-// Applies friction to the gDeltas
-//
-
-static void DoPlayerFrictionAndGravity_Terrain(ObjNode *theNode, float friction)
-{
-OGLVector2D	v;
-float	x,z,fps;
-
-	fps = gFramesPerSecondFrac;
-
-			/**************/
-			/* DO GRAVITY */
-			/**************/
-			
-	gDelta.y -= gGravity*fps;					// add gravity
-
-	if (gDelta.y < 0.0f)							// if falling, keep dy at least -1.0 to avoid collision jitter on platforms
-		if (gDelta.y > (-20.0f * fps))
-			gDelta.y = (-20.0f * fps);
-
-
-			/***************/
-			/* DO FRICTION */
-			/***************/
-			//
-			// Dont do friction if player is pressing controls
-			//
-
-	if (gPlayerInfo.analogControlX || gPlayerInfo.analogControlZ)	// if there is any player control then no friction
-		return;
-
-			
-	friction *= fps;							// adjust friction
-
-	v.x = gDelta.x;
-	v.y = gDelta.z;
-	
-	OGLVector2D_Normalize(&v, &v);				// get normalized motion vector
-	x = -v.x * friction;						// make counter-motion vector
-	z = -v.y * friction;
-	
-	if (gDelta.x < 0.0f)						// decelerate against vector
-	{
-		gDelta.x += x;
-		if (gDelta.x > 0.0f)					// see if sign changed
-			gDelta.x = 0;											
-	}
-	else
-	if (gDelta.x > 0.0f)									
-	{
-		gDelta.x += x;
-		if (gDelta.x < 0.0f)								
-			gDelta.x = 0;											
-	}
-	
-	if (gDelta.z < 0.0f)								
-	{
-		gDelta.z += z;
-		if (gDelta.z > 0.0f)								
-			gDelta.z = 0;											
-	}
-	else
-	if (gDelta.z > 0.0f)									
-	{
-		gDelta.z += z;
-		if (gDelta.z < 0.0f)								
-			gDelta.z = 0;											
-	}
-
-	if ((gDelta.x == 0.0f) && (gDelta.z == 0.0f))
-	{
-		theNode->Speed2D = 0;
-	}
-
-
-}
-
 
 
 /******************** DO SKIP COLLISION DETECT **************************/
@@ -479,27 +355,6 @@ Boolean		killed = false;
 
 	return(killed);
 }
-
-
-
-
-#pragma mark -
-
-
-/**************** CHECK PLAYER ACTION CONTROLS ***************/
-//
-// Checks for special action controls 
-//
-// INPUT:	theNode = the node of the player
-//
-
-static void CheckPlayerActionControls(ObjNode *theNode)
-{
-	theNode;
-			
-
-}
-
 
 
 

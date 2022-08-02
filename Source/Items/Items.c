@@ -363,7 +363,7 @@ OGLVector3D	v;
 ObjNode		*newObj;
 int			i;
 
-	bullet;
+	(void) bullet;
 
 			/*****************/
 			/* MAKE CONTENTS */
@@ -771,10 +771,11 @@ static void BulletHitFreeLifePOW(ObjNode *bullet, ObjNode *pow, const OGLPoint3D
 
 static Boolean DoTrig_FreeLife(ObjNode *item, ObjNode *who, Byte sideBits)
 {
-	who; sideBits;
-	
+	(void) who;
+	(void) sideBits;
+
 	BulletHitFreeLifePOW(nil, item, &item->Coord);
-	
+
 	return(false);
 }
 
@@ -896,8 +897,9 @@ static void BulletHitPesoPOW(ObjNode *bullet, ObjNode *pow, const OGLPoint3D *im
 
 static Boolean DoTrig_Peso(ObjNode *item, ObjNode *who, Byte sideBits)
 {
-	who; sideBits;
-	
+	(void) who;
+	(void) sideBits;
+
 	item->CType = 0;
 	item->MoveCall = MovePOW_Vanish;
 
@@ -989,7 +991,7 @@ void DefaultBulletHitCallback(ObjNode *bullet, ObjNode *hitObj, const OGLPoint3D
 OGLPoint3D	puffPt;
 OGLVector3D	v;
 
-	bullet;
+	(void) bullet;
 
 
 			/* DESTROY IT ? */
@@ -1084,7 +1086,8 @@ static void KangaHitByBulletCallback(ObjNode *bullet, ObjNode *cow, const OGLPoi
 {
 OGLVector3D	splatVec;
 
-	bullet;	cow;
+	(void) bullet;
+	(void) cow;
 
 			/* MAKE BULLET IMPACT SPLAT */
 			
@@ -1203,13 +1206,12 @@ ObjNode	*newObj;
 
 static Boolean DoTrig_ExplodeItem(ObjNode *item, ObjNode *who, Byte sideBits)
 {
+	(void) who;
+	(void) sideBits;
 
-	who; sideBits;
-	
 	PlayEffect3D(EFFECT_CRATEEXPLODE, &item->Coord);
 	ExplodeGeometry(item, 300.0, 0, 1, .8);
 	DeleteObject(item);
-	
 
 	return(false);
 }

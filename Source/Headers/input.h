@@ -82,11 +82,8 @@ enum
 
 //============================================================================================
 
-extern	void InitInput(void);
-extern	void ReadKeyboard(void);
-
-void TurnOnISp(void);
-void TurnOffISp(void);
+void InitInput(void);
+void ReadKeyboard(void);
 
 OGLPoint2D GetLogicalMouseCoord(void);
 

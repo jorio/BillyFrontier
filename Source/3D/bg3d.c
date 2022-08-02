@@ -377,8 +377,8 @@ MOMaterialData	*data;
 			/***********************/
 			
 	count = sizeof(BG3DTextureHeader);
-	OSErr readErr = FSRead(refNum, &count, (Ptr) &textureHeader);		// read header
-	GAME_ASSERT(!readErr);
+	OSErr iErr = FSRead(refNum, &count, (Ptr) &textureHeader);		// read header
+	GAME_ASSERT(!iErr);
 
 	ByteswapStructs("IIiiI4I", sizeof(BG3DTextureHeader), 1, &textureHeader);
 

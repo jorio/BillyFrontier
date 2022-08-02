@@ -15,9 +15,6 @@
 /*    PROTOTYPES            */
 /****************************/
 
-void ResetCameraSettings(void);
-static void UpdateCamera_TopView(void);
-
 static void MoveStampedeCameraOnSpline(ObjNode *camera);
 
 
@@ -25,32 +22,15 @@ static void MoveStampedeCameraOnSpline(ObjNode *camera);
 /*    CONSTANTS             */
 /****************************/
 
-
-#define	CAM_MINY			60.0f
-
-#define	CAMERA_CLOSEST		75.0f
-#define	CAMERA_FARTHEST		400.0f
-
-#define	NUM_FLARE_TYPES		4
 #define	NUM_FLARES			6
 
 #define	CAMERA_DEFAULT_DIST_FROM_ME	350.0f
 #define	DEFAULT_CAMERA_YOFF			100.0f
 
-enum
-{
-	CAMERA_MODE_NORMAL,
-	CAMERA_MODE_2,
-	CAMERA_MODE_3,
-	CAMERA_MODE_4,
-
-	MAX_CAMERA_MODES
-};
-
 
 
 		/* DUELING CAMERA MODES */
-		
+
 enum
 {
 	DUEL_CAMERA_MODE_FRONTTRACK,
@@ -69,7 +49,6 @@ enum
 	DUEL_CAMERA_MODE_FARSIDE2,
 	
 	NUM_DUEL_CAMERA_MODES
-
 };
 
 
@@ -90,13 +69,10 @@ const OGLVector3D	up = {0,1,0};
 
 Boolean				gDrawLensFlare = true, gFreezeCameraFromXZ = false, gFreezeCameraFromY = false;
 
-float				gCameraStartupTimer, gCameraSpinSpeed;
+float				gCameraSpinSpeed;
 
-float				gPlayerToCameraAngle = 0.0f;
-static float		gCameraLookAtAccel,gCameraFromAccelY,gCameraFromAccel;
-float				gCameraDistFromMe, gCameraHeightFactor,gCameraLookAtYOff;
-float				gMinHeightOffGround, gTopCamDist, gMaxCameraHeightOff;
-Byte				gCameraMode;
+float				gCameraDistFromMe, gCameraLookAtYOff;
+float				gTopCamDist;
 
 static OGLPoint3D	gSunCoord;
 
@@ -451,90 +427,18 @@ ObjNode	*playerObj = gPlayerInfo.objNode;
 /******************** RESET CAMERA SETTINGS **************************/
 
 void ResetCameraSettings(void)
-{	
-	gCameraMode = CAMERA_MODE_NORMAL;
-
+{
 	gTopCamDist = 300.0f;
 
-	gCameraFromAccel 	= 4.0;
-	gCameraFromAccelY	= 2.9;
-	
-		
-	gMinHeightOffGround = 60;
-
 			/* SPECIAL SETTINGS FOR SAUCER LEVEL */
-			
-	gCameraLookAtAccel 	= 10.0;
 
-	gCameraHeightFactor = 0.2;
-	gMaxCameraHeightOff = 300.0f;
-	gCameraLookAtYOff 	= DEFAULT_CAMERA_YOFF; 
+	gCameraLookAtYOff 	= DEFAULT_CAMERA_YOFF;
 
 	gCameraDistFromMe 	= CAMERA_DEFAULT_DIST_FROM_ME;
 
 	gFreezeCameraFromXZ = gFreezeCameraFromY = false;
 }
 
-
-
-
-
-/******************** UPDATE CAMERA: TOP VIEW **************************/
-
-static void UpdateCamera_TopView(void)
-{
-float	fps = gFramesPerSecondFrac;
-OGLPoint3D	from,to;
-
-			/* MOVE CAMERA TO FINAL HEIGHT */
-			
-	gTopCamDist += fps * 650.0f;
-	if (gTopCamDist > 2200.0f)
-		gTopCamDist = 2200.0f;
-	
-	
-			/* SET CAM COORD */
-			
-	if (!gFreezeCameraFromXZ)
-	{
-		from.x = gPlayerInfo.coord.x;
-		from.z = gPlayerInfo.coord.z + (.35f * gTopCamDist);
-	}
-	else
-	{
-		from.x = gPlayerInfo.camera.cameraLocation.x;
-		from.z = gPlayerInfo.camera.cameraLocation.z;
-	}
-		
-	if (!gFreezeCameraFromY)
-		from.y = gPlayerInfo.coord.y + (.8f * gTopCamDist);
-	else
-		from.y = gPlayerInfo.camera.cameraLocation.y;
-	
-	
-	to.x = gPlayerInfo.coord.x;
-	to.y = gPlayerInfo.coord.y;
-	to.z = gPlayerInfo.coord.z;
-
-	
-		/* PIN SO DOESN'T GET TOO CLOSE TO FENCE */
-			
-//	if (from.z < 2000.0f)
-//		from.z = 2000.0f;
-//	else
-	if (from.z > 30500.0f)
-		from.z = 30500.0f;
-		
-//	gScratch = from.z;	//-------
-	
-	
-				/* UPDATE */
-
-	OGL_UpdateCameraFromToUp(&from, &to, &up);
-				
-	gPlayerInfo.camera.cameraLocation = from;
-	gPlayerInfo.camera.pointOfInterest = to;
-}
 
 
 #pragma mark -
@@ -1100,10 +1004,4 @@ float		sep = gAnaglyphEyeSeparation;
 	
 	
 }
-
-
-
-
-
-
 

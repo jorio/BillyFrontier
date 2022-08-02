@@ -123,10 +123,9 @@ do_again:
 
 static void SetupMainMenuScreen(void)
 {
-FSSpec				spec;
 OGLSetupInputType	viewDef;
-const static OGLVector3D	fillDirection1 = { -.7, .9, -1.0 };
-const static OGLVector3D	fillDirection2 = { .3, .8, 1.0 };
+static const OGLVector3D	fillDirection1 = { -.7, .9, -1.0 };
+static const OGLVector3D	fillDirection2 = { .3, .8, 1.0 };
 int					i;
 
 	if (gCurrentSong != SONG_THEME)

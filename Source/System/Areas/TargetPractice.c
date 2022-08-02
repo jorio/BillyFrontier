@@ -19,9 +19,6 @@ static void MoveEverything_TargetPractice(void);
 static void CleanupTargetPractice(void);
 static void InitTargetPracticeArea(void);
 
-static ObjNode *CreateBullet(OGLPoint3D *muzzleCoord, OGLVector3D *aim, OGLPoint3D *bulletTargetCoord, ObjNode *bulletTargetObj, Boolean isPlayerBullet);
-static void MovePlayersBullet(ObjNode *theNode);
-
 static void UpdateTargetPracticeCrosshairs(void);
 static Boolean ShootPracticeBullet(void);
 static void MoveCrosshairsBullet(ObjNode *bullet);
@@ -998,8 +995,8 @@ OGLVector3D		splatVec;
 OGLMatrix4x4	m;
 int				i;
 
-	bullet;
-	
+	(void) bullet;
+
 	switch(orb->What)
 	{
 		case	WHAT_COINORB:

@@ -169,9 +169,7 @@ int 		i,n;
 
 void LoadSpriteGroup(int groupNum)
 {
-short			refNum;
 int				w,h;
-long			count;
 MOMaterialData	matData;
 
 	if (gNumSpritesInGroupList[groupNum] != 0)
@@ -198,7 +196,6 @@ MOMaterialData	matData;
 	{
 		char path[64];
 		snprintf(path, sizeof(path), ":sprites:%s:%s%03d.png", kSpriteCollections[groupNum].name, kSpriteCollections[groupNum].name, i);
-		puts(path);
 
 		GLuint texture = OGL_TextureMap_LoadImageFile(path, &w, &h);
 

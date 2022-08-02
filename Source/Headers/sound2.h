@@ -91,7 +91,6 @@ extern void	KillSong(void);
 extern	short PlayEffect(short effectNum);
 short PlayEffect_Parms3D(short effectNum, const OGLPoint3D *where, u_long rateMultiplier, float volumeAdjust);
 extern void	ToggleMusic(void);
-extern void	DoSoundMaintenance(void);
 void LoadSoundBank(void);
 void DisposeSoundBank(void);
 short PlayEffect_Parms(short effectNum, u_long leftVolume, u_long rightVolume, unsigned long rateMultiplier);

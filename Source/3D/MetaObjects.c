@@ -16,13 +16,13 @@
 /*    PROTOTYPES            */
 /****************************/
 
-static MetaObjectPtr AllocateEmptyMetaObject(u_long type, u_long subType);
+static MetaObjectPtr AllocateEmptyMetaObject(uint32_t type, uint32_t subType);
 static void SetMetaObjectToGroup(MOGroupObject *groupObj);
-static void SetMetaObjectToGeometry(MetaObjectPtr mo, u_long subType, void *data);
-static void SetMetaObjectToMaterial(MOMaterialObject *matObj, MOMaterialData *inData);
-static void SetMetaObjectToVertexArrayGeometry(MOVertexArrayObject *geoObj, MOVertexArrayData *data);
-static void SetMetaObjectToMatrix(MOMatrixObject *matObj, OGLMatrix4x4 *inData);
-static void SetMetaObjectToPickID(MOPickIDObject *pickObj, u_long pickID);
+static void SetMetaObjectToGeometry(MetaObjectPtr mo, uint32_t subType, const void *data);
+static void SetMetaObjectToMaterial(MOMaterialObject *matObj, const MOMaterialData *inData);
+static void SetMetaObjectToVertexArrayGeometry(MOVertexArrayObject *geoObj, const MOVertexArrayData *data);
+static void SetMetaObjectToMatrix(MOMatrixObject *matObj, const OGLMatrix4x4 *inData);
+static void SetMetaObjectToPickID(MOPickIDObject *pickObj, uint32_t pickID);
 static void MO_DetachFromLinkedList(MetaObjectPtr obj);
 static void MO_DisposeObject_Group(MOGroupObject *group);
 static void MO_DeleteObjectInfo_Material(MOMaterialObject *obj);
@@ -30,7 +30,7 @@ static void MO_CalcBoundingBox_Recurse(MetaObjectPtr object, OGLBoundingBox *bBo
 static void SetMetaObjectToPicture(MOPictureObject *pictObj, const char* path, int destPixelFormat);
 static void MO_DeleteObjectInfo_Picture(MOPictureObject *obj);
 
-static void SetMetaObjectToSprite(MOSpriteObject *spriteObj, MOSpriteSetupData *inData);
+static void SetMetaObjectToSprite(MOSpriteObject *spriteObj, const MOSpriteSetupData *inData);
 static void MO_DisposeObject_Sprite(MOSpriteObject *obj);
 
 static void MO_CalcBoundingSphere_Recurse(MetaObjectPtr object, float *bSphere);
@@ -54,7 +54,7 @@ int					gNumMetaObjects = 0;
 
 float				gGlobalTransparency = 1;			// 0 == clear, 1 = opaque
 OGLColorRGB			gGlobalColorFilter = {1,1,1};
-u_long				gGlobalMaterialFlags = 0;
+uint32_t			gGlobalMaterialFlags = 0;
 
 MOMaterialObject	*gMostRecentMaterial;
 
@@ -79,7 +79,7 @@ void MO_InitHandler(void)
 //
 
 
-MetaObjectPtr	MO_CreateNewObjectOfType(uint32_t type, uintptr_t subType, void *data)
+MetaObjectPtr	MO_CreateNewObjectOfType(uint32_t type, uint32_t subType, const void *data)
 {
 MetaObjectPtr	mo;
 
@@ -135,7 +135,7 @@ MetaObjectPtr	mo;
 // allocates an empty meta object and connects it to the linked list
 //
 
-static MetaObjectPtr AllocateEmptyMetaObject(u_long type, u_long subType)
+static MetaObjectPtr AllocateEmptyMetaObject(uint32_t type, uint32_t subType)
 {
 MetaObjectHeader	*mo;
 int					size;
@@ -200,7 +200,6 @@ int					size;
 	mo->data 		= nil;
 	mo->nextNode 	= nil;		
 	mo->refCount	= 1;							// initial reference count is always 1
-	mo->parentGroup = nil;
 
 
 		/***************************/
@@ -251,7 +250,7 @@ static void SetMetaObjectToGroup(MOGroupObject *groupObj)
 // INPUT:	mo = meta object which has already been allocated and added to linked list.
 //
 
-static void SetMetaObjectToGeometry(MetaObjectPtr mo, u_long subType, void *data)
+static void SetMetaObjectToGeometry(MetaObjectPtr mo, uint32_t subType, const void *data)
 {
 	switch(subType)
 	{
@@ -274,23 +273,19 @@ static void SetMetaObjectToGeometry(MetaObjectPtr mo, u_long subType, void *data
 // any referenced items.
 //
 
-static void SetMetaObjectToVertexArrayGeometry(MOVertexArrayObject *geoObj, MOVertexArrayData *data)
+static void SetMetaObjectToVertexArrayGeometry(MOVertexArrayObject *geoObj, const MOVertexArrayData *data)
 {
-int	i;
-		
 			/* INIT THE DATA */
-		
+
 	geoObj->objectData = *data;									// copy from input data		
 
-	
 		/* INCREASE MATERIAL REFERENCE COUNTS */
-			
-	for (i = 0; i < data->numMaterials; i++)
+
+	for (int i = 0; i < data->numMaterials; i++)
 	{
 		if (data->materials[i] != nil)				// make sure this material ref is valid
 			MO_GetNewReference(data->materials[i]);
-	}		
-		
+	}
 }
 
 
@@ -301,11 +296,10 @@ int	i;
 // This takes the given input data and copies it. 
 //
 
-static void SetMetaObjectToMaterial(MOMaterialObject *matObj, MOMaterialData *inData)
-{	
-	
+static void SetMetaObjectToMaterial(MOMaterialObject *matObj, const MOMaterialData *inData)
+{
 		/* COPY INPUT DATA */
-		
+
 	matObj->objectData = *inData;
 
 #if 0
@@ -319,8 +313,7 @@ static void SetMetaObjectToMaterial(MOMaterialObject *matObj, MOMaterialData *in
 			glTexCoord2f(0,1); glVertex3f(0,0,1000);
 			glEnd();
 		}	
-#endif		
-
+#endif
 }
 
 
@@ -331,11 +324,10 @@ static void SetMetaObjectToMaterial(MOMaterialObject *matObj, MOMaterialData *in
 // This takes the given input data and copies it. 
 //
 
-static void SetMetaObjectToMatrix(MOMatrixObject *matObj, OGLMatrix4x4 *inData)
-{	
-	
+static void SetMetaObjectToMatrix(MOMatrixObject *matObj, const OGLMatrix4x4 *inData)
+{
 		/* COPY INPUT DATA */
-		
+
 	matObj->matrix = *inData;
 }
 
@@ -384,7 +376,7 @@ MOMaterialData	matData;
 // This takes the given input data and copies it. 
 //
 
-static void SetMetaObjectToSprite(MOSpriteObject *spriteObj, MOSpriteSetupData *inData)
+static void SetMetaObjectToSprite(MOSpriteObject *spriteObj, const MOSpriteSetupData *inData)
 {
 MOSpriteData	*spriteData = &spriteObj->objectData;
 
@@ -392,7 +384,9 @@ MOSpriteData	*spriteData = &spriteObj->objectData;
 		/* CREATE MATERIAL OBJECT FROM FSSPEC */
 
 	if (inData->loadFile)
-	{			
+	{
+		IMPLEMENT_ME();
+#if 0
 		GLint	destPixelFormat = inData->pixelFormat;									// use passed in format
 		
 		spriteData->material = MO_GetTextureFromFile(&inData->spec, destPixelFormat);
@@ -400,6 +394,7 @@ MOSpriteData	*spriteData = &spriteObj->objectData;
 		spriteData->width = spriteData->material->objectData.width;						// get dimensions of the texture
 		spriteData->height = spriteData->material->objectData.width;
 		spriteData->aspectRatio = spriteData->height / spriteData->width;				// calc aspect ratio
+#endif
 	}
 	
 			/* GET MATERIAL FROM SPRITE LIST */
@@ -444,7 +439,7 @@ MOSpriteData	*spriteData = &spriteObj->objectData;
 // This takes the given input data and copies it. 
 //
 
-static void SetMetaObjectToPickID(MOPickIDObject *pickObj, u_long pickID)
+static void SetMetaObjectToPickID(MOPickIDObject *pickObj, uint32_t pickID)
 {	
 	
 		/* COPY INPUT DATA */
@@ -452,34 +447,6 @@ static void SetMetaObjectToPickID(MOPickIDObject *pickObj, u_long pickID)
 	pickObj->pickID = pickID;
 }
 
-
-
-
-#pragma mark -
-
-/*************** SET PICTURE OBJECT COORDS TO MOUSE *******************/
-
-void MO_SetPictureObjectCoordsToMouse(MOPictureObject *obj)
-{
-#if 1
-	IMPLEMENT_ME();
-#else
-MOPictureData	*picData = &obj->objectData;				//  point to pic obj's data
-Point			pt;
-int				x,y,w,h;
-
-	SetPort(gDisplayContextGrafPtr);
-	GetMouseCoord(&pt);										// get mouse screen coords	
-
-			/* CONVERT SCREEN COORD TO OPENGL COORD */
-			
-	OGL_GetCurrentViewport(info, &x, &y, &w, &h);
-	
-	
-	picData->drawCoord.x = -1.0f + (float)pt.h / (float)w * 2.0f;
-	picData->drawCoord.y = 1.0f - (float)pt.v / (float)h * 2.0f;
-#endif
-}
 
 
 #pragma mark -
@@ -1853,164 +1820,6 @@ float				d;
 #pragma mark -
 
 
-
-/******************* MO: GET TEXTURE FROM FILE ************************/
-
-MOMaterialObject *MO_GetTextureFromFile(FSSpec *spec, int destPixelFormat)
-{
-	IMPLEMENT_ME();
-	return NULL;
-#if 0
-MetaObjectPtr	obj;
-MOMaterialData	matData;
-int				width,height,depth,destDepth;
-GWorldPtr 		pGWorld;
-PixMapHandle 	hPixMap;
-Ptr				buffer;
-Ptr 			pictMapAddr;
-u_long 			pictRowBytes,y,x;
-Boolean			destHasAlpha;
-Rect			r;
-
-		/*******************************/
-		/* CREATE TEXTURE PIXEL BUFFER */
-		/*******************************/
-
-	switch(destPixelFormat)
-	{
-		case	GL_RGB:	
-				destHasAlpha 	= false;
-				destDepth 		= 32;
-				break;
-
-		case	GL_RGBA:	
-				destHasAlpha 	= true;
-				destDepth 		= 32;
-				break;
-	
-		case	GL_RGB5_A1:
-				destHasAlpha 	= true;
-				destDepth 		= 16;
-				break;
-	}
-
-
-		/* LOAD PICTURE INTO GWORLD */
-	
-	if (DrawPictureIntoGWorld(spec , &pGWorld, 32))			//--- for now, must be 32bit for OpenGL internal b/c 16bit not supported
-		DoFatalAlert("MO_GetTextureFromFile: DrawPictureIntoGWorld failed!");
-	
-
-			/* GET GWORLD INFO */
-			
-	GetPortBounds(pGWorld, &r);
-			
-	width = r.right - r.left;		// get width/height
-	height = r.bottom - r.top;
-	
-	if ((!IsPowerOf2(width)) || (!IsPowerOf2(height)))				// make sure its a power of 2
-		DoFatalAlert("MO_GetTextureFromFile: dimensions not power of 2");
-	
-	hPixMap = GetGWorldPixMap(pGWorld);								// get gworld's pixmap
-	depth = (*hPixMap)->pixelSize;									// get gworld pixel bitdepth
-
-
-		/*************************************/
-		/* CREATE TEXTURE OBJECT FROM PIXELS */
-		/*************************************/
-
-		/* COPY PIXELS FROM GWORLD INTO BUFFER */
-		
-	buffer = AllocPtr(width * height * 4);							// alloc enough for a 32bit texture
-	if (buffer == nil)
-		DoFatalAlert("MO_GetTextureFromResource: AllocPtr failed!");
-
-	pictMapAddr = GetPixBaseAddr(hPixMap);
-	pictRowBytes = (u_long)(**hPixMap).rowBytes & 0x3fff;
-	pictMapAddr += pictRowBytes * (height-1);						// start @ bottom to flip texture
-
-
-			/* COPY 32-BIT */
-
-	if (depth == 32)
-	{
-		u_long	r,g,b,a;	
-		u_long	pixels, *dest, *src;
-
-		src = (u_long *)pictMapAddr;
-		dest = (u_long *)buffer;
-		
-		for (y = 0; y < height; y++)
-		{		
-			for (x = 0; x < width; x++)
-			{
-				pixels = src[x];	
-				if (destHasAlpha && (destDepth == 32))		// see if use file's alpha channel for 32bit destinations
-					a = (pixels & 0xff000000) >> 24;
-				else										// otherwise just do 0 or ff
-				{
-					if (pixels == 0)
-						a = 0;
-					else
-						a = 0xff;
-				}
-				r = (pixels & 0x00ff0000) >> 16;
-				g = (pixels & 0x0000ff00) >> 8;
-				b = pixels & 0xff;
-				
-				dest[x] = (r << 24) | (g << 16) | (b << 8) | a;
-			}
-			dest += width;
-			src -= pictRowBytes/4;
-		}
-	}
-	
-		/* COPY 16-BIT */
-		
-	else
-	{
-		DoFatalAlert("MO_GetTextureFromFile: 16 bit textures not supported yet.");
-		//-------- TODO
-	}
-
-	DisposeGWorld (pGWorld);
-
-
-			/* CREATE NEW TEXTURE OBJECT */
-
-	matData.setupInfo		= setupInfo;
-	matData.flags			= BG3D_MATERIALFLAG_TEXTURED;
-	matData.diffuseColor.r	= 1;
-	matData.diffuseColor.g	= 1;
-	matData.diffuseColor.b	= 1;
-	matData.diffuseColor.a	= 1;
-	
-	matData.numMipmaps		= 1;
-	matData.width			= width;
-	matData.height			= height;
-	
-	if (depth == 32)
-		matData.pixelSrcFormat	= GL_RGBA;
-	else
-	{
-		DoFatalAlert("MO_GetTextureFromFile: 16 bit textures not supported yet.");
-		//-------- TODO	
-	}
-	
-	matData.pixelDstFormat	= destPixelFormat;
-	matData.texturePixels[0]= nil;						// we're going to preload
-	matData.textureName[0] 	= OGL_TextureMap_Load(buffer, width, height,
-												 matData.pixelSrcFormat,
-												 destPixelFormat, GL_UNSIGNED_BYTE);
-	
-	obj = MO_CreateNewObjectOfType(MO_TYPE_MATERIAL, 0, &matData);
-	
-	SafeDisposePtr(buffer);									// dispose of our copy of the buffer
-	
-	return(obj);
-#endif
-}
-
 /*************** MO: GEOMETRY OFFSET UVS *********************/
 
 void MO_Geometry_OffserUVs(short group, short type, short geometryNum, float du, float dv)
@@ -2146,154 +1955,3 @@ MOVertexArrayObject	*vObj;
 		uvPtr[i].v += dv;	
 	}
 }
-
-
-#pragma mark -
-
-
-/**************************** MO: LOAD TEXTURE OBJECT FROM FILE *************************/
-//
-// Takes the input image file and converts it into a 32-bit texture material object
-//
-
-MOMaterialObject *MO_LoadTextureObjectFromFile(FSSpec *spec, Boolean useAlpha)
-{
-	IMPLEMENT_ME_SOFT();
-	return NULL;
-#if 0
-GWorldPtr		gworld = nil;
-OSErr			iErr;
-Rect			r;
-Ptr				buffer;
-Ptr				pictMapAddr;
-u_long			pictRowBytes,x,y;
-PixMapHandle 	hPixMap;
-int				width,height;
-u_long			*destPtr,*srcPtr;
-MOMaterialObject	*obj;
-
-
-			/* DRAW PICTURE INTO A GWORLD */
-			
-	iErr = DrawPictureIntoGWorld(spec, &gworld, 32);
-	if (iErr)
-	{
-		DoAlert("MO_LoadTextureObjectFromFile: something went wrong");
-		return(nil);
-	}
-
-			/* COPY GWORLD INTO BUFFER */
-			
-	GetPortBounds(gworld, &r);
-	width = r.right - r.left;												// get width/height
-	height = r.bottom - r.top;
-	
-	if ((!IsPowerOf2(width)) || (!IsPowerOf2(height)))						// make sure texture is power of 2
-	{
-		DoAlert("MO_LoadTextureObjectFromFile:  texture dimensions are not power of 2");
-		DisposeGWorld(gworld);
-		return(nil);
-	}
-	
-	
-	buffer = AllocPtr(width * height * 4);									// allocate buffer
-	destPtr = (u_long *)buffer;
-	destPtr += (height-1) * width;											// start ptr at bottom of buffer
-	
-	hPixMap = GetGWorldPixMap(gworld);										// get gworld's pixmap
-	pictMapAddr = GetPixBaseAddr(hPixMap);
-	pictRowBytes = (u_long)(**hPixMap).rowBytes & 0x3fff;
-	
-	srcPtr = (u_long *)pictMapAddr;
-	
-	for (y = 0; y < height; y++)
-	{	
-		for (x = 0; x < width; x++)
-		{
-			u_long	r,g,b,a;	
-			u_long pixels = srcPtr[x];										// get 32-bit pixel
-	
-			if (useAlpha)			
-				a = (pixels & 0xff000000) >> 24;
-			else
-				a = 0xff;
-				
-			r = (pixels & 0x00ff0000) >> 16;
-			g = (pixels & 0x0000ff00) >> 8;
-			b = pixels & 0xff;
-	
-			destPtr[x] = (r << 24) | (g << 16) | (b << 8) | a;				// save pixel after twizzling components
-		}
-		destPtr -= width;
-		srcPtr += pictRowBytes/4;
-		
-	}
-
-			/***************************/
-			/* CREATE A TEXTURE OBJECT */
-			/***************************/
-
-	obj = MO_CreateTextureObjectFromBuffer(r.right, r.bottom, buffer);
-
-
-		/* CLEAN UP */
-		
-	DisposeGWorld(gworld);
-	
-	return(obj);
-#endif
-}
-
-
-
-/****************** MO:  CREATE TEXTURE OBJECT FROM BUFFER **************************/
-
-MOMaterialObject *MO_CreateTextureObjectFromBuffer(int width, int height, Ptr buffer)
-{
-MOMaterialData	data;
-MOMaterialObject	*obj;
-
-
-			/***************************/
-			/* CREATE A TEXTURE OBJECT */
-			/***************************/
-
-		/* INIT NEW MATERIAL DATA */
-
-	data.drawContext			= gAGLContext;							// remember which draw context this material is assigned to
-	data.flags 					= BG3D_MATERIALFLAG_TEXTURED;
-	data.width					= width;
-	data.height					= height;
-	data.multiTextureMode		= MULTI_TEXTURE_MODE_REFLECTIONSPHERE;
-	data.multiTextureCombine	= MULTI_TEXTURE_COMBINE_MODULATE;
-	data.envMapNum				= 0;
-	data.diffuseColor.r			= 1;
-	data.diffuseColor.g			= 1;
-	data.diffuseColor.b			= 1;
-	data.diffuseColor.a			= 1;
-	data.numMipmaps				= 1;
-	data.pixelSrcFormat			= GL_RGBA;
-	data.pixelDstFormat			= GL_RGBA;
-	data.texturePixels[0] 		= buffer;								// keep a ptr to the original buffer so we can write it to a file if needed
-	data.textureName[0] 		= OGL_TextureMap_Load(buffer, width, height,
-												 data.pixelSrcFormat, data.pixelDstFormat, GL_UNSIGNED_BYTE);
-
-	/* CREATE NEW MATERIAL OBJECT */
-			
-	obj = MO_CreateNewObjectOfType(MO_TYPE_MATERIAL, 0, &data);
-
-
-	return(obj);
-
-}
-
-
-
-
-
-
-
-
-
-
-

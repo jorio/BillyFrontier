@@ -101,11 +101,7 @@ typedef struct
 /*     VARIABLES      */
 /**********************/
 
-static	Str255		gBasePathName = "NewGame";
-
 float	g3DTileSize, g3DMinY, g3DMaxY;
-
-static 	FSSpec		gSavedGameSpec;
 
 
 
@@ -232,7 +228,6 @@ const char*	fileNames[MAX_SKELETON_TYPES] =
 static void ReadDataFromSkeletonFile(SkeletonDefType *skeleton, FSSpec *fsSpec, int skeletonType)
 {
 Handle				hand;
-int					i,k,j;
 long				numJoints = 0;
 long				numAnims = 0;
 AnimEventType		*animEventPtr;
@@ -297,7 +292,7 @@ SkeletonFile_AnimHeader_Type	*animHeaderPtr;
 		/*  READ BONE DEFINITION RESOURCES */
 		/***********************************/
 
-	for (i=0; i < numJoints; i++)
+	for (int i = 0; i < numJoints; i++)
 	{
 		File_BoneDefinitionType	*bonePtr;
 		uint16_t				*indexPtr;
@@ -339,7 +334,7 @@ SkeletonFile_AnimHeader_Type	*animHeaderPtr;
 
 			/* COPY POINT INDEX ARRAY INTO BONE STRUCT */
 
-		for (j=0; j < skeleton->Bones[i].numPointsAttachedToBone; j++)
+		for (int j = 0; j < skeleton->Bones[i].numPointsAttachedToBone; j++)
 			skeleton->Bones[i].pointList[j] = Byteswap16(&indexPtr[j]);
 		ReleaseResource(hand);
 
@@ -354,7 +349,7 @@ SkeletonFile_AnimHeader_Type	*animHeaderPtr;
 
 			/* COPY NORMAL INDEX ARRAY INTO BONE STRUCT */
 
-		for (j=0; j < skeleton->Bones[i].numNormalsAttachedToBone; j++)
+		for (int j = 0; j < skeleton->Bones[i].numNormalsAttachedToBone; j++)
 			skeleton->Bones[i].normalList[j] = Byteswap16(&indexPtr[j]);
 		ReleaseResource(hand);
 	}
@@ -374,13 +369,13 @@ SkeletonFile_AnimHeader_Type	*animHeaderPtr;
 	HLock(hand);
 	pointPtr = (OGLPoint3D *)*hand;
 
-	i = GetHandleSize(hand) / sizeof(OGLPoint3D);
+	int numDecomposedPointsDeducted = GetHandleSize(hand) / sizeof(OGLPoint3D);
 	BYTESWAP_HANDLE("fff", OGLPoint3D, skeleton->numDecomposedPoints, hand);
 
-	if (i != skeleton->numDecomposedPoints)
+	if (numDecomposedPointsDeducted != skeleton->numDecomposedPoints)
 		DoFatalAlert("# of points in Reference Model has changed!");
 	else
-		for (i = 0; i < skeleton->numDecomposedPoints; i++)
+		for (int i = 0; i < skeleton->numDecomposedPoints; i++)
 			skeleton->decomposedPointList[i].boneRelPoint = pointPtr[i];
 
 	ReleaseResource(hand);
@@ -390,7 +385,7 @@ SkeletonFile_AnimHeader_Type	*animHeaderPtr;
 			/* READ ANIM INFO   */
 			/*********************/
 
-	for (i=0; i < numAnims; i++)
+	for (int i = 0; i < numAnims; i++)
 	{
 				/* READ ANIM HEADER */
 
@@ -411,7 +406,7 @@ SkeletonFile_AnimHeader_Type	*animHeaderPtr;
 			DoFatalAlert("Error reading anim-event data resource!");
 		BYTESWAP_HANDLE("hbb", AnimEventType, skeleton->NumAnimEvents[i], hand);
 		animEventPtr = (AnimEventType *)*hand;
-		for (j=0;  j < skeleton->NumAnimEvents[i]; j++)
+		for (int j = 0;  j < skeleton->NumAnimEvents[i]; j++)
 			skeleton->AnimEventsList[i][j] = *animEventPtr++;
 		ReleaseResource(hand);		
 
@@ -421,13 +416,13 @@ SkeletonFile_AnimHeader_Type	*animHeaderPtr;
 		hand = GetResource('NumK',1000+i);									// read array of #'s for this anim
 		if (hand == nil)
 			DoFatalAlert("Error reading # keyframes/joint resource!");
-		for (j=0; j < numJoints; j++)
+		for (int j = 0; j < numJoints; j++)
 			skeleton->JointKeyframes[j].numKeyFrames[i] = (*hand)[j];
 		ReleaseResource(hand);
 	}
 
 
-	for (j=0; j < numJoints; j++)
+	for (int j = 0; j < numJoints; j++)
 	{
 				/* ALLOC 2D ARRAY FOR KEYFRAMES */
 				
@@ -437,8 +432,8 @@ SkeletonFile_AnimHeader_Type	*animHeaderPtr;
 			DoFatalAlert("ReadDataFromSkeletonFile: Error allocating Keyframe Array.");
 
 					/* READ THIS JOINT'S KF'S FOR EACH ANIM */
-					
-		for (i=0; i < numAnims; i++)								
+
+		for (int i = 0; i < numAnims; i++)
 		{
 			unsigned int numKeyframes = skeleton->JointKeyframes[j].numKeyFrames[i];		// get actual # of keyframes for this joint
 			if (numKeyframes > MAX_KEYFRAMES)
@@ -451,12 +446,11 @@ SkeletonFile_AnimHeader_Type	*animHeaderPtr;
 				DoFatalAlert("Error reading joint keyframes resource!");
 			BYTESWAP_HANDLE("ii3f3f3f", JointKeyframeType, numKeyframes, hand);
 			keyFramePtr = (JointKeyframeType *)*hand;
-			for (k = 0; k < numKeyframes; k++)												// copy this joint's keyframes for this anim
+			for (unsigned int k = 0; k < numKeyframes; k++)									// copy this joint's keyframes for this anim
 				skeleton->JointKeyframes[j].keyFrames[i][k] = *keyFramePtr++;
 			ReleaseResource(hand);		
 		}
 	}
-	
 }
 
 #pragma mark -
@@ -642,89 +636,6 @@ void SavePrefs(void)
 	SaveUserDataFile("Prefs", PREFS_MAGIC, sizeof(PrefsType), (Ptr)&gGamePrefs);
 
 	//memcpy(&gDiskShadowPrefs, &gGamePrefs, sizeof(gGamePrefs));
-}
-
-
-#pragma mark -
-
-
-
-
-/**************** DRAW PICTURE INTO GWORLD ***********************/
-//
-// Uses Quicktime to load any kind of picture format file and draws
-// it into the GWorld
-//
-//
-// INPUT: myFSSpec = spec of image file
-//
-// OUTPUT:	theGWorld = gworld contining the drawn image.
-//
-
-OSErr DrawPictureIntoGWorld(FSSpec *myFSSpec, GWorldPtr *theGWorld, short depth)
-{
-#if 1
-	IMPLEMENT_ME_SOFT();
-	return unimpErr;
-#else
-OSErr						iErr;
-GraphicsImportComponent		gi;
-Rect						r;
-ComponentResult				result;
-PixMapHandle 				hPixMap;
-	
-
-			/* PREP IMPORTER COMPONENT */
-			
-	result = GetGraphicsImporterForFile(myFSSpec, &gi);		// load importer for this image file
-	if (result != noErr)
-	{
-		DoAlert("DrawPictureIntoGWorld: GetGraphicsImporterForFile failed!  You do not have Quicktime properly installed, reinstall Quicktime and do a FULL install.");
-		return(result);
-	}
-	if (GraphicsImportGetBoundsRect(gi, &r) != noErr)		// get dimensions of image
-		DoFatalAlert("DrawPictureIntoGWorld: GraphicsImportGetBoundsRect failed!");
-
-
-			/* MAKE GWORLD */
-	
-	iErr = NewGWorld(theGWorld, depth, &r, nil, nil, 0);					// try app mem
-	if (iErr)
-	{
-		DoAlert("DrawPictureIntoGWorld: using temp mem");
-		iErr = NewGWorld(theGWorld, depth, &r, nil, nil, useTempMem);		// try sys mem
-		if (iErr)
-		{
-			DoAlert("DrawPictureIntoGWorld: MakeMyGWorld failed");
-			return(1);
-		}
-	}
-
-	if (depth == 32)
-	{
-		hPixMap = GetGWorldPixMap(*theGWorld);				// get gworld's pixmap
-		(**hPixMap).cmpCount = 4;							// we want full 4-component argb (defaults to only rgb)
-	}
-
-
-			/* DRAW INTO THE GWORLD */
-	
-	DoLockPixels(*theGWorld);	
-	GraphicsImportSetGWorld(gi, *theGWorld, nil);			// set the gworld to draw image into
-	GraphicsImportSetQuality(gi,codecLosslessQuality);		// set import quality
-
-	result = GraphicsImportDraw(gi);						// draw into gworld
-	CloseComponent(gi);										// cleanup
-	if (result != noErr)
-	{
-		DoAlert("DrawPictureIntoGWorld: GraphicsImportDraw failed!");
-		ShowSystemErr(result);
-		DisposeGWorld (*theGWorld);
-		*theGWorld= nil;
-		return(result);
-	}
-	return(noErr);
-#endif
 }
 
 
@@ -1166,7 +1077,7 @@ Ptr						tempBuffer16 = nil;
 		size_t decompressedSize = LZSS_Decode(fRefNum, tempBuffer16, compressedSize);
 		width = SUPERTILE_TEXMAP_SIZE;
 		height = SUPERTILE_TEXMAP_SIZE;
-		GAME_ASSERT(decompressedSize == 2 * width * height);
+		GAME_ASSERT(decompressedSize == (size_t)(2 * width * height));
 		ByteswapInts(sizeof(uint16_t), width*height, tempBuffer16);
 
 
@@ -1232,9 +1143,11 @@ Ptr						tempBuffer16 = nil;
 Boolean SaveGame(void)
 {
 SaveGameType	saveData;
+#if 0
 short			fRefNum;
 FSSpec			*specPtr;
 long			count, i;
+#endif
 Boolean			success = false;
 
 	Enter2D(true);
@@ -1247,7 +1160,7 @@ Boolean			success = false;
 	saveData.score 			= gScore;
 	saveData.numLives 		= gPlayerInfo.lives;
 
-	for (i = 0; i < NUM_LEVELS; i++)
+	for (int i = 0; i < NUM_LEVELS; i++)
 	{
 		saveData.levels[i] = gLevelWon[i];
 		saveData.duels[i] = gDuelWon[i];
@@ -1319,9 +1232,11 @@ bail:
 
 Boolean LoadSavedGame(void)
 {
+#if 0
 SaveGameType	saveData;
 short			fRefNum;
 long			count, i;
+#endif
 Boolean			success = false;
 
 	Enter2D(true);

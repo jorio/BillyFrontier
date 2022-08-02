@@ -418,7 +418,7 @@ static Boolean OGL_LineSegGetHitInfo_Skeleton(OGLPoint3D *p1, OGLPoint3D *p2, Ob
 {
 short		i,numTriMeshes;
 short			skelType;
-OGLPoint3D	where;
+OGLPoint3D	where = {0,0,0};
 float		thisDist, bestDist = 100000000;
 Boolean		gotHit = false;
 

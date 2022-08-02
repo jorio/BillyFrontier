@@ -280,7 +280,7 @@ void OGL_PopState(void);
 void OGL_EnableLighting(void);
 void OGL_DisableLighting(void);
 
-void OGL_DrawString(Str255 s, GLint x, GLint y);
+void OGL_DrawString(const char* s, GLint x, GLint y);
 void OGL_DrawFloat(float f, GLint x, GLint y);
 void OGL_DrawInt(int f, GLint x, GLint y);
 

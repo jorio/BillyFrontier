@@ -534,11 +534,12 @@ OGLPoint3D			pt;
 //
 
 static void WalkerMissileHitByBullet(ObjNode *bullet, ObjNode *missile, const OGLPoint3D *impactPt)
-{				
-	PlayEffect3D(EFFECT_BULLETHITMETAL, impactPt);			
-	
-	ExplodeMissile(missile);
+{
+	(void) bullet;
 
+	PlayEffect3D(EFFECT_BULLETHITMETAL, impactPt);			
+
+	ExplodeMissile(missile);
 }
 
 
@@ -570,6 +571,8 @@ static void ExplodeMissile(ObjNode *missile)
 static void WalkerHitByBullet(ObjNode *bullet, ObjNode *enemy, const OGLPoint3D *impactPt)
 {
 ObjNode	*walker;
+
+	(void) bullet;
 
 				/* FIND THE WALKER HEAD OBJ */
 				

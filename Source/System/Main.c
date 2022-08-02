@@ -40,7 +40,7 @@ float				gGravity = NORMAL_GRAVITY;
 
 Byte				gDebugMode = 0;				// 0 == none, 1 = fps, 2 = all
 
-u_long				gAutoFadeStatusBits;
+uint32_t			gAutoFadeStatusBits;
 short				gMainAppRezFile;
 
 OGLSetupOutputType		*gGameViewInfoPtr = nil;
@@ -51,20 +51,16 @@ extern FSSpec				gDataSpec;
 
 
 
-u_long				gGameFrameNum = 0;
+uint32_t			gGameFrameNum = 0;
 
 Boolean				gPlayingFromSavedGame = false;
 Boolean				gGameOver = false;
 Boolean				gWonGame, gLostGame;
 Boolean				gLevelCompleted = false;
-Boolean				gWonLevel = false;
 float				gLevelCompletedCoolDownTimer = 0;
 int					gCurrentArea;
 
-int					gScratch = 0;
-float				gScratchF = 0;
-
-u_long				gScore,gLoadedScore;
+uint32_t			gScore,gLoadedScore;
 
 
 Boolean				gDuelWon[NUM_LEVELS];
@@ -82,7 +78,6 @@ Boolean				gLevelWon[NUM_LEVELS];
 void ToolBoxInit(void)
 {
 OSErr		iErr;
-long		createdDirID;
 
 	gMainAppRezFile = CurResFile();
 

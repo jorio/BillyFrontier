@@ -404,7 +404,7 @@ static void DrawFences(ObjNode *theNode)
 long			f,type;
 float			cameraX, cameraZ;
 
-	theNode;
+	(void) theNode;
 
 
 			/* GET CAMERA COORDS */

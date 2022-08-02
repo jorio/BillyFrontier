@@ -20,13 +20,6 @@ static void CleanupShootout(void);
 static void InitShootoutArea(void);
 static void CountShooutoutEnemies(void);
 
-static ObjNode *CreateBullet(OGLPoint3D *muzzleCoord, OGLVector3D *aim, OGLPoint3D *bulletTargetCoord, ObjNode *bulletTargetObj, Boolean isPlayerBullet);
-static void MovePlayersBullet(ObjNode *theNode);
-static void MoveEnemyBullet(ObjNode *theNode);
-
-static void CalcTargetPointAndAimOnEnemy(ObjNode *enemy, OGLPoint3D *muzzleCoord, OGLVector3D *aim, ObjNode *gun, OGLPoint3D *targetPt);
-static void CalcTargetPointAndAimOnPlayer(OGLPoint3D *muzzleCoord, OGLVector3D *aim, ObjNode *gun, OGLPoint3D *targetPt);
-
 static void MovePlayer_Shootout_Walk(ObjNode *player);
 static void MovePlayer_Shootout_Battle(ObjNode *player);
 

@@ -395,7 +395,7 @@ static void ShootoutBanditoHitByBulletCallback(ObjNode *bullet, ObjNode *enemy, 
 {
 OGLVector3D	splatVec;
 
-	bullet;
+	(void) bullet;
 
 			/* MAKE BULLET IMPACT SPLAT */
 			
@@ -417,10 +417,9 @@ OGLVector3D	splatVec;
 
 
 			/* DEC COUNTER & SEE IF READY TO PROCEED TO NEXT STOP POINT */
-						
+
 		DecEnemiesAtStopPoint();
 	}
-	
 }
 
 

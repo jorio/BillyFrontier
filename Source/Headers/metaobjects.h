@@ -2,11 +2,7 @@
 // metaobjects.h
 //
 
-#ifndef __METAOBJECTS_H_
-#define __METAOBJECTS_H_
-
-//Externals
-#include "game.h"
+#pragma once
 
 #define	MO_COOKIE				0xfeedface		// set at head of every object for validation
 #define	MAX_MATERIAL_LAYERS		2				// max multitexture layers
@@ -41,14 +37,12 @@ enum
 
 struct MetaObjectHeader
 {
-	u_long		cookie;						// this value should always == MO_COOKIE
-	long		refCount;					// # times this is referenced
-	u_long		type;						// object type
-	u_long		subType;					// object sub-type
+	uint32_t	cookie;						// this value should always == MO_COOKIE
+	int32_t		refCount;					// # times this is referenced
+	uint32_t	type;						// object type
+	uint32_t	subType;					// object sub-type
 	void		*data;						// pointer to meta object's specific data	
-	
-	struct MetaObjectHeader *parentGroup;			// illegal reference to parent group, or nil if no parent
-		
+
 	struct MetaObjectHeader *prevNode;			// ptr to previous node in linked list
 	struct MetaObjectHeader *nextNode;			// ptr to next node in linked list
 };
@@ -231,14 +225,14 @@ typedef struct
 typedef struct
 {
 	MetaObjectHeader	objectHeader;
-	u_long				pickID;
+	uint32_t			pickID;
 }MOPickIDObject;
 
 
 //-----------------------------
 
 void MO_InitHandler(void);
-MetaObjectPtr MO_CreateNewObjectOfType(uint32_t type, uintptr_t subType, void *data);
+MetaObjectPtr MO_CreateNewObjectOfType(uint32_t type, uint32_t subType, const void *data);
 MetaObjectPtr MO_GetNewReference(MetaObjectPtr mo);
 void MO_AppendToGroup(MOGroupObject *group, MetaObjectPtr newObject);
 void MO_AttachToGroupStart(MOGroupObject *group, MetaObjectPtr newObject);
@@ -252,16 +246,9 @@ void MO_DisposeObjectReference(MetaObjectPtr obj);
 void MO_DuplicateVertexArrayData(MOVertexArrayData *inData, MOVertexArrayData *outData);
 void MO_DeleteObjectInfo_Geometry_VertexArray(MOVertexArrayData *data);
 void MO_CalcBoundingBox(MetaObjectPtr object, OGLBoundingBox *bBox, OGLMatrix4x4 *m);
-MOMaterialObject *MO_GetTextureFromFile(FSSpec *spec, int destPixelFormat);
-void MO_SetPictureObjectCoordsToMouse(MOPictureObject *obj);
 
 void MO_DrawSprite(const MOSpriteObject *spriteObj);
 void MO_VertexArray_OffsetUVs(MetaObjectPtr object, float du, float dv);
 void MO_Object_OffsetUVs(MetaObjectPtr object, float du, float dv);
 void MO_Geometry_OffserUVs(short group, short type, short geometryNum, float du, float dv);
-MOMaterialObject *MO_LoadTextureObjectFromFile(FSSpec *spec, Boolean useAlpha);
-MOMaterialObject *MO_CreateTextureObjectFromBuffer(int width, int height, Ptr buffer);
 void MO_CalcBoundingSphere(MetaObjectPtr object, float *bSphere);
-
-
-#endif

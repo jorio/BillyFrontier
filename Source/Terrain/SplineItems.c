@@ -145,9 +145,10 @@ SplinePointType	*points;
 
 static Boolean NilPrime(long splineNum, SplineItemType *itemPtr)
 {
-	splineNum;
-	itemPtr;
-	return(false);
+	(void) splineNum;
+	(void) itemPtr;
+
+	return false;
 }
 
 

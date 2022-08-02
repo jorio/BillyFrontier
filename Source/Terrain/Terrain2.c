@@ -309,8 +309,11 @@ Boolean			flag;
 
 static Boolean NilAdd(TerrainItemEntryType *itemPtr,float x, float z)
 {
-	itemPtr; x; z;
-	return(false);
+	(void) itemPtr;
+	(void) x;
+	(void) z;
+
+	return false;
 }
 
 

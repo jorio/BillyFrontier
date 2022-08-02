@@ -29,26 +29,16 @@ static void MoveEnemyBullet(ObjNode *bullet);
 
 signed char	gNumEnemyOfKind[NUM_ENEMY_KINDS];
 int			gNumEnemies;
-int			gMaxEnemies;
 
 
 /*********************  INIT ENEMY MANAGER **********************/
 
 void InitEnemyManager(void)
 {
-short	i;
-
 	gNumEnemies = 0;
 
-//	if (gG4)					// tweak based on horsepower
-		gMaxEnemies = 20;
-//	else
-//		gMaxEnemies = 16;
-
-	for (i=0; i < NUM_ENEMY_KINDS; i++)
+	for (int i = 0; i < NUM_ENEMY_KINDS; i++)
 		gNumEnemyOfKind[i] = 0;
-
-
 }
 
 
@@ -307,13 +297,12 @@ int		i;
 
 void EnemyTouchedPlayer(ObjNode *enemy, ObjNode *player)
 {
-	player;
+	(void) player;
 	
 	switch(enemy->Kind)
 	{
 
 	}
-
 }
 
 

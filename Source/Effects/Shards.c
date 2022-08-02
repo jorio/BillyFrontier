@@ -359,9 +359,9 @@ OGLPoint3D			origin;
 void MoveShards(ObjNode *theNode)
 {
 float	ty,y,fps,x,z;
-	
-	theNode;
-	
+
+	(void) theNode;
+
 
 	if (gNumShards == 0)												// quick check if any particles at all
 		return;
@@ -438,8 +438,8 @@ void DrawShards(ObjNode *theNode)
 {
 long	i;
 
-	theNode;
-	
+	(void) theNode;
+
 	if (gNumShards == 0)												// quick check if any particles at all
 		return;
 

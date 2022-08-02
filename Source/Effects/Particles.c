@@ -32,8 +32,6 @@ static void DrawFlame(ObjNode *theNode);
 /*    CONSTANTS             */
 /****************************/
 
-#define	FIRE_BLAST_RADIUS			(gTerrainPolygonSize * 1.5f)
-
 #define	FIRE_TIMER	.05f
 #define	SMOKE_TIMER	.07f
 
@@ -49,9 +47,6 @@ static float	gGravitoidDistBuffer[MAX_PARTICLES][MAX_PARTICLES];
 NewParticleGroupDefType	gNewParticleGroupDef;
 
 short			gNumActiveParticleGroups = 0;
-
-
-#define	RippleTimer	SpecialF[0]
 
 
 #define FlameFrame Special[0]
@@ -77,14 +72,12 @@ void InitEffects(void)
 
 void InitParticleSystem(void)
 {
-short	i;
-FSSpec	spec;
 ObjNode	*obj;
-	
+
 
 			/* INIT GROUP ARRAY */
 
-	for (i = 0; i < MAX_PARTICLE_GROUPS; i++)
+	for (int i = 0; i < MAX_PARTICLE_GROUPS; i++)
 		gParticleGroups[i] = nil;
 
 	gNumActiveParticleGroups = 0;
@@ -351,7 +344,7 @@ float		decayRate,magnetism,fadeRate;
 OGLPoint3D	*coord;
 OGLVector3D	*delta;
 
-#pragma unused(theNode)
+	(void) theNode;
 
 	for (i = 0; i < MAX_PARTICLE_GROUPS; i++)
 	{
@@ -562,9 +555,7 @@ OGLPoint3D		v[4],*camCoords,*coord;
 static const OGLVector3D up = {0,1,0};
 OGLBoundingBox	bbox;
 
-#pragma unused(theNode)
-
-
+	(void) theNode;
 
 	v[0].z = 												// init z's to 0
 	v[1].z = 

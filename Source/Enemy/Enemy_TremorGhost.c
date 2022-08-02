@@ -297,7 +297,7 @@ static void ShootoutTremorGhostHitByBulletCallback(ObjNode *bullet, ObjNode *ene
 {
 OGLVector3D	splatVec;
 
-	bullet;
+	(void) bullet;
 
 			/* MAKE BULLET IMPACT SPLAT */
 			

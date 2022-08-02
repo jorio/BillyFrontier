@@ -329,7 +329,7 @@ long	f,i;
 float	fps = gFramesPerSecondFrac;
 float	ud1, uv1, ud2, uv2;
 
-#pragma unused(theNode)
+	(void) theNode;
 
 			/*******************/
 			/* DRAW EACH WATER */

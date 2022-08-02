@@ -16,7 +16,6 @@
 /*    PROTOTYPES            */
 /****************************/
 
-static void FlushObjectDeleteQueue(void);
 static void DrawShadow(ObjNode *theNode);
 
 static void MO_CalcWorldPoints_Object(ObjNode *theNode, const MetaObjectPtr object);

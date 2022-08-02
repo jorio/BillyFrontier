@@ -20,7 +20,6 @@ static void FreeScoreScreen(void);
 static void DrawHighScoresCallback(void);
 static void DrawHighScoresAndCursor(void);
 static void SetHighScoresSpriteState(void);
-static void MoveHighScoresCyc(ObjNode *theNode);
 static Boolean IsThisScoreInList(u_long score);
 static short AddNewScore(u_long newScore);
 static void SaveHighScores(void);
@@ -101,7 +100,7 @@ void NewScore(Boolean justShowScores)
 	
 			/* INIT */
 			
-	TurnOffISp();
+
 	LoadHighScores();										// make sure current scores are loaded
 	SetupScoreScreen();										// setup OGL
 	MakeFadeEvent(true);
@@ -205,9 +204,7 @@ void NewScore(Boolean justShowScores)
 		SaveHighScores();
 		
 	FreeScoreScreen();
-	
-	TurnOnISp();
-	
+
 	gAllowAudioKeys = true;
 }
 
@@ -216,7 +213,6 @@ void NewScore(Boolean justShowScores)
 
 static void SetupScoreScreen(void)
 {
-FSSpec				spec;
 OGLSetupInputType	viewDef;
 
 	gExitHighScores = false;
@@ -465,19 +461,8 @@ float	fps = gFramesPerSecondFrac;
 	gGlobalColorFilter.b = 1;
 
 	gGlobalTransparency = 1;
-}		
-
-
-
-/************************ MOVE HIGH SCORES CYC *******************************/
-
-static void MoveHighScoresCyc(ObjNode *theNode)
-{
-	theNode->Rot.y += gFramesPerSecondFrac * .07f;
-	theNode->Rot.z += gFramesPerSecondFrac * .05f;
-
-	UpdateObjectTransforms(theNode);
 }
+
 
 
 #pragma mark -

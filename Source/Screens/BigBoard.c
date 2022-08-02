@@ -65,10 +65,9 @@ void DoBigBoardScreen(void)
 
 static void SetupBigBoardScreen(void)
 {
-FSSpec				spec;
 OGLSetupInputType	viewDef;
-const static OGLVector3D	fillDirection1 = { -.7, .9, -1.0 };
-const static OGLVector3D	fillDirection2 = { .3, .8, 1.0 };
+static const OGLVector3D	fillDirection1 = { -.7, .9, -1.0 };
+static const OGLVector3D	fillDirection2 = { .3, .8, 1.0 };
 
 	if (gCurrentSong != SONG_THEME)
 		PlaySong(SONG_THEME, true);

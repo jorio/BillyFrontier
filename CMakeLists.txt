@@ -145,27 +145,8 @@ if(NOT MSVC)
 		-Wno-unknown-pragmas
 		$<$<CXX_COMPILER_ID:GNU>:-Wno-unused-but-set-variable>
 		-Werror=return-type
-		-Wno-unused-parameter
-		-Wno-unused-function #-------------
-		-Wno-unused-variable #----
 		-Wno-missing-braces #----
-		-Wno-parentheses #----
-		-Wno-implicit-function-declaration #----
-		-Wno-incompatible-pointer-types #----
-		-Wno-sign-compare #----
-		-Wno-int-conversion #----
-		-Wno-pointer-sign #----
-		-Wno-shadow #----
-		-Wno-unused-value #----
-		-Wno-unused-label #----
-		-Wno-implicit-int #----
-		-Wno-old-style-declaration #----
-		-Wno-absolute-value #----
-		-Wno-maybe-uninitialized #----
-		-Wno-char-subscripts #----
-		-Wno-int-to-pointer-cast #----
-		-Wno-stringop-overflow #----
-		-Wno-overflow #----
+		-Wno-unused-function
 	)
 
 	# Sanitizers in debug mode (Linux only)

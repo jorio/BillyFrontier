@@ -413,7 +413,7 @@ static void ShootoutShortyHitByBulletCallback(ObjNode *bullet, ObjNode *enemy, c
 {
 OGLVector3D	splatVec;
 
-	bullet;
+	(void) bullet;
 
 			/* MAKE BULLET IMPACT SPLAT */
 			

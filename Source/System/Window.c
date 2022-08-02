@@ -201,6 +201,8 @@ float	fps = gFramesPerSecondFrac;
 
 static void DrawFadePane(ObjNode* theNode)
 {
+	(void) theNode;
+
 	OGL_PushState();
 	SetInfobarSpriteState(0);
 
@@ -225,6 +227,8 @@ static void DrawFadePane(ObjNode* theNode)
 
 void Enter2D(Boolean pauseDSp)
 {
+	(void) pauseDSp;
+
 	SDL_ShowCursor(1);
 	MyFlushEvents();
 }

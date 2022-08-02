@@ -158,6 +158,9 @@ typedef struct Controller
 	KeyState				needStates[NUM_CONTROL_NEEDS];
 } Controller;
 
+long				gMouseDeltaX = 0;
+long				gMouseDeltaY = 0;
+
 Boolean				gUserPrefersGamepad = false;
 
 static Boolean		gControllerPlayerMappingLocked = false;
@@ -181,6 +184,31 @@ static inline const InputBinding* GetBinding(int need)
 }
 
 #pragma mark -
+
+/************************* INIT INPUT *********************************/
+
+void InitInput(void)
+{
+}
+
+/**************** READ KEYBOARD *************/
+
+void ReadKeyboard(void)
+{
+	DoSDLMaintenance();
+}
+
+/***************** GET MOUSE COORD *****************/
+
+OGLPoint2D GetLogicalMouseCoord(void)
+{
+	int windowX = 0;
+	int windowY = 0;
+	SDL_GetMouseState(&windowX, &windowY);
+	OGLPoint2D windowPt = { windowX + 0.5f, windowY + 0.5f };
+	return WindowPointToLogical(windowPt);
+}
+
 /**********************/
 
 static inline void UpdateKeyState(KeyState* state, bool downNow)
@@ -828,7 +856,7 @@ static SDL_GameController* TryOpenAnyUnusedController(bool showMessage)
 
 void Rumble(float strength, uint32_t ms)
 {
-	#if 0	// TODO: Rumble for specific player
+#if 0	// TODO: Rumble for specific player
 	if (NULL == gSDLController || !gGamePrefs.gamepadRumble)
 		return;
 
@@ -837,7 +865,10 @@ void Rumble(float strength, uint32_t ms)
 #else
 	SDL_GameControllerRumble(gSDLController, (Uint16)(strength * 65535), (Uint16)(strength * 65535), ms);
 #endif
-	#endif
+#else
+	(void) strength;
+	(void) ms;
+#endif
 }
 
 static int GetControllerSlotFromSDLJoystickInstanceID(SDL_JoystickID joystickInstanceID)

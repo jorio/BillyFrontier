@@ -344,7 +344,6 @@ short	musicFileRefNum;
 	gCurrentSong 	= songNum;
 	gLoopSongFlag 	= loopFlag;
 	KillSong();
-	DoSoundMaintenance();
 
 			/******************************/
 			/* OPEN APPROPRIATE SONG FILE */
@@ -942,83 +941,6 @@ SndChannelPtr			chanPtr;
 
 
 #pragma mark -
-
-
-/******************** DO SOUND MAINTENANCE *************/
-//
-// 		ReadKeyboard() must have already been called
-//
-
-void DoSoundMaintenance(void)
-{
-
-#if 0
-	if (gAllowAudioKeys)									
-	{
-					/* SEE IF TOGGLE MUSIC */
-
-		if (GetNewKeyState(SDL_SCANCODE_M))
-		{
-			ToggleMusic();			
-		}
-
-
-				/* SEE IF CHANGE VOLUME */
-
-		if (GetKeyState(SDL_SCANCODE_PLUS))
-		{
-			gGlobalVolume += 1.5f * gFramesPerSecondFrac;
-			UpdateGlobalVolume();
-		}
-		else
-		if (GetKeyState(SDL_SCANCODE_MINUS))
-		{
-			gGlobalVolume -= 1.5f * gFramesPerSecondFrac;
-			if (gGlobalVolume < 0.0f)
-				gGlobalVolume = 0.0f;
-			UpdateGlobalVolume();
-		}
-
-					/* UPDATE SONG */
-					
-		if (gSongPlayingFlag)
-		{
-			if (IsMovieDone(gSongMovie))				// see if the song has completed
-			{
-				if (gLoopSongFlag)						// see if repeat it
-				{
-					GoToBeginningOfMovie(gSongMovie);
-					StartMovie(gSongMovie);
-				}
-				else									// otherwise kill the song
-					KillSong();
-			}
-			else
-			{
-				gMoviesTaskTimer -= gFramesPerSecondFrac;
-				if (gMoviesTaskTimer <= 0.0f)
-				{
-					MoviesTask(gSongMovie, 0);
-					gMoviesTaskTimer += .15f;
-				}
-			}
-		}
-
-
-	}
-
-
-
-		/* ALSO CHECK OPTIONS */
-
-	if (GetNewKeyState(SDL_SCANCODE_F1))
-	{
-		DoGameOptionsDialog();
-	}
-
-#endif
-}
-
 
 
 /******************** FIND SILENT CHANNEL *************************/

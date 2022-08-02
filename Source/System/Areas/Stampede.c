@@ -1154,9 +1154,9 @@ ObjNode	*newObj;
 
 static Boolean DoTrig_Boost(ObjNode *pow, ObjNode *who, Byte sideBits)
 {
+	(void) sideBits;
+	(void) who;
 
-	sideBits; who;
-	
 	pow->ColorFilter.a = 0;					// make invisible so it will delete itself in the move call.
 
 	gCurrentMaxSpeed = 1600.0f;
@@ -1164,8 +1164,6 @@ static Boolean DoTrig_Boost(ObjNode *pow, ObjNode *who, Byte sideBits)
 	PlayEffect_Parms3D(EFFECT_TIMERCHIME, &pow->Coord, NORMAL_CHANNEL_RATE, 1.0f);			
 
 	return(false);
-	
-	
 }
 
 

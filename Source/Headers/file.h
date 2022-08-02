@@ -90,7 +90,6 @@ OSErr LoadPrefs(void);
 void SavePrefs(void);
 
 void LoadPlayfield(FSSpec *specPtr);
-OSErr DrawPictureIntoGWorld(FSSpec *myFSSpec, GWorldPtr *theGWorld, short depth);
 void SetDefaultDirectory(void);
 
 Boolean SaveGame(void);

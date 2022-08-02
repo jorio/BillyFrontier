@@ -27,8 +27,6 @@ static void UpdateTerrainDeformationFunctions(void);
 /*    CONSTANTS             */
 /****************************/
 
-#define	ALLOW_TERRAIN_TRUFORM	0
-
 
 /**********************/
 /*     VARIABLES      */
@@ -40,37 +38,30 @@ float			gMapToUnitValue;
 int				gSuperTileActiveRange = 5;
 
 short			gNumSuperTilesDrawn;
+
 static	Byte	gHiccupTimer;
-
 Boolean			gDisableHiccupTimer = false;
-
-static u_char	gHiccupEliminator = 0;
 
 SuperTileStatus	**gSuperTileStatusGrid = nil;				// supertile status grid
 
 
 
-long			gTerrainTileWidth,gTerrainTileDepth;			// width & depth of terrain in tiles
-long			gTerrainUnitWidth,gTerrainUnitDepth;			// width & depth of terrain in world units (see gTerrainPolygonSize)
+int 			gTerrainTileWidth,gTerrainTileDepth;			// width & depth of terrain in tiles
+int 			gTerrainUnitWidth,gTerrainUnitDepth;			// width & depth of terrain in world units (see gTerrainPolygonSize)
 
-long			gNumUniqueSuperTiles;
+int				gNumUniqueSuperTiles;
 short		 	**gSuperTileTextureGrid = nil;			// 2d array
 
 float			**gVertexShading = nil;					// vertex shading grid
 
 MOMaterialObject	*gSuperTileTextureObjects[MAX_SUPERTILE_TEXTURES];	
 
-//u_short			**gAttributeGrid = nil;
+int				gNumSuperTilesDeep,gNumSuperTilesWide;	  		// dimensions of terrain in terms of supertiles
+static int		gCurrentSuperTileRow,gCurrentSuperTileCol;
+static int		gPreviousSuperTileCol,gPreviousSuperTileRow;
 
-long			gNumSuperTilesDeep,gNumSuperTilesWide;	  		// dimensions of terrain in terms of supertiles
-static long		gCurrentSuperTileRow,gCurrentSuperTileCol;
-static long		gPreviousSuperTileCol,gPreviousSuperTileRow;
-
-short			gNumFreeSupertiles = 0;
+int 			gNumFreeSupertiles = 0;
 SuperTileMemoryType	gSuperTileMemoryList[MAX_SUPERTILES];
-
-
-static Handle	gTerrainTextureBuffers[MAX_SUPERTILES][2];
 
 
 			/* TILE SPLITTING TABLES */
@@ -166,8 +157,8 @@ void SetTerrainScale(float polygonSize)
 
 void InitCurrentScrollSettings(void)
 {
-long	x,y;
-long	dummy1,dummy2;
+int	x,y;
+int	dummy1,dummy2;
 ObjNode	*obj;
 
 	x = gPlayerInfo.coord.x-(gSuperTileActiveRange*gTerrainSuperTileUnitSize);
@@ -712,6 +703,10 @@ OGLVector3D			*vertexNormals;
 			fillDir1.y = -fillDir1.y;
 			fillDir1.z = -fillDir1.z;
 		}
+		else
+		{
+			fillDir1 = fillDir0;										// silence compiler warning
+		}
 	
 				
 		i = 0;
@@ -919,30 +914,22 @@ void DrawTerrain(ObjNode *theNode)
 int				r,c;
 int				i,unique;
 Boolean			superTileVisible;
-#if ALLOW_TERRAIN_TRUFORM
-Boolean				trueForm;
-OGLColorRGBA_Byte	*temp;
-#endif	
-#pragma unused(theNode)
-		
-			
-				/**************/		
-				/* DRAW STUFF */
-				/**************/		
 
-		/* SET A NICE STATE FOR TERRAIN DRAWING */
-							
+	(void) theNode;
+
+
+			/**************/
+			/* DRAW STUFF */
+			/**************/
+
+			/* SET A NICE STATE FOR TERRAIN DRAWING */
+
 	OGL_PushState();
 
-  	glDisable(GL_NORMALIZE);					// turn off vector normalization since scale == 1
-    glDisable(GL_BLEND);						// no blending for terrain - its always opaque		
-		
-#if ALLOW_TERRAIN_TRUFORM		
-	trueForm = EnableTrueForm();
-	if (trueForm)
-		OGL_EnableLighting();					// must have lighting on for TruForm to work
-#endif		
-	
+	glDisable(GL_NORMALIZE);					// turn off vector normalization since scale == 1
+	glDisable(GL_BLEND);						// no blending for terrain - its always opaque
+
+
 	gNumSuperTilesDrawn	= 0;
 	
 	/******************************************************************/
@@ -996,22 +983,9 @@ OGLColorRGBA_Byte	*temp;
 					
 
 					/* SUBMIT THE GEOMETRY */
-						
-#if ALLOW_TERRAIN_TRUFORM		
-				if (trueForm)		// if doing TruForm then disable Color array since lighting is on
-				{
-					temp = gSuperTileMemoryList[i].meshData->colorsByte;
-					gSuperTileMemoryList[i].meshData->colorsByte = nil;
-				}
-#endif				
-								
+
 				MO_DrawGeometry_VertexArray(gSuperTileMemoryList[i].meshData);
 				gNumSuperTilesDrawn++;
-				
-#if ALLOW_TERRAIN_TRUFORM		
-				if (trueForm)
-					gSuperTileMemoryList[i].meshData->colorsByte = temp;
-#endif					
 			}
 		}	
 	}
@@ -1477,7 +1451,7 @@ float			minX,maxX,minZ,maxZ;
 // OUTPUT: row/col in tile coords and supertile coords
 //
 
-void GetSuperTileInfo(long x, long z, long *superCol, long *superRow, long *tileCol, long *tileRow)
+void GetSuperTileInfo(int x, int z, int *superCol, int *superRow, int *tileCol, int *tileRow)
 {
 long	row,col;
 
@@ -1661,7 +1635,7 @@ static const Byte gridMask3[3*2][3*2] =
 
 				/* SEE IF ROW/COLUMN HAVE CHANGED */
 
-	deltaRow = abs(gCurrentSuperTileRow - gPreviousSuperTileRow);			
+	deltaRow = abs(gCurrentSuperTileRow - gPreviousSuperTileRow);
 	deltaCol = abs(gCurrentSuperTileCol - gPreviousSuperTileCol);
 
 	if (deltaRow || deltaCol)

@@ -376,7 +376,7 @@ static void ShootoutTremorAlienHitByBulletCallback(ObjNode *bullet, ObjNode *ene
 {
 OGLVector3D	splatVec;
 
-	bullet;
+	(void) bullet;
 
 			/* MAKE BULLET IMPACT SPLAT */
 			
@@ -765,7 +765,7 @@ float	fps = gFramesPerSecondFrac;
 
 static void TomahawkHitByBulletCallback(ObjNode *bullet, ObjNode *toma, const OGLPoint3D *impactPt)
 {
-	bullet;
+	(void) bullet;
 
 	PlayEffect3D(EFFECT_RICOCHET, impactPt);			
 

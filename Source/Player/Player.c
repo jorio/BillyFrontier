@@ -422,11 +422,11 @@ ObjNode	*player = gPlayerInfo.objNode;
 
 static void BulletHitShieldCallback(ObjNode *bullet, ObjNode *shieldObj, const OGLPoint3D *impactPt)
 {
-	bullet; shieldObj;
-		
+	(void) bullet;
+	(void) shieldObj;
+
 	MakePuff(impactPt, 10.0, PARTICLE_SObjType_GreySmoke, GL_SRC_ALPHA, GL_ONE, 1.0);			
 	PingShield(bullet->Damage);
-	
 }
 
 

@@ -383,11 +383,7 @@ void MoveObjects(void)
 {
 ObjNode		*thisNodePtr;
 
-			/* CALL SOUND MAINTENANCE HERE FOR CONVENIENCE */
-			
 	gNumWorldCalcsThisFrame = 0;
-	DoSoundMaintenance();
-	
 
 	if (gFirstNodePtr == nil)								// see if there are any objects
 		return;

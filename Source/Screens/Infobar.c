@@ -146,10 +146,11 @@ void SetInfobarSpriteState(float anaglyphZ)
 
 static void DrawInfobar(ObjNode* infobarObj)
 {
+	(void) infobarObj;
 
 	if (gIsPicking)
 		return;
-		
+
 
 		/************/
 		/* SET TAGS */
@@ -521,9 +522,11 @@ float	x, spacing = 42.5f;
 	{
 
 				/* DRAW THE KEY SEQUENCE */
-				
-		x = DUEL_SEQ_X + ((MAX_DUEL_KEY_SEQUENCE_LENGTH - gDuelKeySequenceLength >> 1) * spacing);
-				
+
+		int leftmostSlot = (MAX_DUEL_KEY_SEQUENCE_LENGTH - gDuelKeySequenceLength) >> 1;
+
+		x = DUEL_SEQ_X + spacing * leftmostSlot;
+
 		for (i = 0; i < gDuelKeySequenceLength; i++)				// create new sequence
 		{
 			int	key = gDuelKeySequence[i];

@@ -60,11 +60,7 @@ u_char					gAnaglyphGreyTable[255];
 static	Boolean					gDoAnisotropy 			= true;
 static	float 					gMaxAnisotropy = 1.0;
 
-typedef void(*glPNTrianglesiATIXFUNC)(GLenum pname, GLint param);
-static glPNTrianglesiATIXFUNC 	ptrTo_glPNTrianglesiATIX= nil;
-
-
-SDL_GLContext		gAGLContext = nil;
+SDL_GLContext			gAGLContext = nil;
 
 static GLuint 			gFontList;
 
@@ -91,7 +87,6 @@ int			gStateStackIndex = 0;
 
 int			gPolysThisFrame;
 int			gVRAMUsedThisFrame = 0;
-static int			gMinRAM = 10000000000000;
 
 Boolean		gMyState_Lighting;
 
@@ -187,8 +182,6 @@ static OGLVector3D			fillDirection2 = { -1, -.3, -.3 };
 
 void OGL_SetupWindow(OGLSetupInputType *setupDefPtr)
 {
-static OGLVector3D	v = {0,0,0};
-
 	GAME_ASSERT_MESSAGE(gGameViewInfoPtr == NULL, "gGameViewInfoPtr is already active");
 
 			/* ALLOC MEMORY FOR OUTPUT DATA */
@@ -663,12 +656,6 @@ do_anaglyph:
 #endif		
 
 #if 0
-
-		OGL_DrawString("#scratch:", 20,y);
-		OGL_DrawInt(gScratch, 100,y);
-		y += 15;		
-		
-
 		OGL_DrawString("input x:", 20,y);
 		OGL_DrawFloat(gPlayerInfo.analogControlX, 100,y);
 		y += 15;
@@ -1014,10 +1001,10 @@ long	d;
 	if (d > 0)
 	{
 		d = d * 2/3;
-		if (r < d)
+		if ((long)r < d)
 			r = d;
 
-		if (b < d)
+		if ((long)b < d)
 			b = d;			
 	}	
 
@@ -1049,7 +1036,7 @@ long	d;
 	if (d > 0)
 	{
 		d = d * 2 / 5;										// divide by n to get min blue
-		if (b < d)
+		if ((long)b < d)
 		{
 			b = d;
 		}
@@ -1062,7 +1049,7 @@ long	d;
 	if (d > 0)
 	{
 		d = d * 3/5;										// divide by n to get min red
-		if (r < d)
+		if ((long)r < d)
 		{
 			r = d;
 		}
@@ -1533,7 +1520,7 @@ static void OGL_FreeFont(void)
 
 /**************** OGL_DRAW STRING ********************/
 
-void OGL_DrawString(Str255 s, GLint x, GLint y)
+void OGL_DrawString(const char* s, GLint x, GLint y)
 {
 	OGL_PushState();
 
@@ -1606,8 +1593,6 @@ OGLPoint2D LogicalPointToWindow(OGLPoint2D logicalPoint)
 	float fx = gGameWindowWidth / g2DLogicalWidth;
 	float fy = gGameWindowHeight / g2DLogicalHeight;
 
-	float dx = 0.5f * (g2DLogicalWidth - 640.0f);
-	
 	return (OGLPoint2D)
 	{
 		fx * (logicalPoint.x + logicalXOffset),

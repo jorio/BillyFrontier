@@ -267,7 +267,7 @@ static void ShootoutFrogManHitByBulletCallback(ObjNode *bullet, ObjNode *enemy, 
 {
 OGLVector3D	splatVec;
 
-	bullet;
+	(void) bullet;
 
 			/* MAKE BULLET IMPACT SPLAT */
 			
@@ -470,7 +470,8 @@ float	fps = gFramesPerSecondFrac;
 
 static void BarrelHitByBulletCallback(ObjNode *bullet, ObjNode *barrel, const OGLPoint3D *impactPt)
 {
-	bullet;	impactPt;
+	(void) bullet;
+	(void) impactPt;
 
 	PlayEffect3D(EFFECT_EXPLOSION, &barrel->Coord);			
 

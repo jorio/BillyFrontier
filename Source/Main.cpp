@@ -73,9 +73,12 @@ static fs::path FindGameData()
 	return dataPath;
 }
 
-#if 0
 static void ParseCommandLine(int argc, char** argv)
 {
+	(void) argc;
+	(void) argv;
+
+#if 0
 	memset(&gCommandLine, 0, sizeof(gCommandLine));
 	gCommandLine.vsync = 1;
 
@@ -103,16 +106,6 @@ static void ParseCommandLine(int argc, char** argv)
 			gCommandLine.vsync = 1;
 		else if (argument == "--adaptive-vsync")
 			gCommandLine.vsync = -1;
-		else if (argument == "--host")
-			gCommandLine.netHost = true;
-		else if (argument == "--join")
-			gCommandLine.netJoin = true;
-		else if (argument == "--port")
-		{
-			GAME_ASSERT_MESSAGE(i + 1 < argc, "port # unspecified");
-			gNetPort = atoi(argv[i + 1]);
-			i += 1;
-		}
 		else if (argument == "--display")
 		{
 			GAME_ASSERT_MESSAGE(i + 1 < argc, "display # unspecified");
@@ -142,8 +135,8 @@ static void ParseCommandLine(int argc, char** argv)
 		}
 #endif
 	}
-}
 #endif
+}
 
 static void GetInitialWindowSize(int display, int& width, int& height)
 {
@@ -288,7 +281,7 @@ int main(int argc, char** argv)
 
 	try
 	{
-//		ParseCommandLine(argc, argv);
+		ParseCommandLine(argc, argv);
 		Boot();
 		/*returnCode =*/ GameMain();
 	}

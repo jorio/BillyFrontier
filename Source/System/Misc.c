@@ -51,7 +51,7 @@ void DoAlert(const char* format, ...)
 	vsnprintf(message, sizeof(message), format, args);
 	va_end(args);
 
-	printf("CMR Alert: %s\n", message);
+	printf("Billy Frontier Alert: %s\n", message);
 	SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "Billy Frontier", message, gSDLWindow);
 
 	Exit2D();
@@ -70,7 +70,7 @@ void DoFatalAlert(const char* format, ...)
 	vsnprintf(message, sizeof(message), format, args);
 	va_end(args);
 
-	printf("CMR Fatal Alert: %s\n", message);
+	printf("Billy Frontier Fatal Alert: %s\n", message);
 	SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "Billy Frontier", message, gSDLWindow);
 
 	Exit2D();
