@@ -50,9 +50,11 @@ static const char *gPausedStrings[3] =
 void DoPaused(void)
 {
 	Boolean hadWindowGrab = SDL_GetWindowGrab(gSDLWindow);
+	Boolean hadRelativeMouse = SDL_GetRelativeMouseMode();
 	int didShowCursor = SDL_ShowCursor(SDL_QUERY);
 
 	SDL_SetWindowGrab(gSDLWindow, false);
+	SDL_SetRelativeMouseMode(false);
 	SDL_ShowCursor(1);
 
 	gPausedMenuSelection = 0;
@@ -84,6 +86,7 @@ void DoPaused(void)
 	PauseAllChannels(false);
 
 	SDL_SetWindowGrab(gSDLWindow, hadWindowGrab);
+	SDL_SetRelativeMouseMode(hadRelativeMouse);
 	SDL_ShowCursor(didShowCursor);
 }
 

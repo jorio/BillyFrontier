@@ -41,6 +41,9 @@ static void MoveCrosshairsBullet(ObjNode *bullet);
 
 #define	MAX_STOP_POINTS	20
 
+#define KEY_ROT_SPEED 2.0f
+#define MAX_ROT_SPEED 5.0f
+
 
 /****************************/
 /*    VARIABLES             */
@@ -316,6 +319,7 @@ float		x,z;
 		/* GRAB MOUSE CURSOR SO IT CAN'T ESCAPE WINDOW */
 
 	SDL_SetWindowGrab(gSDLWindow, true);
+	SDL_SetRelativeMouseMode( true);
 }
 
 
@@ -329,6 +333,7 @@ static void CleanupShootout(void)
 	gShootoutMode = SHOOTOUT_MODE_NONE;				// don't leak shootout mode to duel
 
 	SDL_SetWindowGrab(gSDLWindow, false);		// un-grab the mouse cursor
+	SDL_SetRelativeMouseMode(false);			// let go of relative mouse mode
 
 	StopAllEffectChannels();
  	EmptySplineObjectList();
@@ -461,7 +466,6 @@ void GoToNextStopPoint(void)
 
 static void UpdateCrosshairs(void)
 {
-float	minX,maxX;
 float	fps = gFramesPerSecondFrac;
 Boolean	allowRot;
 
@@ -472,17 +476,6 @@ Boolean	allowRot;
 
 	allowRot = gShootoutMode == SHOOTOUT_MODE_BATTLE;			// only allow edge rotation when in battle mode
 
-	if (allowRot)
-	{
-		minX = 50;
-		maxX = 640-50;
-	}
-	else
-	{
-		minX = 0;
-		maxX = 640;	
-	}
-
 
 			/*****************************/
 			/* UPDATE CROSSHAIR POSITION */
@@ -491,50 +484,56 @@ Boolean	allowRot;
 			/* GET MOUSE DELTAS & MOVE CROSSHAIRS */
 
 	OGLPoint2D mousePt = GetLogicalMouseCoord();
+	
+			/* GET WINDOW-SPACE COORDS TO CHECK IF WE'RE PINNED TO EDGE*/
 
+	int windowX = 0;
+	int windowY = 0;
+	SDL_GetMouseState(&windowX, &windowY);
+
+			/* XHAIRS COORDS ARE IN LOGICAL 2D SPACE */
 
 	gCrosshairsCoord = mousePt;
-
-		
-	if (gCrosshairsCoord.y < 0.0f)							// check y coord
-		gCrosshairsCoord.y = 0;
-	else
-	if (gCrosshairsCoord.y >= 480.0f)
-		gCrosshairsCoord.y = 479;
 
 
 		/* SEE IF DO EDGE-SCROLL */
 
-	if (gCrosshairsCoord.x < minX)							// see if off left
+	// only start rotating if we already had relative mouse mode (avoid mouse boom when ramming cursor into edge)
+	bool hadRelativeMouseMode = SDL_GetRelativeMouseMode();
+
+	SDL_SetRelativeMouseMode(false);
+	if (windowX <= 1)							// see if off left
 	{
-		if (allowRot && (gMouseDeltaX < 0.0f))
+		SDL_SetRelativeMouseMode(true);			// enable relative mouse mode to keep getting mouse motion deltas as we're pinned to the side of the screen
+		if (allowRot && (gMouseDeltaX < 0.0f) && hadRelativeMouseMode)
 		{
-			gPlayerInfo.objNode->Rot.y -= gMouseDeltaX * fps * .014;
+			float adjMDX = fabsf(0.24f * gMouseDeltaX * 640.0f / gGameWindowWidth);
+			gPlayerInfo.objNode->Rot.y += GAME_MIN(adjMDX, MAX_ROT_SPEED) * fps;
 			if (gPlayerInfo.objNode->Rot.y >= PI2)				// check for wraparound
 				gPlayerInfo.objNode->Rot.y -= PI2;
 		}
 	}
 	else
-	if (gCrosshairsCoord.x >= maxX)						// see if off right
+	if (windowX >= gGameWindowWidth-2)			// see if off right
 	{
-		if (allowRot && (gMouseDeltaX > 0.0f))
+		SDL_SetRelativeMouseMode(true);			// enable relative mouse mode to keep getting mouse motion deltas as we're pinned to the side of the screen
+		if (allowRot && (gMouseDeltaX > 0.0f) && hadRelativeMouseMode)
 		{
-			gPlayerInfo.objNode->Rot.y -= gMouseDeltaX * fps * .014;
+			float adjMDX = fabsf(0.24f * gMouseDeltaX * 640.0f / gGameWindowWidth);
+			gPlayerInfo.objNode->Rot.y -= GAME_MIN(adjMDX, MAX_ROT_SPEED) * fps;
 			if (gPlayerInfo.objNode->Rot.y <= 0.0f)				// check for wraparound
 				gPlayerInfo.objNode->Rot.y += PI2;
 		}
-		
 	}
 			/* SEE IF DO KEY SCROLL */
-			
 	else
 	if (allowRot)
 	{
 		if (GetNeedState(kNeed_UILeft))
-			gPlayerInfo.objNode->Rot.y += fps * 2.0f;
+			gPlayerInfo.objNode->Rot.y += fps * KEY_ROT_SPEED;
 		else
 		if (GetNeedState(kNeed_UIRight))
-			gPlayerInfo.objNode->Rot.y -= fps * 2.0f;
+			gPlayerInfo.objNode->Rot.y -= fps * KEY_ROT_SPEED;
 		//else
 		//if (gScrollWheelDelta != 0)
 		//{

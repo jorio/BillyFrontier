@@ -374,6 +374,8 @@ void DoSDLMaintenance(void)
 {
 	gTextInput[0] = '\0';
 	gMouseMotionNow = false;
+	gMouseDeltaX = 0;
+	gMouseDeltaY = 0;
 	int mouseWheelDelta = 0;
 
 			/**********************/
@@ -412,6 +414,8 @@ void DoSDLMaintenance(void)
 
 				case SDL_MOUSEMOTION:
 					gMouseMotionNow = true;
+					gMouseDeltaX += event.motion.xrel;
+					gMouseDeltaY += event.motion.yrel;
 					break;
 
 				case SDL_MOUSEWHEEL:
