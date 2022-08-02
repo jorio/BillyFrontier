@@ -1,4 +1,4 @@
-// BILLY FRONTIER RALLY ENTRY POINT
+// BILLY FRONTIER ENTRY POINT
 // (C) 2022 Iliyas Jorio
 // This file is part of Billy Frontier. https://github.com/jorio/billyfrontier
 

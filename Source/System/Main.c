@@ -85,15 +85,7 @@ OSErr		iErr;
 
 	InitPrefsFolder(true);
 
-
-
-			/* MAKE FSSPEC FOR DATA FOLDER */
-	
-	iErr = FSMakeFSSpec(0, 0, ":Data:Images", &gDataSpec);
-	if (iErr)
-	{
-		DoFatalAlert("Can't find Data folder.");
-	}
+			/* DATA FOLDER IS SET IN C++ ENTRY POINT */
 }
 
 
