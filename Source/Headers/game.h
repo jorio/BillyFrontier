@@ -10,12 +10,6 @@
 #include <SDL.h>
 #include <SDL_opengl.h>
 
-#if __APPLE__
-#include <OpenGL/GLU.h>
-#else
-#include <GL/glu.h>
-#endif
-
 #include "Pomme.h"
 #include "globals.h"
 #include "structs.h"

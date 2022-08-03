@@ -1197,8 +1197,7 @@ void OGL_UpdateCameraFromToUp(const OGLPoint3D *from, const OGLPoint3D *to, cons
 
 void OGL_Camera_SetPlacementAndUpdateMatrices(void)
 {
-OGLCameraPlacement	*placement;
-int		w, h, i, x, y;
+int		w, h, x, y;
 OGLLightDefType	*lights;
 
 				/* SET VIEWPORT */
@@ -1207,7 +1206,8 @@ OGLLightDefType	*lights;
 	glViewport(x,y, w, h);
 	gCurrentAspectRatio = (float)w/(float)h;
 	
-	// Compute logical width & height for 2D elements
+				/* COMPUTE LOGICAL 2D WIDTH/HEIGHT FOR UI ELEMENTS */
+
 	g2DLogicalHeight = 480.0f;
 	if (gCurrentAspectRatio < 4.0f / 3.0f)
 		g2DLogicalWidth = 640.0f;
@@ -1216,13 +1216,15 @@ OGLLightDefType	*lights;
 	
 			/* INIT PROJECTION MATRIX */
 			
-	glMatrixMode(GL_PROJECTION);
-	glLoadIdentity();	
+
 
 			/* SETUP FOR ANAGLYPH STEREO 3D CAMERA */
 			
 	if (gGamePrefs.anaglyph)
 	{
+		glMatrixMode(GL_PROJECTION);
+		glLoadIdentity();
+
 		float	left, right;
 		float	halfFOV = gGameViewInfoPtr->fov * .5f;
 		float	hither 	= gGameViewInfoPtr->hither;
@@ -1241,32 +1243,41 @@ OGLLightDefType	*lights;
 		}
 		
 		glFrustum(left, right, -wd2, wd2, gGameViewInfoPtr->hither, gGameViewInfoPtr->yon);
+
+		glGetFloatv(GL_PROJECTION_MATRIX, gViewToFrustumMatrix.value);
 	}
 	
 			/* SETUP STANDARD PERSPECTIVE CAMERA */
 	else
 	{	
-		gluPerspective (OGLMath_RadiansToDegrees(gGameViewInfoPtr->fov),	// fov
-						gCurrentAspectRatio,					// aspect
-						gGameViewInfoPtr->hither,		// hither
-						gGameViewInfoPtr->yon);		// yon
-	}	
+		OGL_SetGluPerspectiveMatrix(
+			&gViewToFrustumMatrix,		// projection
+			gGameViewInfoPtr->fov,		// our version uses radians for the fov (unlike GLU)
+			gCurrentAspectRatio,
+			gGameViewInfoPtr->hither,
+			gGameViewInfoPtr->yon);
+
+		glMatrixMode(GL_PROJECTION);
+		glLoadMatrixf(gViewToFrustumMatrix.value);
+	}
 	
 	
 			/* INIT MODELVIEW MATRIX */
 			
+	OGL_SetGluLookAtMatrix(
+			&gWorldToViewMatrix,		// modelview
+			&gGameViewInfoPtr->cameraPlacement.cameraLocation,
+			&gGameViewInfoPtr->cameraPlacement.pointOfInterest,
+			&gGameViewInfoPtr->cameraPlacement.upVector);
+
 	glMatrixMode(GL_MODELVIEW);
-	glLoadIdentity();
-	placement = &gGameViewInfoPtr->cameraPlacement;
-	gluLookAt(placement->cameraLocation.x, placement->cameraLocation.y, placement->cameraLocation.z,	
-			placement->pointOfInterest.x, placement->pointOfInterest.y, placement->pointOfInterest.z,	
-			placement->upVector.x, placement->upVector.y, placement->upVector.z);
+	glLoadMatrixf(gWorldToViewMatrix.value);
 
 
 		/* UPDATE LIGHT POSITIONS */
-		
+
 	lights =  &gGameViewInfoPtr->lightList;					// point to light list
-	for (i=0; i < lights->numFillLights; i++)
+	for (int i = 0; i < lights->numFillLights; i++)
 	{
 		GLfloat lightVec[4];
 	
@@ -1280,8 +1291,8 @@ OGLLightDefType	*lights;
 
 			/* GET VARIOUS CAMERA MATRICES */
 
-	glGetFloatv(GL_MODELVIEW_MATRIX, gWorldToViewMatrix.value);
-	glGetFloatv(GL_PROJECTION_MATRIX, gViewToFrustumMatrix.value);
+	//glGetFloatv(GL_MODELVIEW_MATRIX, gWorldToViewMatrix.value);
+	//glGetFloatv(GL_PROJECTION_MATRIX, gViewToFrustumMatrix.value);
 	OGLMatrix4x4_Multiply(&gWorldToViewMatrix, &gViewToFrustumMatrix, &gWorldToFrustumMatrix);
 
 	OGLMatrix4x4_GetFrustumToWindow(&gFrustumToWindowMatrix);

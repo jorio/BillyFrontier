@@ -4,8 +4,6 @@
 
 #pragma once
 
-#include "game.h"
-
 #define OGLMath_RadiansToDegrees(x)	((float)((x) * 180.0f / PI))
 
 float OGLPoint3D_DistanceToPlane(const OGLPoint3D *point,const OGLPlaneEquation	*plane);
@@ -108,6 +106,10 @@ void OGLBoundingBox_Transform(OGLBoundingBox *inBox, OGLMatrix4x4 *m, OGLBoundin
 
 void OGLVector3D_RandomOffset(OGLVector3D *v, float offsetFactor, OGLVector3D *outVec);
 
+void OGL_SetGluPerspectiveMatrix(OGLMatrix4x4* m, float fovRadians, float aspect, float hither, float yon);
+void OGL_SetGluLookAtMatrix(OGLMatrix4x4* m, const OGLPoint3D* eye, const OGLPoint3D* target, const OGLVector3D* upDir);
+void OGL_GluUnProject(const OGLPoint3D* winPt, const OGLMatrix4x4* modelview, const OGLMatrix4x4* projection,
+					const OGLPoint2D* vpOffset, const OGLVector2D* vpSize, OGLPoint3D* objPt);
 
 /*********** INTERSECTION OF Y AND PLANE ********************/
 //
@@ -450,6 +452,18 @@ float	dot;
 	return(dot);
 }
 
+/****************** OGLVECTOR3D CROSS NO PIN ******************/
+
+static inline void OGLVector3D_Cross_NoPin(const OGLVector3D* v1, const OGLVector3D* v2, OGLVector3D* result)
+{
+	float rx = (v1->y * v2->z) - (v1->z * v2->y);
+	float ry = (v1->z * v2->x) - (v1->x * v2->z);
+	float rz = (v1->x * v2->y) - (v1->y * v2->x);
+
+	result->x = rx;
+	result->y = ry;
+	result->z = rz;
+}
 
 /************** OGL POINT3D/VECTOR3D ADD ******************/
 

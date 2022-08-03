@@ -582,38 +582,30 @@ float		bestDist = 10000000;
 
 void OGL_GetWorldRayAtScreenPoint(OGLPoint2D *screenCoord, OGLRay *ray)
 {
-GLdouble	model_view[16];
-GLdouble	projection[16];
-GLint		viewport[4];
-float		realy;
-double		dx,dy,dz;
+			/* GET 3D COORDINATES @ BACK PLANE */
 
-			/* GET STATE DATA */
-			
-	glGetDoublev(GL_MODELVIEW_MATRIX, model_view);	
-	glGetDoublev(GL_PROJECTION_MATRIX, projection);	
-	glGetIntegerv(GL_VIEWPORT, viewport);	
+	float realy = (gGameWindowHeight - screenCoord->y) - 1.0f;	// flip Y ([3] is the height value)
 
+	OGLPoint3D	winPt		= { screenCoord->x, realy, 1.0 };
+	OGLVector2D	vpSize		= { gGameWindowWidth, gGameWindowHeight };
+	OGLPoint2D	vpOffset	= { 0, 0 };
+	OGLPoint3D	result		= { 0, 0, 0 };
 
-			/* FLIP Y */
-			
-	realy = (viewport[3] - (GLint)screenCoord->y) - 1;			// flip Y ([3] is the height value)
-
-
-		/* GET 3D COORDINATES @ BACK PLANE */
-		
-	gluUnProject(screenCoord->x, realy, 1.0, model_view, projection, viewport, &dx, &dy ,&dz); 
-
-
+	OGL_GluUnProject(
+		&winPt,
+		&gWorldToViewMatrix,		// modelview
+		&gViewToFrustumMatrix,		// projection
+		&vpOffset,
+		&vpSize,
+		&result);
 
 			/* CONVERT TO RAY */
 	
 	ray->origin = gGameViewInfoPtr->cameraPlacement.cameraLocation;		// ray origin @ camera location
-	ray->direction.x = dx - ray->origin.x;							// calc vector of ray
-	ray->direction.y = dy - ray->origin.y;							
-	ray->direction.z = dz - ray->origin.z;							
+	ray->direction.x = result.x - ray->origin.x;						// calc vector of ray
+	ray->direction.y = result.y - ray->origin.y;							
+	ray->direction.z = result.z - ray->origin.z;							
 	OGLVector3D_Normalize(&ray->direction, &ray->direction);		// normalize the ray vector
-
 }
 
 
