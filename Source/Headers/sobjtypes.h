@@ -23,17 +23,15 @@ enum
 enum
 {
 	GLOBAL_SObjType_Shadow_Circular,
-	GLOBAL_SObjType_Shadow_CircularDark,
-	GLOBAL_SObjType_Shadow_Square,
-	
+
+	GLOBAL_SObjType_SwampWater,
+
+	GLOBAL_SObjType_Fence_PicketFence,
 	GLOBAL_SObjType_Fence_Wood,
 	GLOBAL_SObjType_Fence_White,
 	GLOBAL_SObjType_Fence_TallGrass,
 	GLOBAL_SObjType_Fence_SmallGrass,
 	GLOBAL_SObjType_Fence_SwampTree,
-	GLOBAL_SObjType_Fence_PicketFence,
-	
-	GLOBAL_SObjType_SwampWater,
 
 	GLOBAL_SObjType_COUNT,
 };
@@ -47,14 +45,7 @@ enum
 enum
 {
 	SPHEREMAP_SObjType_Satin,
-	SPHEREMAP_SObjType_Sea,
-	SPHEREMAP_SObjType_DarkDusk,
-	SPHEREMAP_SObjType_Medow,
 	SPHEREMAP_SObjType_Sheen,
-	SPHEREMAP_SObjType_DarkYosemite,
-	SPHEREMAP_SObjType_Red,
-	SPHEREMAP_SObjType_Tundra,
-	SPHEREMAP_SObjType_SheenAlpha,
 
 	SPHEREMAP_SObjType_COUNT,
 };
@@ -232,21 +223,10 @@ enum
 	INFOBAR_SObjType_Heart,
 	INFOBAR_SObjType_Skull,
 	INFOBAR_SObjType_StarOn,
-	
-	INFOBAR_SObjType_0,
-	INFOBAR_SObjType_1,
-	INFOBAR_SObjType_2,
-	INFOBAR_SObjType_3,
-	INFOBAR_SObjType_4,
-	INFOBAR_SObjType_5,
-	INFOBAR_SObjType_6,
-	INFOBAR_SObjType_7,
-	INFOBAR_SObjType_8,
-	INFOBAR_SObjType_9,
-	
+
 	INFOBAR_SObjType_PausedFrame,
 	INFOBAR_SObjType_PausedDot,
-	
+
 	INFOBAR_SObjType_TimerFrame,
 
 	INFOBAR_SObjType_CommandKey,

@@ -94,9 +94,6 @@ float	g3DTileSize, g3DMinY, g3DMaxY;
 /******************* LOAD SKELETON *******************/
 //
 // Loads a skeleton file & creates storage for it.
-// 
-// NOTE: Skeleton types 0..NUM_CHARACTERS-1 are reserved for player character skeletons.
-//		Skeleton types NUM_CHARACTERS and over are for other skeleton entities.
 //
 // OUTPUT:	Ptr to skeleton data
 //
