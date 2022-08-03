@@ -553,7 +553,7 @@ long				count;
 
 OSErr LoadPrefs(void)
 {
-	OSErr err = LoadUserDataFile("Prefs", PREFS_MAGIC, sizeof(PrefsType), (Ptr) &gGamePrefs);
+	OSErr err = LoadUserDataFile(PREFS_FILE_NAME, PREFS_MAGIC, sizeof(PrefsType), (Ptr) &gGamePrefs);
 
 	if (err != noErr)
 	{
@@ -576,7 +576,7 @@ void SavePrefs(void)
 	//	return;
 	//}
 
-	SaveUserDataFile("Prefs", PREFS_MAGIC, sizeof(PrefsType), (Ptr)&gGamePrefs);
+	SaveUserDataFile(PREFS_FILE_NAME, PREFS_MAGIC, sizeof(PrefsType), (Ptr)&gGamePrefs);
 
 	//memcpy(&gDiskShadowPrefs, &gGamePrefs, sizeof(gGamePrefs));
 }
@@ -1087,7 +1087,8 @@ Ptr						tempBuffer16 = nil;
 
 OSErr SaveGame(int fileSlot)
 {
-SaveGameType	saveData;
+	char path[64];
+	SaveGameType saveData;
 
 	memset(&saveData, 0, sizeof(saveData));
 
@@ -1097,10 +1098,9 @@ SaveGameType	saveData;
 	saveData.duelWonMask	= gDuelWonMask;
 	saveData.levelWonMask	= gLevelWonMask;
 
-	char path[64];
-	snprintf(path, sizeof(path), "BillySave%d", fileSlot);
+	snprintf(path, sizeof(path), "%s%d", SAVE_FILE_NAME, fileSlot);
 
-	return SaveUserDataFile(path, "Billy Frontier Save v00", sizeof(SaveGameType), (Ptr) & saveData);
+	return SaveUserDataFile(path, SAVE_MAGIC, sizeof(SaveGameType), (Ptr) & saveData);
 }
 
 /***************************** DELETE SAVED GAME ********************************/
@@ -1111,7 +1111,7 @@ OSErr DeleteSavedGame(int fileSlot)
 	OSErr iErr;
 	char path[64];
 
-	snprintf(path, sizeof(path), "BillySave%d", fileSlot);
+	snprintf(path, sizeof(path), "%s%d", SAVE_FILE_NAME, fileSlot);
 
 	iErr = MakeFSSpecForUserDataFile(path, &spec);
 
@@ -1129,9 +1129,9 @@ OSErr DeleteSavedGame(int fileSlot)
 OSErr LoadSavedGame(int fileSlot, SaveGameType* saveDataPtr)
 {
 	char path[64];
-	snprintf(path, sizeof(path), "BillySave%d", fileSlot);
+	snprintf(path, sizeof(path), "%s%d", SAVE_FILE_NAME, fileSlot);
 
-	return LoadUserDataFile(path, "Billy Frontier Save v00", sizeof(SaveGameType), (Ptr) saveDataPtr);
+	return LoadUserDataFile(path, SAVE_MAGIC, sizeof(SaveGameType), (Ptr) saveDataPtr);
 }
 
 /***************************** USE SAVED GAME ********************************/

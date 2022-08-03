@@ -2,16 +2,17 @@
 // file.h
 //
 
-// Externals
-#include "game.h"
+#pragma once
 
 #define	kGameID 			'ALMO'
-#define	kSavedGameFileType	'ALsv'
 
 #define PREFS_FOLDER_NAME	"BillyFrontier"
-#define PREFS_MAGIC			"Billy Frontier Prefs v01"
-
-#define SAVE_MAGIC			"Billy Frontier Save v01"
+#define PREFS_FILE_NAME		"Prefs"
+#define SCORES_FILE_NAME	"HighScores"
+#define SAVE_FILE_NAME		"BillySave"
+#define PREFS_MAGIC			"NewBillyPrefV01"	// Bump this when PrefsType changes
+#define	SCORES_MAGIC		"NewBillyScorV01"	// Bump this when HighScoreType changes
+#define SAVE_MAGIC			"NewBillySaveV01"	// Bump this when SaveGameType changes
 #define MAX_SAVE_FILES		5
 
 		/***********************/

@@ -55,8 +55,6 @@ typedef struct
 /*    VARIABLES            */
 /***************************/
 
-static Str32	gHighScoresFileName = ":Billy:HighScores";
-
 HighScoreType	gHighScores[NUM_SCORES];	
 
 static	float	gFinalScoreTimer,gFinalScoreAlpha, gCursorFlux = 0;
@@ -468,32 +466,9 @@ float	fps = gFramesPerSecondFrac;
 
 void LoadHighScores(void)
 {
-OSErr				iErr;
-short				refNum;
-FSSpec				file;
-long				count;
+	ClearHighScores();	// clear them beforehand in case loading fails
 
-				/* OPEN FILE */
-					
-	FSMakeFSSpec(gPrefsFolderVRefNum, gPrefsFolderDirID, gHighScoresFileName, &file);
-	iErr = FSpOpenDF(&file, fsRdPerm, &refNum);	
-	if (iErr == fnfErr)
-		ClearHighScores();
-	else
-	if (iErr)
-		DoFatalAlert("LoadHighScores: Error opening High Scores file!");
-	else
-	{
-		count = sizeof(HighScoreType) * NUM_SCORES;
-		iErr = FSRead(refNum, &count, (Ptr) &gHighScores[0]);				// read data from file
-		if (iErr)
-		{
-			FSClose(refNum);			
-			FSpDelete(&file);												// file is corrupt, so delete
-			return;
-		}
-		FSClose(refNum);			
-	}	
+	LoadUserDataFile(SCORES_FILE_NAME, SCORES_MAGIC, sizeof(gHighScores), gHighScores);
 }
 
 
@@ -501,37 +476,7 @@ long				count;
 
 static void SaveHighScores(void)
 {
-FSSpec				file;
-OSErr				iErr;
-short				refNum;
-long				count;
-
-				/* CREATE BLANK FILE */
-				
-	FSMakeFSSpec(gPrefsFolderVRefNum, gPrefsFolderDirID, gHighScoresFileName, &file);
-	FSpDelete(&file);															// delete any existing file
-	iErr = FSpCreate(&file, kGameID, 'Skor', smSystemScript);					// create blank file
-	if (iErr)
-		goto err;
-
-
-				/* OPEN FILE */
-					
-	FSMakeFSSpec(gPrefsFolderVRefNum, gPrefsFolderDirID, gHighScoresFileName, &file);
-	iErr = FSpOpenDF(&file, fsRdWrPerm, &refNum);
-	if (iErr)
-	{
-err:	
-		DoAlert("Unable to Save High Scores file!");
-		return;
-	}
-
-				/* WRITE DATA */
-				
-	count = sizeof(HighScoreType) * NUM_SCORES;
-	FSWrite(refNum, &count, (Ptr) & gHighScores[0]);
-	FSClose(refNum);			
-
+	SaveUserDataFile(SCORES_FILE_NAME, SCORES_MAGIC, sizeof(gHighScores), gHighScores);
 }
 
 
