@@ -129,7 +129,7 @@ void PlayTargetPractice(void)
 			/* DID WE WIN? */
 			
 	if ((gPepperCount <= 0) && (!gPlayerIsDead))
-		gLevelWon[gCurrentArea/2] = true;
+		MarkLevelWon(gCurrentArea/2);
 }
 
 

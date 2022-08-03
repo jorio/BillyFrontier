@@ -62,8 +62,12 @@ void InitDefaultPrefs(void);
 void StartLevelCompletion(float coolDownTimer);
 void DefaultDrawCallback(void);
 
+void MarkLevelWon(int level);
+void MarkDuelWon(int duel);
+Boolean IsLevelWon(int level);
+Boolean IsDuelWon(int duel);
+int GetGameCompletionPercent(Byte duelMask, Byte levelMask);
 
-		
 		/* DUEL */
 		
 enum

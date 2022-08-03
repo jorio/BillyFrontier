@@ -53,16 +53,11 @@ int		i;
 			
 	if (!gPlayingFromSavedGame)
 	{
-		for (i = 0; i < NUM_LEVELS; i++)			// no levels completed yet
-		{
-			gLevelWon[i] = false;
-			gDuelWon[i] = false;
-		}
-	
-		gScore = 0;
-	
+		gLevelWonMask				= 0;			// no levels completed yet
+		gDuelWonMask				= 0;
 		gPlayerInfo.lives			= 3;
 		gPlayerInfo.pesos			= 0;
+		gScore						= 0;
 	}
 
 	

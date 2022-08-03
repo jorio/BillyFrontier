@@ -637,7 +637,7 @@ int		markerNum;
 		if (!gLevelCompleted)							// only win if we were the first to cross the line
 		{
 			StartLevelCompletion(.5);
-			gLevelWon[gCurrentArea/2] = true;
+			MarkLevelWon(gCurrentArea/2);
 		}
 	}
 }

@@ -454,14 +454,11 @@ const float scale[NUM_BIGBOARD_ITEMS] =
 		
 			/* IF LEVEL ICON & COMPLETED THEN DIM */
 				
-		if (i < NUM_LEVELS)
+		if (i < NUM_LEVELS && IsLevelWon(i))
 		{
-			if (gLevelWon[i])
-			{
-				gBigBoardItems[i]->Kind = -1;
-				gBigBoardItems[i]->ColorFilter.a = .5f;
-				gBigBoardItems[i]->MoveCall = nil;
-			}
+			gBigBoardItems[i]->Kind = -1;
+			gBigBoardItems[i]->ColorFilter.a = .5f;
+			gBigBoardItems[i]->MoveCall = nil;
 		}
 	}
 }

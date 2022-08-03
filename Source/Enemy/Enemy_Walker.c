@@ -594,8 +594,7 @@ ObjNode	*walker;
 			MorphToSkeletonAnim(walker->Skeleton, WALKER_ANIM_DEATH, 4);
 			walker->Skeleton->AnimSpeed = .2f;
 			StartLevelCompletion(5.0);
-			
-			gLevelWon[gCurrentArea/2] = true;
+			MarkLevelWon(gCurrentArea / 2);
 		}	
 	}	
 }

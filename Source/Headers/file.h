@@ -81,8 +81,9 @@ typedef struct
 {
 	uint32_t	score;
 	Byte		numLives;
-	Boolean		levels[NUM_LEVELS];
-	Boolean		duels[NUM_LEVELS];
+	Byte		duelWonMask;
+	Byte		levelWonMask;
+	Byte		reserved;
 }SaveGameType;
 
 

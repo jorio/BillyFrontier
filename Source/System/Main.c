@@ -63,14 +63,13 @@ int					gCurrentArea;
 uint32_t			gScore,gLoadedScore;
 
 
-Boolean				gDuelWon[NUM_LEVELS];
-Boolean				gLevelWon[NUM_LEVELS];
+Byte				gDuelWonMask;
+Byte				gLevelWonMask;
 
 
 //======================================================================================
 //======================================================================================
 //======================================================================================
-
 
 
 /****************** TOOLBOX INIT  *****************/
@@ -146,7 +145,7 @@ u_long	oldScore;
 			/***********************/
 
 		gCurrentArea--;							// dec by 1 so that we're on the duel for this mini-game
-		if (!gDuelWon[gCurrentArea/2])				// see if already won this previously
+		if (!IsDuelWon(gCurrentArea/2))			// see if already won this previously
 		{
 
 			PlayDuel(gCurrentArea / 2);
@@ -171,7 +170,7 @@ u_long	oldScore;
 				goto next;
 			}
 
-			gDuelWon[gCurrentArea/2] = true;
+			MarkDuelWon(gCurrentArea/2);
 
 		}
 		gCurrentArea++;
@@ -230,7 +229,7 @@ u_long	oldScore;
 			/*****************************/
 
 		for (i = 0; i < NUM_LEVELS; i++)
-			if (!gLevelWon[i])
+			if (!IsLevelWon(i))
 				goto next;		
 	
 		gWonGame = true;
@@ -276,6 +275,44 @@ void StartLevelCompletion(float coolDownTimer)
 		gLevelCompleted = true;
 		gLevelCompletedCoolDownTimer = coolDownTimer;		
 	}
+}
+
+
+#pragma mark - Progression
+
+/***************** PROGRESSION SETTERS ****************/
+
+void MarkLevelWon(int level)
+{
+	gLevelWonMask |= 1 << level;
+}
+
+void MarkDuelWon(int duel)
+{
+	gDuelWonMask |= 1 << duel;
+}
+
+/***************** PROGRESSION GETTERS ****************/
+
+Boolean IsLevelWon(int level)
+{
+	return (gLevelWonMask >> level) & 1;
+}
+
+Boolean IsDuelWon(int duel)
+{
+	return (gDuelWonMask >> duel) & 1;
+}
+
+int GetGameCompletionPercent(Byte duelMask, Byte levelMask)
+{
+	int completion = 0;
+	for (int i = 0; i < NUM_LEVELS; i++)
+	{
+		if ((duelMask >> i) & 1) completion++;
+		if ((levelMask >> i) & 1) completion++;
+	}
+	return (int) roundf(completion * 100.0f / (2.0f * NUM_LEVELS));
 }
 
 

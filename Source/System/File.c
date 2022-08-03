@@ -1088,26 +1088,14 @@ Ptr						tempBuffer16 = nil;
 OSErr SaveGame(int fileSlot)
 {
 SaveGameType	saveData;
-			
-			/*************************/	
-			/* CREATE SAVE GAME DATA */
-			/*************************/	
 
 	memset(&saveData, 0, sizeof(saveData));
 
 //	saveData.version		= SAVE_GAME_VERSION;				// save file version #
 	saveData.score 			= gScore;
 	saveData.numLives 		= gPlayerInfo.lives;
-
-	for (int i = 0; i < NUM_LEVELS; i++)
-	{
-		saveData.levels[i] = gLevelWon[i];
-		saveData.duels[i] = gDuelWon[i];
-	}	
-
-		/*******************/
-		/* DO NAV SERVICES */
-		/*******************/
+	saveData.duelWonMask	= gDuelWonMask;
+	saveData.levelWonMask	= gLevelWonMask;
 
 	char path[64];
 	snprintf(path, sizeof(path), "BillySave%d", fileSlot);
@@ -1150,20 +1138,13 @@ OSErr LoadSavedGame(int fileSlot, SaveGameType* saveDataPtr)
 
 void UseSavedGame(const SaveGameType* saveData)
 {
-		/**********************/
-		/* USE SAVE GAME DATA */
-		/**********************/
-
 	gLoadedScore = gScore = saveData->score;
 	gPlayerInfo.lives = saveData->numLives;
 	if (gPlayerInfo.lives > 20)							// check for corruption
 		gPlayerInfo.lives = 0;
 
-	for (int i = 0; i < NUM_LEVELS; i++)
-	{
-		gLevelWon[i] = saveData->levels[i];
-		gDuelWon[i] = saveData->duels[i];
-	}
+	gDuelWonMask = saveData->duelWonMask;
+	gLevelWonMask = saveData->levelWonMask;
 }
 
 #pragma mark -

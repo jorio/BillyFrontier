@@ -536,7 +536,7 @@ void DecEnemiesAtStopPoint(void)
 			if (gStopPointNum == 7)
 			{
 				StartLevelCompletion(3.0);
-				gLevelWon[gCurrentArea/2] = true;
+				MarkLevelWon(gCurrentArea/2);
 				return;
 			}
 		}

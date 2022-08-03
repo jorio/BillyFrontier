@@ -282,24 +282,23 @@ static ObjNode* NewMenuItem(int i, const char* name)
 
 	ObjNode* newObj;
 
-	gNewObjectDefinition.coord.x = 130;
-	gNewObjectDefinition.coord.y = 140.0f + MENU_FONT_SCALE * i; //y;
-	gNewObjectDefinition.coord.z = 0;
-	gNewObjectDefinition.flags = 0;
-	gNewObjectDefinition.moveCall = MoveMenuItem;
-	gNewObjectDefinition.rot = 0;
-	gNewObjectDefinition.scale = MENU_FONT_SCALE;
-	gNewObjectDefinition.slot = SPRITE_SLOT;
+	NewObjectDefinitionType def =
+	{
+		.coord = {130, 140+MENU_FONT_SCALE*i, 0},
+		.moveCall = MoveMenuItem,
+		.slot = SPRITE_SLOT,
+		.scale = MENU_FONT_SCALE,
+	};
 
 	if (gMenuMode == MENU_PAGE_SAVEGAME)
 	{
-		gNewObjectDefinition.coord.y += 40;
+		def.coord.y += 40;
 	}
 
-	gMenuItems[i] = newObj = MakeFontStringObject(name, &gNewObjectDefinition, false);
+	gMenuItems[i] = newObj = MakeFontStringObject(name, &def, false);
 
-	float w = GetStringWidth(name, gNewObjectDefinition.scale);
-	gMenuItemMinX[i] = gNewObjectDefinition.coord.x;
+	float w = GetStringWidth(name, def.scale);
+	gMenuItemMinX[i] = def.coord.x;
 	gMenuItemMaxX[i] = gMenuItemMinX[i] + w;
 
 
@@ -414,17 +413,15 @@ static void BuildMainMenu_Settings(void)
 	{
 		int i = kSettingsMenu_COUNT;
 
-		gNewObjectDefinition.coord.x = 130;
-		gNewObjectDefinition.coord.y = 390; //y;
-		gNewObjectDefinition.coord.z = 0;
-		gNewObjectDefinition.flags = 0;
-		gNewObjectDefinition.moveCall = nil;// MoveMenuItem;
-		gNewObjectDefinition.rot = 0;
-		gNewObjectDefinition.scale = MENU_FONT_SCALE * 0.6;
-		gNewObjectDefinition.slot = SPRITE_SLOT;
-		gMenuItems[i++] = MakeFontStringObject("THE NEW ANTIALIASING SETTING WILL", &gNewObjectDefinition, false);
-		gNewObjectDefinition.coord.y += 20;
-		gMenuItems[i++] = MakeFontStringObject("TAKE EFFECT WHEN YOU RESTART THE GAME.", &gNewObjectDefinition, false);
+		NewObjectDefinitionType def =
+		{
+			.coord = {130, 390, 0},
+			.scale = MENU_FONT_SCALE * 0.6f,
+			.slot = SPRITE_SLOT,
+		};
+		gMenuItems[i++] = MakeFontStringObject("THE NEW ANTIALIASING SETTING WILL", &def, false);
+		def.coord.y += 20;
+		gMenuItems[i++] = MakeFontStringObject("TAKE EFFECT WHEN YOU RESTART THE GAME.", &def, false);
 	}
 }
 
@@ -433,27 +430,17 @@ static void BuildMainMenu_SavedGames(void)
 	if (gMenuMode == MENU_PAGE_SAVEGAME)
 	{
 		char title[32];
-
-		int completionPercent = 0;
-		for (int i = 0; i < NUM_LEVELS; i++)
-		{
-			if (gDuelWon[i]) completionPercent++;
-			if (gLevelWon[i]) completionPercent++;
-		}
-		completionPercent = roundf(completionPercent * 100.0f / (2.0f * NUM_LEVELS));
+		int completionPercent = GetGameCompletionPercent(gDuelWonMask, gLevelWonMask);
 
 		snprintf(title, sizeof(title), "%d pts, %d%% complete", gScore, completionPercent);
 
-		gNewObjectDefinition.coord.x = 640/2;
-		gNewObjectDefinition.coord.y = 100;
-		gNewObjectDefinition.coord.z = 0;
-		gNewObjectDefinition.flags = 0;
-		gNewObjectDefinition.moveCall = nil;//MoveMenuItem;
-		gNewObjectDefinition.rot = 0;
-		gNewObjectDefinition.scale = MENU_FONT_SCALE * 1.5f;
-		gNewObjectDefinition.slot = SPRITE_SLOT;
-
-		MakeFontStringObject(title, &gNewObjectDefinition, true);
+		NewObjectDefinitionType def =
+		{
+			.coord = {640 / 2, 100, 0},
+			.scale = MENU_FONT_SCALE * 1.5f,
+			.slot = SPRITE_SLOT,
+		};
+		MakeFontStringObject(title, &def, true);
 	}
 
 	int i = 0;
@@ -463,18 +450,13 @@ static void BuildMainMenu_SavedGames(void)
 		char prefix[32];
 		char suffix[32];
 
+		int completionPercent = 0;
 		SaveGameType scratch;
 		OSErr iErr = LoadSavedGame(i, &scratch);
 
-		int completionPercent = 0;
 		if (iErr == noErr)
 		{
-			for (int i = 0; i < NUM_LEVELS; i++)
-			{
-				if (scratch.duels[i]) completionPercent++;
-				if (scratch.levels[i]) completionPercent++;
-			}
-			completionPercent = roundf(completionPercent * 100.0f / (2.0f * NUM_LEVELS));
+			completionPercent = GetGameCompletionPercent(scratch.duelWonMask, scratch.levelWonMask);
 		}
 
 		if (gMenuMode == MENU_PAGE_LOADGAME)
