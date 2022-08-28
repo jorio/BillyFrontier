@@ -77,49 +77,49 @@ InputBinding kDefaultBindings[NUM_CONTROL_NEEDS] =
 	[kNeed_UIPause] =
 	{
 		.hardKey = SDL_SCANCODE_ESCAPE,
-		.hardPad = SDL_CONTROLLER_BUTTON_START,
+		.hardPad = {kInputTypeButton, SDL_CONTROLLER_BUTTON_START},
 	},
 
 	[kNeed_UIBack] =
 	{
 		.hardKey = SDL_SCANCODE_BACKSPACE,
 		.userKey = {SDL_SCANCODE_ESCAPE},
-		.hardPad = SDL_CONTROLLER_BUTTON_BACK,
+		.hardPad = {kInputTypeButton, SDL_CONTROLLER_BUTTON_BACK},
 	},
 
 	[kNeed_UIConfirm] =
 	{
 		.hardKey = SDL_SCANCODE_SPACE,
 		.userKey = {SDL_SCANCODE_RETURN, SDL_SCANCODE_KP_ENTER},
-		.hardPad = SDL_CONTROLLER_BUTTON_BACK,
+		.hardPad = {kInputTypeButton, SDL_CONTROLLER_BUTTON_BACK},
 	},
 
 	[kNeed_UIUp] =
 	{
 		.hardKey = SDL_SCANCODE_UP,
 		.userKey = {SDL_SCANCODE_W},
-		.hardPad = SDL_CONTROLLER_BUTTON_DPAD_UP,
+		.hardPad = {kInputTypeButton, SDL_CONTROLLER_BUTTON_DPAD_UP},
 	},
 
 	[kNeed_UIDown] =
 	{
 		.hardKey = SDL_SCANCODE_DOWN,
 		.userKey = {SDL_SCANCODE_S},
-		.hardPad = SDL_CONTROLLER_BUTTON_DPAD_DOWN,
+		.hardPad = {kInputTypeButton, SDL_CONTROLLER_BUTTON_DPAD_DOWN},
 	},
 
 	[kNeed_UILeft] =
 	{
 		.hardKey = SDL_SCANCODE_LEFT,
 		.userKey = {SDL_SCANCODE_A},
-		.hardPad = SDL_CONTROLLER_BUTTON_DPAD_LEFT,
+		.hardPad = {kInputTypeButton, SDL_CONTROLLER_BUTTON_DPAD_LEFT},
 	},
 
 	[kNeed_UIRight] =
 	{
 		.hardKey = SDL_SCANCODE_RIGHT,
 		.userKey = {SDL_SCANCODE_D},
-		.hardPad = SDL_CONTROLLER_BUTTON_DPAD_RIGHT,
+		.hardPad = {kInputTypeButton, SDL_CONTROLLER_BUTTON_DPAD_RIGHT},
 	},
 
 };
