@@ -129,8 +129,6 @@ add_compile_definitions(
 )
 
 target_compile_definitions(${GAME_TARGET} PRIVATE
-	HQ_TERRAIN=1
-	ENABLE_LOADING_SCREEN=0
 	GL_SILENCE_DEPRECATION)
 
 if(NOT MSVC)
@@ -144,7 +142,6 @@ if(NOT MSVC)
 		-Wno-unknown-pragmas
 		$<$<CXX_COMPILER_ID:GNU>:-Wno-unused-but-set-variable>
 		-Werror=return-type
-		-Wno-missing-braces #----
 		-Wno-unused-function
 	)
 

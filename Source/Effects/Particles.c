@@ -1813,10 +1813,10 @@ OGLMatrix4x4	m;
 const OGLVector3D	up = {0,1,0};
 const OGLPoint3D	frame[4] =
 {
-	-100,200,0,
-	100,200,0,
-	100,0,0,
-	-100,0,0	
+	{-100,200,0},
+	{100,200,0},
+	{100,0,0},
+	{-100,0,0},
 };
 OGLPoint3D	verts[4];
 

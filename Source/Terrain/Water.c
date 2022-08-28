@@ -1,7 +1,6 @@
 /**********************/
 /*   	WATER.C      */
 /**********************/
-//TODO: IS THIS ACTUALLY REQUIRED IN BILLY FRONTIER?
 
 #include "game.h"
 
@@ -59,9 +58,9 @@ static const Boolean gWaterGlow[NUM_WATER_TYPES] =
 
 static const OGLTextureCoord	gWaterScrollUVDeltas[NUM_WATER_TYPES][2] =
 {
-	.05,.07,		.03, .06,			// blue water
-	.03,.04,		.02, .03,			// pool water
-	.06,.08,		.04, .06,			// garbage water
+	[WATER_TYPE_BLUEWATER]		= {{.05f,.07f},		{.03f, .06f}},
+	[WATER_TYPE_POOLWATER]		= {{.03f,.04f},		{.02f, .03f}},
+	[WATER_TYPE_GARBAGE]		= {{.06f,.08f},		{.04f, .06f}},
 };
 
 

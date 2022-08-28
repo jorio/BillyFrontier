@@ -405,16 +405,16 @@ const int	spriteNum[NUM_BIGBOARD_ITEMS] =
 
 const OGLPoint2D coords[NUM_BIGBOARD_ITEMS] =
 {
-	100, 220,				// town shootout
-	270, 182,				// town stampede
-	250, 339,				// town target
-	
-	390, 180,				// swamp shootout
-	520, 222,				// swamp stampede
-	415, 328,				// swamp target
-	
-	90,440,					// end game	
-	550,440,				// save game
+	{100, 220},				// town shootout
+	{270, 182},				// town stampede
+	{250, 339},				// town target
+
+	{390, 180},				// swamp shootout
+	{520, 222},				// swamp stampede
+	{415, 328},				// swamp target
+
+	{ 90, 440},				// end game
+	{550, 440},				// save game
 };
 
 const float scale[NUM_BIGBOARD_ITEMS] =
@@ -422,12 +422,13 @@ const float scale[NUM_BIGBOARD_ITEMS] =
 	180,					// town shootout
 	164,					// town stampede
 	125,					// town target
-	
+
 	160,					// swamp shootout
 	175,					// swamp stampede
 	145,					// swamp target
-	
-	90,		90,
+
+	90,
+	90,
 };
 
 
@@ -474,15 +475,16 @@ int		i = theNode->Kind;
 float	top,bottom,left,right;
 const Rect crop[NUM_BIGBOARD_ITEMS] =
 {
-	0,40,0,-40,					// town shootout
-	0,0,0,-65,					// town stampede
-	50,0,0,0,					// town target
-	
-	0,70,0,-5,					// swamp shootout
-	0,75,0,0,					// swamp stampede
-	50,0,0,0,					// swamp target
-	
-	0,0,0,0,		0,0,0,0,
+	{0,40,0,-40},				// town shootout
+	{0,0,0,-65},				// town stampede
+	{50,0,0,0},					// town target
+
+	{0,70,0,-5},				// swamp shootout
+	{0,75,0,0},					// swamp stampede
+	{50,0,0,0},					// swamp target
+
+	{0,0,0,0},
+	{0,0,0,0},
 };
 
 

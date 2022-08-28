@@ -53,13 +53,13 @@ FenceDefType	*gFenceList = nil;
 
 static const short			gFenceTexture[NUM_FENCE_TYPES][2] =
 {
-	SPRITE_GROUP_GLOBAL,		GLOBAL_SObjType_Fence_Wood,		// wood
-	SPRITE_GROUP_GLOBAL,		GLOBAL_SObjType_Fence_White,		// white wood
-	SPRITE_GROUP_STAMPEDE,		STAMPEDE_SObjType_Fence_Canyon,		// canyon
-	SPRITE_GROUP_GLOBAL,		GLOBAL_SObjType_Fence_TallGrass,
-	SPRITE_GROUP_GLOBAL,		GLOBAL_SObjType_Fence_SmallGrass,
-	SPRITE_GROUP_GLOBAL,		GLOBAL_SObjType_Fence_SwampTree,
-	SPRITE_GROUP_GLOBAL,		GLOBAL_SObjType_Fence_PicketFence,
+	[FENCE_TYPE_WOOD]			= {SPRITE_GROUP_GLOBAL,		GLOBAL_SObjType_Fence_Wood},
+	[FENCE_TYPE_WHITE]			= {SPRITE_GROUP_GLOBAL,		GLOBAL_SObjType_Fence_White},
+	[FENCE_TYPE_CANYON]			= {SPRITE_GROUP_STAMPEDE,	STAMPEDE_SObjType_Fence_Canyon},
+	[FENCE_TYPE_TALLGRASS]		= {SPRITE_GROUP_GLOBAL,		GLOBAL_SObjType_Fence_TallGrass},
+	[FENCE_TYPE_SMALLGRASS]		= {SPRITE_GROUP_GLOBAL,		GLOBAL_SObjType_Fence_SmallGrass},
+	[FENCE_TYPE_SWAMPTREE]		= {SPRITE_GROUP_GLOBAL,		GLOBAL_SObjType_Fence_SwampTree},
+	[FENCE_TYPE_PICKETFENCE]	= {SPRITE_GROUP_GLOBAL,		GLOBAL_SObjType_Fence_PicketFence},
 };
 
 

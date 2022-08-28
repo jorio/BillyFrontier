@@ -636,13 +636,13 @@ static void Infobar_DrawAmmo(OGLPoint2D offset)
 int		numBullets, numClips;
 static const OGLPoint2D	bulletCoords[6] =
 {
-	STAT_BAR_HEIGHT * 2.57f,		STAT_BAR_HEIGHT * .23f,
-	STAT_BAR_HEIGHT * 2.36f,		STAT_BAR_HEIGHT * .35f,
-	STAT_BAR_HEIGHT * 2.36f,		STAT_BAR_HEIGHT * .59f,
+	{STAT_BAR_HEIGHT * 2.57f,		STAT_BAR_HEIGHT * .23f},
+	{STAT_BAR_HEIGHT * 2.36f,		STAT_BAR_HEIGHT * .35f},
+	{STAT_BAR_HEIGHT * 2.36f,		STAT_BAR_HEIGHT * .59f},
 
-	STAT_BAR_HEIGHT * 2.58f,		STAT_BAR_HEIGHT * .72f,
-	STAT_BAR_HEIGHT * 2.8f,			STAT_BAR_HEIGHT * .59f,
-	STAT_BAR_HEIGHT * 2.8f,			STAT_BAR_HEIGHT * .35,
+	{STAT_BAR_HEIGHT * 2.58f,		STAT_BAR_HEIGHT * .72f},
+	{STAT_BAR_HEIGHT * 2.80f,		STAT_BAR_HEIGHT * .59f},
+	{STAT_BAR_HEIGHT * 2.80f,		STAT_BAR_HEIGHT * .35f},
 };
 
 	numClips = gPlayerInfo.ammoCount / AMMO_CLIP_SIZE;

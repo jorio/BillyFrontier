@@ -93,12 +93,12 @@ static	Byte		gDuelDifficulty = 0;
 static 	Byte		gNumDuelers[MAX_DUEL_DIFFICULTY] = {1,2,3,3,3,3};
 static	Byte		gDuelerType[MAX_DUEL_DIFFICULTY][3] =
 					{
-						0,0,0,
-						2,0,0,
-						1,2,0,
-						0,1,2,
-						2,0,1,
-						1,2,0,
+						{0,0,0},
+						{2,0,0},
+						{1,2,0},
+						{0,1,2},
+						{2,0,1},
+						{1,2,0},
 					};
 
 
