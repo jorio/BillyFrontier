@@ -179,12 +179,18 @@ int	i;
 		
 	for (i = 0; i < gMaxChannels; i++)
 	{
-		SndDisposeChannel(gSndChannel[i], true);
-		gSndChannel[i] = nil;
+		if (gSndChannel[i])
+		{
+			SndDisposeChannel(gSndChannel[i], true);
+			gSndChannel[i] = nil;
+		}
 	}
 
-	SndDisposeChannel(gMusicChannel, true);
-	gMusicChannel = nil;
+	if (gMusicChannel)
+	{
+		SndDisposeChannel(gMusicChannel, true);
+		gMusicChannel = nil;
+	}
 
 	gMaxChannels = 0;
 	
