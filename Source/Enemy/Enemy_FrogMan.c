@@ -194,16 +194,16 @@ static void MoveShootoutFrogMan(ObjNode *enemy)
 static void MoveShootoutFrogMan_Stand(ObjNode *enemy)
 {
 float	fps = gFramesPerSecondFrac;
-float	y;
+//float	y;
 
 		/* KEEP AIMED AT PLAYER */
 		
 	TurnObjectTowardTarget(enemy, &gCoord, gPlayerInfo.coord.x, gPlayerInfo.coord.z, 4.0, false);		
 		
 
-	y = GetTerrainY(gCoord.x, gCoord.z) + 100.0f;				// get lower y coord
-	
-	
+//	y = GetTerrainY(gCoord.x, gCoord.z) + 100.0f;				// get lower y coord
+
+
 		/* SEE IF ATTACK NOW */
 
 	if (gShootoutMode == SHOOTOUT_MODE_BATTLE)					// only attack once in battle mode (not still walking)

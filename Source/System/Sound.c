@@ -279,11 +279,13 @@ short		c = *channelNum;
 	mySndCmd.param1 = 0;
 	mySndCmd.param2 = 0;
 	myErr = SndDoImmediate(gSndChannel[c], &mySndCmd);
+	(void) myErr;
 
 	mySndCmd.cmd = quietCmd;
 	mySndCmd.param1 = 0;
 	mySndCmd.param2 = 0;
 	myErr = SndDoImmediate(gSndChannel[c], &mySndCmd);
+	(void) myErr;
 	
 	*channelNum = -1;
 	

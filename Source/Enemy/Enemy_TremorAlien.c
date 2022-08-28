@@ -673,7 +673,7 @@ OGLMatrix4x4	m;
 static void TremorAlienThrowTomahawk(ObjNode *enemy)
 {
 ObjNode		*toma;			
-float		r, d;	
+float		d;	
 OGLVector2D	toPlayer;
 
 	toma = enemy->ChainNode;
@@ -686,7 +686,7 @@ OGLVector2D	toPlayer;
 	toma->CType    = CTYPE_PICKABLE;			// and can be shot out of the sky
 	toma->HitByBulletCallback = TomahawkHitByBulletCallback;
 	
-	r = toma->Rot.y = enemy->Rot.y;
+	toma->Rot.y = enemy->Rot.y;
 	
 			/* CALC VECTOR TO PLAYER */
 			

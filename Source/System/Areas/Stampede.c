@@ -533,7 +533,7 @@ float	r;
 static void MovePlayer_Stampede_Stand(ObjNode *player)
 {
 float	fps = gFramesPerSecondFrac;
-float	r;
+//float	r;
 
 			/* USER TURNING */
 			
@@ -545,7 +545,7 @@ float	r;
 	if (GetNeedState(kNeed_Right))
 		player->Rot.y += 3.0f * fps;
 
-	r = player->Rot.y;
+//	r = player->Rot.y;
 
 
 	gDelta.x = gDelta.z = 0;
@@ -671,6 +671,7 @@ Boolean		killed = false;
 		theNode->BottomOff = gPlayerBottomOff;
 
 	sides = HandleCollisions(theNode, PLAYER_COLLISION_CTYPE, -.3);
+	(void) sides;
 
 			/* SCAN FOR INTERESTING STUFF */
 						
@@ -730,6 +731,8 @@ Boolean		killed = false;
 	if (!killed && (gDelta.y <= 0.0f))					// only check water if moving down and not killed yet
 	{
 		int		patchNum;
+
+#if 0
 		Boolean	wasInWater;
 		
 					/* REMEMBER IF ALREADY IN WATER */
@@ -738,7 +741,8 @@ Boolean		killed = false;
 			wasInWater = true;
 		else
 			wasInWater = false;
-		
+#endif
+
 					/* CHECK IF IN WATER NOW */
 					
 		if (DoWaterCollisionDetect(theNode, gCoord.x, gCoord.y+theNode->BottomOff, gCoord.z, &patchNum))
@@ -863,11 +867,10 @@ float			x,z,placement;
 
 static void MoveStampedeKangaOnSpline(ObjNode *theNode)
 {
-Boolean 	isInRange; 
 float	speedToMove;
 int		markerNum;
 
-	isInRange = IsSplineItemOnActiveTerrain(theNode);					// update its visibility
+	IsSplineItemOnActiveTerrain(theNode);					// update its visibility
 
 		/* MOVE ALONG THE SPLINE */
 
@@ -1067,11 +1070,10 @@ float			x,z,placement;
 
 static void MoveStampedeKangaRexOnSpline(ObjNode *theNode)
 {
-Boolean 	isInRange; 
 float		speedToMove;
 int			markerNum;
 
-	isInRange = IsSplineItemOnActiveTerrain(theNode);					// update its visibility
+	IsSplineItemOnActiveTerrain(theNode);					// update its visibility
 
 		/* MOVE ALONG THE SPLINE */
 

@@ -2509,8 +2509,8 @@ float			m10, m11, m12, m13;
 float			m20, m21, m22, m23;
 float			m30, m31, m32, m33;
 
-float			lX, lY, lZ;				// Local space co-ordinates
-float			hX, hY, hZ, hW;			// Homogeneous co-ordinates
+float			lX = 0, lY = 0, lZ = 0;				// Local space co-ordinates
+float			hX = 0, hY = 0, hZ = 0, hW = 0;		// Homogeneous co-ordinates
 float			minusHW;				// -hW
 
 u_long		clipFlags;				// Clip in/out tests for point

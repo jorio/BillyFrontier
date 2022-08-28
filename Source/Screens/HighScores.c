@@ -468,7 +468,7 @@ void LoadHighScores(void)
 {
 	ClearHighScores();	// clear them beforehand in case loading fails
 
-	LoadUserDataFile(SCORES_FILE_NAME, SCORES_MAGIC, sizeof(gHighScores), gHighScores);
+	LoadUserDataFile(SCORES_FILE_NAME, SCORES_MAGIC, sizeof(gHighScores), (Ptr) &gHighScores[0]);
 }
 
 
@@ -476,7 +476,7 @@ void LoadHighScores(void)
 
 static void SaveHighScores(void)
 {
-	SaveUserDataFile(SCORES_FILE_NAME, SCORES_MAGIC, sizeof(gHighScores), gHighScores);
+	SaveUserDataFile(SCORES_FILE_NAME, SCORES_MAGIC, sizeof(gHighScores), (Ptr) &gHighScores[0]);
 }
 
 

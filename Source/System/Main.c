@@ -76,8 +76,6 @@ Byte				gLevelWonMask;
 
 void ToolBoxInit(void)
 {
-OSErr		iErr;
-
 	gMainAppRezFile = CurResFile();
 
 			/* CHECK PREFERENCES FOLDER */

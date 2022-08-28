@@ -99,7 +99,6 @@ static	float	gMenuItemMaxX[MAX_MENU_ITEMS];
 
 static	int		gMenuIndex_DeleteFile = -1;
 static	int		gMenuIndex_Back = -1;
-static	Boolean	gDeleteMode = false;
 
 static	int		gAreYouSure = 0;
 
@@ -346,7 +345,7 @@ static const char* DotConcat(const char* prefix, const char* suffix, float targe
 	bool flipflop = false;
 
 	while (width < targetWidth
-		&& cursor < sizeof(buf) - 1)		// -1 for nul terminator
+		&& (size_t)cursor < sizeof(buf) - 1)		// -1 for nul terminator
 	{
 		if (width + dotWidth * 0.4f > targetWidth)		// * 0.4 for some tolerance
 			break;
@@ -478,7 +477,8 @@ static void BuildMainMenu_SavedGames(void)
 
 		if (iErr)
 		{
-			snprintf(suffix, sizeof(suffix), "" /*"EMPTY"*/);
+			//snprintf(suffix, sizeof(suffix), "EMPTY");
+			suffix[0] = '\0';
 		}
 		else
 		{
@@ -507,7 +507,6 @@ void BuildMainMenu(int menuLevel)
 	if (gMenuMode != menuLevel)
 	{
 		gAreYouSure = 0;
-		gDeleteMode;
 	}
 
 			/* SET MENU AS CURRENT */

@@ -45,12 +45,9 @@ Boolean	gPlayerIsDead = false;
 //
 
 void InitPlayerInfo_Game(void)
-{	
-int		i;
-
-
+{
 			/* INIT SOME THINGS IF NOT LOADING SAVED GAME */
-			
+
 	if (!gPlayingFromSavedGame)
 	{
 		gLevelWonMask				= 0;			// no levels completed yet
@@ -60,15 +57,13 @@ int		i;
 		gScore						= 0;
 	}
 
-	
 	gDeathTimer = 0;
 
 	gPlayerInfo.startX 			= 0;
 	gPlayerInfo.startZ 			= 0;
 	gPlayerInfo.coord.x 		= 0;
 	gPlayerInfo.coord.y 		= 0;
-	gPlayerInfo.coord.z 		= 0;	
-	
+	gPlayerInfo.coord.z 		= 0;
 }
 
 

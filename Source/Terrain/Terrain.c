@@ -524,7 +524,7 @@ SuperTileMemoryType	*superTilePtr;
 OGLColorRGBA_Byte	*vertexColorList;
 MOTriangleIndecies	*triangleList;
 OGLPoint3D			*vertexPointList;
-OGLTextureCoord		*uvs;
+//OGLTextureCoord		*uvs;
 OGLVector3D			*vertexNormals;
 
 	superTileNum = GetFreeSuperTileMemory();						// get memory block for the data
@@ -553,7 +553,7 @@ OGLVector3D			*vertexNormals;
 	vertexPointList 		= meshData->points;									// get ptr to points list
 	vertexColorList 		= meshData->colorsByte;								// get ptr to vertex color			
 	vertexNormals			= meshData->normals;								// get ptr to vertex normals
-	uvs						= meshData->uvs[0];									// get ptr to uvs
+//	uvs						= meshData->uvs[0];									// get ptr to uvs
 
 	miny = 10000000;													// init bbox counters
 	maxy = -miny;

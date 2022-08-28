@@ -273,6 +273,7 @@ Boolean		killed = false;
 
 //	sides = HandleCollisions(theNode, PLAYER_COLLISION_CTYPE, -.3);
 	sides = HandleCollisions(theNode, 0, -.3);
+	(void) sides;
 
 			/* SCAN FOR INTERESTING STUFF */
 						
@@ -329,6 +330,8 @@ Boolean		killed = false;
 	if (!killed && (gDelta.y <= 0.0f))					// only check water if moving down and not killed yet
 	{
 		int		patchNum;
+
+#if 0
 		Boolean	wasInWater;
 		
 					/* REMEMBER IF ALREADY IN WATER */
@@ -337,9 +340,10 @@ Boolean		killed = false;
 			wasInWater = true;
 		else
 			wasInWater = false;
-		
+#endif
+
 					/* CHECK IF IN WATER NOW */
-					
+
 		if (DoWaterCollisionDetect(theNode, gCoord.x, gCoord.y+theNode->BottomOff, gCoord.z, &patchNum))
 		{
 			gPlayerInfo.waterPatch = patchNum;

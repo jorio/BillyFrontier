@@ -588,7 +588,7 @@ Boolean					overrideAlphaFunc = false;
 
 Boolean DoFenceCollision(ObjNode *theNode)
 {
-long			f,numFenceSegments,i,numReScans;
+long			numFenceSegments;
 OGLPoint3D		*nubs;
 OGLVector2D		*vectors;
 double			radius;
@@ -608,19 +608,15 @@ Boolean			hit = false;
 			/* SCAN THRU ALL FENCES FOR A COLLISION */
 			/****************************************/
 			
-	for (f = 0; f < gNumFences; f++)
+	for (long f = 0; f < gNumFences; f++)
 	{
-		int		type;
 		float	temp;
 		float	r2 = radius + 20.0f;								// tweak a little to be safe
 
 		if ((oldX == newX) && (oldZ == newZ))						// if no movement, then don't check anything
 			break;
-					
-			
-		type = gFenceList[f].type;
 
-			
+
 		/* QUICK CHECK TO SEE IF OLD & NEW COORDS (PLUS RADIUS) ARE OUTSIDE OF FENCE'S BBOX */
 
 		temp = gFenceList[f].bBox.min.x - r2;
@@ -645,9 +641,8 @@ Boolean			hit = false;
 				/**********************************/
 				/* SCAN EACH SECTION OF THE FENCE */
 				/**********************************/
-			
-		numReScans = 0;	
-		for (i = 0; i < numFenceSegments; i++)
+
+		for (long i = 0; i < numFenceSegments; i++)
 		{
 			OGLPoint3D		p1,p2, sphereCenter, intersectPt;
 			OGLVector3D		segVector;
@@ -677,14 +672,11 @@ Boolean			hit = false;
 			{
 				gCoord.x = theNode->OldCoord.x;
 				gCoord.z = theNode->OldCoord.z;
-			
-			
 				hit = true;
-			
 			}
 		}
 	}
-	
+
 	return(hit);
 }
 

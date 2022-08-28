@@ -429,43 +429,6 @@ OGLMatrix4x4	*m,m2;
 
 
 
-/*************************** ROTATE ON TERRAIN: WIDE AREA ***************************/
-//
-// Same as above except it averages normals around the center.
-//
-
-void RotateOnTerrain_WideArea(ObjNode *theNode, float yOffset, float radius)
-{
-OGLVector3D		up;
-float			r,x,z,x2,z2;
-
-
-			/* GET CENTER Y COORD & TERRAIN NORMAL */
-			
-	x = theNode->Coord.x;
-	z = theNode->Coord.z;
-	GetTerrainY(x, z);	
-	up = gRecentTerrainNormal;
-
-			/* AVERAGE IN THE RADIAL NORMALS */
-			
-	for (r = 0; r < PI2; r += (PI/8))
-	{
-		x2 = x + sin(r) * radius;
-		z2 = z + cos(r) * radius;
-	
-		GetTerrainY(x, z);	
-		up.x += gRecentTerrainNormal.x;
-		up.y += gRecentTerrainNormal.y;
-		up.z += gRecentTerrainNormal.z;
-	}
-	OGLVector3D_Normalize(&up, &up);
-
-
-	RotateOnTerrain(theNode, yOffset, &up);
-}
-
-
 #pragma mark ======= TERRAIN PRE-CONSTRUCTION =========
 
 

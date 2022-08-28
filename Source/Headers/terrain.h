@@ -184,7 +184,6 @@ Boolean SeeIfCoordsOutOfRange(float x, float z);
 extern 	void FindPlayerStartCoordItems(void);
 void InitSuperTileGrid(void);
 void RotateOnTerrain(ObjNode *theNode, float yOffset, OGLVector3D *surfaceNormal);
-void RotateOnTerrain_WideArea(ObjNode *theNode, float yOffset, float radius);
 void KeepTerrainAlive(void);
 void DoPlayerTerrainUpdate(float x, float y);
 void CalcTileNormals(long row, long col, OGLVector3D *n1, OGLVector3D *n2);

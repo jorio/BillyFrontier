@@ -370,15 +370,14 @@ float		angle;
 
 static void WalkerShoots(ObjNode *walker)
 {
-ObjNode			*rtPod, *leftPod;
 OGLVector3D		aim;
 
 
 
 			/* GET PODS */
 			
-	leftPod = walker->ChainNode;
-	rtPod = leftPod->ChainNode;
+	ObjNode* leftPod = walker->ChainNode;
+	//ObjNode* rtPod = leftPod->ChainNode;
 
 
 

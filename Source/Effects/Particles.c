@@ -1034,7 +1034,6 @@ long	pg,i;
 OGLVector3D	delta;
 OGLPoint3D	pt;
 NewParticleDefType		newParticleDef;
-float	volume;
 
 	pt.y = y;
 
@@ -1076,12 +1075,9 @@ float	volume;
 
 			/* PLAY SPLASH SOUND */
 
-	pt.x = x;
-	pt.z = z;		
-	
-	volume = 1.5;
-			
-//	PlayEffect_Parms3D(EFFECT_SPLASH, &pt, NORMAL_CHANNEL_RATE, volume);
+//	pt.x = x;
+//	pt.z = z;
+//	PlayEffect_Parms3D(EFFECT_SPLASH, &pt, NORMAL_CHANNEL_RATE, 1.5);
 }
 
 
