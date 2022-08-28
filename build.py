@@ -239,13 +239,7 @@ def copy_documentation(proj, appdir, full=True):
     shutil.copy(F"LICENSE.md", F"{appdir}/License.txt")
 
     if full:
-        print("******** TODO: ADD DOCUMENTATION *************")
-        """
-        shutil.copytree("docs", F"{appdir}/Documentation")
-        os.remove(F"{appdir}/Documentation/screenshot.webp")
-        for docfile in ["CHANGELOG.md", "SECRETS.md"]:
-            shutil.copy(docfile, F"{appdir}/Documentation")
-        """
+        shutil.copy("Instructions.pdf", appdir)
 
 def package_windows(proj: Project):
     release_config = proj.build_configs[0]
