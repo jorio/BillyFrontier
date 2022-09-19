@@ -479,7 +479,7 @@ static void MoveTremorAlienOnSpline(ObjNode *theNode)
 {
 Boolean 	isInRange, atEnd = false; 
 
-	isInRange = IsSplineItemOnActiveTerrain(theNode);					// update its visibility
+	isInRange = UpdateSplineItemVisibilityOnActiveTerrain(theNode);					// update its visibility
 
 
 			/* HIDE WHEN NOT AT THIS STOPPOINT */

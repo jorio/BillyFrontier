@@ -12,7 +12,7 @@ void GetCoordOnSplineFromIndex(SplineDefType *splinePtr, double findex, float *x
 void GetCoordOnSpline(SplineDefType *splinePtr, double placement, float *x, float *z);
 void GetCoordOnSpline2(SplineDefType *splinePtr, double placement, double offset, float *x, float *z, Boolean allowWrap);
 void GetNextCoordOnSpline(SplineDefType *splinePtr, double placement, float *x, float *z);
-Boolean IsSplineItemOnActiveTerrain(ObjNode *theNode);
+Boolean UpdateSplineItemVisibilityOnActiveTerrain(ObjNode *theNode);
 void AddToSplineObjectList(ObjNode *theNode, Boolean setAim);
 void MoveSplineObjects(void);
 Boolean RemoveFromSplineObjectList(ObjNode *theNode);

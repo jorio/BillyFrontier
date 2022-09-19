@@ -159,7 +159,7 @@ static void MoveWalkerOnSpline(ObjNode *theNode)
 Boolean 	isInRange; 
 float		fps = gFramesPerSecondFrac;
 
-	isInRange = IsSplineItemOnActiveTerrain(theNode);					// update its visibility
+	isInRange = UpdateSplineItemVisibilityOnActiveTerrain(theNode);					// update its visibility
 
 
 again:

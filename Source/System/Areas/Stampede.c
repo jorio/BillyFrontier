@@ -870,7 +870,7 @@ static void MoveStampedeKangaOnSpline(ObjNode *theNode)
 float	speedToMove;
 int		markerNum;
 
-	IsSplineItemOnActiveTerrain(theNode);					// update its visibility
+	UpdateSplineItemVisibilityOnActiveTerrain(theNode);					// update its visibility
 
 		/* MOVE ALONG THE SPLINE */
 
@@ -1073,7 +1073,7 @@ static void MoveStampedeKangaRexOnSpline(ObjNode *theNode)
 float		speedToMove;
 int			markerNum;
 
-	IsSplineItemOnActiveTerrain(theNode);					// update its visibility
+	UpdateSplineItemVisibilityOnActiveTerrain(theNode);					// update its visibility
 
 		/* MOVE ALONG THE SPLINE */
 

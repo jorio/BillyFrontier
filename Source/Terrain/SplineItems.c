@@ -260,7 +260,7 @@ int				findex;
 // as needed.
 //
 
-Boolean IsSplineItemOnActiveTerrain(ObjNode *theNode)
+Boolean UpdateSplineItemVisibilityOnActiveTerrain(ObjNode *theNode)
 {
 Boolean	visible = true;
 long	row,col;

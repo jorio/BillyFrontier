@@ -1372,7 +1372,7 @@ static void MoveTumbleweedOnSpline(ObjNode *theNode)
 {
 Boolean 	isInRange; 
 
-	isInRange = IsSplineItemOnActiveTerrain(theNode);					// update its visibility
+	isInRange = UpdateSplineItemVisibilityOnActiveTerrain(theNode);					// update its visibility
 
 		/* MOVE ALONG THE SPLINE */
 
