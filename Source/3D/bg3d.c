@@ -204,7 +204,7 @@ MetaObjectPtr 	newObj;
 		count = sizeof(tag);
 		if (FSRead(refNum, &count, (Ptr) &tag) != noErr)
 			DoFatalAlert("ParseBG3DFile: FSRead failed");
-		tag = Byteswap32(&tag);
+		tag = UnpackU32BE(&tag);
 
 			/* HANDLE THE TAG */
 
@@ -290,7 +290,7 @@ uint32_t			flags;
 	count = sizeof(flags);
 	if (FSRead(refNum, &count, (Ptr) &flags) != noErr)
 		DoFatalAlert("ReadMaterialFlags: FSRead failed");
-	flags = Byteswap32(&flags);
+	flags = UnpackU32BE(&flags);
 
 
 		/* INIT NEW MATERIAL DATA */
@@ -380,7 +380,7 @@ MOMaterialData	*data;
 	OSErr iErr = FSRead(refNum, &count, (Ptr) &textureHeader);		// read header
 	GAME_ASSERT(!iErr);
 
-	ByteswapStructs("IIiiI4I", sizeof(BG3DTextureHeader), 1, &textureHeader);
+	UnpackStructs(">IIiiI4I", sizeof(BG3DTextureHeader), 1, &textureHeader);
 
 			/* COPY BASIC INFO */
 	
@@ -490,7 +490,7 @@ MetaObjectPtr		newObj;
 	count = sizeof(BG3DGeometryHeader);
 	FSRead(refNum, &count, (Ptr) &geoHeader);		// read header
 
-	ByteswapStructs("I i 4I III 4I", sizeof(BG3DGeometryHeader), 1, &geoHeader);
+	UnpackStructs(">I i 4I III 4I", sizeof(BG3DGeometryHeader), 1, &geoHeader);
 
 		/******************************/
 		/* CREATE NEW GEOMETRY OBJECT */
@@ -588,7 +588,7 @@ OGLPoint3D			*pointList;
 		DoFatalAlert("ReadVertexArray: AllocPtr failed!");
 	
 	FSRead(refNum, &count, (Ptr) pointList);						// read the data
-	ByteswapStructs("fff", sizeof(OGLPoint3D), numPoints, pointList);
+	UnpackStructs(">fff", sizeof(OGLPoint3D), numPoints, pointList);
 
 	data->points = pointList;										// assign point array to geometry header
 }
@@ -612,7 +612,7 @@ OGLVector3D			*normalList;
 		DoFatalAlert("ReadNormalArray: AllocPtr failed!");
 	
 	FSRead(refNum, &count, (Ptr) normalList);						// read the data
-	ByteswapStructs("fff", sizeof(OGLVector3D), numPoints, normalList);
+	UnpackStructs(">fff", sizeof(OGLVector3D), numPoints, normalList);
 
 	data->normals = normalList;										// assign normal array to geometry header
 }
@@ -636,7 +636,7 @@ OGLTextureCoord		*uvList;
 		DoFatalAlert("ReadUVArray: AllocPtr failed!");
 	
 	FSRead(refNum, &count, (Ptr) uvList);							// read the data
-	ByteswapStructs("ff", sizeof(OGLTextureCoord), numPoints, uvList);
+	UnpackStructs(">ff", sizeof(OGLTextureCoord), numPoints, uvList);
 
 	data->uvs[0] = uvList;												// assign uv array to geometry header
 }
@@ -705,7 +705,7 @@ MOTriangleIndecies	*triList;
 		DoFatalAlert("ReadTriangleArray: AllocPtr failed!");
 	
 	FSRead(refNum, &count, (Ptr) triList);							// read the data
-	ByteswapStructs("III", sizeof(MOTriangleIndecies), numTriangles, triList);
+	UnpackStructs(">III", sizeof(MOTriangleIndecies), numTriangles, triList);
 
 	data->triangles = triList;										// assign triangle array to geometry header
 }
@@ -723,7 +723,7 @@ MOVertexArrayData	*data;
 	count = sizeof(OGLBoundingBox);									// calc size of data to read
 	
 	FSRead(refNum, &count, (Ptr) &data->bBox);						// read the bbox data directly into geometry header
-	ByteswapStructs("3f3f?xxx", sizeof(OGLBoundingBox), 1, &data->bBox);
+	UnpackStructs(">3f3f?xxx", sizeof(OGLBoundingBox), 1, &data->bBox);
 }
 
 

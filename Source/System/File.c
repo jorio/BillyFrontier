@@ -28,7 +28,7 @@ static void ReadDataFromPlayfieldFile(FSSpec *specPtr);
 			GetHandleSize((Handle) (handle)), \
 			(n) * sizeof(type), \
 			n, #type, __func__, __LINE__); \
-	ByteswapStructs((format), sizeof(type), (n), *(handle));                      \
+	UnpackStructs((format), sizeof(type), (n), *(handle));                      \
 }
 
 /****************************/
@@ -188,7 +188,7 @@ SkeletonFile_AnimHeader_Type	*animHeaderPtr;
 
 	hand = GetResource('Hedr',1000);
 	GAME_ASSERT(hand);
-	BYTESWAP_HANDLE("4h", SkeletonFile_Header_Type, 1, hand);
+	BYTESWAP_HANDLE(">4h", SkeletonFile_Header_Type, 1, hand);
 	headerPtr = (SkeletonFile_Header_Type *)*hand;
 	version = headerPtr->version;
 	GAME_ASSERT_MESSAGE(version == SKELETON_FILE_VERS_NUM, "Skeleton file has wrong version #");
@@ -242,7 +242,7 @@ SkeletonFile_AnimHeader_Type	*animHeaderPtr;
 		hand = GetResource('Bone',1000+i);
 		if (hand == nil)
 			DoFatalAlert("Error reading Bone resource!");
-		BYTESWAP_HANDLE("i32b3fHH8L", File_BoneDefinitionType, 1, hand);
+		BYTESWAP_HANDLE(">i32b3fHH8L", File_BoneDefinitionType, 1, hand);
 		HLock(hand);
 		bonePtr = (File_BoneDefinitionType *)*hand;
 
@@ -275,7 +275,7 @@ SkeletonFile_AnimHeader_Type	*animHeaderPtr;
 			/* COPY POINT INDEX ARRAY INTO BONE STRUCT */
 
 		for (int j = 0; j < skeleton->Bones[i].numPointsAttachedToBone; j++)
-			skeleton->Bones[i].pointList[j] = Byteswap16(&indexPtr[j]);
+			skeleton->Bones[i].pointList[j] = UnpackU16BE(&indexPtr[j]);
 		ReleaseResource(hand);
 
 
@@ -290,7 +290,7 @@ SkeletonFile_AnimHeader_Type	*animHeaderPtr;
 			/* COPY NORMAL INDEX ARRAY INTO BONE STRUCT */
 
 		for (int j = 0; j < skeleton->Bones[i].numNormalsAttachedToBone; j++)
-			skeleton->Bones[i].normalList[j] = Byteswap16(&indexPtr[j]);
+			skeleton->Bones[i].normalList[j] = UnpackU16BE(&indexPtr[j]);
 		ReleaseResource(hand);
 	}
 
@@ -310,7 +310,7 @@ SkeletonFile_AnimHeader_Type	*animHeaderPtr;
 	pointPtr = (OGLPoint3D *)*hand;
 
 	int numDecomposedPointsDeducted = GetHandleSize(hand) / sizeof(OGLPoint3D);
-	BYTESWAP_HANDLE("fff", OGLPoint3D, skeleton->numDecomposedPoints, hand);
+	BYTESWAP_HANDLE(">fff", OGLPoint3D, skeleton->numDecomposedPoints, hand);
 
 	if (numDecomposedPointsDeducted != skeleton->numDecomposedPoints)
 		DoFatalAlert("# of points in Reference Model has changed!");
@@ -333,7 +333,7 @@ SkeletonFile_AnimHeader_Type	*animHeaderPtr;
 		if (hand == nil)
 			DoFatalAlert("Error getting anim header resource");
 		HLock(hand);
-		BYTESWAP_HANDLE("b32bxh", SkeletonFile_AnimHeader_Type, 1, hand);
+		BYTESWAP_HANDLE(">b32bxh", SkeletonFile_AnimHeader_Type, 1, hand);
 		animHeaderPtr = (SkeletonFile_AnimHeader_Type *)*hand;
 
 		skeleton->NumAnimEvents[i] = animHeaderPtr->numAnimEvents;			// copy # anim events in anim	
@@ -344,7 +344,7 @@ SkeletonFile_AnimHeader_Type	*animHeaderPtr;
 		hand = GetResource('Evnt',1000+i);
 		if (hand == nil)
 			DoFatalAlert("Error reading anim-event data resource!");
-		BYTESWAP_HANDLE("hbb", AnimEventType, skeleton->NumAnimEvents[i], hand);
+		BYTESWAP_HANDLE(">hbb", AnimEventType, skeleton->NumAnimEvents[i], hand);
 		animEventPtr = (AnimEventType *)*hand;
 		for (int j = 0;  j < skeleton->NumAnimEvents[i]; j++)
 			skeleton->AnimEventsList[i][j] = *animEventPtr++;
@@ -384,7 +384,7 @@ SkeletonFile_AnimHeader_Type	*animHeaderPtr;
 			hand = GetResource('KeyF',1000+(i*100)+j);
 			if (hand == nil)
 				DoFatalAlert("Error reading joint keyframes resource!");
-			BYTESWAP_HANDLE("ii3f3f3f", JointKeyframeType, numKeyframes, hand);
+			BYTESWAP_HANDLE(">ii3f3f3f", JointKeyframeType, numKeyframes, hand);
 			keyFramePtr = (JointKeyframeType *)*hand;
 			for (unsigned int k = 0; k < numKeyframes; k++)									// copy this joint's keyframes for this anim
 				skeleton->JointKeyframes[j].keyFrames[i][k] = *keyFramePtr++;
@@ -640,7 +640,7 @@ Ptr						tempBuffer16 = nil;
 	}
 	
 	header = (PlayfieldHeaderType **)hand;
-	BYTESWAP_HANDLE("4b iii fff iiiii 10i", PlayfieldHeaderType, 1, hand);
+	BYTESWAP_HANDLE(">4b iii fff iiiii 10i", PlayfieldHeaderType, 1, hand);
 	gNumTerrainItems		= (**header).numItems;
 	gTerrainTileWidth		= (**header).mapWidth;
 	gTerrainTileDepth		= (**header).mapHeight;	
@@ -687,7 +687,7 @@ Ptr						tempBuffer16 = nil;
 	else																			// copy rez into 2D array
 	{
 		int16_t *src = (int16_t *)*hand;
-		BYTESWAP_HANDLE("h", int16_t, gNumSuperTilesDeep*gNumSuperTilesWide, hand);
+		BYTESWAP_HANDLE(">h", int16_t, gNumSuperTilesDeep*gNumSuperTilesWide, hand);
 
 		for (row = 0; row < gNumSuperTilesDeep; row++)
 			for (col = 0; col < gNumSuperTilesWide; col++)
@@ -718,7 +718,7 @@ Ptr						tempBuffer16 = nil;
 	else
 	{
 		float* src = (float *)*hand;
-		BYTESWAP_HANDLE("f", float, (gTerrainTileWidth+1)*(gTerrainTileDepth+1), hand);
+		BYTESWAP_HANDLE(">f", float, (gTerrainTileWidth+1)*(gTerrainTileDepth+1), hand);
 
 		for (row = 0; row <= gTerrainTileDepth; row++)
 			for (col = 0; col <= gTerrainTileWidth; col++)
@@ -741,7 +741,7 @@ Ptr						tempBuffer16 = nil;
 		HLockHi(hand);									// LOCK this one because we have the lookup table into this
 		gMasterItemList = (TerrainItemEntryType **)hand;
 
-		BYTESWAP_HANDLE("IIH4BH", TerrainItemEntryType, gNumTerrainItems, hand);
+		BYTESWAP_HANDLE(">IIH4BH", TerrainItemEntryType, gNumTerrainItems, hand);
 	}
 	
 				/* CONVERT COORDINATES */
@@ -769,7 +769,7 @@ Ptr						tempBuffer16 = nil;
 
 		// SOURCE PORT NOTE: we have to convert this structure manually,
 		// because the original contains 4-byte pointers
-		BYTESWAP_HANDLE("hxxi ii hxxi 4h", File_SplineDefType, gNumSplines, hand);
+		BYTESWAP_HANDLE(">hxxi ii hxxi 4h", File_SplineDefType, gNumSplines, hand);
 
 		gSplineList = (SplineDefType **) NewHandleClear(gNumSplines * sizeof(SplineDefType));
 
@@ -812,7 +812,7 @@ Ptr						tempBuffer16 = nil;
 		{
 			DetachResource(hand);
 			HLockHi(hand);
-			BYTESWAP_HANDLE("ff", SplinePointType, (*gSplineList)[i].numPoints, hand);
+			BYTESWAP_HANDLE(">ff", SplinePointType, (*gSplineList)[i].numPoints, hand);
 			(*gSplineList)[i].pointList = (SplinePointType **)hand;
 		}
 		else
@@ -839,7 +839,7 @@ Ptr						tempBuffer16 = nil;
 		{
 			DetachResource(hand);
 			HLockHi(hand);
-			BYTESWAP_HANDLE("fH4bH", SplineItemType, (*gSplineList)[i].numItems, hand);
+			BYTESWAP_HANDLE(">fH4bH", SplineItemType, (*gSplineList)[i].numItems, hand);
 			(*gSplineList)[i].itemList = (SplineItemType **)hand;
 		}
 		else
@@ -861,7 +861,7 @@ Ptr						tempBuffer16 = nil;
 		if (gFenceList == nil)
 			DoFatalAlert("ReadDataFromPlayfieldFile: AllocPtr failed");
 
-		BYTESWAP_HANDLE("Hhi4h", FileFenceDefType, gNumFences, hand);
+		BYTESWAP_HANDLE(">Hhi4h", FileFenceDefType, gNumFences, hand);
 		inData = (FileFenceDefType *)*hand;								// get ptr to input fence list
 		
 		for (i = 0; i < gNumFences; i++)								// copy data from rez to new list
@@ -889,7 +889,7 @@ Ptr						tempBuffer16 = nil;
 		if (hand)
 		{
    			FencePointType *fileFencePoints = (FencePointType *)*hand;
-			BYTESWAP_HANDLE("ii", FencePointType, gFenceList[i].numNubs, hand);
+			BYTESWAP_HANDLE(">ii", FencePointType, gFenceList[i].numNubs, hand);
 
 			gFenceList[i].nubList = (OGLPoint3D *)AllocPtr(sizeof(FenceDefType) * gFenceList[i].numNubs);	// alloc new ptr for nub array
 			if (gFenceList[i].nubList == nil)
@@ -923,7 +923,7 @@ Ptr						tempBuffer16 = nil;
 		HLockHi(hand);
 		gWaterListHandle = (WaterDefType **)hand;
 		GAME_ASSERT(MAX_WATER_POINTS == 100);		// if this changes, the byteswap format below needs to change as well
-		BYTESWAP_HANDLE("Hxx L i hxx i 200f ff 4h", WaterDefType, gNumWaterPatches, hand);
+		BYTESWAP_HANDLE(">Hxx L i hxx i 200f ff 4h", WaterDefType, gNumWaterPatches, hand);
 		gWaterList = *gWaterListHandle;
 	}
 	else
@@ -949,7 +949,7 @@ Ptr						tempBuffer16 = nil;
 		if (hand)
 		{
 			HLock(hand);
-			BYTESWAP_HANDLE("hh 2f 2f", LineMarkerDefType, gNumLineMarkers, hand);
+			BYTESWAP_HANDLE(">hh 2f 2f", LineMarkerDefType, gNumLineMarkers, hand);
 			BlockMove(*hand, &gLineMarkerList[0], GetHandleSize(hand));
 			ReleaseResource(hand);
 
@@ -1012,7 +1012,7 @@ Ptr						tempBuffer16 = nil;
 		iErr = FSRead(fRefNum, &sizeoflong, (Ptr) &compressedSize);
 		if (iErr)
 			DoFatalAlert("ReadDataFromPlayfieldFile: FSRead failed!");
-		compressedSize = Byteswap32(&compressedSize);
+		compressedSize = UnpackI32BE(&compressedSize);
 
 				/* READ & DECOMPRESS IT */
 
