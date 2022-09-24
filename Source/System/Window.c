@@ -46,7 +46,7 @@ int				gGameWindowWidth, gGameWindowHeight;
 
 void InitWindowStuff(void)
 {
-	SDL_GetWindowSize(gSDLWindow, &gGameWindowWidth, &gGameWindowHeight);
+	SDL_GL_GetDrawableSize(gSDLWindow, &gGameWindowWidth, &gGameWindowHeight);
 }
 
 
@@ -314,7 +314,7 @@ void SetFullscreenMode(bool enforceDisplayPref)
 
 	// Ensure the clipping pane gets resized properly after switching in or out of fullscreen mode
 //	int width, height;
-//	SDL_GetWindowSize(gSDLWindow, &width, &height);
+//	SDL_GL_GetDrawableSize(gSDLWindow, &width, &height);
 //	QD3D_OnWindowResized(width, height);
 
 //	SDL_ShowCursor(gGamePrefs.fullscreen ? 0 : 1);

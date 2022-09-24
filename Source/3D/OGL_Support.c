@@ -703,7 +703,7 @@ do_anaglyph:
 
 void OGL_GetCurrentViewport(int *x, int *y, int *w, int *h)
 {
-	SDL_GetWindowSize(gSDLWindow, &gGameWindowWidth, &gGameWindowHeight);
+	SDL_GL_GetDrawableSize(gSDLWindow, &gGameWindowWidth, &gGameWindowHeight);
 
 int	t,b,l,r;
 		

@@ -206,7 +206,20 @@ OGLPoint2D GetLogicalMouseCoord(void)
 	int windowX = 0;
 	int windowY = 0;
 	SDL_GetMouseState(&windowX, &windowY);
-	OGLPoint2D windowPt = { windowX + 0.5f, windowY + 0.5f };
+
+	// On macOS, the mouse position is relative to the window's "point size" on Retina screens.
+	int windowW = 1;
+	int windowH = 1;
+	SDL_GetWindowSize(gSDLWindow, &windowW, &windowH);
+	float dpiScaleX = (float) gGameWindowWidth / (float) windowW;		// gGameWindowWidth is in actual pixels
+	float dpiScaleY = (float) gGameWindowHeight / (float) windowH;		// gGameWindowHeight is in actual pixels
+
+	OGLPoint2D windowPt =
+	{
+		0.5f + (float) windowX * dpiScaleX,
+		0.5f + (float) windowY * dpiScaleY
+	};
+
 	return WindowPointToLogical(windowPt);
 }
 
