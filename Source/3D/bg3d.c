@@ -338,7 +338,9 @@ MOMaterialData	*data;
 	if (FSRead(refNum, &count, (Ptr) color) != noErr)
 		DoFatalAlert("ReadMaterialDiffuseColor: FSRead failed");
 
+#if !(__BIG_ENDIAN__)
 	ByteswapInts(sizeof(GLfloat), 4, &color);
+#endif
 
 		/* ASSIGN COLOR TO CURRENT MATERIAL */
 			

@@ -1020,7 +1020,9 @@ Ptr						tempBuffer16 = nil;
 		width = SUPERTILE_TEXMAP_SIZE;
 		height = SUPERTILE_TEXMAP_SIZE;
 		GAME_ASSERT(decompressedSize == (size_t)(2 * width * height));
+#if !(__BIG_ENDIAN__)
 		ByteswapInts(sizeof(uint16_t), width*height, tempBuffer16);
+#endif
 
 
 				/**************************/
