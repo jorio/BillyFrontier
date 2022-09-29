@@ -1,6 +1,6 @@
 # Billy Frontier Changelog
 
-- **1.1.0 (TBA)**
+- **1.1.0 (September 29, 2022)**
     - Initial playable release of the modern source port
     - Widescreen support
 
