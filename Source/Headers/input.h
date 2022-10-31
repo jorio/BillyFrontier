@@ -86,6 +86,7 @@ void InitInput(void);
 void ReadKeyboard(void);
 
 OGLPoint2D GetLogicalMouseCoord(void);
+void GetMousePixelCoord(int *x, int *y);
 
 void DoSDLMaintenance(void);
 Boolean GetKeyState(uint16_t sdlScancode);

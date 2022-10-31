@@ -489,7 +489,7 @@ Boolean	allowRot;
 
 	int windowX = 0;
 	int windowY = 0;
-	SDL_GetMouseState(&windowX, &windowY);
+    GetMousePixelCoord(&windowX, &windowY);
 
 			/* XHAIRS COORDS ARE IN LOGICAL 2D SPACE */
 
