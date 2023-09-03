@@ -772,15 +772,14 @@ MOGroupObject	*rootGroup;
 
 static void PreLoadTextureMaterials(void)
 {
-int					i, num,w,h;
 MOMaterialObject	*mat;
 MOMaterialData		*matData;
 void				*pixels;
 
-	num = gBG3D_CurrentContainer->numMaterials;
+	int num = gBG3D_CurrentContainer->numMaterials;
 
 
-	for (i = 0; i < num; i++)
+	for (int i = 0; i < num; i++)
 	{
 		mat = gBG3D_CurrentContainer->materials[i];
 		matData = &mat->objectData;
@@ -791,8 +790,8 @@ void				*pixels;
 				/* GET TEXTURE INFO */
 				
 			pixels 		= matData->texturePixels[0];			// get ptr to pixel buffer					
-			w 			= matData->width;						// get width
-			h 			= matData->height;						// get height
+			int w		= matData->width;						// get width
+			int h		= matData->height;						// get height
 		
 			
 				/********************/
@@ -811,7 +810,7 @@ void				*pixels;
 			else				
 			if ((matData->pixelSrcFormat == GL_RGB) && (matData->pixelDstFormat == GL_RGB5_A1))	// see if convert 24 to 16-bit
 			{
-				u_short	*buff = (u_short *)AllocPtr(w*h*2);				// alloc buff for 16-bit texture
+				uint16_t	*buff = (uint16_t *)AllocPtr(w*h*2);				// alloc buff for 16-bit texture
 							
 				ConvertTexture24To16(pixels, buff, w, h);
 				matData->textureName[0] = OGL_TextureMap_Load( buff, w, h, GL_BGRA, GL_RGBA, GL_UNSIGNED_SHORT_1_5_5_5_REV); // load 16 as 16
@@ -837,11 +836,11 @@ void				*pixels;
 
 /*********************** CONVERT TEXTURE; 24 TO 16 ***********************************/
 
-void	ConvertTexture24To16(u_char *srcBuff24, u_short *destBuff16, int width, int height)
+void	ConvertTexture24To16(uint8_t *srcBuff24, uint16_t *destBuff16, int width, int height)
 {
 int		x,y,h;
-u_long	pixel;
-u_long	r,g,b;
+uint32_t	pixel;
+uint32_t	r,g,b;
 
 	for (y = 0; y < height; y++)
 	{
@@ -920,7 +919,7 @@ int					i;
 // geometryNum, -1 == all
 //
 
-void BG3D_SetContainerMaterialFlags(short group, short type, short geometryNum, u_long flags)
+void BG3D_SetContainerMaterialFlags(short group, short type, short geometryNum, uint32_t flags)
 {
 MOVertexArrayObject	*mo;
 MOVertexArrayData	*va;
@@ -989,7 +988,7 @@ setit:
 // Set the appropriate flags on a geometry's matrial to be a sphere map
 //
 
-void BG3D_SphereMapGeomteryMaterial(short group, short type, short geometryNum, u_short combineMode, u_short envMapNum)
+void BG3D_SphereMapGeomteryMaterial(short group, short type, short geometryNum, uint16_t combineMode, uint16_t envMapNum)
 {
 MOVertexArrayObject	*mo;
 
@@ -1035,7 +1034,7 @@ MOVertexArrayObject	*mo;
 
 /*************** SET SPHERE MAP INFO ON VERTEX ARRAY OBJECT *********************/
 
-void SetSphereMapInfoOnVertexArrayObject(MOVertexArrayObject *mo, u_short combineMode, u_short envMapNum)
+void SetSphereMapInfoOnVertexArrayObject(MOVertexArrayObject *mo, uint16_t combineMode, uint16_t envMapNum)
 {
 MOVertexArrayData	*va;
 MOMaterialObject	*mat;
@@ -1057,7 +1056,7 @@ MOMaterialObject	*mat;
 
 /******************* SET SPHERE MAP INFO ON VERTEX ARRAY DATA ********************/
 
-void SetSphereMapInfoOnVertexArrayData(MOVertexArrayData *va, u_short combineMode, u_short envMapNum)
+void SetSphereMapInfoOnVertexArrayData(MOVertexArrayData *va, uint16_t combineMode, uint16_t envMapNum)
 {
 MOMaterialObject	*mat;
 	
@@ -1072,7 +1071,7 @@ MOMaterialObject	*mat;
 
 /******************* SET SPHERE MAP INFO ON MAPTERIAL OBJECT ********************/
 
-void SetSphereMapInfoOnMaterialObject(MOMaterialObject *mat, u_short combineMode, u_short envMapNum)
+void SetSphereMapInfoOnMaterialObject(MOMaterialObject *mat, uint16_t combineMode, uint16_t envMapNum)
 {
 
 

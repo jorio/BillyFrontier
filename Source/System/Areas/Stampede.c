@@ -653,7 +653,7 @@ static Boolean DoBillyCollisionDetect_Stampede(ObjNode *theNode, Boolean useBBox
 {
 short		i;
 ObjNode		*hitObj;
-u_char		sides;
+Byte		sides;
 float		distToFloor, terrainY;
 float		bottomOff;
 Boolean		killed = false;		

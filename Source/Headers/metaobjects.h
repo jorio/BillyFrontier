@@ -78,14 +78,14 @@ typedef struct
 {
 	SDL_GLContext	drawContext;					// materials are draw context relative, so remember which context we're using now
 	
-	u_long			flags;	
+	uint32_t		flags;
 	OGLColorRGBA	diffuseColor;					// rgba diffuse color
-	u_short			multiTextureMode;				// sphere map, etc.
-	u_short			multiTextureCombine;			// blend, replace, etc.
-	u_short			envMapNum;						// texture # in env map list to use
+	uint16_t		multiTextureMode;				// sphere map, etc.
+	uint16_t		multiTextureCombine;			// blend, replace, etc.
+	uint16_t		envMapNum;						// texture # in env map list to use
 	
-	u_long			numMipmaps;						// # texture mipmaps to use
-	u_long			width,height;					// dimensions of texture
+	uint32_t		numMipmaps;						// # texture mipmaps to use
+	uint32_t		width,height;					// dimensions of texture
 	GLint			pixelSrcFormat;					// OGL format (GL_RGBA, etc.) for src pixels
 	GLint			pixelDstFormat;					// OGL format (GL_RGBA, etc.) for VRAM
 	void			*texturePixels[MO_MAX_MIPMAPS]; // ptr to texture pixels for each mipmap

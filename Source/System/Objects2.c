@@ -617,8 +617,8 @@ float		m20,m21,m22,m23;
 float		m30,m31,m32,m33;
 float		minX,minY,minZ,maxX,maxY,maxZ;
 OGLBoundingBox		*bBox;
-u_long		clipFlags;				// Clip in/out tests for point
-u_long		clipCodeAND; //,clipCodeOR;	// Clip test for entire object
+uint32_t		clipFlags;				// Clip in/out tests for point
+uint32_t		clipCodeAND; //,clipCodeOR;	// Clip test for entire object
 
 
 	theNode = gFirstNodePtr;														// get & verify 1st node

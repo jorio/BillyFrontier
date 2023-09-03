@@ -384,7 +384,7 @@ MOMaterialObject	*m;
 
 /************************** DRAW SPRITE ************************/
 
-void DrawSprite(int	group, int type, float x, float y, float scale, float rot, u_long flags)
+void DrawSprite(int	group, int type, float x, float y, float scale, float rot, uint32_t flags)
 {
 			/* SET STATE */
 					

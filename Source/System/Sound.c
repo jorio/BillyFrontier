@@ -18,7 +18,7 @@
 
 static short FindSilentChannel(void);
 static short EmergencyFreeChannel(void);
-static void Calc3DEffectVolume(short effectNum, const OGLPoint3D *where, float volAdjust, u_long *leftVolOut, u_long *rightVolOut);
+static void Calc3DEffectVolume(short effectNum, const OGLPoint3D *where, float volAdjust, uint32_t *leftVolOut, uint32_t *rightVolOut);
 static void UpdateGlobalVolume(void);
 
 
@@ -482,7 +482,7 @@ void ToggleMusic(void)
 short PlayEffect3D(short effectNum, const OGLPoint3D *where)
 {
 short					theChan;
-u_long					leftVol, rightVol;
+uint32_t					leftVol, rightVol;
 
 	if (effectNum >= gNumSndsInBank)					// see if illegal sound #
 	{
@@ -513,10 +513,10 @@ u_long					leftVol, rightVol;
 // OUTPUT: channel # used to play sound
 //
 
-short PlayEffect_Parms3D(short effectNum, const OGLPoint3D *where, u_long rateMultiplier, float volumeAdjust)
+short PlayEffect_Parms3D(short effectNum, const OGLPoint3D *where, uint32_t rateMultiplier, float volumeAdjust)
 {
 short			theChan;
-u_long			leftVol, rightVol;
+uint32_t			leftVol, rightVol;
 
 	if (effectNum >= gNumSndsInBank)					// see if illegal sound #
 	{
@@ -549,7 +549,7 @@ u_long			leftVol, rightVol;
 Boolean Update3DSoundChannel(short effectNum, short *channel, OGLPoint3D *where)
 {
 SCStatus		theStatus;
-u_long			leftVol,rightVol;
+uint32_t			leftVol,rightVol;
 short			c;
 
 	c = *channel;
@@ -596,12 +596,12 @@ short			c;
 
 /******************** CALC 3D EFFECT VOLUME *********************/
 
-static void Calc3DEffectVolume(short effectNum, const OGLPoint3D *where, float volAdjust, u_long *leftVolOut, u_long *rightVolOut)
+static void Calc3DEffectVolume(short effectNum, const OGLPoint3D *where, float volAdjust, uint32_t *leftVolOut, uint32_t *rightVolOut)
 {
 float	dist;
 float	volumeFactor;
-u_long	volume,left,right;
-u_long	maxLeft,maxRight;
+uint32_t	volume,left,right;
+uint32_t	maxLeft,maxRight;
 
 	dist 	= OGLPoint3D_Distance(where, &gEarCoords);		// calc dist to sound
 		
@@ -732,13 +732,13 @@ short PlayEffect(short effectNum)
 // OUTPUT: channel # used to play sound
 //
 
-short  PlayEffect_Parms(short effectNum, u_long leftVolume, u_long rightVolume, unsigned long rateMultiplier)
+short  PlayEffect_Parms(short effectNum, uint32_t leftVolume, uint32_t rightVolume, unsigned long rateMultiplier)
 {
 SndCommand 		mySndCmd;
 SndChannelPtr	chanPtr;
 short			theChan;
 OSErr			myErr;
-u_long			lv2,rv2;
+uint32_t			lv2,rv2;
 //static UInt32          loopStart, loopEnd;
 //SoundHeaderPtr   sndPtr;
 
@@ -895,7 +895,7 @@ void ChangeChannelVolume(short channel, float leftVol, float rightVol)
 {
 SndCommand 		mySndCmd;
 SndChannelPtr	chanPtr;
-u_long			lv2,rv2;
+uint32_t			lv2,rv2;
 
 	if (channel < 0)									// make sure it's valid
 		return;

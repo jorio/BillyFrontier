@@ -110,7 +110,7 @@ void InitDefaultPrefs(void)
 static void PlayGame_Arcade(void)
 {
 int		i;
-u_long	oldScore;
+uint32_t	oldScore;
 
 	gGameOver = gWonGame = gLostGame = false;
 
@@ -343,7 +343,7 @@ unsigned long	someLong;
 	InitObjectManager();
 
 	GetDateTime(&someLong);		// init random seed
-	SetMyRandomSeed(someLong);
+	SetMyRandomSeed((uint32_t) someLong);
 
 
 			/* DO BOOT CHECK FOR SCREEN MODE */

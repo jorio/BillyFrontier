@@ -88,7 +88,7 @@ ObjNode	*MakeNewObject(NewObjectDefinitionType *newObjDef)
 {
 ObjNode	*newNodePtr;
 long	slot,i;
-unsigned long flags = newObjDef->flags;
+uint32_t flags = newObjDef->flags;
 
 				/* ALLOCATE NEW NODE(CLEARED TO 0'S) */
 					
@@ -1574,7 +1574,7 @@ void UpdateObjectTransforms(ObjNode *theNode)
 {
 OGLMatrix4x4	m,m2;
 OGLMatrix4x4	mx,my,mz,mxz;
-u_long			bits;
+uint32_t			bits;
 
 	if (theNode->CType == INVALID_NODE_FLAG)		// see if already deleted
 		return;
@@ -1686,7 +1686,7 @@ MOMatrixObject	*mo = theNode->BaseTransformObject;
 
 /********************* FIND CLOSEST CTYPE *****************************/
 
-ObjNode *FindClosestCType(OGLPoint3D *pt, u_long ctype, Boolean notThruSolid)
+ObjNode *FindClosestCType(OGLPoint3D *pt, uint32_t ctype, Boolean notThruSolid)
 {
 ObjNode		*thisNodePtr,*best = nil;
 float	d,minDist = 10000000;
@@ -1724,7 +1724,7 @@ next:
 
 /********************* FIND CLOSEST CTYPE 3D *****************************/
 
-ObjNode *FindClosestCType3D(OGLPoint3D *pt, u_long ctype)
+ObjNode *FindClosestCType3D(OGLPoint3D *pt, uint32_t ctype)
 {
 ObjNode		*thisNodePtr,*best = nil;
 float	d,minDist = 10000000;

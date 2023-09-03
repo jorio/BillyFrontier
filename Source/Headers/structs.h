@@ -178,17 +178,15 @@ typedef struct
 	AnimEventType		**AnimEventsList;				// 2 dimensional array which holds a anim event list for each anim AnimEventsList[anim#][event#]
 
 	BoneDefinitionType	*Bones;							// data which describes bone heirarachy
-	
-	long				numDecomposedTriMeshes;			// # trimeshes in skeleton
+
+	int					numDecomposedTriMeshes;			// # trimeshes in skeleton
 	MOVertexArrayData	decomposedTriMeshes[MAX_DECOMPOSED_TRIMESHES];	// array of triMeshData
 
-	long				numDecomposedPoints;			// # shared points in skeleton
+	int					numDecomposedPoints;			// # shared points in skeleton
 	DecomposedPointType	*decomposedPointList;			// array of shared points
 
-	short				numDecomposedNormals ;			// # shared normal vectors
+	int					numDecomposedNormals;			// # shared normal vectors
 	OGLVector3D			*decomposedNormalsList;			// array of shared normals
-
-
 }SkeletonDefType;
 
 
@@ -258,7 +256,7 @@ struct ObjNode
 	struct ObjNode	*ShadowNode;		// ptr to node's shadow (if any)
 	struct ObjNode	*MPlatform;			// current moving platform
 
-	u_short			Slot;				// sort value
+	uint16_t			Slot;				// sort value
 	Byte			Genre;				// obj genre
 	int				Type;				// obj type
 	int				Group;				// obj group
@@ -266,7 +264,7 @@ struct ObjNode
 	int				Mode;				// mode
 	int				What;				// what
 	Byte			Side;				// left or right
-	u_long			StatusBits;			// various status bits
+	uint32_t			StatusBits;			// various status bits
 	
 			/* MOVE/DRAW CALLBACKS */
 			
@@ -296,8 +294,8 @@ struct ObjNode
 
 			/* COLLISION INFO */
 			
-	u_long				CType;													// collision type bits
-	u_long				CBits;													// collision attribute bits
+	uint32_t				CType;													// collision type bits
+	uint32_t				CBits;													// collision attribute bits
 	Byte				NumCollisionBoxes;
 	CollisionBoxType	CollisionBoxes[MAX_COLLISION_BOXES];					// Array of collision rectangles
 	float				LeftOff,RightOff,FrontOff,BackOff,TopOff,BottomOff;		// box offsets (only used by simple objects with 1 collision box)	
@@ -350,7 +348,7 @@ struct ObjNode
 			
 	TerrainItemEntryType *TerrainItemPtr;		// if item was from terrain, then this pts to entry in array
 	SplineItemType 		*SplineItemPtr;			// if item was from spline, then this pts to entry in array
-	u_char				SplineNum;				// which spline this spline item is on
+	Byte				SplineNum;				// which spline this spline item is on
 	double				SplinePlacement;		// 0.0->.9999 for placement on spline
 	short				SplineObjectIndex;		// index into gSplineObjectList of this ObjNode
 
@@ -365,7 +363,7 @@ struct ObjNode
 			
 	short				EffectChannel;					// effect sound channel index (-1 = none)
 	short				ParticleGroup;
-	u_long				ParticleMagicNum;
+	uint32_t			ParticleMagicNum;
 	float				ParticleTimer;
 
 	short				VaporTrails[MAX_JOINTS];		// indecies into vapor trail list	
@@ -394,7 +392,7 @@ typedef struct
 {
 	Byte			genre,group,type,animNum;
 	OGLPoint3D		coord;
-	unsigned long	flags;
+	uint32_t		flags;
 	short			slot;
 	movecall_t		moveCall;
 	float			rot,scale;

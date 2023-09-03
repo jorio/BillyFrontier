@@ -82,7 +82,7 @@ static OGLVector3D	gBestTriangleNormal;
 //			ray->distance = distance from ray origin to the intersection point
 //
 
-ObjNode *OGL_DoRayCollision(OGLRay *ray, OGLPoint3D *worldHitCoord, u_long statusFilter, u_long cTypes)
+ObjNode *OGL_DoRayCollision(OGLRay *ray, OGLPoint3D *worldHitCoord, uint32_t statusFilter, uint32_t cTypes)
 {
 ObjNode		*thisNodePtr;
 ObjNode		*bestObj = nil;
@@ -1011,7 +1011,7 @@ OGLPoint3D		hitPt;
 //			ray->distance = distance from ray origin to the intersection point
 //
 
-ObjNode *OGL_DoLineSegmentCollision(OGLPoint3D *p1, OGLPoint3D *p2, OGLPoint3D *worldHitCoord, OGLVector3D *worldHitFaceNormal, u_long cTypes)
+ObjNode *OGL_DoLineSegmentCollision(OGLPoint3D *p1, OGLPoint3D *p2, OGLPoint3D *worldHitCoord, OGLVector3D *worldHitFaceNormal, uint32_t cTypes)
 {
 ObjNode		*thisNodePtr;
 ObjNode		*bestObj = nil;

@@ -46,7 +46,7 @@ enum
 /*     VARIABLES      */
 /**********************/
 
-long			gNumFences = 0;
+int				gNumFences = 0;
 short			gNumFencesDrawn;
 FenceDefType	*gFenceList = nil;
 
@@ -248,9 +248,9 @@ float					sink;
 static void MakeFenceGeometry(void)
 {
 int						f, group, sprite;
-u_short					type;
+uint16_t					type;
 float					u,height,aspectRatio,textureUOff;
-long					i,numNubs,j;
+int						i,numNubs,j;
 FenceDefType			*fence;
 OGLPoint3D				*nubs;
 float					minX,minY,minZ,maxX,maxY,maxZ;
@@ -401,16 +401,13 @@ float					minX,minY,minZ,maxX,maxY,maxZ;
 
 static void DrawFences(ObjNode *theNode)
 {
-long			f,type;
-float			cameraX, cameraZ;
-
 	(void) theNode;
 
 
 			/* GET CAMERA COORDS */
-			
-	cameraX = gGameViewInfoPtr->cameraPlacement.cameraLocation.x;
-	cameraZ = gGameViewInfoPtr->cameraPlacement.cameraLocation.z;
+
+	float cameraX = gGameViewInfoPtr->cameraPlacement.cameraLocation.x;
+	float cameraZ = gGameViewInfoPtr->cameraPlacement.cameraLocation.z;
 
 
 			/* SET GLOBAL MATERIAL FLAGS */
@@ -424,30 +421,30 @@ float			cameraX, cameraZ;
 
 	gNumFencesDrawn = 0;
 
-	for (f = 0; f < gNumFences; f++)
+	for (int f = 0; f < gNumFences; f++)
 	{
-		type = gFenceList[f].type;							// get type
-		
 					/* DO BBOX CULLING */
 
-		if (OGL_IsBBoxVisible(&gFenceList[f].bBox, nil))	
-		{
+		if (!OGL_IsBBoxVisible(&gFenceList[f].bBox, nil))
+			continue;
+
 					/* CHECK LIGHTING */
-			
-			if (gFenceIsLit[type])
-				OGL_EnableLighting();
-			else
-				OGL_DisableLighting();
-					
-				/* SUBMIT GEOMETRY */
-				
-			SubmitFence(f, cameraX, cameraZ);
-			gNumFencesDrawn++;
-						
-			if (gDebugMode == 2)
-			{
-				DrawFenceNormals(f);
-			}
+
+		uint16_t type = gFenceList[f].type;							// get type
+
+		if (gFenceIsLit[type])
+			OGL_EnableLighting();
+		else
+			OGL_DisableLighting();
+
+					/* SUBMIT GEOMETRY */
+
+		SubmitFence(f, cameraX, cameraZ);
+		gNumFencesDrawn++;
+
+		if (gDebugMode == 2)
+		{
+			DrawFenceNormals(f);
 		}
 	}
 	

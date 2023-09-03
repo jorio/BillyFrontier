@@ -19,8 +19,8 @@ static void SetupScoreScreen(void);
 static void FreeScoreScreen(void);
 static void DrawHighScoresAndCursor(ObjNode* theNode);
 static void SetHighScoresSpriteState(void);
-static Boolean IsThisScoreInList(u_long score);
-static short AddNewScore(u_long newScore);
+static Boolean IsThisScoreInList(uint32_t score);
+static short AddNewScore(uint32_t newScore);
 static void SaveHighScores(void);
 static void DrawScoreText(const char* s, float x, float y, float scale);
 
@@ -499,7 +499,7 @@ void ClearHighScores(void)
 // Returns high score slot that score was inserted to or -1 if none
 //
 
-static short AddNewScore(u_long newScore)
+static short AddNewScore(uint32_t newScore)
 {
 short	slot,i;
 
@@ -534,7 +534,7 @@ got_slot:
 // Returns True if this score value is anywhere in the high scores already
 //
 
-static Boolean IsThisScoreInList(u_long score)
+static Boolean IsThisScoreInList(uint32_t score)
 {
 short	slot;
 

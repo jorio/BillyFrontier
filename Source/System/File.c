@@ -309,7 +309,7 @@ SkeletonFile_AnimHeader_Type	*animHeaderPtr;
 	HLock(hand);
 	pointPtr = (OGLPoint3D *)*hand;
 
-	int numDecomposedPointsDeducted = GetHandleSize(hand) / sizeof(OGLPoint3D);
+	int numDecomposedPointsDeducted = (int) (GetHandleSize(hand) / sizeof(OGLPoint3D));
 	BYTESWAP_HANDLE(">fff", OGLPoint3D, skeleton->numDecomposedPoints, hand);
 
 	if (numDecomposedPointsDeducted != skeleton->numDecomposedPoints)
@@ -1001,9 +1001,9 @@ Ptr						tempBuffer16 = nil;
 			
 	for (i = 0; i < gNumUniqueSuperTiles; i++)
 	{
-		static long	sizeoflong = 4;
 		int32_t	compressedSize;
-		long	width,height;
+		long	sizeoflong = sizeof(compressedSize);
+		int	width,height;
 		MOMaterialData	matData;
 			
 		

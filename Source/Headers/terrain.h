@@ -74,7 +74,7 @@ struct SuperTileMemoryType
 	Byte				mode;									// free, used, etc.
 	float				x,z,y;									// world coords
 	long				left,back;								// integer coords of back/left corner
-	long				tileRow,tileCol;						// tile row/col of the start of this supertile
+	int				tileRow,tileCol;						// tile row/col of the start of this supertile
 	MOMaterialObject	*texture;								// refs to materials
 	MOVertexArrayData	*meshData;								// mesh's data for the supertile
 	OGLBoundingBox		bBox;									// bounding box
@@ -84,8 +84,8 @@ typedef struct SuperTileMemoryType SuperTileMemoryType;
 
 typedef struct
 {
-	u_short		numItems;
-	u_short		itemIndex;
+	uint16_t		numItems;
+	uint16_t		itemIndex;
 }SuperTileItemIndexType;
 
 
@@ -113,8 +113,8 @@ enum
 
 typedef	struct
 {
-	u_short		supertileIndex;
-	u_char		statusFlags;
+	uint16_t	supertileIndex;
+	Byte		statusFlags;
 	Boolean		playerHereFlag;
 }SuperTileStatus;
 

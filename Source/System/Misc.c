@@ -125,7 +125,7 @@ static Boolean	beenHere = false;
 //		without the 0xffff at the end.
 //
 
-unsigned long MyRandomLong(void)
+uint32_t MyRandomLong(void)
 {
   return gSeed2 ^= (((gSeed1 ^= (gSeed2>>5)*1568397607UL)>>7)+
                    (gSeed0 = (gSeed0+1)*3141592621UL))*2435386481UL;
@@ -195,7 +195,7 @@ float	f;
 
 /**************** SET MY RANDOM SEED *******************/
 
-void SetMyRandomSeed(unsigned long seed)
+void SetMyRandomSeed(uint32_t seed)
 {
 	gSeed0 = seed;
 	gSeed1 = 0;

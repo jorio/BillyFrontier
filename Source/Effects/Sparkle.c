@@ -102,7 +102,7 @@ void DeleteSparkle(short i)
 
 void DrawSparkles(void)
 {
-u_long	flags;
+uint32_t	flags;
 int		i;
 float	dot,separation;
 OGLMatrix4x4	m;

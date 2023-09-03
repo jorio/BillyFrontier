@@ -40,7 +40,7 @@ typedef struct
 	OGLTextureCoord			uvs[3];
 	MOMaterialObject		*material;
 	OGLColorRGBA			colorFilter;
-	u_long					glow;
+	uint32_t					glow;
 }ShardType;
 
 
@@ -227,7 +227,7 @@ MOVertexArrayData	*vaData;
 static void ExplodeVertexArray(MOVertexArrayData *data, MOMaterialObject *overrideTexture)
 {
 OGLPoint3D			centerPt = {0,0,0};
-u_long				ind[3];
+uint32_t				ind[3];
 OGLTextureCoord		*uvPtr;
 float				boomForce = gBoomForce;
 OGLPoint3D			origin;

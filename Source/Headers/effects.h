@@ -20,10 +20,10 @@
 
 typedef struct
 {
-	u_long			magicNum;
+	uint32_t			magicNum;
 	Byte			isUsed[MAX_PARTICLES];
 	Byte			type;
-	u_long			flags;
+	uint32_t			flags;
 	Byte			particleTextureNum;
 	float			gravity;
 	float			magnetism;
@@ -72,9 +72,9 @@ enum
 
 typedef struct
 {
-	u_long 	magicNum;
+	uint32_t 	magicNum;
 	Byte 	type;
-	u_long  flags;
+	uint32_t  flags;
 	float 	gravity;
 	float 	magnetism;
 	float 	baseScale;
@@ -107,8 +107,8 @@ void InitParticleSystem(void);
 void DeleteAllParticleGroups(void);
 short NewParticleGroup(NewParticleGroupDefType *def);
 Boolean AddParticleToGroup(NewParticleDefType *def);
-Boolean VerifyParticleGroupMagicNum(short group, u_long magicNum);
-Boolean ParticleHitObject(ObjNode *theNode, u_short inFlags);
+Boolean VerifyParticleGroupMagicNum(short group, uint32_t magicNum);
+Boolean ParticleHitObject(ObjNode *theNode, uint16_t inFlags);
 void DisposeParticleSystem(void);
 
 void MakePuff(const OGLPoint3D *where, float scale, short texNum, GLint src, GLint dst, float decayRate);
@@ -118,7 +118,7 @@ void MakeBombExplosion(OGLPoint3D *where);
 void MakeSplash(float x, float y, float z, float scale);
 
 void SprayWater(ObjNode *theNode, float x, float y, float z);
-void BurnFire(ObjNode *theNode, float x, float y, float z, Boolean doSmoke, short particleType, float scale, u_long moreFlags);
+void BurnFire(ObjNode *theNode, float x, float y, float z, Boolean doSmoke, short particleType, float scale, uint32_t moreFlags);
 
 
 void MakeFireExplosion(OGLPoint3D *where);

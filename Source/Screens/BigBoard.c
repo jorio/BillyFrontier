@@ -388,7 +388,6 @@ static void MoveCursor(ObjNode *theNode)
 
 static void BuildBigBoardIcons(void)
 {
-long	i;
 const int	spriteNum[NUM_BIGBOARD_ITEMS] =
 {
 	BIGBOARD_SObjType_TownShootoutIcon,
@@ -432,9 +431,7 @@ const float scale[NUM_BIGBOARD_ITEMS] =
 };
 
 
-
-		
-	for (i = 0; i < NUM_BIGBOARD_ITEMS; i++)
+	for (int i = 0; i < NUM_BIGBOARD_ITEMS; i++)
 	{
 		gNewObjectDefinition.group 		= SPRITE_GROUP_BIGBOARD;	
 		gNewObjectDefinition.type 		= spriteNum[i];

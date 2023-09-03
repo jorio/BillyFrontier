@@ -204,7 +204,7 @@ float	x,z;
 // OUTPUT: true = was deleted
 //
 
-Boolean DoEnemyCollisionDetect(ObjNode *theEnemy, u_long ctype, Boolean useBBoxBottom)
+Boolean DoEnemyCollisionDetect(ObjNode *theEnemy, uint32_t ctype, Boolean useBBoxBottom)
 {
 float	terrainY,distToFloor,bottomOff;
 int		i;

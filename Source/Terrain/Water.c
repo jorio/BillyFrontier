@@ -28,7 +28,7 @@ static void MakeWaterGeometry(void);
 /*     VARIABLES      */
 /**********************/
 
-long			gNumWaterPatches = 0;
+int				gNumWaterPatches = 0;
 short			gNumWaterDrawn;
 WaterDefType	**gWaterListHandle = nil;
 WaterDefType	*gWaterList;
@@ -210,8 +210,8 @@ float					y,centerX,centerZ;
 
 static void MakeWaterGeometry(void)
 {
-u_short					type;
-long					numNubs;
+uint16_t				type;
+int						numNubs;
 WaterDefType			*water;
 float					minX,minY,minZ,maxX,maxY,maxZ;
 
@@ -249,7 +249,7 @@ float					minX,minY,minZ,maxX,maxY,maxZ;
 			gWaterTriangles[f][i].vertexIndices[1] = i + 0;
 			gWaterTriangles[f][i].vertexIndices[2] = i + 1;
 			
-			if (gWaterTriangles[f][i].vertexIndices[2] == numNubs)						// check for wrap back
+			if (gWaterTriangles[f][i].vertexIndices[2] == (GLuint) numNubs)				// check for wrap back
 				 gWaterTriangles[f][i].vertexIndices[2] = 0;
 		}
 

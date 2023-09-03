@@ -625,7 +625,7 @@ int	numChildren,i;
 void MO_DrawGeometry_VertexArray(const MOVertexArrayData *data)
 {
 Boolean		useTexture = false, multiTexture = false, texGen = false;
-u_long 		materialFlags;
+uint32_t 		materialFlags;
 short		i;
 Boolean		needNormals;
 	
@@ -753,9 +753,9 @@ use_current:
 						
 				if (materialFlags & BG3D_MATERIALFLAG_MULTITEXTURE)	
 				{
-					u_short	multiTextureMode 	= gMostRecentMaterial->objectData.multiTextureMode;
-					u_short	multiTextureCombine = gMostRecentMaterial->objectData.multiTextureCombine;
-					u_short	envMapNum 		= gMostRecentMaterial->objectData.envMapNum;
+					uint16_t	multiTextureMode 	= gMostRecentMaterial->objectData.multiTextureMode;
+					uint16_t	multiTextureCombine = gMostRecentMaterial->objectData.multiTextureCombine;
+					uint16_t	envMapNum 		= gMostRecentMaterial->objectData.envMapNum;
 					
 					if (envMapNum >= gNumSpritesInGroupList[SPRITE_GROUP_SPHEREMAPS])
 						DoFatalAlert("MO_DrawGeometry_VertexArray: illegal envMapNum");
@@ -947,7 +947,7 @@ MOMaterialData		*matData;
 OGLColorRGBA		*diffuseColor,diffColor2;
 Boolean				textureHasAlpha = false;
 Boolean				alreadySet;
-u_long				matFlags;
+uint32_t				matFlags;
 
 	if (gIsPicking)							// no materials during picking
 		goto bail;

@@ -54,7 +54,7 @@ float					g2DLogicalHeight = 480;
 float					gAnaglyphFocallength	= 200.0f;
 float					gAnaglyphEyeSeparation 	= 25.0f;
 Byte					gAnaglyphPass;
-u_char					gAnaglyphGreyTable[255];
+static Byte				gAnaglyphGreyTable[255];
 
 
 static	Boolean					gDoAnisotropy 			= true;
@@ -794,7 +794,7 @@ Ptr						imageFileData = nil;
 	imageFileData = LoadDataFile(path, &imageFileLength);
 	GAME_ASSERT(imageFileData);
 
-	pixelData = (uint8_t*) stbi_load_from_memory((const stbi_uc*) imageFileData, imageFileLength, &width, &height, NULL, 4);
+	pixelData = (uint8_t*) stbi_load_from_memory((const stbi_uc*) imageFileData, (int) imageFileLength, &width, &height, NULL, 4);
 	GAME_ASSERT(pixelData);
 
 	SafeDisposePtr(imageFileData);
@@ -851,11 +851,11 @@ static void	ConvertTextureToGrey(void *imageMemory, short width, short height, G
 {
 long	x,y;
 float	r,g,b;
-u_long	a,q;
+uint32_t	a,q;
 
 	if (dataType == GL_UNSIGNED_INT_8_8_8_8_REV)
 	{
-		u_long	*pix32 = (u_long *)imageMemory;
+		uint32_t	*pix32 = (uint32_t *)imageMemory;
 		for (y = 0; y < height; y++)
 		{
 			for (x = 0; x < width; x++)
@@ -882,7 +882,7 @@ u_long	a,q;
 	else
 	if ((dataType == GL_UNSIGNED_BYTE) && (srcFormat == GL_RGBA))
 	{
-		u_long	*pix32 = (u_long *)imageMemory;
+		uint32_t	*pix32 = (uint32_t *)imageMemory;
 		for (y = 0; y < height; y++)
 		{
 			for (x = 0; x < width; x++)
@@ -906,7 +906,7 @@ u_long	a,q;
 	else
 	if (dataType == GL_UNSIGNED_SHORT_1_5_5_5_REV)
 	{
-		u_short	*pix16 = (u_short *)imageMemory;
+		uint16_t	*pix16 = (uint16_t *)imageMemory;
 		for (y = 0; y < height; y++)
 		{
 			for (x = 0; x < width; x++)
@@ -938,10 +938,10 @@ u_long	a,q;
 
 /******************* COLOR BALANCE RGB FOR ANAGLYPH *********************/
 
-static void ColorBalanceRGBForAnaglyph(u_long *rr, u_long *gg, u_long *bb)
+static void ColorBalanceRGBForAnaglyph(uint32_t *rr, uint32_t *gg, uint32_t *bb)
 {
-u_long	r,g,b;
-long	d;
+uint32_t	r,g,b;
+int	d;
 
 	r = *rr;
 	g = *gg;
@@ -1023,12 +1023,12 @@ long	d;
 static void	ConvertTextureToColorAnaglyph(void *imageMemory, short width, short height, GLint srcFormat, GLint dataType)
 {
 long	x,y;
-u_long	r,g,b;
-u_long	a;
+uint32_t	r,g,b;
+uint32_t	a;
 
 	if (dataType == GL_UNSIGNED_INT_8_8_8_8_REV)
 	{
-		u_long	*pix32 = (u_long *)imageMemory;
+		uint32_t	*pix32 = (uint32_t *)imageMemory;
 		for (y = 0; y < height; y++)
 		{
 			for (x = 0; x < width; x++)
@@ -1049,7 +1049,7 @@ u_long	a;
 	else
 	if ((dataType == GL_UNSIGNED_BYTE) && (srcFormat == GL_RGBA))
 	{
-		u_long	*pix32 = (u_long *)imageMemory;
+		uint32_t	*pix32 = (uint32_t *)imageMemory;
 		for (y = 0; y < height; y++)
 		{
 			for (x = 0; x < width; x++)
@@ -1070,7 +1070,7 @@ u_long	a;
 	else
 	if (dataType == GL_UNSIGNED_SHORT_1_5_5_5_REV)
 	{
-		u_short	*pix16 = (u_short *)imageMemory;
+		uint16_t	*pix16 = (uint16_t *)imageMemory;
 		for (y = 0; y < height; y++)
 		{
 			for (x = 0; x < width; x++)

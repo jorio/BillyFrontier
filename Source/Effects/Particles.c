@@ -335,7 +335,7 @@ got_it:
 
 static void MoveParticleGroups(ObjNode *theNode)
 {
-u_long		flags;
+uint32_t		flags;
 long		i,n,p,j;
 float		fps = gFramesPerSecondFrac;
 float		y,baseScale,oneOverBaseScaleSquared,gravity;
@@ -547,7 +547,6 @@ OGLVector3D	*delta;
 static void DrawParticleGroup(ObjNode *theNode)
 {
 float				scale,baseScale;
-long				g,p,n,i;
 OGLColorRGBA_Byte	*vertexColors;
 MOVertexArrayData	*geoData;
 OGLPoint3D		v[4],*camCoords,*coord;
@@ -570,14 +569,14 @@ OGLBoundingBox	bbox;
 
 	camCoords = &gGameViewInfoPtr->cameraPlacement.cameraLocation;	
 
-	for (g = 0; g < MAX_PARTICLE_GROUPS; g++)
+	for (int g = 0; g < MAX_PARTICLE_GROUPS; g++)
 	{
 		float	minX,minY,minZ,maxX,maxY,maxZ;
 		int		temp;
 
 		if (gParticleGroups[g])
 		{
-			u_long	allAim = gParticleGroups[g]->flags & PARTICLE_FLAGS_ALLAIM;
+			uint32_t	allAim = gParticleGroups[g]->flags & PARTICLE_FLAGS_ALLAIM;
 		
 			geoData = &gParticleGroups[g]->geometryObj->objectData;			// get pointer to geometry object data
 			vertexColors = geoData->colorsByte;								// get pointer to vertex color array
@@ -589,7 +588,8 @@ OGLBoundingBox	bbox;
 					
 			minX = minY = minZ = 100000000;									// init bbox
 			maxX = maxY = maxZ = -minX;
-								
+
+			int p, n;
 			for (p = n = 0; p < MAX_PARTICLES; p++)
 			{
 				float			rot;
@@ -642,7 +642,7 @@ OGLBoundingBox	bbox;
 
 							/* UPDATE BBOX */
 						
-				for (i = 0; i < 4; i++)
+				for (int i = 0; i < 4; i++)
 				{
 					int j = n*4+i;
 					
@@ -663,7 +663,7 @@ OGLBoundingBox	bbox;
 					/* UPDATE COLOR/TRANSPARENCY */
 								
 				temp = n*4;
-				for (i = temp; i < (temp+4); i++)
+				for (int i = temp; i < (temp+4); i++)
 				{
 					vertexColors[i].r = 
 					vertexColors[i].g = 
@@ -708,13 +708,12 @@ OGLBoundingBox	bbox;
 				
 	OGL_PopState();
 	SetColor4f(1,1,1,1);										// reset this
-		
 }
 
 
 /**************** VERIFY PARTICLE GROUP MAGIC NUM ******************/
 
-Boolean VerifyParticleGroupMagicNum(short group, u_long magicNum)
+Boolean VerifyParticleGroupMagicNum(short group, uint32_t magicNum)
 {
 	if (gParticleGroups[group] == nil)
 		return(false);
@@ -731,10 +730,10 @@ Boolean VerifyParticleGroupMagicNum(short group, u_long magicNum)
 // INPUT:	inFlags = flags to check particle types against
 //
 
-Boolean ParticleHitObject(ObjNode *theNode, u_short inFlags)
+Boolean ParticleHitObject(ObjNode *theNode, uint16_t inFlags)
 {
 int		i,p;
-u_long	flags;
+uint32_t	flags;
 OGLPoint3D	*coord;
 
 	for (i = 0; i < MAX_PARTICLE_GROUPS; i++)
@@ -1159,11 +1158,9 @@ int		particleGroup, magicNum;
 /****************** BURN FIRE ************************/
 
 void BurnFire(ObjNode *theNode, float x, float y, float z, Boolean doSmoke,
-			short particleType, float scale, u_long moreFlags)
+			short particleType, float scale, uint32_t moreFlags)
 {
-int		i;
 float	fps = gFramesPerSecondFrac;
-int		particleGroup,magicNum;
 NewParticleGroupDefType	groupDef;
 NewParticleDefType	newParticleDef;
 OGLVector3D			d;
@@ -1181,8 +1178,8 @@ OGLPoint3D			p;
 		{
 			theNode->SmokeTimer += SMOKE_TIMER;										// reset timer
 			
-			particleGroup 	= theNode->SmokeParticleGroup;
-			magicNum 		= theNode->SmokeParticleMagic;
+			long particleGroup 	= theNode->SmokeParticleGroup;
+			uint32_t magicNum 	= (uint32_t) theNode->SmokeParticleMagic;
 			
 			if ((particleGroup == -1) || (!VerifyParticleGroupMagicNum(particleGroup, magicNum)))
 			{
@@ -1205,7 +1202,7 @@ OGLPoint3D			p;
 	
 			if (particleGroup != -1)
 			{
-				for (i = 0; i < 3; i++)
+				for (int i = 0; i < 3; i++)
 				{
 					p.x = x + RandomFloat2() * (40.0f * scale);
 					p.y = y + 200.0f + RandomFloat() * (50.0f * scale);
@@ -1241,8 +1238,8 @@ OGLPoint3D			p;
 	{
 		theNode->FireTimer += FIRE_TIMER;										// reset timer
 		
-		particleGroup 	= theNode->ParticleGroup;
-		magicNum 		= theNode->ParticleMagicNum;
+		long particleGroup 	= theNode->ParticleGroup;
+		uint32_t magicNum 	= theNode->ParticleMagicNum;
 		
 		if ((particleGroup == -1) || (!VerifyParticleGroupMagicNum(particleGroup, magicNum)))
 		{
@@ -1264,7 +1261,7 @@ OGLPoint3D			p;
 
 		if (particleGroup != -1)
 		{
-			for (i = 0; i < 3; i++)
+			for (int i = 0; i < 3; i++)
 			{
 				p.x = x + RandomFloat2() * (30.0f * scale);
 				p.y = y + RandomFloat() * (50.0f * scale);

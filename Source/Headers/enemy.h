@@ -56,7 +56,7 @@ enum
 			
 ObjNode *MakeEnemySkeleton(Byte skeletonType, short animNum, float x, float z, float scale, float rot, movecall_t moveCall, uint32_t flags);
 extern	void DeleteEnemy(ObjNode *theEnemy);
-Boolean DoEnemyCollisionDetect(ObjNode *theEnemy, unsigned long ctype, Boolean useBBoxBottom);
+Boolean DoEnemyCollisionDetect(ObjNode *theEnemy, uint32_t ctype, Boolean useBBoxBottom);
 void EnemyTouchedPlayer(ObjNode *enemy, ObjNode *player);
 extern	void UpdateEnemy(ObjNode *theNode);
 extern	void InitEnemyManager(void);

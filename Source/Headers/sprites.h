@@ -29,7 +29,7 @@ void LoadSpriteGroup(int groupNum);
 ObjNode *MakeSpriteObject(NewObjectDefinitionType *newObjDef);
 void BlendAllSpritesInGroup(short group);
 void ModifySpriteObjectFrame(ObjNode *theNode, short type);
-void DrawSprite(int	group, int type, float x, float y, float scale, float rot, u_long flags);
+void DrawSprite(int	group, int type, float x, float y, float scale, float rot, uint32_t flags);
 void BlendASprite(int group, int type);
 
 ObjNode *MakeFontStringObject(const char* cstr, NewObjectDefinitionType *newObjDef, Boolean center);

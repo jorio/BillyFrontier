@@ -17,7 +17,7 @@
 static short GetFreeSuperTileMemory(void);
 static inline void ReleaseSuperTileObject(short superTileNum);
 static void CalcNewItemDeleteWindow(void);
-static u_short	BuildTerrainSuperTile(long	startCol, long startRow);
+static uint16_t	BuildTerrainSuperTile(int startCol, int startRow);
 static void ReleaseAllSuperTiles(void);
 static void DoSuperTileDeformation(SuperTileMemoryType *superTile);
 static void UpdateTerrainDeformationFunctions(void);
@@ -514,10 +514,10 @@ int	i;
 // OUTPUT: index to supertile
 //
 
-static u_short	BuildTerrainSuperTile(long	startCol, long startRow)
+static uint16_t	BuildTerrainSuperTile(int startCol, int startRow)
 {
 long	 			row,col,row2,col2,numPoints,i;
-u_short				superTileNum;
+uint16_t				superTileNum;
 float				height,miny,maxy;
 MOVertexArrayData	*meshData;
 SuperTileMemoryType	*superTilePtr;
@@ -1058,7 +1058,7 @@ int	i;
 
 static void DoSuperTileDeformation(SuperTileMemoryType *superTile)
 {
-int		v,row,col,i,startRow,startCol;
+int		v,row,col,i;
 float	x,y,z, dist, decay, off, d2, originalY;
 float	oneOverWaveLength,r,rw,dampenRatio;
 
@@ -1067,9 +1067,9 @@ float	oneOverWaveLength,r,rw,dampenRatio;
 		
 	if (gIsPicking)
 		return;
-		
-	startRow = superTile->tileRow;													// get tile row/col of this supertile
-	startCol = superTile->tileCol;
+
+	int startRow = superTile->tileRow;													// get tile row/col of this supertile
+	int startCol = superTile->tileCol;
 
 
 			/***************************************/
@@ -1453,7 +1453,7 @@ float			minX,maxX,minZ,maxZ;
 
 void GetSuperTileInfo(int x, int z, int *superCol, int *superRow, int *tileCol, int *tileRow)
 {
-long	row,col;
+int	row,col;
 
 	if ((x < 0) || (z < 0))									// see if out of bounds
 		return;
