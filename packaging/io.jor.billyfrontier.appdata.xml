@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component type="desktop-application">
+  <id>io.jor.billyfrontier</id>
+  <metadata_license>CC0-1.0</metadata_license>
+  <project_license>CC-BY-NC-SA-4.0</project_license>
+  <name>Billy Frontier</name>
+  <summary>Cowboys in space</summary>
+  <developer_name>Pangea Software, Inc., Iliyas Jorio</developer_name>
+
+  <description>
+    <p>Billy Frontier is an arcade style action game with a “cowboys in space” theme. You get to fight in duels, shootouts and stampedes. It’s the kind of game you’ll want to pick up and play whenever you get that twitch to just shoot something and blow stuff up!</p>
+
+    <p>About this port: Billy Frontier was released by Pangea Software for PowerPC Macs in 2003. This is a port of the game to modern operating systems, made under permission from Pangea Software, Inc.</p>
+  </description>
+
+  <categories>
+    <category>Game</category>
+    <category>ActionGame</category>
+  </categories>
+
+  <content_rating type="oars-1.1">
+    <content_attribute id="violence-cartoon">mild</content_attribute>
+    <content_attribute id="violence-fantasy">mild</content_attribute>
+  </content_rating>
+
+  <supports>
+    <control>keyboard</control>
+    <control>mouse</control>
+  </supports>
+
+  <launchable type="desktop-id">io.jor.billyfrontier.desktop</launchable>
+  <provides>
+    <id>io.jor.billyfrontier.desktop</id>
+  </provides>
+
+  <screenshots>
+    <screenshot type="default">
+      <image>https://img.itch.zone/aW1hZ2UvMTY4MTQxNS85OTAyMTM0LnBuZw==/original/WgNG1p.png</image>
+    </screenshot>
+    <screenshot>
+      <image>https://img.itch.zone/aW1hZ2UvMTY4MTQxNS85OTAxNTg5LmpwZw==/original/lhi7NR.jpg</image>
+    </screenshot>
+    <screenshot>
+      <image>https://img.itch.zone/aW1hZ2UvMTY4MTQxNS85OTAxNTkxLmpwZw==/original/8YDvEk.jpg</image>
+    </screenshot>
+    <screenshot>
+      <image>https://img.itch.zone/aW1hZ2UvMTY4MTQxNS85OTAxNjEwLmpwZw==/original/RoFLWB.jpg</image>
+    </screenshot>
+    <screenshot>
+      <image>https://img.itch.zone/aW1hZ2UvMTY4MTQxNS85OTAxNjE1LmpwZw==/original/oVEM6I.jpg</image>
+    </screenshot>
+  </screenshots>
+
+  <url type="homepage">https://jorio.itch.io/billyfrontier</url>
+  <url type="donation">https://ko-fi.com/jorio</url>
+  <url type="vcs-browser">https://github.com/jorio/BillyFrontier</url>
+  <url type="bugtracker">https://github.com/jorio/BillyFrontier/issues</url>
+
+  <releases>
+    <release version="1.1.0" date="2020-09-30">
+      <url>https://github.com/jorio/BillyFrontier/releases/tag/v1.1.0</url>
+      <description>
+        <p>Initial playable release</p>
+      </description>
+    </release>
+  </releases>
+</component>

@@ -2,8 +2,8 @@
 Type=Application
 Version=1.0
 Name=Billy Frontier
-Comment=Billy Frontier
-Icon=billyfrontier-desktopicon
+Comment=Cowboys in space
+Icon=io.jor.billyfrontier
 Exec=BillyFrontier
 Terminal=false
 Categories=Game;

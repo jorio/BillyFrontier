@@ -1,7 +1,0 @@
-{
-    "notarize": [{
-        "path": "./dist/BillyFrontier-1.1.0-mac.dmg",
-        "bundle_id": "io.jor.billyfrontier",
-        "staple": true
-    }]
-}
