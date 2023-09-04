@@ -41,7 +41,6 @@ float				gGravity = NORMAL_GRAVITY;
 Byte				gDebugMode = 0;				// 0 == none, 1 = fps, 2 = all
 
 uint32_t			gAutoFadeStatusBits;
-short				gMainAppRezFile;
 
 OGLSetupOutputType		*gGameViewInfoPtr = nil;
 
@@ -76,8 +75,6 @@ Byte				gLevelWonMask;
 
 void ToolBoxInit(void)
 {
-	gMainAppRezFile = CurResFile();
-
 			/* CHECK PREFERENCES FOLDER */
 
 	InitPrefsFolder(true);

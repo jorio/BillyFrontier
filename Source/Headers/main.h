@@ -2,12 +2,10 @@
 // main.h
 //
 
+#pragma once
 
 // Externals
 #include "game.h"
-
-#ifndef __MAIN
-#define __MAIN
   
 #define	GAME_FOV		1.0f
    
@@ -132,8 +130,8 @@ Boolean AddBoost(TerrainItemEntryType *itemPtr, float  x, float z);
 		/* TARGET PRACTICE */
 		
 void PlayTargetPractice(void);
-		
-		
-		
 
-#endif
+
+		/* GAME MAIN */
+
+void GameMain(void);

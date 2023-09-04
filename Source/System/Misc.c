@@ -102,8 +102,6 @@ static Boolean	beenHere = false;
 		ShutdownSound();								// cleanup sound stuff
 	}
 
-	UseResFile(gMainAppRezFile);
-
 	MyFlushEvents();
 
 	SavePrefs();							// save prefs before bailing

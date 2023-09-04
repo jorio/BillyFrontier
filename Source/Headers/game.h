@@ -185,7 +185,6 @@ extern int gNumWaterPatches;
 extern long gPrefsFolderDirID;
 extern short **gSuperTileTextureGrid;
 extern short gCurrentSong;
-extern short gMainAppRezFile;
 extern short gNumActiveParticleGroups;
 extern short gNumCollisions;
 extern short gNumFencesDrawn;

@@ -154,7 +154,6 @@ const char*	fileNames[MAX_SKELETON_TYPES] =
 			/* CLOSE REZ FILE */
 			
 	CloseResFile(fRefNum);
-	UseResFile(gMainAppRezFile);
 		
 	return(skeleton);
 }
@@ -974,7 +973,6 @@ Ptr						tempBuffer16 = nil;
 			/* CLOSE REZ FILE */
 			
 	CloseResFile(fRefNum);
-	UseResFile(gMainAppRezFile);
 
 
 		
