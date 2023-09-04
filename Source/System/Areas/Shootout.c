@@ -28,6 +28,7 @@ static void MovePlayer_Shootout_Battle(ObjNode *player);
 static void MoveShootoutSaloon(ObjNode *theNode);
 
 static void UpdateCrosshairs(void);
+static void UpdatePlayerRotation(void);
 static void ShootBulletThruCrosshairs(void);
 static void MoveCrosshairsBullet(ObjNode *bullet);
 
@@ -42,7 +43,8 @@ static void MoveCrosshairsBullet(ObjNode *bullet);
 #define	MAX_STOP_POINTS	20
 
 #define KEY_ROT_SPEED 2.0f
-#define MAX_ROT_SPEED 5.0f
+#define MAX_ROT_SPEED 3.5f
+#define MAX_ROT_MOMENTUM 8.0f		// for scroll wheel
 
 
 /****************************/
@@ -65,6 +67,8 @@ Boolean				gShootoutCanProceedToNextStopPoint;
 Boolean				gNeedToReloadNextAmmoClip;
 
 float				gTimeSinceLastEnemyShot;
+
+static float		gScrollMomentum = 0;
 
 
 /************************* PLAY SHOOTOUT *******************************/
@@ -319,7 +323,9 @@ float		x,z;
 		/* GRAB MOUSE CURSOR SO IT CAN'T ESCAPE WINDOW */
 
 	SDL_SetWindowGrab(gSDLWindow, true);
-	SDL_SetRelativeMouseMode( true);
+	SDL_SetRelativeMouseMode(true);
+
+	gScrollMomentum = 0;
 }
 
 
@@ -466,15 +472,8 @@ void GoToNextStopPoint(void)
 
 static void UpdateCrosshairs(void)
 {
-float	fps = gFramesPerSecondFrac;
-Boolean	allowRot;
-
-
 	if (gShootoutMode == SHOOTOUT_MODE_PLAYERKILLED)
 		return;
-
-
-	allowRot = gShootoutMode == SHOOTOUT_MODE_BATTLE;			// only allow edge rotation when in battle mode
 
 
 			/*****************************/
@@ -485,62 +484,17 @@ Boolean	allowRot;
 
 	OGLPoint2D mousePt = GetLogicalMouseCoord();
 	
-			/* GET WINDOW-SPACE COORDS TO CHECK IF WE'RE PINNED TO EDGE*/
-
-	int windowX = 0;
-	int windowY = 0;
-    GetMousePixelCoord(&windowX, &windowY);
 
 			/* XHAIRS COORDS ARE IN LOGICAL 2D SPACE */
 
 	gCrosshairsCoord = mousePt;
 
+	
+			/*************************/
+			/* SEE IF DO EDGE-SCROLL */
+			/*************************/
 
-		/* SEE IF DO EDGE-SCROLL */
-
-	// only start rotating if we already had relative mouse mode (avoid mouse boom when ramming cursor into edge)
-	bool hadRelativeMouseMode = SDL_GetRelativeMouseMode();
-
-	SDL_SetRelativeMouseMode(false);
-	if (windowX <= 1)							// see if off left
-	{
-		SDL_SetRelativeMouseMode(true);			// enable relative mouse mode to keep getting mouse motion deltas as we're pinned to the side of the screen
-		if (allowRot && (gMouseDeltaX < 0.0f) && hadRelativeMouseMode)
-		{
-			float adjMDX = fabsf(0.24f * gMouseDeltaX * 640.0f / gGameWindowWidth);
-			gPlayerInfo.objNode->Rot.y += GAME_MIN(adjMDX, MAX_ROT_SPEED) * fps;
-			if (gPlayerInfo.objNode->Rot.y >= PI2)				// check for wraparound
-				gPlayerInfo.objNode->Rot.y -= PI2;
-		}
-	}
-	else
-	if (windowX >= gGameWindowWidth-2)			// see if off right
-	{
-		SDL_SetRelativeMouseMode(true);			// enable relative mouse mode to keep getting mouse motion deltas as we're pinned to the side of the screen
-		if (allowRot && (gMouseDeltaX > 0.0f) && hadRelativeMouseMode)
-		{
-			float adjMDX = fabsf(0.24f * gMouseDeltaX * 640.0f / gGameWindowWidth);
-			gPlayerInfo.objNode->Rot.y -= GAME_MIN(adjMDX, MAX_ROT_SPEED) * fps;
-			if (gPlayerInfo.objNode->Rot.y <= 0.0f)				// check for wraparound
-				gPlayerInfo.objNode->Rot.y += PI2;
-		}
-	}
-			/* SEE IF DO KEY SCROLL */
-	else
-	if (allowRot)
-	{
-		if (GetNeedState(kNeed_UILeft))
-			gPlayerInfo.objNode->Rot.y += fps * KEY_ROT_SPEED;
-		else
-		if (GetNeedState(kNeed_UIRight))
-			gPlayerInfo.objNode->Rot.y -= fps * KEY_ROT_SPEED;
-		//else
-		//if (gScrollWheelDelta != 0)
-		//{
-		//	gPlayerInfo.objNode->Rot.y += fps * (float)gScrollWheelDelta * 1.4f;
-		//	gScrollWheelDelta = 0;						// reset to 0 since event won't clear it
-		//}
-	}
+	UpdatePlayerRotation();
 
 
 			/****************/
@@ -551,6 +505,97 @@ Boolean	allowRot;
 	{
 		ShootBulletThruCrosshairs();
 	}
+}
+
+
+/********************** UPDATE PLAYER ROTATION (EDGE SCROLL) **********************/
+
+static void UpdatePlayerRotation(void)
+{
+	float fps = gFramesPerSecondFrac;
+	float scroll = 0;
+	float mouseEdge = 0;
+
+		/* ONLY ALLOW EDGE ROTATION IN BATTLE MODE */
+
+	if (gShootoutMode != SHOOTOUT_MODE_BATTLE)		
+	{
+		gScrollMomentum = 0;
+		return;
+	}
+
+		/* KEY SCROLL */
+
+	if (GetNeedState(kNeed_UILeft))
+	{
+		scroll = KEY_ROT_SPEED;
+	}
+	else if (GetNeedState(kNeed_UIRight))
+	{
+		scroll = -KEY_ROT_SPEED;
+	}
+
+		/* GET WINDOW-SPACE MOUSE COORDS TO CHECK IF PINNED TO EDGE */
+
+	int windowX = 0;
+	int windowY = 0;
+	GetMousePixelCoord(&windowX, &windowY);
+
+	if (windowX <= 1)								// see if off left
+	{
+		mouseEdge = -1;
+	}
+	else if (windowX >= gGameWindowWidth - 2)		// see if off right
+	{
+		mouseEdge = 1;
+	}
+
+		/* MOUSE EDGE MOVEMENT BUMPS MOMENTUM */
+
+	if (mouseEdge != 0.0f && gMouseDeltaX != 0.0f)	// is mouse moving along the edge?
+	{
+		if (gMouseDeltaX * mouseEdge < 0)			// mouse is moving away from edge
+		{
+			mouseEdge = 0;							// dampen momentum faster
+		}
+		else
+		{
+			float delta = 0.25f * fabsf(gMouseDeltaX);
+			delta = GAME_MIN(delta, MAX_ROT_SPEED);
+				
+			if (delta > fabsf(gScrollMomentum))
+			{
+				gScrollMomentum = delta * -mouseEdge;
+			}
+		}
+	}
+			
+		/* MOUSE WHEEL BUMPS MOMENTUM */
+
+	if (gScrollWheelDelta != 0)
+	{
+		gScrollMomentum += -gScrollWheelDelta * 1.0f;
+		gScrollMomentum = GAME_CLAMP(gScrollMomentum, -MAX_ROT_MOMENTUM, MAX_ROT_MOMENTUM);
+	}
+
+		/* SCROLL WITH MOMENTUM AND CLAMP */
+
+	scroll += gScrollMomentum;
+	scroll = GAME_CLAMP(scroll, -MAX_ROT_SPEED, MAX_ROT_SPEED);
+
+		/* COMMIT SCROLL TO PLAYER ROTATION */
+
+	gPlayerInfo.objNode->Rot.y += scroll * fps;
+	gPlayerInfo.objNode->Rot.y = MaskAngle(gPlayerInfo.objNode->Rot.y);
+
+		/* DAMPEN MOMENTUM */
+
+	float dampening = mouseEdge != 0.0f ? 10.0f : 20.0f;	// dampen faster if mouse not on edge
+
+	float momentumSign = gScrollMomentum >= 0 ? 1 : -1;
+	gScrollMomentum = (momentumSign * gScrollMomentum) - (dampening * fps);
+	gScrollMomentum = GAME_MAX(0.0f, gScrollMomentum);
+	gScrollMomentum *= momentumSign;
 }
 
 

@@ -159,8 +159,11 @@ typedef struct Controller
 	KeyState				needStates[NUM_CONTROL_NEEDS];
 } Controller;
 
-long				gMouseDeltaX = 0;
-long				gMouseDeltaY = 0;
+float				gMouseDeltaX = 0;
+float				gMouseDeltaY = 0;
+float				gMouseDPIScaleX = 1;
+float				gMouseDPIScaleY = 1;
+SInt32				gScrollWheelDelta = 0;
 
 Boolean				gUserPrefersGamepad = false;
 
@@ -215,20 +218,14 @@ OGLPoint2D GetLogicalMouseCoord(void)
 	return WindowPointToLogical(windowPt);
 }
 
-void GetMousePixelCoord(int *x, int *y) {
+void GetMousePixelCoord(int *x, int *y)
+{
 	int windowX = 0;
 	int windowY = 0;
 	SDL_GetMouseState(&windowX, &windowY);
 
-	// On macOS, the mouse position is relative to the window's "point size" on Retina screens.
-	int windowW = 1;
-	int windowH = 1;
-	SDL_GetWindowSize(gSDLWindow, &windowW, &windowH);
-	float dpiScaleX = (float) gGameWindowWidth / (float) windowW;		// gGameWindowWidth is in actual pixels
-	float dpiScaleY = (float) gGameWindowHeight / (float) windowH;		// gGameWindowHeight is in actual pixels
-
-	*x = (int) ((float) windowX * dpiScaleX);
-	*y = (int) ((float) windowY * dpiScaleY);
+	*x = (int) ((float) windowX * gMouseDPIScaleX);
+	*y = (int) ((float) windowY * gMouseDPIScaleY);
 }
 
 /**********************/
@@ -313,8 +310,8 @@ static void UpdateMouseButtonStates(int mouseWheelDelta)
 	}
 
 	// Fake buttons for mouse wheel up/down
-	UpdateKeyState(&gMouseButtonStates[SDL_BUTTON_WHEELUP], mouseWheelDelta > 0);
-	UpdateKeyState(&gMouseButtonStates[SDL_BUTTON_WHEELDOWN], mouseWheelDelta < 0);
+	UpdateKeyState(&gMouseButtonStates[SDL_BUTTON_WHEELUP], mouseWheelDelta < 0);
+	UpdateKeyState(&gMouseButtonStates[SDL_BUTTON_WHEELDOWN], mouseWheelDelta > 0);
 }
 
 static void UpdateInputNeeds(void)
@@ -398,7 +395,18 @@ void DoSDLMaintenance(void)
 	gMouseMotionNow = false;
 	gMouseDeltaX = 0;
 	gMouseDeltaY = 0;
-	int mouseWheelDelta = 0;
+
+	int mouseWheelDeltaX = 0;
+	int mouseWheelDeltaY = 0;
+
+	// Update mouse DPI scale
+	{
+		int windowW = 1;
+		int windowH = 1;
+		SDL_GetWindowSize(gSDLWindow, &windowW, &windowH);
+		gMouseDPIScaleX = (float) gGameWindowWidth / (float) windowW;		// gGameWindowWidth is in actual pixels
+		gMouseDPIScaleY = (float) gGameWindowHeight / (float) windowH;		// gGameWindowHeight is in actual pixels
+	}
 
 			/**********************/
 			/* DO SDL MAINTENANCE */
@@ -436,13 +444,13 @@ void DoSDLMaintenance(void)
 
 				case SDL_MOUSEMOTION:
 					gMouseMotionNow = true;
-					gMouseDeltaX += event.motion.xrel;
-					gMouseDeltaY += event.motion.yrel;
+					gMouseDeltaX += event.motion.xrel * gMouseDPIScaleX;
+					gMouseDeltaY += event.motion.yrel * gMouseDPIScaleY;
 					break;
 
 				case SDL_MOUSEWHEEL:
-					mouseWheelDelta += event.wheel.y;
-					mouseWheelDelta += event.wheel.x;
+					mouseWheelDeltaX += event.wheel.x;
+					mouseWheelDeltaY += event.wheel.y;
 					break;
 
 				case SDL_CONTROLLERDEVICEADDED:
@@ -481,7 +489,8 @@ void DoSDLMaintenance(void)
 	ParseAltEnter();
 
 	// Refresh the state of each mouse button
-	UpdateMouseButtonStates(mouseWheelDelta);
+	UpdateMouseButtonStates(mouseWheelDeltaY);
+	gScrollWheelDelta = mouseWheelDeltaX - mouseWheelDeltaY;	// for edge scrolling in-game
 
 	// Refresh the state of each input need
 	UpdateInputNeeds();
