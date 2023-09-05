@@ -32,6 +32,7 @@ static void DrawFlame(ObjNode *theNode);
 /*    CONSTANTS             */
 /****************************/
 
+#define ALWAYS_ALLAIM	1		// set to 0 to recycle look-at matrices in particle groups - minor optimization but smoke effects will look worse
 #define	FIRE_TIMER	.05f
 #define	SMOKE_TIMER	.07f
 
@@ -577,7 +578,9 @@ OGLBoundingBox	bbox;
 
 		if (gParticleGroups[g])
 		{
+#if !ALWAYS_ALLAIM
 			uint32_t	allAim = gParticleGroups[g]->flags & PARTICLE_FLAGS_ALLAIM;
+#endif
 		
 			geoData = &gParticleGroups[g]->geometryObj->objectData;			// get pointer to geometry object data
 			vertexColors = geoData->colorsByte;								// get pointer to vertex color array
@@ -619,6 +622,9 @@ OGLBoundingBox	bbox;
 					/* TRANSFORM THIS PARTICLE'S VERTICES & ADD TO TRIMESH */
 					
 				coord = &gParticleGroups[g]->coord[p];
+#if ALWAYS_ALLAIM
+				SetLookAtMatrixAndTranslate(&m, &up, coord, camCoords);		// aim at camera & translate
+#else
 				if ((n == 0) || allAim)										// only set the look-at matrix for the 1st particle unless we want to force it for all (optimization technique)
 					SetLookAtMatrixAndTranslate(&m, &up, coord, camCoords);	// aim at camera & translate
 				else
@@ -627,6 +633,7 @@ OGLBoundingBox	bbox;
 					m.value[M13] = coord->y;
 					m.value[M23] = coord->z;
 				}
+#endif
 
 				rot = gParticleGroups[g]->rotZ[p];							// get z rotation
 				if (rot != 0.0f)											// see if need to apply rotation matrix
