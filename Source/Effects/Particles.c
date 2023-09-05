@@ -88,7 +88,8 @@ ObjNode	*obj;
 
 	LoadSpriteGroup(SPRITE_GROUP_PARTICLES);
 
-	BlendAllSpritesInGroup(SPRITE_GROUP_PARTICLES);
+	SetSpriteGroupMaterialFlags(SPRITE_GROUP_PARTICLES,
+		BG3D_MATERIALFLAG_ALWAYSBLEND | BG3D_MATERIALFLAG_CLAMP_U | BG3D_MATERIALFLAG_CLAMP_V);
 
 
 		/*************************************************************************/

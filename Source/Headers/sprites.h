@@ -27,7 +27,7 @@ void DisposeAllSpriteGroups(void);
 void DisposeSpriteGroup(int groupNum);
 void LoadSpriteGroup(int groupNum);
 ObjNode *MakeSpriteObject(NewObjectDefinitionType *newObjDef);
-void BlendAllSpritesInGroup(short group);
+void SetSpriteGroupMaterialFlags(short group, uint32_t flags);
 void ModifySpriteObjectFrame(ObjNode *theNode, short type);
 void DrawSprite(int	group, int type, float x, float y, float scale, float rot, uint32_t flags);
 void BlendASprite(int group, int type);

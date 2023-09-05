@@ -336,7 +336,7 @@ MOSpriteObject		*spriteMO;
 // Set the blending flag for all sprites in the group.
 //
 
-void BlendAllSpritesInGroup(short group)
+void SetSpriteGroupMaterialFlags(short group, uint32_t flags)
 {
 int		i,n;
 MOMaterialObject	*m;
@@ -345,16 +345,13 @@ MOMaterialObject	*m;
 	if ((n == 0) || (gSpriteGroupList[group] == nil))
 		DoFatalAlert("BlendAllSpritesInGroup: this group is empty");
 
-
-			/* DISPOSE OF ALL LOADED OPENGL TEXTURENAMES */
-			
 	for (i = 0; i < n; i++)
 	{
 		m = gSpriteGroupList[group][i].materialObject; 				// get material object ptr		
 		if (m == nil)
 			DoFatalAlert("BlendAllSpritesInGroup: material == nil");
 		
-		m->objectData.flags |= 	BG3D_MATERIALFLAG_ALWAYSBLEND;		// set flag
+		m->objectData.flags |= flags;
 	}
 }
 
