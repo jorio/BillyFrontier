@@ -323,7 +323,6 @@ float		x,z;
 		/* GRAB MOUSE CURSOR SO IT CAN'T ESCAPE WINDOW */
 
 	SDL_SetWindowGrab(gSDLWindow, true);
-	SDL_SetRelativeMouseMode(true);
 
 	gScrollMomentum = 0;
 }
@@ -569,7 +568,21 @@ static void UpdatePlayerRotation(void)
 			}
 		}
 	}
-			
+
+		/* SET RELATIVE MOUSE MODE IF CURSOR PINNED TO EDGE */
+		//
+		// Relative mouse mode is required to get delta readings at the edge of
+		// the screen, but it should be turned OFF when not needed so that
+		// cursor motion uses the system's acceleration curve.
+		//
+
+	Boolean hadRelativeMouse = SDL_GetRelativeMouseMode();
+	Boolean needRelativeMouse = mouseEdge != 0.0f;
+	if (hadRelativeMouse != needRelativeMouse)
+	{
+		SDL_SetRelativeMouseMode(needRelativeMouse);
+	}
+
 		/* MOUSE WHEEL BUMPS MOMENTUM */
 
 	if (gScrollWheelDelta != 0)
