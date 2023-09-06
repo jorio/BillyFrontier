@@ -57,10 +57,16 @@
   <url type="bugtracker">https://github.com/jorio/BillyFrontier/issues</url>
 
   <releases>
-    <release version="1.1.0" date="2020-09-30">
+    <release version="1.1.1" date="2023-09-05">
+      <url>https://github.com/jorio/BillyFrontier/releases/tag/v1.1.1</url>
+      <description>
+        <p>New in this release: Improved rotation controls in shootout mode. Turning by ramming the mouse cursor to the edges of the screen feels much smoother now. You can also use the mouse wheel or horizontal trackpad scrolling to turn.</p>
+      </description>
+    </release>
+    <release version="1.1.0" date="2022-09-30">
       <url>https://github.com/jorio/BillyFrontier/releases/tag/v1.1.0</url>
       <description>
-        <p>Initial playable release</p>
+        <p>Initial playable release. Widescreen support.</p>
       </description>
     </release>
   </releases>

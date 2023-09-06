@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.16)
 
 set(GAME_TARGET				"BillyFrontier")
-set(GAME_VERSION			"1.1.0")
+set(GAME_VERSION			"1.1.1")
 
 set(GAME_MAC_ICNS			"packaging/${GAME_TARGET}.icns")
 set(GAME_MAC_COPYRIGHT		"© 2003 Pangea Software, Inc.\n© 2023 Iliyas Jorio.")

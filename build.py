@@ -24,7 +24,7 @@ dist_dir = os.path.abspath("dist")
 game_name           = "BillyFrontier"  # no spaces
 game_name_human     = "Billy Frontier"  # spaces and other special characters allowed
 game_package        = "io.jor.billyfrontier"  # unique package name
-game_ver            = "1.1.0"
+game_ver            = "1.1.1"
 
 source_check        = "Source/System/Areas/Shootout.c"  # some file that's likely to be from the game's source tree
 

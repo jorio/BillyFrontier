@@ -12,6 +12,26 @@ Billy Frontier is an arcade style action game with a “cowboys in space” them
 
 Billy Frontier was released for PowerPC Macs in 2003. This is a port of the game to modern operating systems.
 
+### Controls
+
+Shootout controls:
+- **Shoot**: Left Mouse Button
+- **Duck**: Right Mouse Button or `Ctrl` key
+- **Turn**: either...
+    - ...slam the cursor to the edge of the screen,
+    - ...scroll the mouse wheel,
+    - ...scroll horizontally on a trackpad, 
+    - ...or, press the `A`/`D` or left/right keys.
+- **Proceed** once all baddies are out: Middle Mouse Button or `⌘` key (Mac) or `Alt` key (Windows/Linux)
+
+Stampede controls:
+- **Turn**: `A`/`D` or left/right keys
+- **Jump**: `Spacebar`
+
+Duel controls:
+- Match the reflex sequence using the arrow keys.
+- To skip a duel, press `⌘`+`F10` (Mac) or `⊞`+`F10` (Windows/Linux)
+
 ### More documentation
 
 - [Original instruction manual](Instructions.pdf)
