@@ -574,7 +574,10 @@ static void UpdatePlayerRotation(void)
 
 	if (gScrollWheelDelta != 0)
 	{
-		gScrollMomentum += -gScrollWheelDelta * 1.0f;
+		float wheelDelta = -gScrollWheelDelta;
+		wheelDelta *= (1.0f + 1.5f * gGamePrefs.mouseWheelScrollSpeed);
+		wheelDelta *= gGamePrefs.invertMouseWheel ? -1.0f : 1.0f;
+		gScrollMomentum += wheelDelta;
 		gScrollMomentum = GAME_CLAMP(gScrollMomentum, -MAX_ROT_MOMENTUM, MAX_ROT_MOMENTUM);
 	}
 

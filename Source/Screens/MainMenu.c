@@ -68,6 +68,8 @@ enum
 #if EXPOSE_MSAA_SETTING
 	kSettingsMenu_Antialiasing,
 #endif
+	kSettingsMenu_MouseWheelScrollSpeed,
+	kSettingsMenu_InvertMouseWheel,
 	kSettingsMenu_Spacer1,
 	kSettingsMenu_ResetHighScores,
 	kSettingsMenu_Spacer2,
@@ -393,6 +395,15 @@ static void BuildMainMenu_Settings(void)
 			break;
 #endif
 
+		case kSettingsMenu_MouseWheelScrollSpeed:
+			snprintf(suffix, sizeof(suffix), "%d", 1 + gGamePrefs.mouseWheelScrollSpeed);
+			name = DotConcat("MOUSE WHEEL SPEED", suffix, TW);
+			break;
+
+		case kSettingsMenu_InvertMouseWheel:
+			name = DotConcat("MOUSE WHEEL DIR.", gGamePrefs.invertMouseWheel? "INVERTED": "NORMAL", TW);
+			break;
+
 		case kSettingsMenu_ResetHighScores:
 			if (!gAreYouSure)
 				name = "RESET HIGH SCORES";
@@ -414,7 +425,7 @@ static void BuildMainMenu_Settings(void)
 
 		NewObjectDefinitionType def =
 		{
-			.coord = {130, 390, 0},
+			.coord = {130, 420, 0},
 			.scale = MENU_FONT_SCALE * 0.6f,
 			.slot = SPRITE_SLOT,
 		};
@@ -730,6 +741,17 @@ ObjNode	*newObj;
 					BuildMainMenu(MENU_PAGE_SETTINGS);
 					break;
 #endif
+
+				case kSettingsMenu_MouseWheelScrollSpeed:
+					gGamePrefs.mouseWheelScrollSpeed++;
+					gGamePrefs.mouseWheelScrollSpeed %= 4;
+					BuildMainMenu(MENU_PAGE_SETTINGS);
+					break;
+
+				case kSettingsMenu_InvertMouseWheel:
+					gGamePrefs.invertMouseWheel = !gGamePrefs.invertMouseWheel;
+					BuildMainMenu(MENU_PAGE_SETTINGS);
+					break;
 
 				case kSettingsMenu_ResetHighScores:
 					if (!gAreYouSure)

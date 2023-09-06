@@ -10,7 +10,7 @@
 #define PREFS_FILE_NAME		"Prefs"
 #define SCORES_FILE_NAME	"HighScores"
 #define SAVE_FILE_NAME		"BillySave"
-#define PREFS_MAGIC			"NewBillyPrefV01"	// Bump this when PrefsType changes
+#define PREFS_MAGIC			"NewBillyPrefV02"	// Bump this when PrefsType changes
 #define	SCORES_MAGIC		"NewBillyScorV01"	// Bump this when HighScoreType changes
 #define SAVE_MAGIC			"NewBillySaveV01"	// Bump this when SaveGameType changes
 #define MAX_SAVE_FILES		5
@@ -72,7 +72,8 @@ typedef struct
 	Boolean	fullscreen;
 	Byte	antialiasingLevel;
 	Byte	monitorNum;
-
+	Byte	mouseWheelScrollSpeed;
+	Boolean	invertMouseWheel;
 }PrefsType;
 
 

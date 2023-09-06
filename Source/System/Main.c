@@ -95,6 +95,8 @@ void InitDefaultPrefs(void)
 
 	gGamePrefs.antialiasingLevel	= 0;
 	gGamePrefs.fullscreen			= true;
+	gGamePrefs.mouseWheelScrollSpeed= 0;
+	gGamePrefs.invertMouseWheel		= false;
 }
 
 
