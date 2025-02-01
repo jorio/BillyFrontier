@@ -25,7 +25,7 @@
 
   <supports>
     <control>keyboard</control>
-    <control>mouse</control>
+    <control>pointing</control>
   </supports>
 
   <launchable type="desktop-id">io.jor.billyfrontier.desktop</launchable>
