@@ -100,55 +100,55 @@ float	g3DTileSize, g3DMinY, g3DMaxY;
 
 SkeletonDefType *LoadSkeletonFile(short skeletonType)
 {
-QDErr		iErr;
-short		fRefNum;
-FSSpec		fsSpec;
-SkeletonDefType	*skeleton;					
-const char*	fileNames[MAX_SKELETON_TYPES] =
+const char*	kSkeletonNames[MAX_SKELETON_TYPES] =
 {
-	[SKELETON_TYPE_BILLY]		= ":Skeletons:billy.skeleton",
-	[SKELETON_TYPE_BANDITO]		= ":Skeletons:bandito.skeleton",
-	[SKELETON_TYPE_RYGAR]		= ":Skeletons:rygar.skeleton",
-	[SKELETON_TYPE_SHORTY]		= ":Skeletons:shorty.skeleton",
-	[SKELETON_TYPE_KANGACOW]	= ":Skeletons:kangacow.skeleton",
-	[SKELETON_TYPE_KANGAREX]	= ":Skeletons:kangarex.skeleton",
-	[SKELETON_TYPE_WALKER]		= ":Skeletons:walker.skeleton",
-	[SKELETON_TYPE_TREMORALIEN]	= ":Skeletons:tremoralien.skeleton",
-	[SKELETON_TYPE_TREMORGHOST]	= ":Skeletons:tremorghost.skeleton",
-	[SKELETON_TYPE_FROGMAN]		= ":Skeletons:frogman.skeleton",
+	[SKELETON_TYPE_BILLY]		= "Billy",
+	[SKELETON_TYPE_BANDITO]		= "Bandito",
+	[SKELETON_TYPE_RYGAR]		= "Rygar",
+	[SKELETON_TYPE_SHORTY]		= "Shorty",
+	[SKELETON_TYPE_KANGACOW]	= "KangaCow",
+	[SKELETON_TYPE_KANGAREX]	= "KangaRex",
+	[SKELETON_TYPE_WALKER]		= "Walker",
+	[SKELETON_TYPE_TREMORALIEN]	= "TremorAlien",
+	[SKELETON_TYPE_TREMORGHOST]	= "TremorGhost",
+	[SKELETON_TYPE_FROGMAN]		= "FrogMan",
 };
+short		fRefNum;
+FSSpec		skeletonSpec;
+FSSpec		bg3dSpec;
+SkeletonDefType	*skeleton;
+char		path[64];
 
-	GAME_ASSERT(skeletonType >= 0);
-	GAME_ASSERT(skeletonType < MAX_SKELETON_TYPES);
+			/* SET CORRECT FILENAME */
 
+	GAME_ASSERT(skeletonType >= 0 && skeletonType < MAX_SKELETON_TYPES);
 
-	FSMakeFSSpec(gDataSpec.vRefNum, gDataSpec.parID, fileNames[skeletonType], &fsSpec);
+	SDL_snprintf(path, sizeof(path), ":Skeletons:%s.skeleton", kSkeletonNames[skeletonType]);
+	FSMakeFSSpec(gDataSpec.vRefNum, gDataSpec.parID, path, &skeletonSpec);
+
+	SDL_snprintf(path, sizeof(path), ":Skeletons:%s.bg3d", kSkeletonNames[skeletonType]);
+	FSMakeFSSpec(gDataSpec.vRefNum, gDataSpec.parID, path, &bg3dSpec);
 
 
 			/* OPEN THE FILE'S REZ FORK */
 
-	fRefNum = FSpOpenResFile(&fsSpec,fsRdPerm);
-	if (fRefNum == -1)
-	{
-		iErr = ResError();
-		DoFatalAlert("System Error %d opening Skel Rez file", iErr);
-	}
-	
-	UseResFile(fRefNum);
-	if (ResError())
-		DoFatalAlert("Error using Rez file!");
+	fRefNum = FSpOpenResFile(&skeletonSpec, fsRdPerm);
+	GAME_ASSERT(fRefNum >= 0);
 
-			
+	UseResFile(fRefNum);
+	GAME_ASSERT(!ResError());
+
+
 			/* ALLOC MEMORY FOR SKELETON INFO STRUCTURE */
-			
+
 	skeleton = (SkeletonDefType *)AllocPtr(sizeof(SkeletonDefType));
 	if (skeleton == nil)
 		DoFatalAlert("Cannot alloc SkeletonInfoType");
 
 
 			/* READ SKELETON RESOURCES */
-			
-	ReadDataFromSkeletonFile(skeleton, &fsSpec, skeletonType);
+
+	ReadDataFromSkeletonFile(skeleton, &bg3dSpec, skeletonType);
 	PrimeBoneData(skeleton);
 	
 			/* CLOSE REZ FILE */
@@ -164,7 +164,7 @@ const char*	fileNames[MAX_SKELETON_TYPES] =
 // Current rez file is set to the file. 
 //
 
-static void ReadDataFromSkeletonFile(SkeletonDefType *skeleton, FSSpec *fsSpec, int skeletonType)
+static void ReadDataFromSkeletonFile(SkeletonDefType *skeleton, FSSpec *bg3dSpec, int skeletonType)
 {
 Handle				hand;
 long				numJoints = 0;
@@ -173,10 +173,6 @@ AnimEventType		*animEventPtr;
 JointKeyframeType	*keyFramePtr;
 SkeletonFile_Header_Type	*headerPtr;
 short				version;
-AliasHandle				alias;
-OSErr					iErr;
-FSSpec					target;
-Boolean					wasChanged;
 OGLPoint3D				*pointPtr;
 SkeletonFile_AnimHeader_Type	*animHeaderPtr;
 
@@ -211,20 +207,21 @@ SkeletonFile_AnimHeader_Type	*animHeaderPtr;
 		/********************************/
 		/* 	LOAD THE REFERENCE GEOMETRY */
 		/********************************/
-		
-	alias = (AliasHandle)GetResource(rAliasType,1000);				// alias to geometry BG3D file
+
+#if 0
+	alias = (AliasHandle)GetResource(rAliasType,1001);				// alias to geometry BG3D file
 	if (alias != nil)
 	{
 		iErr = ResolveAlias(fsSpec, alias, &target, &wasChanged);	// try to resolve alias
 		if (!iErr)
 			LoadBonesReferenceModel(&target, skeleton, skeletonType);
 		else
-			DoFatalAlert("ReadDataFromSkeletonFile: Cannot find Skeleton's BG3D file!");
+			DoFatalAlert("ReadDataFromSkeletonFile: Cannot find Skeleton's 3DMF file!");
 		ReleaseResource((Handle)alias);
 	}
-	else
-		DoFatalAlert("ReadDataFromSkeletonFile: file is missing the Alias resource");
-	
+#else
+	LoadBonesReferenceModel(bg3dSpec, skeleton, skeletonType);
+#endif
 
 
 		/***********************************/

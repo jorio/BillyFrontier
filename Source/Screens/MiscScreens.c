@@ -143,7 +143,7 @@ float	timeout = 40.0f;
 
 void DoLegalScreen(void)
 {
-	DisplayPicture(":images:Logo.png");
+	DisplayPicture(":Images:Logo.png");
 }
 
 

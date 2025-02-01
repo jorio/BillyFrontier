@@ -137,7 +137,7 @@ do_again:
 		def.coord.y += 33; MakeFontStringObject(DotConcat("animation", "Peter Greenstone", 16), &def, true);
 		def.coord.y += 33; MakeFontStringObject(DotConcat("music", "Aleksander Dimitrijevic", 16), &def, true);
 		def.coord.y += 33; MakeFontStringObject(DotConcat("modern version", "Iliyas Jorio", 16), &def, true);
-		DisplayPicture(":images:Credits.jpg");
+		DisplayPicture(":Images:Credits.jpg");
 		goto do_again;
 	}
 
@@ -263,7 +263,7 @@ int					i;
 
 	if (startMenu != MENU_PAGE_SAVEGAME)		// blank background when saving game
 	{
-		MakeBackgroundPictureObject(":images:MainMenu.png");
+		MakeBackgroundPictureObject(":Images:MainMenu.png");
 	}
 
 			/* LAY OUT MENU*/

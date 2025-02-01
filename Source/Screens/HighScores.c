@@ -268,7 +268,7 @@ OGLSetupInputType	viewDef;
 
 	if (gJustShowScores)
 	{
-		backgroundImagePath = ":images:HighScores.jpg";
+		backgroundImagePath = ":Images:HighScores.jpg";
 		gShowScoreDelay = 0;
 		gFinalScoreAlpha = 1.0f;
 	}
@@ -278,9 +278,9 @@ OGLSetupInputType	viewDef;
 		gFinalScoreAlpha = 0.0f;
 		
 		if (gWonGame)
-			backgroundImagePath = ":images:WinScreen.jpg";
+			backgroundImagePath = ":Images:WinScreen.jpg";
 		else
-			backgroundImagePath = ":images:LoseScreen.jpg";
+			backgroundImagePath = ":Images:LoseScreen.jpg";
 	}
 
 	MakeBackgroundPictureObject(backgroundImagePath);

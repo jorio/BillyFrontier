@@ -31,15 +31,15 @@ const struct
 }
 kSpriteCollections[MAX_SPRITE_GROUPS] =
 {
-	[SPRITE_GROUP_BIGBOARD]		= {"BIGBOARD",		BIGBOARD_SObjType_COUNT},
-	[SPRITE_GROUP_CURSOR]		= {"CURSOR",		CURSOR_SObjType_COUNT},
-	[SPRITE_GROUP_DUEL]			= {"DUEL",			DUEL_SObjType_COUNT},
-	[SPRITE_GROUP_FONT]			= {"FONT",			FONT_SObjType_COUNT},
-	[SPRITE_GROUP_GLOBAL]		= {"GLOBAL",		GLOBAL_SObjType_COUNT},
-	[SPRITE_GROUP_INFOBAR]		= {"INFOBAR",		INFOBAR_SObjType_COUNT},
-	[SPRITE_GROUP_PARTICLES]	= {"PARTICLE",		PARTICLE_SObjType_COUNT},
-	[SPRITE_GROUP_SPHEREMAPS]	= {"SPHEREMAP",		SPHEREMAP_SObjType_COUNT},
-	[SPRITE_GROUP_STAMPEDE]		= {"STAMPEDE",		STAMPEDE_SObjType_COUNT},
+	[SPRITE_GROUP_BIGBOARD]		= {"bigboard",		BIGBOARD_SObjType_COUNT},
+	[SPRITE_GROUP_CURSOR]		= {"cursor",		CURSOR_SObjType_COUNT},
+	[SPRITE_GROUP_DUEL]			= {"duel",			DUEL_SObjType_COUNT},
+	[SPRITE_GROUP_FONT]			= {"font",			FONT_SObjType_COUNT},
+	[SPRITE_GROUP_GLOBAL]		= {"global",		GLOBAL_SObjType_COUNT},
+	[SPRITE_GROUP_INFOBAR]		= {"infobar",		INFOBAR_SObjType_COUNT},
+	[SPRITE_GROUP_PARTICLES]	= {"particle",		PARTICLE_SObjType_COUNT},
+	[SPRITE_GROUP_SPHEREMAPS]	= {"spheremap",		SPHEREMAP_SObjType_COUNT},
+	[SPRITE_GROUP_STAMPEDE]		= {"stampede",		STAMPEDE_SObjType_COUNT},
 };
 
 enum
@@ -195,7 +195,7 @@ MOMaterialData	matData;
 	for (int i = 0; i < gNumSpritesInGroupList[groupNum]; i++)
 	{
 		char path[64];
-		snprintf(path, sizeof(path), ":sprites:%s:%s%03d.png", kSpriteCollections[groupNum].name, kSpriteCollections[groupNum].name, i);
+		SDL_snprintf(path, sizeof(path), ":Sprites:%s:%s%03d.png", kSpriteCollections[groupNum].name, kSpriteCollections[groupNum].name, i);
 
 		GLuint texture = OGL_TextureMap_LoadImageFile(path, &w, &h);
 

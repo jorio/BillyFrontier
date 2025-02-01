@@ -43,7 +43,7 @@ FSSpec	spec;
 
 			/* LOAD GLOBAL BG3D GEOMETRY */
 			
-	FSMakeFSSpec(gDataSpec.vRefNum, gDataSpec.parID, ":models:global.bg3d", &spec);
+	FSMakeFSSpec(gDataSpec.vRefNum, gDataSpec.parID, ":Models:global.bg3d", &spec);
 	ImportBG3D(&spec, MODEL_GROUP_GLOBAL);
 
 
@@ -54,17 +54,17 @@ FSSpec	spec;
 		case	AREA_TOWN_DUEL1:
 		case	AREA_TOWN_DUEL2:
 		case	AREA_TOWN_DUEL3:
-				FSMakeFSSpec(gDataSpec.vRefNum, gDataSpec.parID, ":models:town.bg3d", &spec);
+				FSMakeFSSpec(gDataSpec.vRefNum, gDataSpec.parID, ":Models:town.bg3d", &spec);
 				ImportBG3D(&spec, MODEL_GROUP_LEVELSPECIFIC);
 
-				FSMakeFSSpec(gDataSpec.vRefNum, gDataSpec.parID, ":models:buildings.bg3d", &spec);
+				FSMakeFSSpec(gDataSpec.vRefNum, gDataSpec.parID, ":Models:buildings.bg3d", &spec);
 				ImportBG3D(&spec, MODEL_GROUP_BUILDINGS);
 				break;
 				
 		case	AREA_SWAMP_DUEL1:
 		case	AREA_SWAMP_DUEL2:
 		case	AREA_SWAMP_DUEL3:
-				FSMakeFSSpec(gDataSpec.vRefNum, gDataSpec.parID, ":models:swamp.bg3d", &spec);
+				FSMakeFSSpec(gDataSpec.vRefNum, gDataSpec.parID, ":Models:swamp.bg3d", &spec);
 				ImportBG3D(&spec, MODEL_GROUP_LEVELSPECIFIC);
 				
 	}
@@ -99,13 +99,13 @@ FSSpec	spec;
 		case	AREA_TOWN_DUEL1:
 		case	AREA_TOWN_DUEL2:
 		case	AREA_TOWN_DUEL3:
-				FSMakeFSSpec(gDataSpec.vRefNum, gDataSpec.parID, ":terrain:town_duel.ter", &spec);
+				FSMakeFSSpec(gDataSpec.vRefNum, gDataSpec.parID, ":Terrain:town_duel.ter", &spec);
 				break;
 				
 		case	AREA_SWAMP_DUEL1:
 		case	AREA_SWAMP_DUEL2:
 		case	AREA_SWAMP_DUEL3:
-				FSMakeFSSpec(gDataSpec.vRefNum, gDataSpec.parID, ":terrain:swamp_duel.ter", &spec);
+				FSMakeFSSpec(gDataSpec.vRefNum, gDataSpec.parID, ":Terrain:swamp_duel.ter", &spec);
 				break;
 	}
 	
@@ -129,22 +129,22 @@ FSSpec	spec;
 
 			/* LOAD GLOBAL BG3D GEOMETRY */
 			
-	FSMakeFSSpec(gDataSpec.vRefNum, gDataSpec.parID, ":models:global.bg3d", &spec);
+	FSMakeFSSpec(gDataSpec.vRefNum, gDataSpec.parID, ":Models:global.bg3d", &spec);
 	ImportBG3D(&spec, MODEL_GROUP_GLOBAL);
 
 
 	switch(gCurrentArea)
 	{
 		case	AREA_TOWN_SHOOTOUT:
-				FSMakeFSSpec(gDataSpec.vRefNum, gDataSpec.parID, ":models:town.bg3d", &spec);
+				FSMakeFSSpec(gDataSpec.vRefNum, gDataSpec.parID, ":Models:town.bg3d", &spec);
 				ImportBG3D(&spec, MODEL_GROUP_LEVELSPECIFIC);
 
-				FSMakeFSSpec(gDataSpec.vRefNum, gDataSpec.parID, ":models:buildings.bg3d", &spec);
+				FSMakeFSSpec(gDataSpec.vRefNum, gDataSpec.parID, ":Models:buildings.bg3d", &spec);
 				ImportBG3D(&spec, MODEL_GROUP_BUILDINGS);
 				break;
 				
 		case	AREA_SWAMP_SHOOTOUT:
-				FSMakeFSSpec(gDataSpec.vRefNum, gDataSpec.parID, ":models:swamp.bg3d", &spec);
+				FSMakeFSSpec(gDataSpec.vRefNum, gDataSpec.parID, ":Models:swamp.bg3d", &spec);
 				ImportBG3D(&spec, MODEL_GROUP_LEVELSPECIFIC);
 				break;
 	}
@@ -193,11 +193,11 @@ FSSpec	spec;
 	switch(gCurrentArea)
 	{
 		case	AREA_TOWN_SHOOTOUT:
-				FSMakeFSSpec(gDataSpec.vRefNum, gDataSpec.parID, ":terrain:town_shootout.ter", &spec);
+				FSMakeFSSpec(gDataSpec.vRefNum, gDataSpec.parID, ":Terrain:town_shootout.ter", &spec);
 				break;
 
 		case	AREA_SWAMP_SHOOTOUT:
-				FSMakeFSSpec(gDataSpec.vRefNum, gDataSpec.parID, ":terrain:swamp_shootout.ter", &spec);
+				FSMakeFSSpec(gDataSpec.vRefNum, gDataSpec.parID, ":Terrain:swamp_shootout.ter", &spec);
 				break;
 	}
 
@@ -227,11 +227,11 @@ FSSpec	spec;
 	switch(gCurrentArea)
 	{
 		case	AREA_TOWN_STAMPEDE:
-				FSMakeFSSpec(gDataSpec.vRefNum, gDataSpec.parID, ":models:town.bg3d", &spec);
+				FSMakeFSSpec(gDataSpec.vRefNum, gDataSpec.parID, ":Models:town.bg3d", &spec);
 				break;			
 
 		case	AREA_SWAMP_STAMPEDE:
-				FSMakeFSSpec(gDataSpec.vRefNum, gDataSpec.parID, ":models:swamp.bg3d", &spec);
+				FSMakeFSSpec(gDataSpec.vRefNum, gDataSpec.parID, ":Models:swamp.bg3d", &spec);
 				break;			
 	}
 	ImportBG3D(&spec, MODEL_GROUP_LEVELSPECIFIC);
@@ -239,7 +239,7 @@ FSSpec	spec;
 
 			/* LOAD GLOBAL BG3D GEOMETRY */
 			
-	FSMakeFSSpec(gDataSpec.vRefNum, gDataSpec.parID, ":models:global.bg3d", &spec);
+	FSMakeFSSpec(gDataSpec.vRefNum, gDataSpec.parID, ":Models:global.bg3d", &spec);
 	ImportBG3D(&spec, MODEL_GROUP_GLOBAL);
 
 	BG3D_SphereMapGeomteryMaterial(MODEL_GROUP_GLOBAL, GLOBAL_ObjType_Boost,
@@ -282,11 +282,11 @@ FSSpec	spec;
 	switch(gCurrentArea)
 	{
 		case	AREA_TOWN_STAMPEDE:
-				FSMakeFSSpec(gDataSpec.vRefNum, gDataSpec.parID, ":terrain:town_stampede.ter", &spec);
+				FSMakeFSSpec(gDataSpec.vRefNum, gDataSpec.parID, ":Terrain:town_stampede.ter", &spec);
 				break;
 				
 		case	AREA_SWAMP_STAMPEDE:
-				FSMakeFSSpec(gDataSpec.vRefNum, gDataSpec.parID, ":terrain:swamp_stampede.ter", &spec);
+				FSMakeFSSpec(gDataSpec.vRefNum, gDataSpec.parID, ":Terrain:swamp_stampede.ter", &spec);
 				break;
 	}
 
@@ -318,10 +318,10 @@ FSSpec	spec;
 
 			/* LOAD GLOBAL BG3D GEOMETRY */
 			
-	FSMakeFSSpec(gDataSpec.vRefNum, gDataSpec.parID, ":models:global.bg3d", &spec);
+	FSMakeFSSpec(gDataSpec.vRefNum, gDataSpec.parID, ":Models:global.bg3d", &spec);
 	ImportBG3D(&spec, MODEL_GROUP_GLOBAL);
 
-	FSMakeFSSpec(gDataSpec.vRefNum, gDataSpec.parID, ":models:targetpractice.bg3d", &spec);
+	FSMakeFSSpec(gDataSpec.vRefNum, gDataSpec.parID, ":Models:targetpractice.bg3d", &spec);
 	ImportBG3D(&spec, MODEL_GROUP_LEVELSPECIFIC);
 
 

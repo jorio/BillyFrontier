@@ -148,7 +148,7 @@ static const OGLVector3D	fillDirection2 = { .3, .8, 1.0 };
 
 			/* MAKE BACKGROUND PICTURE OBJECT */
 
-	MakeBackgroundPictureObject(":images:BigBoard.png");
+	MakeBackgroundPictureObject(":Images:BigBoard.png");
 
 
 			/*****************/
