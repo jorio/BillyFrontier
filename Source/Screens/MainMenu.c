@@ -29,14 +29,6 @@ static const char* DotConcat(const char* prefix, const char* suffix, float targe
 /*    CONSTANTS             */
 /****************************/
 
-#if __APPLE__
-	#define EXPOSE_MSAA_SETTING			0
-	#define EXPOSE_DISPLAY_SETTING		0
-#else
-	#define EXPOSE_MSAA_SETTING			1
-	#define EXPOSE_DISPLAY_SETTING		1
-#endif
-
 #define	MAX_MENU_ITEMS	20
 
 enum
@@ -62,12 +54,8 @@ enum
 enum
 {
 	kSettingsMenu_Fullscreen,
-#if EXPOSE_DISPLAY_SETTING
 	kSettingsMenu_Display,
-#endif
-#if EXPOSE_MSAA_SETTING
 	kSettingsMenu_Antialiasing,
-#endif
 	kSettingsMenu_MouseWheelScrollSpeed,
 	kSettingsMenu_InvertMouseWheel,
 	kSettingsMenu_Spacer1,
@@ -334,13 +322,13 @@ static const char* DotConcat(const char* prefix, const char* suffix, float targe
 {
 	static char buf[64];
 
-	memset(buf, 0, sizeof(buf));		// clear with 0s
+	SDL_memset(buf, 0, sizeof(buf));		// clear with 0s
 
 	float width = GetStringWidth(prefix, 1) + GetStringWidth(suffix, 1);
 
 	float dotWidth = GetCharSpacing('.', 1);
 
-	int cursor = snprintf(buf, sizeof(buf), "%s", prefix);
+	int cursor = SDL_snprintf(buf, sizeof(buf), "%s", prefix);
 	if (cursor < 0)
 		goto fail;
 
@@ -357,7 +345,7 @@ static const char* DotConcat(const char* prefix, const char* suffix, float targe
 		flipflop = !flipflop;
 	}
 
-	snprintf(buf + cursor, sizeof(buf) - cursor, "%s", suffix);
+	SDL_snprintf(buf + cursor, sizeof(buf) - cursor, "%s", suffix);
 fail:
 	return buf;
 }
@@ -378,25 +366,21 @@ static void BuildMainMenu_Settings(void)
 			name = DotConcat("FULLSCREEN", gGamePrefs.fullscreen ? "YES" : "NO", TW);
 			break;
 
-#if EXPOSE_DISPLAY_SETTING
 		case kSettingsMenu_Display:
-			snprintf(suffix, sizeof(suffix), "%d", gGamePrefs.monitorNum + 1);
+			SDL_snprintf(suffix, sizeof(suffix), "%d", gGamePrefs.displayNumMinus1 + 1);
 			name = DotConcat("DISPLAY", suffix, TW);
 			break;
-#endif
 
-#if EXPOSE_MSAA_SETTING
 		case kSettingsMenu_Antialiasing:
 			if (!gGamePrefs.antialiasingLevel)
-				snprintf(suffix, sizeof(suffix), "OFF");
+				SDL_snprintf(suffix, sizeof(suffix), "OFF");
 			else
-				snprintf(suffix, sizeof(suffix), "MSAA %dx", 1 << gGamePrefs.antialiasingLevel);
+				SDL_snprintf(suffix, sizeof(suffix), "MSAA %dx", 1 << gGamePrefs.antialiasingLevel);
 			name = DotConcat("ANTIALIASING", suffix, TW);
 			break;
-#endif
 
 		case kSettingsMenu_MouseWheelScrollSpeed:
-			snprintf(suffix, sizeof(suffix), "%d", 1 + gGamePrefs.mouseWheelScrollSpeed);
+			SDL_snprintf(suffix, sizeof(suffix), "%d", 1 + gGamePrefs.mouseWheelScrollSpeed);
 			name = DotConcat("MOUSE WHEEL SPEED", suffix, TW);
 			break;
 
@@ -442,7 +426,7 @@ static void BuildMainMenu_SavedGames(void)
 		char title[32];
 		int completionPercent = GetGameCompletionPercent(gDuelWonMask, gLevelWonMask);
 
-		snprintf(title, sizeof(title), "%d pts, %d%% complete", gScore, completionPercent);
+		SDL_snprintf(title, sizeof(title), "%d pts, %d%% complete", gScore, completionPercent);
 
 		NewObjectDefinitionType def =
 		{
@@ -473,27 +457,26 @@ static void BuildMainMenu_SavedGames(void)
 		{
 			if (gAreYouSure)
 			{
-				snprintf(prefix, sizeof(prefix), "DELETE %d", i + 1);
+				SDL_snprintf(prefix, sizeof(prefix), "DELETE %d", i + 1);
 			}
 			else
 			{
-				snprintf(prefix, sizeof(prefix), "FILE %d", i + 1);
+				SDL_snprintf(prefix, sizeof(prefix), "FILE %d", i + 1);
 			}
 		}
 		else
 		{
-			snprintf(prefix, sizeof(prefix), "OVERWRITE %d", i + 1);
+			SDL_snprintf(prefix, sizeof(prefix), "OVERWRITE %d", i + 1);
 		}
 
 
 		if (iErr)
 		{
-			//snprintf(suffix, sizeof(suffix), "EMPTY");
 			suffix[0] = '\0';
 		}
 		else
 		{
-			snprintf(suffix, sizeof(suffix), "%5dpts\t.\t.\t.\t%2d%%", scratch.score, completionPercent);
+			SDL_snprintf(suffix, sizeof(suffix), "%5dpts\t.\t.\t.\t%2d%%", scratch.score, completionPercent);
 		}
 
 		NewMenuItem(i, DotConcat(prefix, suffix, 13));
@@ -567,7 +550,7 @@ static void FreeMainMenuScreen(void)
 	FreeAllSkeletonFiles(-1);
 	OGL_DisposeWindowSetup();
 
-	memset(gMenuItems, 0, sizeof(gMenuItems));
+	SDL_memset(gMenuItems, 0, sizeof(gMenuItems));
 
 	gMenuMode = -1;
 }
@@ -725,22 +708,18 @@ ObjNode	*newObj;
 					BuildMainMenu(MENU_PAGE_SETTINGS);
 					break;
 
-#if EXPOSE_DISPLAY_SETTING
 				case kSettingsMenu_Display:
-					gGamePrefs.monitorNum++;
-					gGamePrefs.monitorNum %= SDL_GetNumVideoDisplays();
+					gGamePrefs.displayNumMinus1++;
+					gGamePrefs.displayNumMinus1 %= GetNumDisplays();
 					SetFullscreenMode(true);
 					BuildMainMenu(MENU_PAGE_SETTINGS);
 					break;
-#endif
 
-#if EXPOSE_MSAA_SETTING
 				case kSettingsMenu_Antialiasing:
 					gGamePrefs.antialiasingLevel++;
 					gGamePrefs.antialiasingLevel %= 4;
 					BuildMainMenu(MENU_PAGE_SETTINGS);
 					break;
-#endif
 
 				case kSettingsMenu_MouseWheelScrollSpeed:
 					gGamePrefs.mouseWheelScrollSpeed++;
@@ -792,7 +771,7 @@ ObjNode	*newObj;
 				if (!gAreYouSure)										// not in delete mode; load the save
 				{
 					SaveGameType saveGame;
-					memset(&saveGame, 0, sizeof(saveGame));				// clear it just to be sure
+					SDL_memset(&saveGame, 0, sizeof(saveGame));			// clear it just to be sure
 
 					if (noErr == LoadSavedGame(fileSlot, &saveGame))	// try to load the save
 					{

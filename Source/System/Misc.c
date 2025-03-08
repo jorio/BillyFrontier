@@ -9,16 +9,14 @@
 /* EXTERNALS   */
 /***************/
 
-#include <string.h>
-#include <stdio.h>
-#include <stdarg.h>
 #include "game.h"
+
 
 /****************************/
 /*    CONSTANTS             */
 /****************************/
 
-#define	USE_MALLOC		1
+#define	PTRCOOKIE_SIZE		16
 
 
 
@@ -32,6 +30,7 @@ uint32_t 	gSeed0 = 0, gSeed1 = 0, gSeed2 = 0;
 float	gFramesPerSecond, gFramesPerSecondFrac;
 
 int		gNumPointers = 0;
+long	gRAMAlloced = 0;
 
 
 /**********************/
@@ -48,11 +47,11 @@ void DoAlert(const char* format, ...)
 	char message[1024];
 	va_list args;
 	va_start(args, format);
-	vsnprintf(message, sizeof(message), format, args);
+	SDL_vsnprintf(message, sizeof(message), format, args);
 	va_end(args);
 
-	printf("Billy Frontier Alert: %s\n", message);
-	SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "Billy Frontier", message, gSDLWindow);
+	SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Game Alert: %s", message);
+	SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, GAME_FULL_NAME, message, gSDLWindow);
 
 	Exit2D();
 }
@@ -67,11 +66,11 @@ void DoFatalAlert(const char* format, ...)
 	char message[1024];
 	va_list args;
 	va_start(args, format);
-	vsnprintf(message, sizeof(message), format, args);
+	SDL_vsnprintf(message, sizeof(message), format, args);
 	va_end(args);
 
-	printf("Billy Frontier Fatal Alert: %s\n", message);
-	SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "Billy Frontier", message, gSDLWindow);
+	SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Game Fatal Alert: %s", message);
+	SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, GAME_FULL_NAME, message, gSDLWindow);
 
 	Exit2D();
 	CleanQuit();
@@ -84,7 +83,7 @@ void CleanQuit(void)
 {	
 static Boolean	beenHere = false;
 
-	SDL_ShowCursor(1);
+	SDL_ShowCursor();
 
 	if (!beenHere)
 	{
@@ -218,24 +217,9 @@ void InitMyRandomSeed(void)
 
 Handle	AllocHandle(long size)
 {
-Handle	hand;
-OSErr	err;
-
-	hand = NewHandle(size);							// alloc in APPL
-	if (hand == nil)
-	{
-		DoAlert("AllocHandle: using temp mem");
-		hand = TempNewHandle(size,&err);			// try TEMP mem
-		if (hand == nil)
-		{
-			DoAlert("AllocHandle: failed!");
-			return(nil);
-		}
-		else
-			return(hand);							
-	}
-	return(hand);		
-								
+	Handle hand = NewHandle(size);							// alloc in APPL
+	GAME_ASSERT(hand);
+	return(hand);
 }
 
 
@@ -244,31 +228,23 @@ OSErr	err;
 
 void *AllocPtr(long size)
 {
-Ptr	pr;
-uint32_t	*cookiePtr;
+	GAME_ASSERT(size >= 0);
+	GAME_ASSERT(size <= 0x7FFFFFFF);
 
-	size += 16;								// make room for our cookie & whatever else (also keep to 16-byte alignment!)
+	size += PTRCOOKIE_SIZE;						// make room for our cookie & whatever else (also keep to 16-byte alignment!)
+	Ptr p = SDL_malloc(size);
+	GAME_ASSERT(p);
 
-#if USE_MALLOC
-	pr = malloc(size);
-#else
-	pr = NewPtr(size);
-#endif	
-	if (pr == nil)
-		DoFatalAlert("AllocPtr: NewPtr failed");
+	uint32_t* cookiePtr = (uint32_t *)p;
+	cookiePtr[0] = 'FACE';
+	cookiePtr[1] = (uint32_t) size;
+	cookiePtr[2] = 'PTR3';
+	cookiePtr[3] = 'PTR4';
 
-	cookiePtr = (uint32_t *)pr;
-
-	*cookiePtr++ = 'FACE';
-	*cookiePtr++ = 'PTR2';
-	*cookiePtr++ = 'PTR3';
-	*cookiePtr = 'PTR4';
-
-	pr += 16;
-	
 	gNumPointers++;
-	
-	return(pr);
+	gRAMAlloced += size;
+
+	return p + PTRCOOKIE_SIZE;
 }
 
 
@@ -276,32 +252,56 @@ uint32_t	*cookiePtr;
 
 void *AllocPtrClear(long size)
 {
-Ptr	pr;
-uint32_t	*cookiePtr;
+	GAME_ASSERT(size >= 0);
+	GAME_ASSERT(size <= 0x7FFFFFFF);
 
-	size += 16;								// make room for our cookie & whatever else (also keep to 16-byte alignment!)
+	size += PTRCOOKIE_SIZE;						// make room for our cookie & whatever else (also keep to 16-byte alignment!)
+	Ptr p = SDL_calloc(1, size);
+	GAME_ASSERT(p);
 
-#if USE_MALLOC
-	pr = calloc(1, size);
-#else
-	pr = NewPtrClear(size);						// alloc in Application
-#endif	
+	uint32_t* cookiePtr = (uint32_t *)p;
+	cookiePtr[0] = 'FACE';
+	cookiePtr[1] = (uint32_t) size;
+	cookiePtr[2] = 'PTC3';
+	cookiePtr[3] = 'PTC4';
 
-	if (pr == nil)
-		DoFatalAlert("AllocPtr: NewPtr failed");
-
-	cookiePtr = (uint32_t *)pr;
-
-	*cookiePtr++ = 'FACE';
-	*cookiePtr++ = 'PTC2';
-	*cookiePtr++ = 'PTC3';
-	*cookiePtr = 'PTC4';
-
-	pr += 16;
-	
 	gNumPointers++;
-	
-	return(pr);
+	gRAMAlloced += size;
+
+	return p + PTRCOOKIE_SIZE;
+}
+
+
+/****************** REALLOC PTR ********************/
+
+void* ReallocPtr(void* initialPtr, long newSize)
+{
+	GAME_ASSERT(newSize >= 0);
+	GAME_ASSERT(newSize <= 0x7FFFFFFF);
+
+	if (initialPtr == NULL)
+	{
+		return AllocPtr(newSize);
+	}
+
+	Ptr p = ((Ptr)initialPtr) - PTRCOOKIE_SIZE;	// back up pointer to cookie
+	newSize += PTRCOOKIE_SIZE;					// make room for our cookie & whatever else (also keep to 16-byte alignment!)
+
+	p = SDL_realloc(p, newSize);				// reallocate it
+	GAME_ASSERT(p);
+
+	uint32_t* cookiePtr = (uint32_t *)p;
+	GAME_ASSERT(cookiePtr[0] == 'FACE');		// realloc shouldn't have touched our cookie
+
+	uint32_t initialSize = cookiePtr[1];		// update heap size metric
+	gRAMAlloced += newSize - initialSize;
+
+	cookiePtr[0] = 'FACE';						// rewrite cookie
+	cookiePtr[1] = (uint32_t) newSize;
+	cookiePtr[2] = 'REA3';
+	cookiePtr[3] = 'REA4';
+
+	return p + PTRCOOKIE_SIZE;
 }
 
 
@@ -309,26 +309,24 @@ uint32_t	*cookiePtr;
 
 void SafeDisposePtr(void *ptr)
 {
-uint32_t	*cookiePtr;
-Ptr		p = ptr;
+	if (ptr == NULL)
+	{
+		return;
+	}
 
-	p -= 16;					// back up to pt to cookie
-	
-	cookiePtr = (uint32_t *)p;
-	
-	if (*cookiePtr != 'FACE')
-		DoFatalAlert("SafeSafeDisposePtr: invalid cookie!");
-		
-	*cookiePtr = 0;
-	
-#if USE_MALLOC	
-	free(p);
-#else
-	DisposePtr(p);
-#endif
-	
+	Ptr p = ((Ptr)ptr) - PTRCOOKIE_SIZE;			// back up to pt to cookie
+
+	uint32_t* cookiePtr = (uint32_t *)p;
+	GAME_ASSERT(cookiePtr[0] == 'FACE');
+	gRAMAlloced -= cookiePtr[1];					// deduct ptr size from heap size
+
+	cookiePtr[0] = 'DEAD';							// zap cookie
+
+	SDL_free(p);
+
 	gNumPointers--;
 }
+
 
 
 #pragma mark -

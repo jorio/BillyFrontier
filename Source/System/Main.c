@@ -87,7 +87,7 @@ void ToolBoxInit(void)
 
 void InitDefaultPrefs(void)
 {
-	memset(&gGamePrefs, 0, sizeof(gGamePrefs));
+	SDL_memset(&gGamePrefs, 0, sizeof(gGamePrefs));
 
 //	gGamePrefs.version				= CURRENT_PREFS_VERS;						
 	gGamePrefs.anaglyph				= false;
@@ -331,8 +331,9 @@ unsigned long	someLong;
 
 	ToolBoxInit();
 
-	InitDefaultPrefs();
 	LoadPrefs();
+	MoveToPreferredDisplay();
+	SetFullscreenMode(true);
 
 	InitInput();
 	OGL_Boot();
@@ -370,7 +371,7 @@ unsigned long	someLong;
 
 	PlaySong(SONG_THEME, true);
 	DoLegalScreen();
-	SDL_ShowCursor(0);
+	SDL_HideCursor();
 
 //gScore = 12345; NewScore(false);	//----------
 
@@ -386,7 +387,3 @@ unsigned long	someLong;
 	}
 	
 }
-
-
-
-

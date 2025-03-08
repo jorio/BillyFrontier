@@ -277,7 +277,7 @@ const OGLPoint3D	cameraTo = { 0, 1200, 0 };
 
 		/* GRAB MOUSE CURSOR SO IT CAN'T ESCAPE WINDOW */
 
-	SDL_SetWindowGrab(gSDLWindow, true);
+	SDL_SetWindowMouseGrab(gSDLWindow, true);
 
 
 			/*******************/	
@@ -308,7 +308,7 @@ const OGLPoint3D	cameraTo = { 0, 1200, 0 };
 
 	{
 		char prompt[32];
-		snprintf(prompt, sizeof(prompt), "GET %d PEPPERS", gPepperCount);
+		SDL_snprintf(prompt, sizeof(prompt), "GET %d PEPPERS", gPepperCount);
 
 		NewObjectDefinitionType textDef =
 		{
@@ -331,7 +331,7 @@ const OGLPoint3D	cameraTo = { 0, 1200, 0 };
 
 static void CleanupTargetPractice(void)
 {
-	SDL_SetWindowGrab(gSDLWindow, false);		// un-grab the mouse cursor
+	SDL_SetWindowMouseGrab(gSDLWindow, false);		// un-grab the mouse cursor
 
 	StopAllEffectChannels();
  	EmptySplineObjectList();

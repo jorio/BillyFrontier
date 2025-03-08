@@ -10,7 +10,6 @@
 /****************************/
 
 #include "game.h"
-#include <string.h>
 
 #include "stb_image.h"
 #include "ogl_functions.h"
@@ -256,8 +255,8 @@ static void OGL_CreateDrawContext(void)
 
 			/* ACTIVATE CONTEXT */
 
-	int mkc = SDL_GL_MakeCurrent(gSDLWindow, gAGLContext);
-	GAME_ASSERT_MESSAGE(mkc == 0, SDL_GetError());
+	bool mkc = SDL_GL_MakeCurrent(gSDLWindow, gAGLContext);
+	GAME_ASSERT_MESSAGE(mkc, SDL_GetError());
 
 			/* ENABLE VSYNC */
 
@@ -294,7 +293,7 @@ static void OGL_DisposeDrawContext(void)
 	}
 
 	SDL_GL_MakeCurrent(gSDLWindow, NULL);		// make context not current
-	SDL_GL_DeleteContext(gAGLContext);			// nuke context
+	SDL_GL_DestroyContext(gAGLContext);			// nuke context
 	gAGLContext = nil;
 }
 
@@ -605,7 +604,7 @@ do_anaglyph:
 		else
 			gMaxAnisotropy = 1;
 	
-		printf("Anisotropic filtering: %f\n", gMaxAnisotropy);
+		SDL_Log("Anisotropic filtering: %f", gMaxAnisotropy);
 	}
 
 				/* SHOW BASIC DEBUG INFO */
@@ -703,7 +702,7 @@ do_anaglyph:
 
 void OGL_GetCurrentViewport(int *x, int *y, int *w, int *h)
 {
-	SDL_GL_GetDrawableSize(gSDLWindow, &gGameWindowWidth, &gGameWindowHeight);
+	SDL_GetWindowSizeInPixels(gSDLWindow, &gGameWindowWidth, &gGameWindowHeight);
 
 int	t,b,l,r;
 		
@@ -828,8 +827,7 @@ Ptr						imageFileData = nil;
 
 			/* CLEAN UP */
 
-	//DisposePtr((Ptr) pixelData);
-	free(pixelData);  // TODO: define STBI_MALLOC/STBI_REALLOC/STBI_FREE in stb_image.c?
+	SafeDisposePtr((Ptr) pixelData);
 
 	if (outWidth)
 		*outWidth = width;
@@ -1492,7 +1490,7 @@ void OGL_DrawFloat(float f, GLint x, GLint y)
 {
 	char s[16];
 
-	snprintf(s, sizeof(s), "%f", f);
+	SDL_snprintf(s, sizeof(s), "%f", f);
 	OGL_DrawString(s, x, y);
 }
 
@@ -1504,7 +1502,7 @@ void OGL_DrawInt(int f, GLint x, GLint y)
 {
 	char s[16];
 
-	snprintf(s, sizeof(s), "%d", f);
+	SDL_snprintf(s, sizeof(s), "%d", f);
 	OGL_DrawString(s, x, y);
 }
 

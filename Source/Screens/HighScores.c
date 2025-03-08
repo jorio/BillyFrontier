@@ -71,7 +71,7 @@ static	float	gShowScoreDelay;
 
 static void ClearHighScoreName(char name[MAX_NAME_LENGTH + 1])
 {
-	memset(name, ' ', MAX_NAME_LENGTH);
+	SDL_memset(name, ' ', MAX_NAME_LENGTH);
 	name[MAX_NAME_LENGTH] = '\0';
 }
 
@@ -85,7 +85,8 @@ void NewScore(Boolean justShowScores)
 	gJustShowScores = justShowScores;
 		
 	gAllowAudioKeys = false;					// dont interfere with name editing
-	
+	SDL_StartTextInput(gSDLWindow);
+
 	gCursorIndex = 0;
 
 	if (gLostGame)
@@ -182,7 +183,7 @@ void NewScore(Boolean justShowScores)
 					if ((theChar >= 'a') && (theChar <= 'z'))					// see if convert lower case to upper case a..z
 						theChar = 'A' + (theChar - 'a');
 
-					if (NULL == strchr(kScoreCharset, theChar))
+					if (NULL == SDL_strchr(kScoreCharset, theChar))
 						theChar = '-';
 
 					gHighScores[gNewScoreSlot].name[gCursorIndex] = theChar;
@@ -203,6 +204,7 @@ void NewScore(Boolean justShowScores)
 	FreeScoreScreen();
 
 	gAllowAudioKeys = true;
+	SDL_StopTextInput(gSDLWindow);
 }
 
 
@@ -213,7 +215,6 @@ static void SetupScoreScreen(void)
 OGLSetupInputType	viewDef;
 
 	gExitHighScores = false;
-
 
 		/* IF THIS WAS A SAVED GAME AND SCORE HASN'T CHANGED AND IS ALREADY IN LIST THEN DON'T ADD TO HIGH SCORES */
 		
@@ -414,7 +415,7 @@ float	fps = gFramesPerSecondFrac;
 	
 				/* DRAW SCORE */
 				
-		snprintf(s, sizeof(s), SCORE_FMT, gHighScores[i].score);
+		SDL_snprintf(s, sizeof(s), SCORE_FMT, gHighScores[i].score);
 		DrawScoreText(s, 450, y, SCORE_TEXT_SPACING);
 		
 		y += SCORE_TEXT_SPACING * 1.05f;
@@ -427,7 +428,7 @@ float	fps = gFramesPerSecondFrac;
 		
 	if (!gJustShowScores)
 	{
-		snprintf(s, sizeof(s), SCORE_FMT, gScore);
+		SDL_snprintf(s, sizeof(s), SCORE_FMT, gScore);
 		DrawScoreText(s, 270, 56, SCORE_TEXT_SPACING * 2);
 	}	
 	

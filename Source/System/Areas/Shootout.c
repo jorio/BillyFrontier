@@ -322,7 +322,7 @@ float		x,z;
 
 		/* GRAB MOUSE CURSOR SO IT CAN'T ESCAPE WINDOW */
 
-	SDL_SetWindowGrab(gSDLWindow, true);
+	SDL_SetWindowMouseGrab(gSDLWindow, true);
 
 	gScrollMomentum = 0;
 }
@@ -337,8 +337,8 @@ static void CleanupShootout(void)
 {
 	gShootoutMode = SHOOTOUT_MODE_NONE;				// don't leak shootout mode to duel
 
-	SDL_SetWindowGrab(gSDLWindow, false);		// un-grab the mouse cursor
-	SDL_SetRelativeMouseMode(false);			// let go of relative mouse mode
+	SDL_SetWindowMouseGrab(gSDLWindow, false);		// un-grab the mouse cursor
+	SDL_SetWindowRelativeMouseMode(gSDLWindow, false);	// let go of relative mouse mode
 
 	StopAllEffectChannels();
  	EmptySplineObjectList();
@@ -536,8 +536,8 @@ static void UpdatePlayerRotation(void)
 
 		/* GET WINDOW-SPACE MOUSE COORDS TO CHECK IF PINNED TO EDGE */
 
-	int windowX = 0;
-	int windowY = 0;
+	float windowX = 0;
+	float windowY = 0;
 	GetMousePixelCoord(&windowX, &windowY);
 
 	if (windowX <= 1)								// see if off left
@@ -576,11 +576,11 @@ static void UpdatePlayerRotation(void)
 		// cursor motion uses the system's acceleration curve.
 		//
 
-	Boolean hadRelativeMouse = SDL_GetRelativeMouseMode();
+	Boolean hadRelativeMouse = SDL_GetWindowRelativeMouseMode(gSDLWindow);
 	Boolean needRelativeMouse = mouseEdge != 0.0f;
 	if (hadRelativeMouse != needRelativeMouse)
 	{
-		SDL_SetRelativeMouseMode(needRelativeMouse);
+		SDL_SetWindowRelativeMouseMode(gSDLWindow, needRelativeMouse);
 	}
 
 		/* MOUSE WHEEL BUMPS MOMENTUM */

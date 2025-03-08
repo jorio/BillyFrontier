@@ -417,7 +417,7 @@ void InitPrefsFolder(bool createIt)
 static OSErr MakeFSSpecForUserDataFile(const char* filename, FSSpec* spec)
 {
 	char path[256];
-	snprintf(path, sizeof(path), ":%s:%s", PREFS_FOLDER_NAME, filename);
+	SDL_snprintf(path, sizeof(path), ":%s:%s", PREFS_FOLDER_NAME, filename);
 
 	return FSMakeFSSpec(gPrefsFolderVRefNum, gPrefsFolderDirID, path, spec);
 }
@@ -432,7 +432,7 @@ FSSpec		file;
 long		count;
 long		eof = 0;
 char		fileMagic[64];
-long		magicLength = (long) strlen(magic) + 1;		// including null-terminator
+long		magicLength = (long) SDL_strlen(magic) + 1;		// including null-terminator
 
 	GAME_ASSERT(magicLength < (long) sizeof(fileMagic));
 
@@ -479,7 +479,7 @@ long		magicLength = (long) strlen(magic) + 1;		// including null-terminator
 	return noErr;
 
 fileIsCorrupt:
-	printf("File '%s' appears to be corrupt!\n", file.cName);
+	SDL_Log("File '%s' appears to be corrupt!", file.cName);
 	FSClose(refNum);
 	return badFileFormat;
 }
@@ -517,7 +517,7 @@ long				count;
 
 				/* WRITE MAGIC */
 
-	count = (long) strlen(magic) + 1;
+	count = (long) SDL_strlen(magic) + 1;
 	iErr = FSWrite(refNum, &count, (Ptr) magic);
 	if (iErr)
 	{
@@ -531,7 +531,7 @@ long				count;
 	iErr = FSWrite(refNum, &count, payloadPtr);
 	FSClose(refNum);
 
-	printf("Wrote %s\n", file.cName);
+	SDL_Log("Wrote %s", file.cName);
 
 	return iErr;
 }
@@ -553,8 +553,6 @@ OSErr LoadPrefs(void)
 		InitDefaultPrefs();
 	}
 
-//	memcpy(&gDiskShadowPrefs, &gGamePrefs, sizeof(gDiskShadowPrefs));
-
 	return err;
 }
 
@@ -563,15 +561,7 @@ OSErr LoadPrefs(void)
 
 void SavePrefs(void)
 {
-	// If prefs didn't change relative to what's on disk, don't bother rewriting them
-	//if (0 == memcmp(&gDiskShadowPrefs, &gGamePrefs, sizeof(gGamePrefs)))
-	//{
-	//	return;
-	//}
-
 	SaveUserDataFile(PREFS_FILE_NAME, PREFS_MAGIC, sizeof(PrefsType), (Ptr)&gGamePrefs);
-
-	//memcpy(&gDiskShadowPrefs, &gGamePrefs, sizeof(gGamePrefs));
 }
 
 
@@ -797,7 +787,7 @@ Ptr						tempBuffer16 = nil;
 		if ((*gSplineList)[i].numPoints == 0)
 		{
 #if _DEBUG
-			printf("WARNING: Spline #%ld has 0 points\n", i);
+			SDL_Log("WARNING: Spline #%ld has 0 points", i);
 #endif
 			(*gSplineList)[i].pointList = (SplinePointType**) AllocHandle(0);
 			continue;
@@ -824,7 +814,7 @@ Ptr						tempBuffer16 = nil;
 		if ((*gSplineList)[i].numItems == 0)
 		{
 #if _DEBUG
-			printf("WARNING: Spline #%ld has 0 items\n", i);
+			SDL_Log("WARNING: Spline #%ld has 0 items", i);
 #endif
 			(*gSplineList)[i].itemList = (SplineItemType**) AllocHandle(0);
 			continue;
@@ -1084,7 +1074,7 @@ OSErr SaveGame(int fileSlot)
 	char path[64];
 	SaveGameType saveData;
 
-	memset(&saveData, 0, sizeof(saveData));
+	SDL_memset(&saveData, 0, sizeof(saveData));
 
 //	saveData.version		= SAVE_GAME_VERSION;				// save file version #
 	saveData.score 			= gScore;
@@ -1092,7 +1082,7 @@ OSErr SaveGame(int fileSlot)
 	saveData.duelWonMask	= gDuelWonMask;
 	saveData.levelWonMask	= gLevelWonMask;
 
-	snprintf(path, sizeof(path), "%s%d", SAVE_FILE_NAME, fileSlot);
+	SDL_snprintf(path, sizeof(path), "%s%d", SAVE_FILE_NAME, fileSlot);
 
 	return SaveUserDataFile(path, SAVE_MAGIC, sizeof(SaveGameType), (Ptr) & saveData);
 }
@@ -1105,13 +1095,13 @@ OSErr DeleteSavedGame(int fileSlot)
 	OSErr iErr;
 	char path[64];
 
-	snprintf(path, sizeof(path), "%s%d", SAVE_FILE_NAME, fileSlot);
+	SDL_snprintf(path, sizeof(path), "%s%d", SAVE_FILE_NAME, fileSlot);
 
 	iErr = MakeFSSpecForUserDataFile(path, &spec);
 
 	if (noErr == iErr)
 	{
-		printf("Deleting %s\n", path);
+		SDL_Log("Deleting %s", path);
 		iErr = FSpDelete(&spec);
 	}
 
@@ -1123,7 +1113,7 @@ OSErr DeleteSavedGame(int fileSlot)
 OSErr LoadSavedGame(int fileSlot, SaveGameType* saveDataPtr)
 {
 	char path[64];
-	snprintf(path, sizeof(path), "%s%d", SAVE_FILE_NAME, fileSlot);
+	SDL_snprintf(path, sizeof(path), "%s%d", SAVE_FILE_NAME, fileSlot);
 
 	return LoadUserDataFile(path, SAVE_MAGIC, sizeof(SaveGameType), (Ptr) saveDataPtr);
 }

@@ -220,7 +220,7 @@ void LoadSoundBank(void)
 		FSSpec spec;
 		short refNum;
 
-		snprintf(path, sizeof(path), ":Audio:SoundBank:%s.aiff", gEffectsTable[i].name);
+		SDL_snprintf(path, sizeof(path), ":Audio:SoundBank:%s.aiff", gEffectsTable[i].name);
 		FSMakeFSSpec(gDataSpec.vRefNum, gDataSpec.parID, path, &spec);
 		FSpOpenDF(&spec, fsRdPerm, &refNum);
 

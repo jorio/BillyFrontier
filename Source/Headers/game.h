@@ -4,13 +4,13 @@
 #define _Static_assert static_assert
 #endif
 
-#include <stdlib.h>
-#include <stdio.h>
 #include <math.h>
-#include <SDL.h>
-#include <SDL_opengl.h>
+#include <SDL3/SDL.h>
+#include <SDL3/SDL_opengl.h>
 
 #include "Pomme.h"
+
+#include "version.h"
 #include "globals.h"
 #include "structs.h"
 
@@ -123,7 +123,7 @@ extern SuperTileStatus **gSuperTileStatusGrid;
 extern TerrainItemEntryType **gMasterItemList;
 extern WaterDefType **gWaterListHandle;
 extern WaterDefType *gWaterList;
-extern char gTextInput[SDL_TEXTINPUTEVENT_TEXT_SIZE];
+extern char gTextInput[64];
 extern float **gMapYCoords;
 extern float **gMapYCoordsOriginal;
 extern float **gVertexShading;
@@ -202,7 +202,7 @@ extern uint32_t gLoadedScore;
 extern uint32_t gScore;
 
 #if _DEBUG
-#define IMPLEMENT_ME_SOFT() printf("IMPLEMENT ME: %s:%d\n", __func__, __LINE__)
+#define IMPLEMENT_ME_SOFT() SDL_Log("IMPLEMENT ME: %s:%d", __func__, __LINE__)
 #else
 #define IMPLEMENT_ME_SOFT()
 #endif

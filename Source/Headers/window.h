@@ -14,4 +14,7 @@ void Wait(long ticks);
 void Enter2D(Boolean pauseDSp);
 void Exit2D(void);
 
+void GetDefaultWindowSize(int display, int* width, int* height);
+int GetNumDisplays(void);
+void MoveToPreferredDisplay(void);
 void SetFullscreenMode(bool enforceDisplayPref);

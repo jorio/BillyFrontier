@@ -210,7 +210,7 @@ static void FreeBigBoardScreen(void)
 	DisposeAllBG3DContainers();
 	OGL_DisposeWindowSetup();
 
-	memset(gBigBoardItems, 0, sizeof(gBigBoardItems));
+	SDL_memset(gBigBoardItems, 0, sizeof(gBigBoardItems));
 }
 
 #pragma mark -
