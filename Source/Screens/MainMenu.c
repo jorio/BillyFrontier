@@ -367,7 +367,7 @@ static void BuildMainMenu_Settings(void)
 			break;
 
 		case kSettingsMenu_Display:
-			SDL_snprintf(suffix, sizeof(suffix), "%d", gGamePrefs.displayNumMinus1 + 1);
+			SDL_snprintf(suffix, sizeof(suffix), "%d", gGamePrefs.displayNum + 1);
 			name = DotConcat("DISPLAY", suffix, TW);
 			break;
 
@@ -709,8 +709,8 @@ ObjNode	*newObj;
 					break;
 
 				case kSettingsMenu_Display:
-					gGamePrefs.displayNumMinus1++;
-					gGamePrefs.displayNumMinus1 %= GetNumDisplays();
+					gGamePrefs.displayNum++;
+					gGamePrefs.displayNum %= GetNumDisplays();
 					SetFullscreenMode(true);
 					BuildMainMenu(MENU_PAGE_SETTINGS);
 					break;

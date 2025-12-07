@@ -71,7 +71,7 @@ typedef struct
 
 	Boolean	fullscreen;
 	Byte	antialiasingLevel;
-	Byte	displayNumMinus1;
+	Byte	displayNum;
 	Byte	mouseWheelScrollSpeed;
 	Boolean	invertMouseWheel;
 }PrefsType;
